@@ -1,0 +1,343 @@
+swagger: '2.0'
+info:
+  title: V5 Challenge Resource API
+  description: |
+    ## Security constraints
+
+    `Resources` endpoints can only be called from admins, via M2M, or users for whom there is at least one existing `Resource` where both `role.fullAccess` and `role.isActive` are `true`.
+    `Resource Roles` POST and PUT endpoints can only be called from admins or via M2M.
+
+  version: "1.0.0"
+host: api.topcoder.com
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+schemes:
+  - http
+  - https
+basePath: /v5
+produces:
+  - application/json
+consumes:
+  - application/json
+security:
+  - Bearer: []
+
+paths:
+  /challenges/{challengeId}/resources:
+    get:
+      description: Get all resources for a challenge
+      tags:
+        - Resources
+      parameters:
+        - name: challengeId
+          type: string
+          format: UUID
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK - the request was successful
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Resource'
+        400:
+          $ref: '#/definitions/BadRequest'
+        401:
+          $ref: '#/definitions/Unauthorized'
+        403:
+          $ref: '#/definitions/Forbidden'
+        404:
+          $ref: '#/definitions/NotFound'
+        500:
+          $ref: '#/definitions/ServerError'
+    post:
+      description: Create a new resource for a challenge. Verify that the challenge exists by calling the **/v5/challenges/{id}** endpoint using an M2M token.
+      tags:
+        - Resources
+      parameters:
+        - name: challengeId
+          type: string
+          format: UUID
+          in: path
+          required: true
+        - name: resource
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ResourceRequestBody'
+      responses:
+        200:
+          description: OK - the request was successful
+          schema:
+            type: object
+            $ref: '#/definitions/Resource'
+        400:
+          $ref: '#/definitions/BadRequest'
+        401:
+          $ref: '#/definitions/Unauthorized'
+        403:
+          $ref: '#/definitions/Forbidden'
+        404:
+          $ref: '#/definitions/NotFound'
+        409:
+          $ref: '#/definitions/Conflict'
+        500:
+          $ref: '#/definitions/ServerError'
+    delete:
+      description: Delete a resource from a challenge
+      tags:
+        - Resources
+      parameters:
+        - name: challengeId
+          type: string
+          format: UUID
+          in: path
+          required: true
+        - name: resource
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ResourceRequestBody'
+      responses:
+        200:
+          description: OK - the request was successful
+          schema:
+            type: object
+            $ref: '#/definitions/Resource'
+        400:
+          $ref: '#/definitions/BadRequest'
+        401:
+          $ref: '#/definitions/Unauthorized'
+        403:
+          $ref: '#/definitions/Forbidden'
+        404:
+          $ref: '#/definitions/NotFound'
+        500:
+          $ref: '#/definitions/ServerError'
+  /resourceRoles:
+    get:
+      description: Get all resource roles. If isActive parameter is provided, filter the results by isActive property.
+      tags:
+        - Resource Roles
+      parameters:
+        - name: isActive
+          type: boolean
+          in: query
+          description: Filters the results based on the `isActive` property
+      responses:
+        200:
+          description: OK - the request was successful
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ResourceRole'
+        400:
+          $ref: '#/definitions/BadRequest'
+        401:
+          $ref: '#/definitions/Unauthorized'
+        403:
+          $ref: '#/definitions/Forbidden'
+        500:
+          $ref: '#/definitions/ServerError'
+    post:
+      description: >
+        Create a new resource role.
+
+        Only admins can call this endpoint.
+      tags:
+        - Resource Roles
+      parameters:
+        - name: resource
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ResourceRole'
+      responses:
+        200:
+          description: OK - the request was successful
+          schema:
+            type: object
+            $ref: '#/definitions/ResourceRole'
+        400:
+          $ref: '#/definitions/BadRequest'
+        401:
+          $ref: '#/definitions/Unauthorized'
+        403:
+          $ref: '#/definitions/Forbidden'
+        409:
+          $ref: '#/definitions/Conflict'
+        500:
+          $ref: '#/definitions/ServerError'
+  /resourceRoles/{resourceRoleId}:
+    put:
+      description: >
+        Update an existing resource role.
+
+        Only admins can call this endpoint.
+      tags:
+        - Resource Roles
+      parameters:
+        - name: resourceRoleId
+          type: string
+          format: UUID
+          in: path
+          required: true
+        - name: resource
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ResourceRole'
+      responses:
+        200:
+          description: OK - the request was successful
+          schema:
+            type: object
+            $ref: '#/definitions/ResourceRole'
+        400:
+          $ref: '#/definitions/BadRequest'
+        401:
+          $ref: '#/definitions/Unauthorized'
+        403:
+          $ref: '#/definitions/Forbidden'
+        404:
+          $ref: '#/definitions/NotFound'
+        409:
+          $ref: '#/definitions/Conflict'
+        500:
+          $ref: '#/definitions/ServerError'
+definitions:
+  Resource:
+    type: object
+    required:
+      - id
+      - challengeId
+      - memberId
+      - memberHandle
+      - roleId
+      - created
+    properties:
+      id:
+        type: string
+        format: UUID
+      challengeId:
+        type: string
+        format: UUID
+      memberId:
+        type: string
+        format: UUID
+      memberHandle:
+        type: string
+      roleId:
+        type: string
+        format: UUID
+        description: The resource role ID
+      created:
+        type: string
+        format: date-time
+        description: The entity creation date.
+      updated:
+        type: string
+        format: date-time
+        description: The entity update date.
+      createdBy:
+        type: string
+        description: The user who created the entity.
+        example: 'Topcoder User'
+      updatedBy:
+        type: string
+        description: The user who updated the entity.
+        example: 'Topcoder User'
+  ResourceRole:
+    type: object
+    required:
+      - name
+      - fullAccess
+      - isActive
+    properties:
+      id:
+        type: string
+        format: UUID
+        readOnly: true
+      name:
+        type: string
+        description: Unique resource role name, case in-sensitive
+      fullAccess:
+        type: boolean
+      isActive:
+        type: boolean
+
+  # Schema for request body
+  ResourceRequestBody:
+    type: object
+    required:
+      - memberHandle
+      - roleId
+    properties:
+      memberHandle:
+        type: string
+        description: The member handle
+      roleId:
+        type: string
+        format: UUID
+        description: The resource role ID
+
+  # Schema for error body
+  Unauthorized:
+    type: object
+    description: The unauthorized error entity.
+    properties:
+      message:
+        type: string
+        description: The unauthorized error message.
+        example: Unable to authenticate the user.
+
+  NotFound:
+    type: object
+    description: The not found error entity.
+    properties:
+      message:
+        type: string
+        description: The not found error message.
+        example: A resource with the name could not be found.
+
+  ServerError:
+    type: object
+    description: The server error entity.
+    properties:
+      message:
+        type: string
+        description: The server error message.
+        example: Something went wrong while processing your request. We’re sorry for the trouble. We’ve been notified of the error and will correct it as soon as possible. Please try your request again in a moment.
+
+  BadRequest:
+    type: object
+    description: The bad request error entity.
+    properties:
+      message:
+        type: string
+        description: The bad request error message.
+        example: Invalid input.
+
+  Forbidden:
+    type: object
+    description: The permission error entity.
+    properties:
+      message:
+        type: string
+        description: The forbidden error message.
+        example: You are not allowed to access the request.
+
+  Conflict:
+    type: object
+    description: The conflict error entity.
+    required:
+      - message
+    properties:
+      message:
+        type: string
+        description: The conflict error message.
+        example: Creating a resource with a name already exists.

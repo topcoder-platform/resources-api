@@ -1,0 +1,3550 @@
+{
+	"info": {
+		"_postman_id": "25e10ea3-84f9-4021-b099-55d27931158d",
+		"name": "topcoder-challenge-resource-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Resource Roles",
+			"item": [
+				{
+					"name": "create resource role",
+					"item": [
+						{
+							"name": "create active full-access resource role by admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76247aec-ea5b-43ff-8c17-6c6706f1105f",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    pm.environment.set(\"COPILOT_RESOURCE_ROLE_ID\", pm.response.json().id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"co-pilot\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create inactive full-access resource role by M2M",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76247aec-ea5b-43ff-8c17-6c6706f1105f",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    pm.environment.set(\"OBSERVER_RESOURCE_ROLE_ID\", pm.response.json().id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_all_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"Observer\",\n\t\"fullAccess\": true,\n\t\"isActive\": false\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create active not full-access resource role by admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76247aec-ea5b-43ff-8c17-6c6706f1105f",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    pm.environment.set(\"SUBMITTER_RESOURCE_ROLE_ID\", pm.response.json().id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"submitter\",\n\t\"fullAccess\": false,\n\t\"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create resource role with invalid parameter 400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76247aec-ea5b-43ff-8c17-6c6706f1105f",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"invalid\": \"invalid\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create resource role with missing parameter 400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76247aec-ea5b-43ff-8c17-6c6706f1105f",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"failure-test\",\n\t\"fullAccess\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create resource role no token 401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76247aec-ea5b-43ff-8c17-6c6706f1105f",
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": false,\n\t\"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create resource role invalid token 401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76247aec-ea5b-43ff-8c17-6c6706f1105f",
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer invalid",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": false,\n\t\"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create resource role expire token 401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76247aec-ea5b-43ff-8c17-6c6706f1105f",
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{expire_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": false,\n\t\"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create resource role by user 403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76247aec-ea5b-43ff-8c17-6c6706f1105f",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user1_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": false,\n\t\"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create resource role using invalid m2m token 403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76247aec-ea5b-43ff-8c17-6c6706f1105f",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_resources_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": false,\n\t\"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create duplicate resource role 409",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76247aec-ea5b-43ff-8c17-6c6706f1105f",
+										"exec": [
+											"pm.test(\"Status code is 409\", function () {",
+											"    pm.response.to.have.status(409);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"SUBMITTER\",\n\t\"fullAccess\": false,\n\t\"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "get resource roles",
+					"item": [
+						{
+							"name": "get all resource roles",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6b6e6487-1cc3-4a73-8b10-fbd540e9640d",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get active resource roles",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "9d15aac7-5eb5-4700-b50d-32ffdf0ae63b",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_all_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles?isActive=true",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles"
+									],
+									"query": [
+										{
+											"key": "isActive",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get inactive resource roles",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f052821e-79b9-4f8a-8e92-5f9b17b7b5d8",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user1_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles?isActive=false",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles"
+									],
+									"query": [
+										{
+											"key": "isActive",
+											"value": "false"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - get resource roles with invalid parameter 400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d106c887-c5d0-4c87-a4ac-eecbd00215d7",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles?isActive=invalid",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles"
+									],
+									"query": [
+										{
+											"key": "isActive",
+											"value": "invalid"
+										},
+										{
+											"key": "invalid",
+											"value": "invalid",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - get resource roles using expire token 401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d106c887-c5d0-4c87-a4ac-eecbd00215d7",
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{expire_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles?isActive=true",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles"
+									],
+									"query": [
+										{
+											"key": "isActive",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - get resource roles without token 401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d106c887-c5d0-4c87-a4ac-eecbd00215d7",
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles?isActive=true",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles"
+									],
+									"query": [
+										{
+											"key": "isActive",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - get resource roles using invalid token 401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d106c887-c5d0-4c87-a4ac-eecbd00215d7",
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer invalid"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles?isActive=true",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles"
+									],
+									"query": [
+										{
+											"key": "isActive",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - get resource roles using invalid m2m token 403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d106c887-c5d0-4c87-a4ac-eecbd00215d7",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_resources_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles?isActive=true",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles"
+									],
+									"query": [
+										{
+											"key": "isActive",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "update resource role",
+					"item": [
+						{
+							"name": "failure - update resource role invalid id 400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_all_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"failure-test\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles/test",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles",
+										"test"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - update resource role missing parameter 400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_all_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"failure\",\n\t\"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles",
+										"{{COPILOT_RESOURCE_ROLE_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - update resource role without token 401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles",
+										"{{COPILOT_RESOURCE_ROLE_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - update resource role invalid token 401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer invalid",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles",
+										"{{COPILOT_RESOURCE_ROLE_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - update resource role expired token 401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{expire_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles",
+										"{{COPILOT_RESOURCE_ROLE_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - update resource role by user 403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user1_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles",
+										"{{COPILOT_RESOURCE_ROLE_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - update resource role using invalid m2m token 403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_resources_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles",
+										"{{COPILOT_RESOURCE_ROLE_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - update resource role not-found 404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_all_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"failure-test\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles/{{CHALLENGE_ID}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles",
+										"{{CHALLENGE_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - update resource role name duplication 409",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 409\", function () {",
+											"    pm.response.to.have.status(409);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{m2m_all_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"SUBMITTER\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles",
+										"{{COPILOT_RESOURCE_ROLE_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update resource role using m2m token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_resource_roles_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"UPDATE-CO-PILOT\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles",
+										"{{COPILOT_RESOURCE_ROLE_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update resource role via admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"CO-PILOT\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRoles",
+										"{{COPILOT_RESOURCE_ROLE_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "Resources",
+			"item": [
+				{
+					"name": "create resource",
+					"item": [
+						{
+							"name": "create resource by admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"HoHoSKY\",\n\t\"roleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create resource by user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user2_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"denis\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create resource using m2m token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_all_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"ghostar\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create resource using inactive role 400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user2_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"ghostar\",\n\t\"roleId\": \"{{OBSERVER_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create resource using unexisted role 400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user2_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"ghostar\",\n\t\"roleId\": \"{{CHALLENGE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create resource invalid challengeId 400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user2_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"ghostar\",\n\t\"roleId\": \"{{OBSERVER_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/invalid/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"invalid",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create resource invalid parameter 400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user2_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": true,\n\t\"roleId\": \"{{OBSERVER_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create resource member doesn't exist 400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user2_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"123abcx\",\n\t\"roleId\": \"{{OBSERVER_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create resource using invalid token 401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer invalid"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"tonyj\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create resource using expired token 401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{expire_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"tonyj\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create resource with invalid user 403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user1_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"tonyj\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create resource using invalid m2m token 403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_resource_roles_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"tonyj\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create resource for unexisted challenge 404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user2_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"ghostar\",\n\t\"roleId\": \"{{OBSERVER_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_NOT_FOUND_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_NOT_FOUND_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create duplicate resource 409",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 409\", function () {",
+											"    pm.response.to.have.status(409);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_resources_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"HoHoSKY\",\n\t\"roleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "get resources",
+					"item": [
+						{
+							"name": "get resources by admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "418b6751-4792-406e-9b04-445296cea850",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get resources by user has full-access permission",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "418b6751-4792-406e-9b04-445296cea850",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user2_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get resources using m2m token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "418b6751-4792-406e-9b04-445296cea850",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_resources_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - get resources invalid challenge id 400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "418b6751-4792-406e-9b04-445296cea850",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/invalid/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"invalid",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - get resources using invalid token 401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "418b6751-4792-406e-9b04-445296cea850",
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer invalid"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - get resources using expire token 401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "418b6751-4792-406e-9b04-445296cea850",
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{expire_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - get resources by user without full-access permission 403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "418b6751-4792-406e-9b04-445296cea850",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user1_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - get resources using invalid m2m token 403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "418b6751-4792-406e-9b04-445296cea850",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_resource_roles_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - get resources challenge not found 404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "418b6751-4792-406e-9b04-445296cea850",
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_NOT_FOUND_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_NOT_FOUND_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "delete resource",
+					"item": [
+						{
+							"name": "failure - delete resource that user doesn't have 400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "45364c09-c5fa-40fb-bbd7-74198a87a654",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{m2m_resources_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"hohoSKY\",\n\t\"roleId\": \"{{OBSERVER_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - delete resource invalid challenge id 400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "45364c09-c5fa-40fb-bbd7-74198a87a654",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_resources_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"hohoSKY\",\n\t\"roleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/invalid/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"invalid",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - delete resource using unexisted role 400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user2_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"ghostar\",\n\t\"roleId\": \"{{CHALLENGE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - delete resource member doesn't exist 400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user2_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"123abcx\",\n\t\"roleId\": \"{{OBSERVER_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - delete resource invalid parameter 400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user2_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": true,\n\t\"roleId\": \"{{OBSERVER_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - delete resource using invalid token 401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer invalid"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"tonyj\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - delete resource using expired token 401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{expire_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"tonyj\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - delete resource with invalid user 403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user1_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"tonyj\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - delete resource using invalid m2m token 403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_resource_roles_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"tonyj\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - delete resource challenge not found 404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "45364c09-c5fa-40fb-bbd7-74198a87a654",
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_resources_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"hohoSKY\",\n\t\"roleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_NOT_FOUND_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_NOT_FOUND_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete resource using m2m token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_all_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"ghostar\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete resource by user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user2_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"denis\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete resource by admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"memberHandle\": \"HoHoSKY\",\n\t\"roleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/challenges/{{CHALLENGE_ID}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"challenges",
+										"{{CHALLENGE_ID}}",
+										"resources"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		}
+	]
+}
