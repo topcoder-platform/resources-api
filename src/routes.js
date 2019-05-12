@@ -6,6 +6,12 @@ const constants = require('../app-constants')
 const { SCOPES: { READ, CREATE, DELETE, UPDATE, ALL } } = require('config')
 
 module.exports = {
+  '/health': {
+    get: {
+      controller: 'HealthCheckController',
+      method: 'check'
+    }
+  },
   '/challenges/:challengeId/resources': {
     get: {
       controller: 'ResourceController',

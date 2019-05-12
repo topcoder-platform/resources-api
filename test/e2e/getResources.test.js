@@ -129,7 +129,7 @@ module.exports = describe('Get resource endpoint', () => {
 
   it(`test with invalid M2M token, expected 403`, async () => {
     try {
-      await getRequest(resourceUrl, token.m2mResourceRoles)
+      await getRequest(resourceUrl, token.m2mModify)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.status, 403)
@@ -139,7 +139,7 @@ module.exports = describe('Get resource endpoint', () => {
 
   it('get resource from non-existed challenge, expected 404', async () => {
     try {
-      await getRequest(resource404Url, token.m2mResources)
+      await getRequest(resource404Url, token.m2mRead)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.status, 404)
