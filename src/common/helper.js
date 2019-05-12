@@ -8,9 +8,37 @@ const request = require('superagent')
 const constants = require('../../app-constants')
 const models = require('../models')
 const errors = require('./errors')
+const logger = require('./logger')
 const m2mAuth = require('tc-core-library-js').auth.m2m
-
 const m2m = m2mAuth(_.pick(config, ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME', 'AUTH0_PROXY_SERVER_URL']))
+const busApi = require('tc-bus-api-wrapper')
+const busApiClient = busApi(_.pick(config, ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME', 'AUTH0_CLIENT_ID',
+  'AUTH0_CLIENT_SECRET', 'BUSAPI_URL', 'KAFKA_ERROR_TOPIC', 'AUTH0_PROXY_SERVER_URL']))
+
+/**
+ * Check the error is custom error.
+ * @returns {Boolean} true if error is custom error, false otherwise
+ */
+function isCustomError (err) {
+  return _.keys(errors).includes(err.name)
+}
+
+/**
+ * Send Kafka event message
+ * @params {String} topic the topic name
+ * @params {Object} payload the payload
+ */
+async function postEvent (topic, payload) {
+  logger.info(`Publish event to Kafka topic ${topic}`)
+  const message = {
+    topic,
+    originator: config.KAFKA_MESSAGE_ORIGINATOR,
+    timestamp: new Date().toISOString(),
+    'mime-type': 'application/json',
+    payload
+  }
+  await busApiClient.postEvent(message)
+}
 
 /**
  * Wrap async function to standard express function
@@ -99,12 +127,12 @@ async function getById (modelName, id) {
   return new Promise((resolve, reject) => {
     models[modelName].query('id').eq(id).exec((err, result) => {
       if (err) {
-        reject(err)
+        return reject(err)
       }
       if (result.length > 0) {
         return resolve(result[0])
       } else {
-        reject(new errors.NotFoundError(`${modelName} with id: ${id} doesn't exist`))
+        return reject(new errors.NotFoundError(`${modelName} with id: ${id} doesn't exist`))
       }
     })
   })
@@ -121,7 +149,7 @@ async function create (modelName, data) {
     const dbItem = new models[modelName](data)
     dbItem.save((err) => {
       if (err) {
-        reject(err)
+        return reject(err)
       }
 
       return resolve(dbItem)
@@ -142,7 +170,7 @@ async function update (dbItem, data) {
   return new Promise((resolve, reject) => {
     dbItem.save((err) => {
       if (err) {
-        reject(err)
+        return reject(err)
       }
 
       return resolve(dbItem)
@@ -160,7 +188,7 @@ async function scan (modelName, scanParams) {
   return new Promise((resolve, reject) => {
     models[modelName].scan(scanParams).exec((err, result) => {
       if (err) {
-        reject(err)
+        return reject(err)
       }
 
       return resolve(result.count === 0 ? [] : result)
@@ -178,7 +206,7 @@ async function query (modelName, queryParams) {
   return new Promise((resolve, reject) => {
     models[modelName].query(queryParams).exec((err, result) => {
       if (err) {
-        reject(err)
+        return reject(err)
       }
 
       return resolve(result.count === 0 ? [] : result)
@@ -226,5 +254,7 @@ module.exports = {
   query,
   scan,
   validateDuplicate,
-  getRequest
+  getRequest,
+  postEvent,
+  isCustomError
 }

@@ -165,7 +165,7 @@ module.exports = describe('Create resource endpoint', () => {
   it(`test with invalid M2M token, expected 403`, async () => {
     const body = resources.createBody('tonyj', submitterRoleId)
     try {
-      await postRequest(resourceUrl, body, token.m2mResourceRoles)
+      await postRequest(resourceUrl, body, token.m2mRead)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.status, 403)
@@ -187,7 +187,7 @@ module.exports = describe('Create resource endpoint', () => {
   it(`create duplicate resource, expected 409`, async () => {
     const body = resources.createBody('hohosky', copilotRoleId)
     try {
-      await postRequest(resourceUrl, body, token.m2mResources)
+      await postRequest(resourceUrl, body, token.m2mModify)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.status, 409)
