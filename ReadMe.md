@@ -63,6 +63,11 @@ aws dynamodb scan --table-name ResourceRole --endpoint-url http://localhost:7777
 As per specification, /v5/challenges/{id} endpoint does not exist thus need to mock it for this challenge. It is a simple server app, the code is under mock folder.
 You can start the mock server using command `npm run mock-challenge-api`.
 
+## Scripts
+1. Creating tables: `npm run create-tables`
+2. Drop/delete tables: `npm run drop-tables`
+3. Seed/Insert data to tables: `npm run seed-tables`
+
 ## Local Deployment
 
 - Install dependencies `npm install`

@@ -8,6 +8,9 @@
     "lint": "standard",
     "lint:fix": "standard --fix",
     "init-db": "node src/init-db.js",
+    "drop-tables": "node src/scripts/drop-tables.js",
+    "create-tables": "node src/scripts/create-tables.js",
+    "seed-tables": "node src/scripts/seed-tables.js",
     "mock-challenge-api": "NODE_ENV=test node mock/mock-challenge-api",
     "test": "nyc --reporter=html --reporter=text mocha test/unit/test.js --timeout 20000 --exit",
     "e2e": "nyc --reporter=html --reporter=text mocha test/e2e/test.js --timeout 20000 --exit"

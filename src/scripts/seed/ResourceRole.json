@@ -1,0 +1,16 @@
+[
+  {
+    "id": "cfe12b3f-2a24-4639-9d8b-ec86726f76bd",
+    "name": "Copilot",
+    "fullAccess": true,
+    "isActive": true,
+    "nameLower": "copilot"
+  },
+  {
+    "id": "732339e7-8e30-49d7-9198-cccf9451e221",
+    "name": "Submitter",
+    "fullAccess": false,
+    "isActive": true,
+    "nameLower": "submitter"
+  }
+]
