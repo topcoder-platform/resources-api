@@ -28,6 +28,15 @@ The following parameters can be set in config files or in env variables:
 - DYNAMODB.AWS_REGION: The Amazon certificate region to use when connecting. Use local dynamodb you can set fake value
 - DYNAMODB.IS_LOCAL: Use Amazon DynamoDB Local or server.
 - DYNAMODB.URL: The local url if using Amazon DynamoDB Local
+- DYNAMODB.TIMEOUT: The timeout setting used in health check
+- SCOPES: The M2M scopes, refer `config/default.js` for more information
+- BUSAPI_URL: the bus api, default value is 'https://api.topcoder-dev.com/v5'
+- KAFKA_ERROR_TOPIC: Kafka error topic, default value is 'common.error.reporting',
+- KAFKA_MESSAGE_ORIGINATOR: the Kafka message originator, default value is 'resources-api'
+- RESOURCE_CREATE_TOPIC: the resource create Kafka topic, default value is 'challenge.action.resource.create',
+- RESOURCE_DELETE_TOPIC: the resource delete Kafka topic, default value is 'challenge.action.resource.delete',
+- RESOURCE_ROLE_CREATE_TOPIC: the resource role create topic, default value is 'challenge.action.resource.role.create',
+- RESOURCE_ROLE_UPDATE_TOPIC: the resource role update topic, default value is 'challenge.action.resource.role.update'
 
 Configuration for testing is at `config/test.js`, only add such new configurations different from `config/default.js`
 - WAIT_TIME: wait time used in test, default is 1500 or 1.5 second

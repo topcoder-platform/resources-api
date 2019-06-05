@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "25e10ea3-84f9-4021-b099-55d27931158d",
+		"_postman_id": "1247b46f-8bb5-4a76-b0bb-0d8b594dd369",
 		"name": "topcoder-challenge-resource-api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -510,7 +510,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{m2m_resources_token}}"
+										"value": "Bearer {{m2m_read_token}}"
 									}
 								],
 								"body": {
@@ -1012,7 +1012,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{m2m_resources_token}}"
+										"value": "Bearer {{m2m_modify_token}}"
 									}
 								],
 								"body": {
@@ -1382,7 +1382,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{m2m_resources_token}}"
+										"value": "Bearer {{m2m_read_token}}"
 									}
 								],
 								"body": {
@@ -1538,7 +1538,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{m2m_resource_roles_token}}"
+										"value": "Bearer {{m2m_modify_token}}"
 									}
 								],
 								"body": {
@@ -2236,7 +2236,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{m2m_resource_roles_token}}"
+										"value": "Bearer {{m2m_read_token}}"
 									}
 								],
 								"body": {
@@ -2342,7 +2342,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{m2m_resources_token}}"
+										"value": "Bearer {{m2m_modify_token}}"
 									}
 								],
 								"body": {
@@ -2507,7 +2507,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{m2m_resources_token}}"
+										"value": "Bearer {{m2m_read_token}}"
 									}
 								],
 								"body": {
@@ -2772,7 +2772,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{m2m_resource_roles_token}}"
+										"value": "Bearer {{m2m_modify_token}}"
 									}
 								],
 								"body": {
@@ -2883,7 +2883,7 @@
 									},
 									{
 										"key": "Authorization",
-										"value": "Bearer {{m2m_resources_token}}",
+										"value": "Bearer {{m2m_modify_token}}",
 										"type": "text"
 									}
 								],
@@ -2937,7 +2937,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{m2m_resources_token}}"
+										"value": "Bearer {{m2m_all_token}}"
 									}
 								],
 								"body": {
@@ -3308,7 +3308,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{m2m_resource_roles_token}}"
+										"value": "Bearer {{m2m_read_token}}"
 									}
 								],
 								"body": {
@@ -3361,7 +3361,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{m2m_resources_token}}"
+										"value": "Bearer {{m2m_modify_token}}"
 									}
 								],
 								"body": {
@@ -3545,6 +3545,27 @@
 					"_postman_isSubFolder": true
 				}
 			]
+		},
+		{
+			"name": "health check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{URL}}/health",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

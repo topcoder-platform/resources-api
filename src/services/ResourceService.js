@@ -10,6 +10,8 @@ const helper = require('../common/helper')
 const logger = require('../common/logger')
 const errors = require('../common/errors')
 
+const payloadFields = ['id', 'challengeId', 'memberId', 'memberHandle', 'roleId']
+
 /**
  * Check whether the user can access resources
  * @param {Object} currentUser the current user
@@ -148,25 +150,35 @@ async function init (currentUser, challengeId, resource, isCreated) {
  * @returns {Object} the created resource
  */
 async function createResource (currentUser, challengeId, resource) {
-  const { resources, memberId, handle } = await init(currentUser, challengeId, resource, true)
-  if (handle) {
-    resource.memberHandle = handle
-  }
+  try {
+    const { resources, memberId, handle } = await init(currentUser, challengeId, resource, true)
+    if (handle) {
+      resource.memberHandle = handle
+    }
 
-  if (_.reduce(resources,
-    (result, r) => r.memberId === memberId && r.roleId === resource.roleId ? true : result,
-    false)) {
-    throw new errors.ConflictError(`User ${resource.memberHandle} already has resource with roleId: ${resource.roleId} in challenge: ${challengeId}`)
-  }
+    if (_.reduce(resources,
+      (result, r) => r.memberId === memberId && r.roleId === resource.roleId ? true : result,
+      false)) {
+      throw new errors.ConflictError(`User ${resource.memberHandle} already has resource with roleId: ${resource.roleId} in challenge: ${challengeId}`)
+    }
 
-  const ret = await helper.create('Resource', _.assign({
-    id: uuid(),
-    challengeId,
-    memberId,
-    created: new Date(),
-    createdBy: currentUser.handle || currentUser.sub
-  }, resource))
-  return ret
+    const ret = await helper.create('Resource', _.assign({
+      id: uuid(),
+      challengeId,
+      memberId,
+      created: new Date(),
+      createdBy: currentUser.handle || currentUser.sub
+    }, resource))
+
+    await helper.postEvent(config.RESOURCE_CREATE_TOPIC, _.pick(ret, payloadFields))
+
+    return ret
+  } catch (err) {
+    if (!helper.isCustomError(err)) {
+      await helper.postEvent(config.KAFKA_ERROR_TOPIC, { error: _.pick(err, 'name', 'message', 'stack') })
+    }
+    throw err
+  }
 }
 
 createResource.schema = {
@@ -186,18 +198,27 @@ createResource.schema = {
  * @returns {Object} the deleted resource
  */
 async function deleteResource (currentUser, challengeId, resource) {
-  const { resources, memberId, handle } = await init(currentUser, challengeId, resource)
+  try {
+    const { resources, memberId, handle } = await init(currentUser, challengeId, resource)
 
-  const ret = _.reduce(resources,
-    (result, r) => r.memberId === memberId && r.roleId === resource.roleId ? r : result,
-    undefined)
+    const ret = _.reduce(resources,
+      (result, r) => r.memberId === memberId && r.roleId === resource.roleId ? r : result,
+      undefined)
 
-  if (!ret) {
-    throw new errors.BadRequestError(`User ${handle || resource.memberHandle} doesn't have resource with roleId: ${resource.roleId} in challenge ${challengeId}`)
+    if (!ret) {
+      throw new errors.BadRequestError(`User ${handle || resource.memberHandle} doesn't have resource with roleId: ${resource.roleId} in challenge ${challengeId}`)
+    }
+
+    await ret.delete()
+
+    await helper.postEvent(config.RESOURCE_DELETE_TOPIC, _.pick(ret, payloadFields))
+    return ret
+  } catch (err) {
+    if (!helper.isCustomError(err)) {
+      await helper.postEvent(config.KAFKA_ERROR_TOPIC, { error: _.pick(err, 'name', 'message', 'stack') })
+    }
+    throw err
   }
-
-  await ret.delete()
-  return ret
 }
 
 deleteResource.schema = {

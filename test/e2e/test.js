@@ -7,8 +7,10 @@ process.env.NODE_ENV = 'test'
 global.Promise = require('bluebird')
 
 const config = require('config')
+const should = require('should')
 const logger = require('../../src/common/logger')
 const helper = require('../../src/common/helper')
+const { getRequest } = require('../common/testHelper')
 
 const { mockChallengeApi } = require('../../mock/mock-challenge-api')
 
@@ -107,6 +109,14 @@ describe('Topcoder - Challenge Resource API E2E Test', () => {
     logger.debug = debug
 
     await initDB()
+  })
+
+  describe('Health check endpoints', () => {
+    it('health check success', async () => {
+      const res = await getRequest(`http://localhost:${config.PORT}/health`)
+      should.equal(res.status, 200)
+      should.equal(res.body.checksRun, 1)
+    })
   })
 
   describe('Resource Roles endpoints', () => {

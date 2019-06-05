@@ -83,7 +83,7 @@ module.exports = describe('Get resource roles endpoint', () => {
 
   it(`test with invalid M2M token, expected 403`, async () => {
     try {
-      await getRequest(resourceRoleUrl, token.m2mResources)
+      await getRequest(resourceRoleUrl, token.m2mModify)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.status, 403)

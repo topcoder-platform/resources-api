@@ -31,7 +31,7 @@ module.exports = describe('Delete resource endpoint', () => {
   it(`delete resource that user doesn't have, expected 400`, async () => {
     const body = resources.createBody('HoHosky', observerRoleId)
     try {
-      await deleteRequest(resourceUrl, body, token.m2mResources)
+      await deleteRequest(resourceUrl, body, token.m2mModify)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.status, 400)
@@ -145,7 +145,7 @@ module.exports = describe('Delete resource endpoint', () => {
   it(`test with invalid M2M token, expected 403`, async () => {
     const body = resources.createBody('tonyj', submitterRoleId)
     try {
-      await deleteRequest(resourceUrl, body, token.m2mResourceRoles)
+      await deleteRequest(resourceUrl, body, token.m2mRead)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.status, 403)

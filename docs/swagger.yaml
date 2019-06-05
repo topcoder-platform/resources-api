@@ -22,15 +22,31 @@ produces:
   - application/json
 consumes:
   - application/json
-security:
-  - Bearer: []
 
 paths:
+  /health:
+    get:
+      description: Health check endpoint
+      tags:
+        - Health
+      responses:
+        200:
+          description: success
+          schema:
+            type: object
+            properties:
+              checksRun:
+                type: integer
+                example: 1
+        503:
+          $ref: '#/definitions/ServiceUnavailable'
   /challenges/{challengeId}/resources:
     get:
       description: Get all resources for a challenge
       tags:
         - Resources
+      security:
+        - Bearer: []
       parameters:
         - name: challengeId
           type: string
@@ -58,6 +74,8 @@ paths:
       description: Create a new resource for a challenge. Verify that the challenge exists by calling the **/v5/challenges/{id}** endpoint using an M2M token.
       tags:
         - Resources
+      security:
+        - Bearer: []
       parameters:
         - name: challengeId
           type: string
@@ -73,7 +91,6 @@ paths:
         200:
           description: OK - the request was successful
           schema:
-            type: object
             $ref: '#/definitions/Resource'
         400:
           $ref: '#/definitions/BadRequest'
@@ -91,6 +108,8 @@ paths:
       description: Delete a resource from a challenge
       tags:
         - Resources
+      security:
+        - Bearer: []
       parameters:
         - name: challengeId
           type: string
@@ -106,7 +125,6 @@ paths:
         200:
           description: OK - the request was successful
           schema:
-            type: object
             $ref: '#/definitions/Resource'
         400:
           $ref: '#/definitions/BadRequest'
@@ -123,6 +141,8 @@ paths:
       description: Get all resource roles. If isActive parameter is provided, filter the results by isActive property.
       tags:
         - Resource Roles
+      security:
+        - Bearer: []
       parameters:
         - name: isActive
           type: boolean
@@ -150,6 +170,8 @@ paths:
         Only admins can call this endpoint.
       tags:
         - Resource Roles
+      security:
+        - Bearer: []
       parameters:
         - name: resource
           in: body
@@ -160,7 +182,6 @@ paths:
         200:
           description: OK - the request was successful
           schema:
-            type: object
             $ref: '#/definitions/ResourceRole'
         400:
           $ref: '#/definitions/BadRequest'
@@ -180,6 +201,8 @@ paths:
         Only admins can call this endpoint.
       tags:
         - Resource Roles
+      security:
+        - Bearer: []
       parameters:
         - name: resourceRoleId
           type: string
@@ -195,7 +218,6 @@ paths:
         200:
           description: OK - the request was successful
           schema:
-            type: object
             $ref: '#/definitions/ResourceRole'
         400:
           $ref: '#/definitions/BadRequest'
@@ -312,6 +334,15 @@ definitions:
         type: string
         description: The server error message.
         example: Something went wrong while processing your request. We’re sorry for the trouble. We’ve been notified of the error and will correct it as soon as possible. Please try your request again in a moment.
+
+  ServiceUnavailable:
+    type: object
+    description: The server is unavailable
+    properties:
+      message:
+        type: string
+        description: The server error message.
+        example: Something went wrong with the server.
 
   BadRequest:
     type: object
