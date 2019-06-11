@@ -100,6 +100,7 @@ describe('Topcoder - Challenge Resource API Unit Test', () => {
   describe('ResourceService Unit Test', () => {
     require('./createResource.test')
     require('./getResources.test')
+    require('./listChallengesByMember.test')
     require('./deleteResource.test')
   })
 })

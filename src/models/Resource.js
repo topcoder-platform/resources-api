@@ -1,7 +1,8 @@
 /**
- * This defines ChallengeSetting model.
+ * This defines Resource model.
  */
 
+const config = require('config')
 const dynamoose = require('dynamoose')
 
 const Schema = dynamoose.Schema
@@ -20,12 +21,19 @@ const schema = new Schema({
       rangeKey: 'memberId',
       project: true,
       name: 'resource-challengeIdMemberId-index',
-      throughput: { read: 2, write: 2 }
+      throughput: { read: config.DYNAMODB.AWS_READ_UNITS, write: config.DYNAMODB.AWS_WRITE_UNITS }
     }
   },
   memberId: {
     type: String,
-    required: true
+    required: true,
+    index: {
+      global: true,
+      rangeKey: 'roleId',
+      project: true,
+      name: 'resource-memberIdRoleId-index',
+      throughput: { read: config.DYNAMODB.AWS_READ_UNITS, write: config.DYNAMODB.AWS_WRITE_UNITS }
+    }
   },
   memberHandle: {
     type: String,
@@ -53,7 +61,7 @@ const schema = new Schema({
   }
 },
 {
-  throughput: { read: 4, write: 2 }
+  throughput: { read: config.DYNAMODB.AWS_READ_UNITS, write: config.DYNAMODB.AWS_WRITE_UNITS }
 })
 
 module.exports = schema

@@ -6,11 +6,12 @@ process.env.NODE_ENV = 'test'
 
 global.Promise = require('bluebird')
 
+const _ = require('lodash')
 const config = require('config')
 const should = require('should')
 const logger = require('../../src/common/logger')
 const helper = require('../../src/common/helper')
-const { getRequest } = require('../common/testHelper')
+const { getRequest, putRequest } = require('../common/testHelper')
 
 const { mockChallengeApi } = require('../../mock/mock-challenge-api')
 
@@ -119,6 +120,28 @@ describe('Topcoder - Challenge Resource API E2E Test', () => {
     })
   })
 
+  describe('Fail routes Tests', () => {
+    it('Unsupported http method, return 405', async () => {
+      try {
+        await putRequest(`http://localhost:${config.PORT}/resourceRoles`, {})
+        throw new Error('should not throw error here')
+      } catch (err) {
+        should.equal(err.status, 405)
+        should.equal(_.get(err, 'response.body.message'), 'The requested HTTP method is not supported.')
+      }
+    })
+
+    it('Http resource not found, return 404', async () => {
+      try {
+        await getRequest(`http://localhost:${config.PORT}/invalid`)
+        throw new Error('should not throw error here')
+      } catch (err) {
+        should.equal(err.status, 404)
+        should.equal(_.get(err, 'response.body.message'), 'The requested resource cannot be found.')
+      }
+    })
+  })
+
   describe('Resource Roles endpoints', () => {
     require('./createResourceRole.test')
     require('./getResourceRoles.test')
@@ -128,6 +151,7 @@ describe('Topcoder - Challenge Resource API E2E Test', () => {
   describe('Resources endpoints', () => {
     require('./createResource.test')
     require('./getResources.test')
+    require('./listChallengesByMember.test')
     require('./deleteResource.test')
   })
 })

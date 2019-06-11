@@ -10,7 +10,9 @@ logger.info('Requesting to delete tables...')
 const promises = []
 
 Object.keys(models).forEach(modelName => {
-  promises.push(models[modelName].$__.table.delete())
+  if (modelName !== 'DynamoDB') {
+    promises.push(models[modelName].$__.table.delete())
+  }
 })
 
 Promise.all(promises)

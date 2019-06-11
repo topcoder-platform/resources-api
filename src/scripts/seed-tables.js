@@ -10,8 +10,10 @@ logger.info('Requesting to seed data to the tables...')
 const promises = []
 
 Object.keys(models).forEach(modelName => {
-  const data = require(`./seed/${modelName}.json`)
-  promises.push(models[modelName].batchPut(data))
+  if (modelName !== 'DynamoDB') {
+    const data = require(`./seed/${modelName}.json`)
+    promises.push(models[modelName].batchPut(data))
+  }
 })
 
 Promise.all(promises)

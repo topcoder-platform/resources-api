@@ -145,12 +145,13 @@ async function init (currentUser, challengeId, resource, isCreated) {
 /**
  * Create resource for a challenge.
  * @param {Object} currentUser the current user
- * @param {String} challengeId the challenge id
  * @param {Object} resource the resource to be created
  * @returns {Object} the created resource
  */
-async function createResource (currentUser, challengeId, resource) {
+async function createResource (currentUser, resource) {
   try {
+    const challengeId = resource.challengeId
+
     const { resources, memberId, handle } = await init(currentUser, challengeId, resource, true)
     if (handle) {
       resource.memberHandle = handle
@@ -164,7 +165,6 @@ async function createResource (currentUser, challengeId, resource) {
 
     const ret = await helper.create('Resource', _.assign({
       id: uuid(),
-      challengeId,
       memberId,
       created: new Date(),
       createdBy: currentUser.handle || currentUser.sub
@@ -183,8 +183,8 @@ async function createResource (currentUser, challengeId, resource) {
 
 createResource.schema = {
   currentUser: Joi.any(),
-  challengeId: Joi.id(),
   resource: Joi.object().keys({
+    challengeId: Joi.id(),
     memberHandle: Joi.string().required(),
     roleId: Joi.id()
   }).required()
@@ -193,12 +193,13 @@ createResource.schema = {
 /**
  * Delete resource from a challenge.
  * @param {Object} currentUser the current user
- * @param {String} challengeId the challenge id
  * @param {Object} resource the resource to be deleted
  * @returns {Object} the deleted resource
  */
-async function deleteResource (currentUser, challengeId, resource) {
+async function deleteResource (currentUser, resource) {
   try {
+    const challengeId = resource.challengeId
+
     const { resources, memberId, handle } = await init(currentUser, challengeId, resource)
 
     const ret = _.reduce(resources,
@@ -223,17 +224,45 @@ async function deleteResource (currentUser, challengeId, resource) {
 
 deleteResource.schema = {
   currentUser: Joi.any(),
-  challengeId: Joi.id(),
   resource: Joi.object().keys({
+    challengeId: Joi.id(),
     memberHandle: Joi.string().required(),
     roleId: Joi.id()
+  }).required()
+}
+
+/**
+ * List all challenge ids that given member has access to.
+ * @param {Number} memberId the member id
+ * @param {Object} criteria the criteria, only has resourceRoleId filter
+ * @returns {Array} an array of challenge ids represents challenges that given member has access to.
+ */
+async function listChallengesByMember (memberId, criteria) {
+  const res = await helper.getRequest(`${config.USER_API_URL}?filter=id=${memberId}`)
+  if (_.get(res, 'body.result.content').length === 0) {
+    throw new errors.BadRequestError(`User with id: ${memberId} doesn't exist`)
+  }
+  const queryParams = { hash: { memberId: { eq: String(memberId) } } }
+  if (criteria.resourceRoleId) {
+    queryParams.range = { roleId: { eq: criteria.resourceRoleId } }
+    await validateResourceRole(criteria.resourceRoleId)
+  }
+  const result = await helper.query('Resource', queryParams)
+  return _.uniq(_.map(result, 'challengeId'))
+}
+
+listChallengesByMember.schema = {
+  memberId: Joi.number().integer().positive().required(),
+  criteria: Joi.object().keys({
+    resourceRoleId: Joi.string().uuid()
   }).required()
 }
 
 module.exports = {
   getResources,
   createResource,
-  deleteResource
+  deleteResource,
+  listChallengesByMember
 }
 
 logger.buildService(module.exports)

@@ -66,7 +66,7 @@ async function deleteRequest (url, body, token) {
  */
 async function getRoleIds () {
   const roles = await helper.scan('ResourceRole')
-  let copilotRoleId, observerRoleId, submitterRoleId
+  let copilotRoleId, observerRoleId, submitterRoleId, reviewerRoleId
   for (const role of roles) {
     if (role.name.toLowerCase() === 'co-pilot') {
       copilotRoleId = role.id
@@ -74,9 +74,11 @@ async function getRoleIds () {
       observerRoleId = role.id
     } else if (role.name.toLowerCase() === 'submitter') {
       submitterRoleId = role.id
+    } else if (role.name.toLowerCase() === 'reviewer') {
+      reviewerRoleId = role.id
     }
   }
-  return { copilotRoleId, observerRoleId, submitterRoleId }
+  return { copilotRoleId, observerRoleId, submitterRoleId, reviewerRoleId }
 }
 
 let errorLogs

@@ -11,9 +11,7 @@ const { token, requestBody, user } = require('../common/testData')
 
 const challengeId = 'fe6d0a58-ce7d-4521-8501-b8132b1c0391'
 const challengeNotFoundId = '11111111-ce7d-4521-8501-b8132b1c0391'
-const resourceUrl = `http://localhost:${config.PORT}/challenges/${challengeId}/resources`
-const resource400Url = `http://localhost:${config.PORT}/challenges/invalid/resources`
-const resource404Url = `http://localhost:${config.PORT}/challenges/${challengeNotFoundId}/resources`
+const resourceUrl = `http://localhost:${config.PORT}/resources`
 const resources = requestBody.resources
 
 module.exports = describe('Delete resource endpoint', () => {
@@ -29,7 +27,7 @@ module.exports = describe('Delete resource endpoint', () => {
   })
 
   it(`delete resource that user doesn't have, expected 400`, async () => {
-    const body = resources.createBody('HoHosky', observerRoleId)
+    const body = resources.createBody('HoHosky', observerRoleId, challengeId)
     try {
       await deleteRequest(resourceUrl, body, token.m2mModify)
       throw new Error('should not throw error here')
@@ -40,7 +38,7 @@ module.exports = describe('Delete resource endpoint', () => {
   })
 
   it('delete resource using non-existed role, expected 400', async () => {
-    const body = resources.createBody('ghostar', challengeId)
+    const body = resources.createBody('ghostar', challengeId, challengeId)
     try {
       await deleteRequest(resourceUrl, body, token.m2m)
       throw new Error('should not throw error here')
@@ -51,7 +49,7 @@ module.exports = describe('Delete resource endpoint', () => {
   })
 
   it(`delete resource member doesn't exist, expected 400`, async () => {
-    const body = resources.createBody('123abcx', observerRoleId)
+    const body = resources.createBody('123abcx', observerRoleId, challengeId)
     try {
       await deleteRequest(resourceUrl, body, token.admin)
       throw new Error('should not throw error here')
@@ -64,8 +62,10 @@ module.exports = describe('Delete resource endpoint', () => {
   let { stringFields, requiredFields, testBody } = resources
 
   it(`test invalid path parameter, challengeId must be UUID`, async () => {
+    let body = _.cloneDeep(testBody)
+    body.challengeId = 'invalid'
     try {
-      await deleteRequest(resource400Url, testBody, token.admin)
+      await deleteRequest(resourceUrl, body, token.admin)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.status, 400)
@@ -132,7 +132,7 @@ module.exports = describe('Delete resource endpoint', () => {
   })
 
   it(`test with user without permission, expected 403`, async () => {
-    const body = resources.createBody('tonyj', submitterRoleId)
+    const body = resources.createBody('tonyj', submitterRoleId, challengeId)
     try {
       await deleteRequest(resourceUrl, body, token.denis)
       throw new Error('should not throw error here')
@@ -143,7 +143,7 @@ module.exports = describe('Delete resource endpoint', () => {
   })
 
   it(`test with invalid M2M token, expected 403`, async () => {
-    const body = resources.createBody('tonyj', submitterRoleId)
+    const body = resources.createBody('tonyj', submitterRoleId, challengeId)
     try {
       await deleteRequest(resourceUrl, body, token.m2mRead)
       throw new Error('should not throw error here')
@@ -154,9 +154,9 @@ module.exports = describe('Delete resource endpoint', () => {
   })
 
   it('delete resource for non-existed challenge, expected 404', async () => {
-    const body = resources.createBody('ghostar', observerRoleId)
+    const body = resources.createBody('ghostar', observerRoleId, challengeNotFoundId)
     try {
-      await deleteRequest(resource404Url, body, token.m2m)
+      await deleteRequest(resourceUrl, body, token.m2m)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.status, 404)
@@ -165,7 +165,7 @@ module.exports = describe('Delete resource endpoint', () => {
   })
 
   it('delete resource using m2m token', async () => {
-    const body = resources.createBody('ghostar', submitterRoleId)
+    const body = resources.createBody('ghostar', submitterRoleId, challengeId)
     const res = await deleteRequest(resourceUrl, body, token.m2m)
     should.equal(res.status, 200)
     should.exist(res.body.id)
@@ -184,7 +184,7 @@ module.exports = describe('Delete resource endpoint', () => {
   })
 
   it('delete resource by user', async () => {
-    const body = resources.createBody('DENIS', submitterRoleId)
+    const body = resources.createBody('DENIS', submitterRoleId, challengeId)
     const res = await deleteRequest(resourceUrl, body, token.hohosky)
     should.equal(res.status, 200)
     should.exist(res.body.id)
@@ -203,7 +203,7 @@ module.exports = describe('Delete resource endpoint', () => {
   })
 
   it('delete resource by admin', async () => {
-    const body = resources.createBody('HoHoSKY', copilotRoleId)
+    const body = resources.createBody('HoHoSKY', copilotRoleId, challengeId)
     const res = await deleteRequest(resourceUrl, body, token.admin)
     should.equal(res.status, 200)
     should.exist(res.body.id)

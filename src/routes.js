@@ -12,7 +12,7 @@ module.exports = {
       method: 'check'
     }
   },
-  '/challenges/:challengeId/resources': {
+  '/resources': {
     get: {
       controller: 'ResourceController',
       method: 'getResources',
@@ -33,6 +33,15 @@ module.exports = {
       auth: 'jwt',
       access: [constants.UserRoles.Admin, constants.UserRoles.User],
       scopes: [DELETE, ALL]
+    }
+  },
+  '/resources/:memberId/challenges': {
+    get: {
+      controller: 'ResourceController',
+      method: 'listChallengesByMember',
+      auth: 'jwt',
+      access: [constants.UserRoles.Admin, constants.UserRoles.User],
+      scopes: [READ, ALL]
     }
   },
   '/resourceRoles': {

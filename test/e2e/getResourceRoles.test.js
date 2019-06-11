@@ -15,7 +15,7 @@ module.exports = describe('Get resource roles endpoint', () => {
     const res = await getRequest(resourceRoleUrl, token.admin)
     should.equal(res.status, 200)
     const records = res.body
-    should.equal(records.length, 3)
+    should.equal(records.length, 4)
     for (const record of records) {
       await assertResourceRole(record.id, record)
     }
@@ -25,7 +25,7 @@ module.exports = describe('Get resource roles endpoint', () => {
     const res = await getRequest(`${resourceRoleUrl}?isActive=true`, token.admin)
     should.equal(res.status, 200)
     const records = res.body
-    should.equal(records.length, 2)
+    should.equal(records.length, 3)
     for (const record of records) {
       should.equal(record.isActive, true)
       await assertResourceRole(record.id, record)

@@ -10,7 +10,9 @@ logger.info('Requesting to create tables...')
 const promises = []
 
 Object.keys(models).forEach(modelName => {
-  promises.push(models[modelName].$__.table.create())
+  if (modelName !== 'DynamoDB') {
+    promises.push(models[modelName].$__.table.create())
+  }
 })
 
 Promise.all(promises)

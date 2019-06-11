@@ -97,14 +97,15 @@ const requestBody = {
     }
   },
   resources: {
-    stringFields: ['memberHandle', 'roleId'],
-    requiredFields: ['memberHandle', 'roleId'],
+    stringFields: ['challengeId', 'memberHandle', 'roleId'],
+    requiredFields: ['challengeId', 'memberHandle', 'roleId'],
     testBody: {
+      challengeId: 'fe6d0a58-ce7d-4521-8501-b8132b1c0391',
       memberHandle: 'handle',
       roleId: 'fe6d0a58-ce7d-4521-8501-b8132b1c0391'
     },
-    createBody: (memberHandle, roleId) => {
-      return { memberHandle, roleId }
+    createBody: (memberHandle, roleId, challengeId) => {
+      return { memberHandle, roleId, challengeId }
     }
   }
 }

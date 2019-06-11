@@ -10,7 +10,7 @@ const service = require('../services/ResourceService')
  * @param {Object} res the response
  */
 async function getResources (req, res) {
-  const result = await service.getResources(req.authUser, req.params.challengeId)
+  const result = await service.getResources(req.authUser, req.query.challengeId)
   res.send(result)
 }
 
@@ -20,7 +20,7 @@ async function getResources (req, res) {
  * @param {Object} res the response
  */
 async function createResource (req, res) {
-  const result = await service.createResource(req.authUser, req.params.challengeId, req.body)
+  const result = await service.createResource(req.authUser, req.body)
   res.send(result)
 }
 
@@ -30,12 +30,23 @@ async function createResource (req, res) {
  * @param {Object} res the response
  */
 async function deleteResource (req, res) {
-  const result = await service.deleteResource(req.authUser, req.params.challengeId, req.body)
+  const result = await service.deleteResource(req.authUser, req.body)
+  res.send(result)
+}
+
+/**
+ * List all challenge ids that given member has access to.
+ * @param {Object} req the request
+ * @param {Object} res the response
+ */
+async function listChallengesByMember (req, res) {
+  const result = await service.listChallengesByMember(req.params.memberId, req.query)
   res.send(result)
 }
 
 module.exports = {
   getResources,
   createResource,
-  deleteResource
+  deleteResource,
+  listChallengesByMember
 }

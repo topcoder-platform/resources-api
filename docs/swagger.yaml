@@ -4,8 +4,9 @@ info:
   description: |
     ## Security constraints
 
-    `Resources` endpoints can only be called from admins, via M2M, or users for whom there is at least one existing `Resource` where both `role.fullAccess` and `role.isActive` are `true`.
+    GET/POST/DELETE `/Resources` endpoints can only be called from admins, via M2M, or users for whom there is at least one existing `Resource` where both `role.fullAccess` and `role.isActive` are `true`.
     `Resource Roles` POST and PUT endpoints can only be called from admins or via M2M.
+    GET `/Resources/{memberId}/challenges` endpoints can be called from any authenticated user or via M2M
 
   version: "1.0.0"
 host: api.topcoder.com
@@ -40,7 +41,7 @@ paths:
                 example: 1
         503:
           $ref: '#/definitions/ServiceUnavailable'
-  /challenges/{challengeId}/resources:
+  /resources:
     get:
       description: Get all resources for a challenge
       tags:
@@ -50,8 +51,9 @@ paths:
       parameters:
         - name: challengeId
           type: string
+          description: The challenge id
           format: UUID
-          in: path
+          in: query
           required: true
       responses:
         200:
@@ -77,11 +79,6 @@ paths:
       security:
         - Bearer: []
       parameters:
-        - name: challengeId
-          type: string
-          format: UUID
-          in: path
-          required: true
         - name: resource
           in: body
           required: true
@@ -111,11 +108,6 @@ paths:
       security:
         - Bearer: []
       parameters:
-        - name: challengeId
-          type: string
-          format: UUID
-          in: path
-          required: true
         - name: resource
           in: body
           required: true
@@ -134,6 +126,43 @@ paths:
           $ref: '#/definitions/Forbidden'
         404:
           $ref: '#/definitions/NotFound'
+        500:
+          $ref: '#/definitions/ServerError'
+  /resources/{memberId}/challenges:
+    get:
+      description: List all challenges that given topcoder member has access to.
+      tags:
+        - Resources
+      security:
+        - Bearer: []
+      parameters:
+        - name: memberId
+          type: integer
+          in: path
+          required: true
+          description: the user id
+        - name: resourceRoleId
+          type: string
+          format: UUID
+          in: query
+          required: false
+          description: the resource role id filter
+      responses:
+        200:
+          description: OK - the request was successful
+          schema:
+            type: array
+            items:
+              type: string
+              description: the challenge id
+              format: UUID
+              example: '97ee7396-5946-4a2e-968a-b35c7b009753'
+        400:
+          $ref: '#/definitions/BadRequest'
+        401:
+          $ref: '#/definitions/Unauthorized'
+        403:
+          $ref: '#/definitions/Forbidden'
         500:
           $ref: '#/definitions/ServerError'
   /resourceRoles:
@@ -296,9 +325,14 @@ definitions:
   ResourceRequestBody:
     type: object
     required:
+      - challengeId
       - memberHandle
       - roleId
     properties:
+      challengeId:
+        type: string
+        format: UUID
+        description: The challenge id
       memberHandle:
         type: string
         description: The member handle

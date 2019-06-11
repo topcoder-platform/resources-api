@@ -11,19 +11,23 @@ const { token } = require('../common/testData')
 
 const challengeId = 'fe6d0a58-ce7d-4521-8501-b8132b1c0391'
 const challengeNotFoundId = '11111111-ce7d-4521-8501-b8132b1c0391'
-const resourceUrl = `http://localhost:${config.PORT}/challenges/${challengeId}/resources`
-const resource400Url = `http://localhost:${config.PORT}/challenges/invalid/resources`
-const resource404Url = `http://localhost:${config.PORT}/challenges/${challengeNotFoundId}/resources`
+const resourceUrl = `http://localhost:${config.PORT}/resources?challengeId=${challengeId}`
+const resource400Url = `http://localhost:${config.PORT}/resources?challengeId=invalid`
+const resource404Url = `http://localhost:${config.PORT}/resources?challengeId=${challengeNotFoundId}`
 
 module.exports = describe('Get resource endpoint', () => {
   let copilotRoleId
   let submitterRoleId
+  let reviewerRoleId
 
   before(async () => {
     const ret = await getRoleIds()
     copilotRoleId = ret.copilotRoleId
     submitterRoleId = ret.submitterRoleId
+    reviewerRoleId = ret.reviewerRoleId
   })
+
+  let hasCopilotRole, hasReviewerRole
 
   /**
    * Assert resource entity in database.
@@ -38,7 +42,12 @@ module.exports = describe('Get resource endpoint', () => {
     should.equal(entity.memberHandle.toLowerCase(), expected.memberHandle.toLowerCase())
     should.equal(entity.roleId, expected.roleId)
     if (entity.memberHandle.toLowerCase() === 'hohosky') {
-      should.equal(entity.roleId, copilotRoleId)
+      if (entity.roleId === copilotRoleId) {
+        hasCopilotRole = true
+      }
+      if (entity.roleId === reviewerRoleId) {
+        hasReviewerRole = true
+      }
     } else {
       should.equal(entity.roleId, submitterRoleId)
     }
@@ -48,36 +57,61 @@ module.exports = describe('Get resource endpoint', () => {
   }
 
   it('get resources by admin', async () => {
+    hasCopilotRole = false
+    hasReviewerRole = false
     const res = await getRequest(resourceUrl, token.admin)
     should.equal(res.status, 200)
     const records = res.body
-    should.equal(records.length, 3)
+    should.equal(records.length, 4)
     for (const record of records) {
       await assertResource(record.id, record)
     }
+    // user hohosky should have two resources
+    should.equal(hasCopilotRole, true)
+    should.equal(hasReviewerRole, true)
   })
 
   it('get resources by user has full-access permission', async () => {
+    hasCopilotRole = false
+    hasReviewerRole = false
     const res = await getRequest(resourceUrl, token.hohosky)
     should.equal(res.status, 200)
     const records = res.body
-    should.equal(records.length, 3)
+    should.equal(records.length, 4)
     for (const record of records) {
       await assertResource(record.id, record)
     }
+    // user hohosky should have two resources
+    should.equal(hasCopilotRole, true)
+    should.equal(hasReviewerRole, true)
   })
 
   it('get resources using m2m token', async () => {
+    hasCopilotRole = false
+    hasReviewerRole = false
     const res = await getRequest(resourceUrl, token.m2m)
     should.equal(res.status, 200)
     const records = res.body
-    should.equal(records.length, 3)
+    should.equal(records.length, 4)
     for (const record of records) {
       await assertResource(record.id, record)
     }
+    // user hohosky should have two resources
+    should.equal(hasCopilotRole, true)
+    should.equal(hasReviewerRole, true)
   })
 
-  it(`test invalid path parameter, challengeId must be UUID`, async () => {
+  it(`test invalid url, challengeId query parameter is required`, async () => {
+    try {
+      await getRequest(`http://localhost:${config.PORT}/resources`, token.admin)
+      throw new Error('should not throw error here')
+    } catch (err) {
+      should.equal(err.status, 400)
+      should.equal(_.get(err, 'response.body.message'), `"challengeId" is required`)
+    }
+  })
+
+  it(`test invalid query parameter, challengeId must be UUID`, async () => {
     try {
       await getRequest(resource400Url, token.admin)
       throw new Error('should not throw error here')

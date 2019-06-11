@@ -36,6 +36,14 @@ module.exports = describe('Create resource role endpoint', () => {
     await assertResourceRole(submitterRoleId, body)
   })
 
+  it('create reviewer resource role', async () => {
+    const body = resourceRoles.createBody('reviewer', false, true)
+    const res = await postRequest(resourceRoleUrl, body, token.admin)
+    should.equal(res.status, 200)
+    const reviewerRoleId = res.body.id
+    await assertResourceRole(reviewerRoleId, body)
+  })
+
   let { stringFields, booleanFields, requiredFields, testBody } = resourceRoles
 
   for (const stringField of stringFields) {

@@ -11,6 +11,7 @@
     "drop-tables": "node src/scripts/drop-tables.js",
     "create-tables": "node src/scripts/create-tables.js",
     "seed-tables": "node src/scripts/seed-tables.js",
+    "view-data": "node src/scripts/view-data.js",
     "mock-challenge-api": "NODE_ENV=test node mock/mock-challenge-api",
     "test": "nyc --reporter=html --reporter=text mocha test/unit/test.js --require test/common/prepare.js --timeout 20000 --exit",
     "e2e": "nyc --reporter=html --reporter=text mocha test/e2e/test.js --require test/common/prepare.js --timeout 20000 --exit"

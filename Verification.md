@@ -10,16 +10,16 @@
 
 ## Unit test Coverage
 
-  57 passing (46s)
+  75 passing (1m)
 
 File                        |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
 ----------------------------|----------|----------|----------|----------|-------------------|
-All files                   |    86.78 |    80.11 |    88.33 |     87.5 |                   |
+All files                   |    87.38 |    80.65 |    88.52 |    88.08 |                   |
  resources-api              |      100 |      100 |      100 |      100 |                   |
   app-bootstrap.js          |      100 |      100 |      100 |      100 |                   |
   app-constants.js          |      100 |      100 |      100 |      100 |                   |
- resources-api/config       |      100 |      100 |      100 |      100 |                   |
-  default.js                |      100 |      100 |      100 |      100 |                   |
+ resources-api/config       |      100 |    98.44 |      100 |      100 |                   |
+  default.js                |      100 |    98.44 |      100 |      100 |                27 |
   test.js                   |      100 |      100 |      100 |      100 |                   |
  resources-api/src/common   |    77.07 |       50 |    83.72 |    78.43 |                   |
   errors.js                 |      100 |       50 |      100 |      100 |                23 |
@@ -29,24 +29,24 @@ All files                   |    86.78 |    80.11 |    88.33 |     87.5 |       
   Resource.js               |      100 |      100 |      100 |      100 |                   |
   ResourceRole.js           |      100 |      100 |      100 |      100 |                   |
   index.js                  |      100 |       50 |      100 |      100 |                14 |
- resources-api/src/services |    97.39 |       90 |      100 |    97.35 |                   |
+ resources-api/src/services |    97.64 |    90.63 |      100 |     97.6 |                   |
   ResourceRoleService.js    |    94.87 |       75 |      100 |    94.59 |             47,81 |
-  ResourceService.js        |    98.68 |    92.31 |      100 |    98.68 |                76 |
+  ResourceService.js        |    98.86 |    92.86 |      100 |    98.86 |                76 |
 
 ## E2E test Coverage
 
-  86 passing (53s)
+  111 passing (1m)
 
 File                           |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
 -------------------------------|----------|----------|----------|----------|-------------------|
-All files                      |    93.25 |    84.44 |    97.62 |    93.14 |                   |
- resources-api                 |    91.21 |    78.72 |    92.86 |    91.11 |                   |
+All files                      |    94.43 |    85.53 |    98.84 |    94.34 |                   |
+ resources-api                 |     95.6 |    82.98 |      100 |    95.56 |                   |
   app-bootstrap.js             |      100 |      100 |      100 |      100 |                   |
   app-constants.js             |      100 |      100 |      100 |      100 |                   |
-  app-routes.js                |    86.49 |    81.25 |    85.71 |    86.49 |    24,66,67,68,70 |
+  app-routes.js                |     97.3 |    93.75 |      100 |     97.3 |                24 |
   app.js                       |    93.75 |    77.42 |      100 |    93.75 |          36,66,82 |
- resources-api/config          |      100 |      100 |      100 |      100 |                   |
-  default.js                   |      100 |      100 |      100 |      100 |                   |
+ resources-api/config          |      100 |    98.44 |      100 |      100 |                   |
+  default.js                   |      100 |    98.44 |      100 |      100 |                27 |
   test.js                      |      100 |      100 |      100 |      100 |                   |
  resources-api/src             |      100 |      100 |      100 |      100 |                   |
   routes.js                    |      100 |      100 |      100 |      100 |                   |
@@ -62,7 +62,7 @@ All files                      |    93.25 |    84.44 |    97.62 |    93.14 |    
   Resource.js                  |      100 |      100 |      100 |      100 |                   |
   ResourceRole.js              |      100 |      100 |      100 |      100 |                   |
   index.js                     |      100 |       50 |      100 |      100 |                14 |
- resources-api/src/services    |    96.88 |    88.71 |      100 |    96.83 |                   |
+ resources-api/src/services    |    97.14 |    89.39 |      100 |     97.1 |                   |
   HealthCheckService.js        |    92.31 |       50 |      100 |    92.31 |                15 |
   ResourceRoleService.js       |    94.87 |       75 |      100 |    94.59 |             47,81 |
-  ResourceService.js           |    98.68 |    92.31 |      100 |    98.68 |                76 |
+  ResourceService.js           |    98.86 |    92.86 |      100 |    98.86 |                76 |

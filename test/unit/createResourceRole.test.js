@@ -29,6 +29,12 @@ module.exports = describe('Create resource role', () => {
     await assertResourceRole(ret.id, entity)
   })
 
+  it('create reviewer resource role', async () => {
+    const entity = resourceRoles.createBody('reviewer', false, true)
+    const ret = await service.createResourceRole(entity)
+    await assertResourceRole(ret.id, entity)
+  })
+
   let { stringFields, booleanFields, requiredFields, testBody } = resourceRoles
 
   for (const stringField of stringFields) {

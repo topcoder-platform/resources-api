@@ -17,14 +17,17 @@ module.exports = {
   AUTH0_PROXY_SERVER_URL: process.env.AUTH0_PROXY_SERVER_URL,
 
   MEMBER_API_URL: process.env.MEMBER_API_URL || 'https://api.topcoder-dev.com/v3/members',
+  USER_API_URL: process.env.MEMBER_API_URL || 'https://api.topcoder-dev.com/v3/users',
   CHALLENGE_API_URL: process.env.CHALLENGE_API_URL || 'http://localhost:4000/v5/challenges',
 
   DYNAMODB: {
     AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID || 'FAKE_ACCESS_KEY',
     AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY || 'FAKE_SECRET_ACCESS_KEY',
     AWS_REGION: process.env.AWS_REGION || 'us-east-1',
-    IS_LOCAL: process.env.IS_LOCAL || true,
+    IS_LOCAL: process.env.IS_LOCAL_DB ? process.env.IS_LOCAL_DB === 'true' : true,
     URL: process.env.DYNAMODB_URL || 'http://localhost:7777',
+    AWS_READ_UNITS: process.env.AWS_READ_UNITS || 4,
+    AWS_WRITE_UNITS: process.env.AWS_WRITE_UNITS || 2,
     TIMEOUT: process.env.DYNAMODB_TIMEOUT || 10000 // 10 seconds
   },
 
