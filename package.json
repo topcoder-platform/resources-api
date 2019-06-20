@@ -40,7 +40,7 @@
     "joi": "^14.0.0",
     "lodash": "^4.17.11",
     "superagent": "^4.1.0",
-    "tc-core-library-js": "appirio-tech/tc-core-library-js.git#v2.6",
+    "tc-core-library-js": "appirio-tech/tc-core-library-js.git#v2.6.2",
     "tc-bus-api-wrapper": "topcoder-platform/tc-bus-api-wrapper.git",
     "uuid": "^3.3.2",
     "winston": "^3.2.1"
