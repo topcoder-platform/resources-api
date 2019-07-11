@@ -28,7 +28,7 @@ module.exports = {
     URL: process.env.DYNAMODB_URL || 'http://localhost:7777',
     AWS_READ_UNITS: process.env.AWS_READ_UNITS || 4,
     AWS_WRITE_UNITS: process.env.AWS_WRITE_UNITS || 2,
-    TIMEOUT: process.env.DYNAMODB_TIMEOUT || 10000 // 10 seconds
+    TIMEOUT: process.env.DYNAMODB_TIMEOUT || 10000
   },
 
   SCOPES: {
