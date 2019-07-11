@@ -125,6 +125,7 @@ async function assertResourceRole (id, expected) {
   should.equal(entity.name, expected.name)
   should.equal(entity.fullAccess, expected.fullAccess)
   should.equal(entity.isActive, expected.isActive)
+  should.equal(entity.selfObtainable, expected.selfObtainable)
 }
 
 /**

@@ -52,6 +52,36 @@ module.exports = describe('Create resource', () => {
     await assertResource(ret.id, ret)
   })
 
+  it('failure - create self obtainable resource for other user by normal user forbidden', async () => {
+    const entity = resources.createBody('lars2520', submitterRoleId, challengeId1)
+    try {
+      await service.createResource(user.denis, entity)
+      throw new Error('should not throw error here')
+    } catch (err) {
+      should.equal(err.name, 'ForbiddenError')
+      assertError(err, `Only M2M, admin or user with full access role can perform this action`)
+    }
+  })
+
+  it('create self obtainable resource by user itself', async () => {
+    const entity = resources.createBody('lars2520', submitterRoleId, challengeId1)
+    const ret = await service.createResource(user.lars2520, entity)
+    should.equal(ret.roleId, entity.roleId)
+    should.equal(ret.memberHandle.toLowerCase(), entity.memberHandle.toLowerCase())
+    await assertResource(ret.id, ret)
+  })
+
+  it('failure - create non self obtainable resource by normal user forbidden', async () => {
+    const entity = resources.createBody('lars2520', copilotRoleId, challengeId1)
+    try {
+      await service.createResource(user.lars2520, entity)
+      throw new Error('should not throw error here')
+    } catch (err) {
+      should.equal(err.name, 'ForbiddenError')
+      assertError(err, `Only M2M, admin or user with full access role can perform this action`)
+    }
+  })
+
   it('create resource using m2m token', async () => {
     const entity = resources.createBody('ghostar', submitterRoleId, challengeId1)
     const ret = await service.createResource(user.m2m, entity)

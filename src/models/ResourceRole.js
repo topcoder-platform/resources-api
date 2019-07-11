@@ -25,6 +25,10 @@ const schema = new Schema({
     type: Boolean,
     required: true
   },
+  selfObtainable: {
+    type: Boolean,
+    required: true
+  },
   nameLower: {
     type: String,
     required: true,

@@ -4,7 +4,7 @@ info:
   description: |
     ## Security constraints
 
-    GET/POST/DELETE `/Resources` endpoints can only be called from admins, via M2M, or users for whom there is at least one existing `Resource` where both `role.fullAccess` and `role.isActive` are `true`.
+    GET/POST/DELETE `/Resources` endpoints can only be called from admins, via M2M, or users for whom there is at least one existing `Resource` where both `role.fullAccess` and `role.isActive` are `true`. Special Case: User can create/delte selfObtainable resource for its own.
     `Resource Roles` POST and PUT endpoints can only be called from admins or via M2M.
     GET `/Resources/{memberId}/challenges` endpoints can be called from any authenticated user or via M2M
 
@@ -308,6 +308,7 @@ definitions:
       - name
       - fullAccess
       - isActive
+      - selfObtainable
     properties:
       id:
         type: string
@@ -319,6 +320,8 @@ definitions:
       fullAccess:
         type: boolean
       isActive:
+        type: boolean
+      selfObtainable:
         type: boolean
 
   # Schema for request body

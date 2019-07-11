@@ -4,13 +4,15 @@
     "name": "Copilot",
     "fullAccess": true,
     "isActive": true,
-    "nameLower": "copilot"
+    "nameLower": "copilot",
+    "selfObtainable": false
   },
   {
     "id": "732339e7-8e30-49d7-9198-cccf9451e221",
     "name": "Submitter",
     "fullAccess": false,
     "isActive": true,
-    "nameLower": "submitter"
+    "nameLower": "submitter",
+    "selfObtainable": true
   }
 ]

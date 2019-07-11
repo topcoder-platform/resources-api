@@ -56,7 +56,7 @@ module.exports = describe('Get resources', () => {
     hasCopilotRole = false
     hasReviewerRole = false
     const records = await service.getResources(user.admin, challengeId)
-    should.equal(records.length, 4)
+    should.equal(records.length, 5)
     for (const record of records) {
       await assertResource(record.id, record)
     }
@@ -69,7 +69,7 @@ module.exports = describe('Get resources', () => {
     hasCopilotRole = false
     hasReviewerRole = false
     const records = await service.getResources(user.hohosky, challengeId)
-    should.equal(records.length, 4)
+    should.equal(records.length, 5)
     for (const record of records) {
       await assertResource(record.id, record)
     }
@@ -82,7 +82,7 @@ module.exports = describe('Get resources', () => {
     hasCopilotRole = false
     hasReviewerRole = false
     const records = await service.getResources(user.m2m, challengeId)
-    should.equal(records.length, 4)
+    should.equal(records.length, 5)
     for (const record of records) {
       await assertResource(record.id, record)
     }

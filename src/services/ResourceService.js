@@ -85,16 +85,17 @@ async function getMemberInfo (memberHandle) {
 }
 
 /**
- * Validate the resource role.
+ * Get the resource role.
  * @param {String} roleId the resource role id
  * @param {Boolean} isCreated the flag indicate it is create operation.
  */
-async function validateResourceRole (roleId, isCreated) {
+async function getResourceRole (roleId, isCreated) {
   try {
     const resourceRole = await helper.getById('ResourceRole', roleId)
     if (isCreated && !resourceRole.isActive) {
       throw new errors.BadRequestError(`Resource role with id: ${roleId} is inactive, please use an active one.`)
     }
+    return resourceRole
   } catch (error) {
     if (error.name === 'NotFoundError') {
       throw new errors.BadRequestError(`No resource role found with id: ${roleId}.`)
@@ -122,14 +123,18 @@ async function init (currentUser, challengeId, resource, isCreated) {
 
   // get member information using v3 API
   const { memberId, handle } = await getMemberInfo(resource.memberHandle)
-  // validate resource role
-  await validateResourceRole(resource.roleId, isCreated)
+  // ensure resource role existed
+  const resourceRole = await getResourceRole(resource.roleId, isCreated)
 
   // perform access validation
   let resources
   if (!currentUser.isMachine && !helper.hasAdminRole(currentUser)) {
     resources = await helper.query('Resource', { challengeId })
-    await checkAccess(currentUser, resources)
+    if (!resourceRole.selfObtainable || memberId !== currentUser.userId) {
+      // if user is not creating/deleting a self obtainable resource for itself
+      // we need to perform check access first
+      await checkAccess(currentUser, resources)
+    }
   } else {
     // fetch resources for specified challenge and member
     resources = await helper.query('Resource', {
@@ -245,7 +250,8 @@ async function listChallengesByMember (memberId, criteria) {
   const queryParams = { hash: { memberId: { eq: String(memberId) } } }
   if (criteria.resourceRoleId) {
     queryParams.range = { roleId: { eq: criteria.resourceRoleId } }
-    await validateResourceRole(criteria.resourceRoleId)
+    // ensure resource role exists
+    await getResourceRole(criteria.resourceRoleId)
   }
   const result = await helper.query('Resource', queryParams)
   return _.uniq(_.map(result, 'challengeId'))

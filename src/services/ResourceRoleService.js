@@ -9,7 +9,7 @@ const uuid = require('uuid/v4')
 const helper = require('../common/helper')
 const logger = require('../common/logger')
 
-const payloadFields = ['id', 'name', 'fullAccess', 'isActive']
+const payloadFields = ['id', 'name', 'fullAccess', 'isActive', 'selfObtainable']
 
 /**
  * Get resource roles.
@@ -19,7 +19,7 @@ const payloadFields = ['id', 'name', 'fullAccess', 'isActive']
 async function getResourceRoles (criteria) {
   const list = await helper.scan('ResourceRole')
   const records = _.filter(list, e => _.isUndefined(criteria.isActive) || criteria.isActive === e.isActive)
-  return _.map(records, e => _.pick(e, ['id', 'name', 'fullAccess', 'isActive']))
+  return _.map(records, e => _.pick(e, payloadFields))
 }
 
 getResourceRoles.schema = {
@@ -54,7 +54,8 @@ createResourceRole.schema = {
   resourceRole: Joi.object().keys({
     name: Joi.string().required(),
     fullAccess: Joi.boolean().required(),
-    isActive: Joi.boolean().required()
+    isActive: Joi.boolean().required(),
+    selfObtainable: Joi.boolean().required()
   }).required()
 }
 
@@ -89,7 +90,8 @@ updateResourceRole.schema = {
   data: Joi.object().keys({
     name: Joi.string().required(),
     fullAccess: Joi.boolean().required(),
-    isActive: Joi.boolean().required()
+    isActive: Joi.boolean().required(),
+    selfObtainable: Joi.boolean().required()
   }).required()
 }
 

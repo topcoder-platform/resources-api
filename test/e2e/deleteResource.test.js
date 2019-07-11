@@ -153,6 +153,17 @@ module.exports = describe('Delete resource endpoint', () => {
     }
   })
 
+  it(`failure - delete self obtainable resource for other user by normal user 403`, async () => {
+    const body = resources.createBody('lars2520', submitterRoleId, challengeId)
+    try {
+      await deleteRequest(resourceUrl, body, token.denis)
+      throw new Error('should not throw error here')
+    } catch (err) {
+      should.equal(err.status, 403)
+      should.equal(_.get(err, 'response.body.message'), 'Only M2M, admin or user with full access role can perform this action')
+    }
+  })
+
   it('delete resource for non-existed challenge, expected 404', async () => {
     const body = resources.createBody('ghostar', observerRoleId, challengeNotFoundId)
     try {

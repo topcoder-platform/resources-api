@@ -50,6 +50,35 @@ module.exports = describe('Create resource endpoint', () => {
     await assertResource(res.body.id, res.body)
   })
 
+  it('failure - create self obtainable resource for other user by normal user 403', async () => {
+    const body = resources.createBody('lars2520', submitterRoleId, challengeId1)
+    try {
+      await postRequest(resourceUrl, body, token.denis)
+      throw new Error('should not throw error here')
+    } catch (err) {
+      should.equal(err.status, 403)
+      should.equal(_.get(err, 'response.body.message'), `Only M2M, admin or user with full access role can perform this action`)
+    }
+  })
+
+  it('create self obtainable resource by user itself', async () => {
+    const body = resources.createBody('lars2520', submitterRoleId, challengeId1)
+    const res = await postRequest(resourceUrl, body, token.lars2520)
+    should.equal(res.status, 200)
+    await assertResource(res.body.id, res.body)
+  })
+
+  it('failure - create non self obtainable resource by normal user 403', async () => {
+    const body = resources.createBody('lars2520', copilotRoleId, challengeId1)
+    try {
+      await postRequest(resourceUrl, body, token.lars2520)
+      throw new Error('should not throw error here')
+    } catch (err) {
+      should.equal(err.status, 403)
+      should.equal(_.get(err, 'response.body.message'), `Only M2M, admin or user with full access role can perform this action`)
+    }
+  })
+
   it('create resource using m2m token', async () => {
     const body = resources.createBody('ghostar', submitterRoleId, challengeId1)
     const res = await postRequest(resourceUrl, body, token.m2m)

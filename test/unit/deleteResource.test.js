@@ -108,6 +108,17 @@ module.exports = describe('Delete resource', () => {
     }
   })
 
+  it(`failure - delete self obtainable resource for other user by normal user forbidden`, async () => {
+    const entity = resources.createBody('lars2520', submitterRoleId, challengeId)
+    try {
+      await service.deleteResource(user.denis, entity)
+      throw new Error('should not throw error here')
+    } catch (err) {
+      should.equal(err.name, 'ForbiddenError')
+      assertError(err, 'Only M2M, admin or user with full access role can perform this action')
+    }
+  })
+
   it('failure - delete resource for non-existed challenge', async () => {
     const entity = resources.createBody('ghostar', observerRoleId, challengeNotFoundId)
     try {
@@ -171,5 +182,23 @@ module.exports = describe('Delete resource', () => {
     should.equal(ret.roleId, copilotRoleId)
     should.exist(ret.created)
     should.equal(ret.createdBy.toLowerCase(), 'tonyj')
+  })
+
+  it(`delete self obtainable resource by user itself`, async () => {
+    const data = resources.createBody('lars2520', submitterRoleId, challengeId)
+    const ret = await service.deleteResource(user.lars2520, data)
+    should.exist(ret.id)
+    try {
+      await helper.getById('Resource', ret.id)
+      throw new Error('should not throw error here')
+    } catch (err) {
+      should.equal(err.name, 'NotFoundError')
+    }
+    should.equal(ret.challengeId, challengeId)
+    should.exist(ret.memberId)
+    should.equal(ret.memberHandle.toLowerCase(), 'lars2520')
+    should.equal(ret.roleId, submitterRoleId)
+    should.exist(ret.created)
+    should.equal(ret.createdBy.toLowerCase(), 'lars2520')
   })
 })

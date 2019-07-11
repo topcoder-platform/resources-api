@@ -62,7 +62,7 @@ module.exports = describe('Get resource endpoint', () => {
     const res = await getRequest(resourceUrl, token.admin)
     should.equal(res.status, 200)
     const records = res.body
-    should.equal(records.length, 4)
+    should.equal(records.length, 5)
     for (const record of records) {
       await assertResource(record.id, record)
     }
@@ -77,7 +77,7 @@ module.exports = describe('Get resource endpoint', () => {
     const res = await getRequest(resourceUrl, token.hohosky)
     should.equal(res.status, 200)
     const records = res.body
-    should.equal(records.length, 4)
+    should.equal(records.length, 5)
     for (const record of records) {
       await assertResource(record.id, record)
     }
@@ -92,7 +92,7 @@ module.exports = describe('Get resource endpoint', () => {
     const res = await getRequest(resourceUrl, token.m2m)
     should.equal(res.status, 200)
     const records = res.body
-    should.equal(records.length, 4)
+    should.equal(records.length, 5)
     for (const record of records) {
       await assertResource(record.id, record)
     }

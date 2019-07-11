@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ca176e8f-582c-4c33-871a-745530205933",
+		"_postman_id": "e6b5581a-7847-4b24-9c66-e6c249152b40",
 		"name": "topcoder-challenge-resource-api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -50,7 +50,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"co-pilot\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+									"raw": "{\n\t\"name\": \"co-pilot\",\n\t\"fullAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
 									"raw": "{{URL}}/resourceRoles",
@@ -103,7 +103,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"Observer\",\n\t\"fullAccess\": true,\n\t\"isActive\": false\n}"
+									"raw": "{\n\t\"name\": \"Observer\",\n\t\"fullAccess\": true,\n\t\"isActive\": false,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
 									"raw": "{{URL}}/resourceRoles",
@@ -156,7 +156,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"submitter\",\n\t\"fullAccess\": false,\n\t\"isActive\": true\n}"
+									"raw": "{\n\t\"name\": \"submitter\",\n\t\"fullAccess\": false,\n\t\"isActive\": true,\n\t\"selfObtainable\": true\n}"
 								},
 								"url": {
 									"raw": "{{URL}}/resourceRoles",
@@ -209,7 +209,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"reviewer\",\n\t\"fullAccess\": false,\n\t\"isActive\": true\n}"
+									"raw": "{\n\t\"name\": \"reviewer\",\n\t\"fullAccess\": false,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
 									"raw": "{{URL}}/resourceRoles",
@@ -620,7 +620,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"SUBMITTER\",\n\t\"fullAccess\": false,\n\t\"isActive\": true\n}"
+									"raw": "{\n\t\"name\": \"SUBMITTER\",\n\t\"fullAccess\": false,\n\t\"isActive\": true,\n\t\"selfObtainable\": true\n}"
 								},
 								"url": {
 									"raw": "{{URL}}/resourceRoles",
@@ -1101,7 +1101,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"failure-test\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+									"raw": "{\n\t\"name\": \"failure-test\",\n\t\"fullAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
 									"raw": "{{URL}}/resourceRoles/test",
@@ -1153,7 +1153,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"failure\",\n\t\"isActive\": true\n}"
+									"raw": "{\n\t\"name\": \"failure\",\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
 									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
@@ -1200,7 +1200,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
 									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
@@ -1252,7 +1252,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
 									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
@@ -1304,7 +1304,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
 									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
@@ -1356,7 +1356,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
 									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
@@ -1408,7 +1408,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
 									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
@@ -1460,7 +1460,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"failure-test\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+									"raw": "{\n\t\"name\": \"failure-test\",\n\t\"fullAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
 									"raw": "{{URL}}/resourceRoles/{{CHALLENGE_ID}}",
@@ -1512,7 +1512,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"SUBMITTER\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+									"raw": "{\n\t\"name\": \"SUBMITTER\",\n\t\"fullAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
 									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
@@ -1564,7 +1564,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"UPDATE-CO-PILOT\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+									"raw": "{\n\t\"name\": \"UPDATE-CO-PILOT\",\n\t\"fullAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
 									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
@@ -1616,7 +1616,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"CO-PILOT\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
+									"raw": "{\n\t\"name\": \"CO-PILOT\",\n\t\"fullAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
 									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
@@ -2547,6 +2547,108 @@
 								"body": {
 									"mode": "raw",
 									"raw": "{\n\t\"memberHandle\": \"HoHoSKY\",\n\t\"roleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create self obtainable resource resource by user itself",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user3_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"lars2520\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create self obtainable resource resource for other user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user3_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"thomaskranitsas\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
 								},
 								"url": {
 									"raw": "{{URL}}/resources",
@@ -4243,6 +4345,108 @@
 								"body": {
 									"mode": "raw",
 									"raw": "{\n\t\"memberHandle\": \"HoHoSKY\",\n\t\"roleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete other's self obtainable resource by user 403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user2_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"lars2520\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete obtainable resource by user itself",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5d309564-878b-4ab9-a54e-ad74b88a8865",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user3_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"lars2520\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
 								},
 								"url": {
 									"raw": "{{URL}}/resources",
