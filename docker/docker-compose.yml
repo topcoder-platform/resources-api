@@ -1,0 +1,7 @@
+version: '3'
+services:
+  resources-api:
+    image: resources-api:latest
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
