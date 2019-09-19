@@ -6,8 +6,8 @@ const config = require('config')
 const dynamoose = require('dynamoose')
 
 dynamoose.AWS.config.update({
-  accessKeyId: config.DYNAMODB.AWS_ACCESS_KEY_ID,
-  secretAccessKey: config.DYNAMODB.AWS_SECRET_ACCESS_KEY,
+  // accessKeyId: config.DYNAMODB.AWS_ACCESS_KEY_ID,
+  // secretAccessKey: config.DYNAMODB.AWS_SECRET_ACCESS_KEY,
   region: config.DYNAMODB.AWS_REGION
 })
 
