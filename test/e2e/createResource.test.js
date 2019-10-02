@@ -12,7 +12,7 @@ const challengeId1 = 'fe6d0a58-ce7d-4521-8501-b8132b1c0391'
 const challengeId2 = 'fe6d0a58-ce7d-4521-8501-b8132b1c0392'
 const challengeId3 = 'fe6d0a58-ce7d-4521-8501-b8132b1c0393'
 const challengeNotFoundId = '11111111-ce7d-4521-8501-b8132b1c0391'
-const resourceUrl = `http://localhost:${config.PORT}/resources`
+const resourceUrl = `http://localhost:${config.PORT}/${config.API_VERSION}/resources`
 const resources = requestBody.resources
 
 module.exports = describe('Create resource endpoint', () => {

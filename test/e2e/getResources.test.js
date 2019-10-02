@@ -11,9 +11,9 @@ const { token } = require('../common/testData')
 
 const challengeId = 'fe6d0a58-ce7d-4521-8501-b8132b1c0391'
 const challengeNotFoundId = '11111111-ce7d-4521-8501-b8132b1c0391'
-const resourceUrl = `http://localhost:${config.PORT}/resources?challengeId=${challengeId}`
-const resource400Url = `http://localhost:${config.PORT}/resources?challengeId=invalid`
-const resource404Url = `http://localhost:${config.PORT}/resources?challengeId=${challengeNotFoundId}`
+const resourceUrl = `http://localhost:${config.PORT}/${config.API_VERSION}/resources?challengeId=${challengeId}`
+const resource400Url = `http://localhost:${config.PORT}/${config.API_VERSION}/resources?challengeId=invalid`
+const resource404Url = `http://localhost:${config.PORT}/${config.API_VERSION}/resources?challengeId=${challengeNotFoundId}`
 
 module.exports = describe('Get resource endpoint', () => {
   let copilotRoleId
@@ -103,7 +103,7 @@ module.exports = describe('Get resource endpoint', () => {
 
   it(`test invalid url, challengeId query parameter is required`, async () => {
     try {
-      await getRequest(`http://localhost:${config.PORT}/resources`, token.admin)
+      await getRequest(`http://localhost:${config.PORT}/${config.API_VERSION}/resources`, token.admin)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.status, 400)

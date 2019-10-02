@@ -11,7 +11,7 @@ const { token } = require('../common/testData')
 const challengeId1 = 'fe6d0a58-ce7d-4521-8501-b8132b1c0391'
 const challengeId2 = 'fe6d0a58-ce7d-4521-8501-b8132b1c0392'
 const challengeId3 = 'fe6d0a58-ce7d-4521-8501-b8132b1c0393'
-const resourceUrl = `http://localhost:${config.PORT}/resources`
+const resourceUrl = `http://localhost:${config.PORT}/${config.API_VERSION}/resources`
 
 module.exports = describe('Create resource endpoint', () => {
   let submitterRoleId

@@ -11,7 +11,7 @@ const { token, requestBody, user } = require('../common/testData')
 
 const challengeId = 'fe6d0a58-ce7d-4521-8501-b8132b1c0391'
 const challengeNotFoundId = '11111111-ce7d-4521-8501-b8132b1c0391'
-const resourceUrl = `http://localhost:${config.PORT}/resources`
+const resourceUrl = `http://localhost:${config.PORT}/${config.API_VERSION}/resources`
 const resources = requestBody.resources
 
 module.exports = describe('Delete resource endpoint', () => {

@@ -114,7 +114,7 @@ describe('Topcoder - Challenge Resource API E2E Test', () => {
 
   describe('Health check endpoints', () => {
     it('health check success', async () => {
-      const res = await getRequest(`http://localhost:${config.PORT}/health`)
+      const res = await getRequest(`http://localhost:${config.PORT}/${config.API_VERSION}/health`)
       should.equal(res.status, 200)
       should.equal(res.body.checksRun, 1)
     })
@@ -123,7 +123,7 @@ describe('Topcoder - Challenge Resource API E2E Test', () => {
   describe('Fail routes Tests', () => {
     it('Unsupported http method, return 405', async () => {
       try {
-        await putRequest(`http://localhost:${config.PORT}/resourceRoles`, {})
+        await putRequest(`http://localhost:${config.PORT}/${config.API_VERSION}/resourceRoles`, {})
         throw new Error('should not throw error here')
       } catch (err) {
         should.equal(err.status, 405)
@@ -133,7 +133,7 @@ describe('Topcoder - Challenge Resource API E2E Test', () => {
 
     it('Http resource not found, return 404', async () => {
       try {
-        await getRequest(`http://localhost:${config.PORT}/invalid`)
+        await getRequest(`http://localhost:${config.PORT}/${config.API_VERSION}/invalid`)
         throw new Error('should not throw error here')
       } catch (err) {
         should.equal(err.status, 404)
