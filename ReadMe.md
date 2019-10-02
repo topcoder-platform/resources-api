@@ -13,6 +13,7 @@ The following parameters can be set in config files or in env variables:
 
 - LOG_LEVEL: the log level, default is 'debug'
 - PORT: the server port, default is 3000
+- API_VERSION: the API version, default is v5
 - AUTH_SECRET: The authorization secret used during token verification.
 - VALID_ISSUERS: The valid issuer of tokens, a json array contains valid issuer.
 - AUTH0_URL: Auth0 URL, used to get TC M2M token
