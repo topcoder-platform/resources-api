@@ -114,7 +114,7 @@ describe('Topcoder - Challenge Resource API E2E Test', () => {
 
   describe('Health check endpoints', () => {
     it('health check success', async () => {
-      const res = await getRequest(`http://localhost:${config.PORT}/${config.API_VERSION}/health`)
+      const res = await getRequest(`http://localhost:${config.PORT}/${config.API_VERSION}/resources/health`)
       should.equal(res.status, 200)
       should.equal(res.body.checksRun, 1)
     })

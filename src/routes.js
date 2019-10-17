@@ -6,12 +6,6 @@ const constants = require('../app-constants')
 const { SCOPES: { READ, CREATE, DELETE, UPDATE, ALL } } = require('config')
 
 module.exports = {
-  '/health': {
-    get: {
-      controller: 'HealthCheckController',
-      method: 'check'
-    }
-  },
   '/resources': {
     get: {
       controller: 'ResourceController',
@@ -33,6 +27,12 @@ module.exports = {
       auth: 'jwt',
       access: [constants.UserRoles.Admin, constants.UserRoles.User],
       scopes: [DELETE, ALL]
+    }
+  },
+  '/resources/health': {
+    get: {
+      controller: 'HealthCheckController',
+      method: 'check'
     }
   },
   '/resources/:memberId/challenges': {
