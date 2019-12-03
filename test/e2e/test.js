@@ -97,6 +97,9 @@ describe('Topcoder - Challenge Resource API E2E Test', () => {
     }
 
     await initDB()
+    // init ES
+    await helper.createESIndex(config.ES.RESOURCE_INDEX)
+    await helper.createESIndex(config.ES.RESOURCE_ROLE_INDEX)
   })
 
   after(async () => {
@@ -110,6 +113,9 @@ describe('Topcoder - Challenge Resource API E2E Test', () => {
     logger.debug = debug
 
     await initDB()
+    // init ES
+    await helper.createESIndex(config.ES.RESOURCE_INDEX)
+    await helper.createESIndex(config.ES.RESOURCE_ROLE_INDEX)
   })
 
   describe('Health check endpoints', () => {
@@ -121,13 +127,13 @@ describe('Topcoder - Challenge Resource API E2E Test', () => {
   })
 
   describe('Fail routes Tests', () => {
-    it('Unsupported http method, return 405', async () => {
+    it('Unsupported http method, return 404', async () => {
       try {
         await putRequest(`http://localhost:${config.PORT}/${config.API_VERSION}/resourceRoles`, {})
         throw new Error('should not throw error here')
       } catch (err) {
-        should.equal(err.status, 405)
-        should.equal(_.get(err, 'response.body.message'), 'The requested HTTP method is not supported.')
+        should.equal(err.status, 404)
+        should.equal(_.get(err, 'response.body.message'), 'The requested resource cannot be found.')
       }
     })
 

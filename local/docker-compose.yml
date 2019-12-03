@@ -5,3 +5,7 @@ services:
     ports:
       - "7777:7777"
     command: "-inMemory -port 7777"
+  esearch:
+    image: "elasticsearch:6.8.4"
+    ports:
+      - "9200:9200"

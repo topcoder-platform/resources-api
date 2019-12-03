@@ -9,8 +9,45 @@ const uuid = require('uuid/v4')
 const helper = require('../common/helper')
 const logger = require('../common/logger')
 const errors = require('../common/errors')
+const constants = require('../../app-constants')
 
 const payloadFields = ['id', 'challengeId', 'memberId', 'memberHandle', 'roleId']
+
+/**
+ * Get resources with given criteria (may include challengeId, memberId, roleId) from Elasticsearch.
+ * @param {Object} criteria the search criteria
+ * @returns {Array} the resources of given criteria
+ */
+async function getResourcesFromES (criteria) {
+  // construct ES query
+  const esQuery = {
+    index: config.ES.RESOURCE_INDEX,
+    type: config.ES.RESOURCE_TYPE,
+    size: constants.MAX_ES_SEARCH_SIZE, // use a large size to query all matched records
+    body: {
+      query: {
+        bool: {
+          filter: []
+        }
+      },
+      sort: [{ memberId: { order: 'asc' } }]
+    }
+  }
+  if (criteria.challengeId) {
+    esQuery.body.query.bool.filter.push({ match_phrase: { challengeId: criteria.challengeId } })
+  }
+  if (criteria.memberId) {
+    esQuery.body.query.bool.filter.push({ match_phrase: { memberId: criteria.memberId } })
+  }
+  if (criteria.roleId) {
+    esQuery.body.query.bool.filter.push({ match_phrase: { roleId: criteria.roleId } })
+  }
+
+  // Search with constructed query
+  const esClient = helper.getESClient()
+  const docs = await esClient.search(esQuery)
+  return _.map(docs.hits.hits, (item) => item._source)
+}
 
 /**
  * Check whether the user can access resources
@@ -18,7 +55,19 @@ const payloadFields = ['id', 'challengeId', 'memberId', 'memberHandle', 'roleId'
  * @param {Array} the resources of specified challenge id
  */
 async function checkAccess (currentUser, resources) {
-  const list = await helper.scan('ResourceRole')
+  // try to get resource roles from ES
+  let list
+  try {
+    list = await helper.getResourceRolesFromES({ isActive: true })
+  } catch (e) {
+    logger.logFullError(e)
+    // ignore error
+  }
+  // get from DB if failed or not found
+  if (_.isNil(list) || _.isEmpty(list)) {
+    list = await helper.scan('ResourceRole')
+  }
+
   const fullAccessRoles = new Set()
   _.each(list, e => {
     if (e.isActive && e.fullAccess) {
@@ -36,13 +85,24 @@ async function checkAccess (currentUser, resources) {
  * Get resources with given challenge id.
  * @param {Object} currentUser the current user
  * @param {String} challengeId the challenge id
- * @returns {Object} the search result
+ * @returns {Array} the resources
  */
 async function getResources (currentUser, challengeId) {
   // Verify that the challenge exists
   await helper.getRequest(`${config.CHALLENGE_API_URL}/${challengeId}`)
 
-  const resources = await helper.query('Resource', { challengeId })
+  // try to get resources from ES
+  let resources
+  try {
+    resources = await getResourcesFromES({ challengeId })
+  } catch (e) {
+    logger.logFullError(e)
+    // ignore error
+  }
+  // get from DB if failed or not found
+  if (_.isNil(resources) || _.isEmpty(resources)) {
+    resources = await helper.query('Resource', { challengeId })
+  }
 
   if (!currentUser.isMachine && !helper.hasAdminRole(currentUser)) {
     await checkAccess(currentUser, resources)
@@ -59,7 +119,7 @@ getResources.schema = {
 /**
  * Get member information using v3 API
  * @param {String} memberHandle the member handle
- * @returns {String} the member id and member handle
+ * @returns {Object} the member info
  */
 async function getMemberInfo (memberHandle) {
   let memberId, handle
@@ -88,6 +148,7 @@ async function getMemberInfo (memberHandle) {
  * Get the resource role.
  * @param {String} roleId the resource role id
  * @param {Boolean} isCreated the flag indicate it is create operation.
+ * @returns {Object} the resource role
  */
 async function getResourceRole (roleId, isCreated) {
   try {
@@ -218,6 +279,7 @@ async function deleteResource (currentUser, resource) {
     await ret.delete()
 
     await helper.postEvent(config.RESOURCE_DELETE_TOPIC, _.pick(ret, payloadFields))
+
     return ret
   } catch (err) {
     if (!helper.isCustomError(err)) {
@@ -247,14 +309,29 @@ async function listChallengesByMember (memberId, criteria) {
   if (_.get(res, 'body.result.content').length === 0) {
     throw new errors.BadRequestError(`User with id: ${memberId} doesn't exist`)
   }
-  const queryParams = { hash: { memberId: { eq: String(memberId) } } }
   if (criteria.resourceRoleId) {
-    queryParams.range = { roleId: { eq: criteria.resourceRoleId } }
     // ensure resource role exists
     await getResourceRole(criteria.resourceRoleId)
   }
-  const result = await helper.query('Resource', queryParams)
-  return _.uniq(_.map(result, 'challengeId'))
+
+  // try to get resources from ES
+  let resources
+  try {
+    resources = await getResourcesFromES({ memberId, roleId: criteria.resourceRoleId })
+  } catch (e) {
+    logger.logFullError(e)
+    // ignore error
+  }
+  // get from DB if failed or not found
+  if (_.isNil(resources) || _.isEmpty(resources)) {
+    const queryParams = { hash: { memberId: { eq: String(memberId) } } }
+    if (criteria.resourceRoleId) {
+      queryParams.range = { roleId: { eq: criteria.resourceRoleId } }
+    }
+    resources = await helper.query('Resource', queryParams)
+  }
+
+  return _.uniq(_.map(resources, 'challengeId'))
 }
 
 listChallengesByMember.schema = {

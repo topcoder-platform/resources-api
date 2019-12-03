@@ -12,13 +12,24 @@ const logger = require('../common/logger')
 const payloadFields = ['id', 'name', 'fullAccess', 'isActive', 'selfObtainable']
 
 /**
- * Get resource roles.
+ * Get resource roles by given criteria (may include isActive filter).
  * @param {Object} criteria the search criteria
- * @returns {Object} the search result
+ * @returns {Array} the searched resource roles
  */
 async function getResourceRoles (criteria) {
-  const list = await helper.scan('ResourceRole')
-  const records = _.filter(list, e => _.isUndefined(criteria.isActive) || criteria.isActive === e.isActive)
+  // try to get from ES
+  let records
+  try {
+    records = await helper.getResourceRolesFromES(criteria)
+  } catch (e) {
+    logger.logFullError(e)
+    // ignore error
+  }
+  // get from DB if failed or not found
+  if (_.isNil(records) || _.isEmpty(records)) {
+    const list = await helper.scan('ResourceRole')
+    records = _.filter(list, e => _.isUndefined(criteria.isActive) || criteria.isActive === e.isActive)
+  }
   return _.map(records, e => _.pick(e, payloadFields))
 }
 
@@ -30,8 +41,8 @@ getResourceRoles.schema = {
 
 /**
  * Create resource role.
- * @param {Object} setting the challenge setting to created
- * @returns {Object} the created challenge setting
+ * @param {Object} resourceRole the resource role to create
+ * @returns {Object} the created resource role
  */
 async function createResourceRole (resourceRole) {
   try {

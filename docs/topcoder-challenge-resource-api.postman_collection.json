@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e6b5581a-7847-4b24-9c66-e6c249152b40",
+		"_postman_id": "6cc304a6-b7dd-4157-ad4e-1bc3d35c78d1",
 		"name": "topcoder-challenge-resource-api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -635,6 +635,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -1059,6 +1060,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -1632,9 +1634,11 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Resources",
@@ -2663,6 +2667,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -3193,6 +3198,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -3639,6 +3645,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -4461,9 +4468,11 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "health check",
@@ -4471,16 +4480,18 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL}}/health",
+					"raw": "{{URL}}/resources/health",
 					"host": [
 						"{{URL}}"
 					],
 					"path": [
+						"resources",
 						"health"
 					]
 				}
 			},
 			"response": []
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }

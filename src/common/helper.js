@@ -14,6 +14,11 @@ const m2m = m2mAuth(_.pick(config, ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_
 const busApi = require('tc-bus-api-wrapper')
 const busApiClient = busApi(_.pick(config, ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME', 'AUTH0_CLIENT_ID',
   'AUTH0_CLIENT_SECRET', 'BUSAPI_URL', 'KAFKA_ERROR_TOPIC', 'AUTH0_PROXY_SERVER_URL']))
+const AWS = require('aws-sdk')
+const elasticsearch = require('elasticsearch')
+
+// Elasticsearch client
+let esClient
 
 /**
  * Check the error is custom error.
@@ -243,6 +248,113 @@ async function getRequest (url) {
     .set('Accept', 'application/json')
 }
 
+/**
+ * Get ES Client
+ * @return {Object} Elasticsearch Client Instance
+ */
+function getESClient () {
+  if (esClient) {
+    return esClient
+  }
+  const hosts = config.ES.HOST
+  const apiVersion = config.ES.API_VERSION
+  // AWS ES configuration is different from other providers
+  if (/.*amazonaws.*/.test(hosts)) {
+    esClient = elasticsearch.Client({
+      apiVersion,
+      hosts,
+      connectionClass: require('http-aws-es'), // eslint-disable-line global-require
+      amazonES: {
+        region: config.ES.AWS_REGION,
+        credentials: new AWS.EnvironmentCredentials('AWS')
+      }
+    })
+  } else {
+    esClient = new elasticsearch.Client({
+      apiVersion,
+      hosts
+    })
+  }
+  return esClient
+}
+
+/**
+ * Create Elasticsearch index, it will be deleted and re-created if present.
+ * @param {String} indexName the ES index name
+ */
+async function createESIndex (indexName) {
+  const client = getESClient()
+  // delete index if present
+  try {
+    await client.indices.delete({ index: indexName })
+  } catch (err) {
+    // ignore
+  }
+  // create index
+  const body = {}
+  if (indexName === config.ES.RESOURCE_ROLE_INDEX) {
+    body.mappings = {
+      _doc: {
+        properties: {
+          isActive: {
+            type: 'keyword'
+          },
+          name: {
+            type: 'keyword'
+          }
+        }
+      }
+    }
+  } else if (indexName === config.ES.RESOURCE_INDEX) {
+    body.mappings = {
+      _doc: {
+        properties: {
+          challengeId: {
+            type: 'keyword'
+          },
+          memberId: {
+            type: 'keyword'
+          },
+          roleId: {
+            type: 'keyword'
+          }
+        }
+      }
+    }
+  }
+  await client.indices.create({ index: indexName, body })
+}
+
+/**
+ * Get resource roles by given criteria (may include isActive filter) from Elasticsearch.
+ * @param {Object} criteria the search criteria
+ * @returns {Array} the searched resource roles
+ */
+async function getResourceRolesFromES (criteria) {
+  const client = getESClient()
+
+  // construct ES query
+  const esQuery = {
+    index: config.ES.RESOURCE_ROLE_INDEX,
+    type: config.ES.RESOURCE_ROLE_TYPE,
+    size: constants.MAX_ES_SEARCH_SIZE, // use a large size to query all matched records
+    body: {
+      sort: [{ name: { order: 'asc' } }]
+    }
+  }
+  if (!_.isNil(criteria.isActive)) {
+    esQuery.body.query = {
+      bool: {
+        filter: [{ term: { isActive: criteria.isActive } }]
+      }
+    }
+  }
+
+  // Search with constructed query
+  const docs = await client.search(esQuery)
+  return _.map(docs.hits.hits, (item) => item._source)
+}
+
 module.exports = {
   wrapExpress,
   autoWrapExpress,
@@ -256,5 +368,8 @@ module.exports = {
   validateDuplicate,
   getRequest,
   postEvent,
-  isCustomError
+  isCustomError,
+  getESClient,
+  createESIndex,
+  getResourceRolesFromES
 }

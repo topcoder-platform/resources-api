@@ -77,6 +77,9 @@ describe('Topcoder - Challenge Resource API Unit Test', () => {
     testHelper.initLogs(errorLogs)
 
     await initDB()
+    // init ES
+    await helper.createESIndex(config.ES.RESOURCE_INDEX)
+    await helper.createESIndex(config.ES.RESOURCE_ROLE_INDEX)
   })
 
   after(async () => {
@@ -89,6 +92,9 @@ describe('Topcoder - Challenge Resource API Unit Test', () => {
     logger.debug = debug
 
     await initDB()
+    // init ES
+    await helper.createESIndex(config.ES.RESOURCE_INDEX)
+    await helper.createESIndex(config.ES.RESOURCE_ROLE_INDEX)
   })
 
   describe('ResourceRoleService Unit Test', () => {

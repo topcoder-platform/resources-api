@@ -2,6 +2,7 @@
  * Health Check Service
  */
 const config = require('config')
+const helper = require('../common/helper')
 const errors = require('../common/errors')
 const { DynamoDB } = require('../models')
 
@@ -23,6 +24,13 @@ async function check () {
   })
 
   await Promise.race([checkDynamoDB, timeOutBreak])
+
+  // check ES connection
+  try {
+    await helper.getESClient().ping({ requestTimeout: 10000 })
+  } catch (e) {
+    throw new errors.ServiceUnavailable(`Elasticsearch is unavailable, ${e.message}`)
+  }
 
   return {
     checksRun: 1

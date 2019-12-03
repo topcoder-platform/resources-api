@@ -32,6 +32,16 @@ module.exports = {
     TIMEOUT: process.env.DYNAMODB_TIMEOUT || 10000
   },
 
+  ES: {
+    AWS_REGION: process.env.AWS_REGION || 'us-east-1',
+    HOST: process.env.ES_HOST || 'localhost:9200',
+    API_VERSION: process.env.ES_API_VERSION || '6.8',
+    RESOURCE_INDEX: process.env.RESOURCE_INDEX || 'resources',
+    RESOURCE_TYPE: process.env.RESOURCE_TYPE || '_doc',
+    RESOURCE_ROLE_INDEX: process.env.RESOURCE_ROLE_INDEX || 'resource_roles',
+    RESOURCE_ROLE_TYPE: process.env.RESOURCE_ROLE_TYPE || '_doc'
+  },
+
   SCOPES: {
     READ: process.env.SCOPE_READ || 'read:resources',
     CREATE: process.env.SCOPE_CREATE || 'create:resources',

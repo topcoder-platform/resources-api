@@ -4,6 +4,7 @@
 
 - nodejs https://nodejs.org/en/ (v10)
 - DynamoDB
+- Elasticsearch 6.8.4
 - Docker, Docker Compose
 
 ## Configuration
@@ -33,6 +34,13 @@ The following parameters can be set in config files or in env variables:
 - DYNAMODB.AWS_READ_UNITS: The DynamoDB table read unit configuration, default is 4
 - DYNAMODB.AWS_WRITE_UNITS: The DynamoDB table write unit configuration, default is 2
 - DYNAMODB.TIMEOUT: The timeout setting used in health check
+- ES.AWS_REGION: The Amazon certificate region to use when connecting to AWS ES
+- ES.HOST: Elasticsearch host
+- ES.API_VERSION: Elasticsearch API version
+- ES.RESOURCE_INDEX: Elasticsearch index name for resources
+- ES.RESOURCE_TYPE: Elasticsearch index type for resources
+- ES.RESOURCE_ROLE_INDEX: Elasticsearch index name for resource roles
+- ES.RESOURCE_ROLE_TYPE: Elasticsearch index type for resource roles
 - SCOPES: The M2M scopes, refer `config/default.js` for more information
 - BUSAPI_URL: the bus api, default value is 'https://api.topcoder-dev.com/v5'
 - KAFKA_ERROR_TOPIC: Kafka error topic, default value is 'common.error.reporting',
@@ -46,9 +54,10 @@ Configuration for testing is at `config/test.js`, only add such new configuratio
 - WAIT_TIME: wait time used in test, default is 1500 or 1.5 second
 - MOCK_CHALLENGE_API_PORT: the mock server port, default is 4000.
 
-## DynamoDB Setup
-We can use DynamoDB setup on Docker for testing purpose. Just run `docker-compose up` in `local` folder.
-You can also use your own AWS DynamoDB service for testing purpose.
+## DynamoDB and ElasticSearch Setup
+
+Just run `docker-compose up` in `local` folder.
+
 
 ## Create Tables
 1. Make sure DynamoDB are running as per instructions above.
@@ -65,6 +74,7 @@ You can start the mock server using command `npm run mock-challenge-api`.
 3. Seed/Insert data to tables: `npm run seed-tables`
 4. Initialize database in default environment: `npm run init-db`
 5. View table data in default environment: `npm run view-data <ModelName>`, ModelName can be `Resource` or `ResourceRole`
+6. Initialize indices in Elasticsearch: `npm run init-es`
 
 ## Local Deployment
 
@@ -73,15 +83,21 @@ You can start the mock server using command `npm run mock-challenge-api`.
 - Run lint fix `npm run lint:fix`
 - Create tables `npm run create-tables`
 - Clear and init db `npm run init-db`
+- Initialize ES indices `npm run init-es`
 - Start app `npm start`
 - App is running at `http://localhost:3000`
 - Start mock server `npm run mock-challenge-api`
 - The mock server is running at `http://localhost:4000`
 
 ## Testing
-#### You need to `stop` the app and mock server before running unit or e2e tests.
+
+- You need to `stop` the app and mock server before running unit or e2e tests.
+- DynamoDB should be running with tables created
+- Elasticsearch should be running
 - Run `npm run test` to execute unit tests and generate coverage report.
 - RUN `npm run e2e` to execute e2e tests and generate coverage report.
+- Note that all Elasticsearch and DynamoDB data will be cleared after running unit/e2e tests.
+
 
 ## Verification
 Refer to the verification document `Verification.md`
