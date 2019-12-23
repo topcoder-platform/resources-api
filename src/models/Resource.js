@@ -26,14 +26,15 @@ const schema = new Schema({
   },
   memberId: {
     type: String,
-    required: true,
-    index: {
-      global: true,
-      rangeKey: 'roleId',
-      project: true,
-      name: 'resource-memberIdRoleId-index',
-      throughput: { read: config.DYNAMODB.AWS_READ_UNITS, write: config.DYNAMODB.AWS_WRITE_UNITS }
-    }
+    required: true
+    // FIXME: Fix this
+    // index: {
+    //   global: true,
+    //   rangeKey: 'roleId',
+    //   project: true,
+    //   name: 'resource-memberIdRoleId-index',
+    //   throughput: { read: config.DYNAMODB.AWS_READ_UNITS, write: config.DYNAMODB.AWS_WRITE_UNITS }
+    // }
   },
   memberHandle: {
     type: String,
