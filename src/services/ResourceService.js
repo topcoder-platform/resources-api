@@ -247,13 +247,15 @@ async function listChallengesByMember (memberId, criteria) {
   if (_.get(res, 'body.result.content').length === 0) {
     throw new errors.BadRequestError(`User with id: ${memberId} doesn't exist`)
   }
-  const queryParams = { hash: { memberId: { eq: String(memberId) } } }
+  // const queryParams = { hash: { memberId: { eq: String(memberId) } } }
+  const queryParams = { memberId: memberId }
   if (criteria.resourceRoleId) {
-    queryParams.range = { roleId: { eq: criteria.resourceRoleId } }
+    queryParams.roleId = criteria.resourceRoleId
     // ensure resource role exists
     await getResourceRole(criteria.resourceRoleId)
   }
-  const result = await helper.query('Resource', queryParams)
+  console.log(queryParams)
+  const result = await helper.scan('Resource', queryParams)
   return _.uniq(_.map(result, 'challengeId'))
 }
 
