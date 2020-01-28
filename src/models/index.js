@@ -22,6 +22,6 @@ dynamoose.setDefaults({
 
 module.exports = {
   DynamoDB: dynamoose.ddb(),
-  Resource: dynamoose.model('Resource', require('./Resource')),
+  Resource: dynamoose.model('Resource', require('./Resource'), { update: true }),
   ResourceRole: dynamoose.model('ResourceRole', require('./ResourceRole'))
 }

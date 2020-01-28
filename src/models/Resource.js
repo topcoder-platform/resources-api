@@ -61,7 +61,6 @@ const schema = new Schema({
   }
 },
 {
-  update: true,
   throughput: { read: config.DYNAMODB.AWS_READ_UNITS, write: config.DYNAMODB.AWS_WRITE_UNITS }
 })
 
