@@ -17,11 +17,11 @@ if (config.DYNAMODB.IS_LOCAL) {
 
 dynamoose.setDefaults({
   create: false,
-  update: false
+  update: true
 })
 
 module.exports = {
   DynamoDB: dynamoose.ddb(),
-  Resource: dynamoose.model('Resource', require('./Resource'), { update: true }),
+  Resource: dynamoose.model('Resource', require('./Resource')),
   ResourceRole: dynamoose.model('ResourceRole', require('./ResourceRole'))
 }
