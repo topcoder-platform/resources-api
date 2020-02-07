@@ -12,9 +12,15 @@ const cors = require('cors')
 const HttpStatus = require('http-status-codes')
 const logger = require('./src/common/logger')
 const interceptor = require('express-interceptor')
+const YAML = require('yamljs')
+const swaggerUi = require('swagger-ui-express')
+const resourcesAPISwaggerDoc = YAML.load('./docs/swagger.yaml')
 
 // setup express app
 const app = express()
+
+// serve resources V5 API swagger definition
+app.use('/v5/resources/docs', swaggerUi.serve, swaggerUi.setup(resourcesAPISwaggerDoc))
 
 app.use(cors())
 app.use(bodyParser.json())
