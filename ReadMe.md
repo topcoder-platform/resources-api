@@ -1,10 +1,31 @@
 # Topcoder Challenge Resources API
 
-## Dependencies
+This microservice provides interaction with Challenge Resources.
 
-- nodejs https://nodejs.org/en/ (v10)
-- DynamoDB
-- Docker, Docker Compose
+### Development deployment status
+[![CircleCI](https://circleci.com/gh/topcoder-platform/resources-api/tree/develop.svg?style=svg)](https://circleci.com/gh/topcoder-platform/resources-api/tree/develop)
+
+### Production deployment status
+[![CircleCI](https://circleci.com/gh/topcoder-platform/resources-api/tree/master.svg?style=svg)](https://circleci.com/gh/topcoder-platform/resources-api/tree/master)
+
+## Swagger definition
+-  [Swagger](https://github.com/topcoder-platform/resources-api/blob/develop/docs/swagger.yaml)
+
+## Intended use
+- Production API
+
+## Related repos
+-  [Challenge API](https://github.com/topcoder-platform/challenge-api)
+-  [ES Processor](https://github.com/topcoder-platform/challenge-processor-es) - Updates data in ElasticSearch
+-  [Legacy Processor](https://github.com/topcoder-platform/legacy-challenge-processor) - Moves data from DynamoDB back to Informix
+-  [Legacy Migration Script](https://github.com/topcoder-platform/legacy-challenge-migration-script) - Moves data from Informix to DynamoDB
+-  [Frontend App](https://github.com/topcoder-platform/challenge-engine-ui)
+
+## Prerequisites
+-  [NodeJS](https://nodejs.org/en/) (v10)
+-  [DynamoDB](https://aws.amazon.com/dynamodb/)
+-  [Docker](https://www.docker.com/)
+-  [Docker Compose](https://docs.docker.com/compose/)
 
 ## Configuration
 
@@ -46,28 +67,7 @@ Configuration for testing is at `config/test.js`, only add such new configuratio
 - WAIT_TIME: wait time used in test, default is 1500 or 1.5 second
 - MOCK_CHALLENGE_API_PORT: the mock server port, default is 4000.
 
-## DynamoDB Setup
-We can use DynamoDB setup on Docker for testing purpose. Just run `docker-compose up` in `local` folder.
-You can also use your own AWS DynamoDB service for testing purpose.
-
-## Create Tables
-1. Make sure DynamoDB are running as per instructions above.
-2. Make sure you have configured all config parameters. Refer [Configuration](#configuration)
-3. Run `npm run create-tables` to create tables.
-
-## Mock Challenge V5 API
-As per specification, /v5/challenges/{id} endpoint does not exist thus need to mock it for this challenge. It is a simple server app, the code is under mock folder.
-You can start the mock server using command `npm run mock-challenge-api`.
-
-## Scripts
-1. Creating tables: `npm run create-tables`
-2. Drop/delete tables: `npm run drop-tables`
-3. Seed/Insert data to tables: `npm run seed-tables`
-4. Initialize database in default environment: `npm run init-db`
-5. View table data in default environment: `npm run view-data <ModelName>`, ModelName can be `Resource` or `ResourceRole`
-
-## Local Deployment
-
+## Available commands
 - Install dependencies `npm install`
 - Run lint `npm run lint`
 - Run lint fix `npm run lint:fix`
@@ -78,10 +78,85 @@ You can start the mock server using command `npm run mock-challenge-api`.
 - Start mock server `npm run mock-challenge-api`
 - The mock server is running at `http://localhost:4000`
 
-## Testing
-#### You need to `stop` the app and mock server before running unit or e2e tests.
-- Run `npm run test` to execute unit tests and generate coverage report.
-- RUN `npm run e2e` to execute e2e tests and generate coverage report.
+## Local Deployment
+### Foreman Setup
+To install foreman follow this [link](https://theforeman.org/manuals/1.24/#3.InstallingForeman)
+
+To know how to use foreman follow this [link](https://theforeman.org/manuals/1.24/#2.Quickstart)
+
+  
+### DynamoDB Setup
+
+We can use DynamoDB setup on Docker for testing purpose. Just run `docker-compose up` in `local` folder.
+
+You can also use your own AWS DynamoDB service for testing purpose.
+
+### Create Tables
+
+1. Make sure DynamoDB are running as per instructions above.
+2. Make sure you have configured all config parameters. Refer [Configuration](#configuration)
+3. Run `npm run create-tables` to create tables.
+
+### Mock Challenge V5 API
+
+As per specification, /v5/challenges/{id} endpoint does not exist thus need to mock it for this challenge. It is a simple server app, the code is under mock folder.
+
+You can start the mock server using command `npm run mock-challenge-api`.
+
+### Scripts
+1. Creating tables: `npm run create-tables`
+2. Drop/delete tables: `npm run drop-tables`
+3. Seed/Insert data to tables: `npm run seed-tables`
+4. Initialize database in default environment: `npm run init-db`
+5. View table data in default environment: `npm run view-data <ModelName>`, ModelName can be `Resource` or `ResourceRole`
+
+  
+
+## Production deployment
+
+- TBD
+
+## Running tests
+
+### Configuration
+Test configuration is at `config/test.js`. You don't need to change them.
+
+The following test parameters can be set in config file or in env variables:
+
+- WAIT_TIME: wait time
+- MOCK_CHALLENGE_API_PORT: mock challenge api port
+
+  
+
+### Prepare
+
+- Start Local services.
+- Create DynamoDB tables.
+- Various config parameters should be properly set.
+
+### Running unit tests
+
+#### You need to `stop` the app server before running unit tests.
+
+To run unit tests and generate coverage report.
+
+```bash
+npm run test
+```
+
+### Running integration tests
+
+#### You need to `stop` the app server before running e2e tests.
+
+To run integration tests and generate coverage report.
+
+```bash
+npm run e2e
+```
+
+## Running tests in CI
+- TBD
 
 ## Verification
+
 Refer to the verification document `Verification.md`
