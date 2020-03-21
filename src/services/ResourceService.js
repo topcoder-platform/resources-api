@@ -175,6 +175,8 @@ async function createResource (currentUser, resource) {
       createdBy: currentUser.handle || currentUser.sub
     }, resource))
 
+    console.log('Created resource:', ret)
+
     await helper.postEvent(config.RESOURCE_CREATE_TOPIC, _.pick(ret, payloadFields))
 
     return ret
