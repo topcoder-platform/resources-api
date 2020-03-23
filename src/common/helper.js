@@ -231,9 +231,10 @@ async function validateDuplicate (modelName, queryParams, errorMessage) {
 /**
  * Uses superagent to proxy get request
  * @param {String} url the url
+ * @param {Object} query the query parameters, optional
  * @returns {Object} the response
  */
-async function getRequest (url) {
+async function getRequest (url, query) {
   const m2mToken = await m2m.getMachineToken(config.AUTH0_CLIENT_ID, config.AUTH0_CLIENT_SECRET)
 
   return request
@@ -241,6 +242,36 @@ async function getRequest (url) {
     .set('Authorization', `Bearer ${m2mToken}`)
     .set('Content-Type', 'application/json')
     .set('Accept', 'application/json')
+    .query(query || {})
+}
+
+/**
+ * Get all pages from TC API.
+ * @param {String} url the url
+ * @param {Object} query the query parameters, optional, it should not include page and perPage
+ * @returns {Array} the result records
+ */
+async function getAllPages (url, query) {
+  const perPage = 100
+  let page = 1
+  let result = []
+  for (;;) {
+    // get current page data
+    const res = await getRequest(url, _.assignIn({ page, perPage }, query || {}))
+    if (!_.isArray(res.body) || res.body.length === 0) {
+      break
+    }
+    result = _.concat(result, res.body)
+    if (res.headers['x-total']) {
+      const total = Number(res.headers['x-total'])
+      if (page * perPage >= total) {
+        break
+      }
+    }
+    // increment page
+    page += 1
+  }
+  return result
 }
 
 module.exports = {
@@ -256,5 +287,6 @@ module.exports = {
   validateDuplicate,
   getRequest,
   postEvent,
-  isCustomError
+  isCustomError,
+  getAllPages
 }

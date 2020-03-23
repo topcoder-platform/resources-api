@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e6b5581a-7847-4b24-9c66-e6c249152b40",
+		"_postman_id": "2ac99d63-38e9-4602-998b-27d365f83f17",
 		"name": "topcoder-challenge-resource-api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -635,6 +635,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -1059,6 +1060,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -1632,9 +1634,1455 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Resource Role Phase Dependencies",
+			"item": [
+				{
+					"name": "create dependency",
+					"item": [
+						{
+							"name": "create dependency by admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76247aec-ea5b-43ff-8c17-6c6706f1105f",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    pm.environment.set(\"DEPENDENCY_ID_1\", pm.response.json().id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create dependency by M2M",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76247aec-ea5b-43ff-8c17-6c6706f1105f",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    pm.environment.set(\"DEPENDENCY_ID_2\", pm.response.json().id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_all_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create dependency with not found phase id 404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76247aec-ea5b-43ff-8c17-6c6706f1105f",
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_all_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"phaseId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create dependency with conflict 409",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76247aec-ea5b-43ff-8c17-6c6706f1105f",
+										"exec": [
+											"pm.test(\"Status code is 409\", function () {",
+											"    pm.response.to.have.status(409);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_all_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create dependency by user 403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76247aec-ea5b-43ff-8c17-6c6706f1105f",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user1_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create dependency with expired token 401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76247aec-ea5b-43ff-8c17-6c6706f1105f",
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{expire_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create dependency without token 401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76247aec-ea5b-43ff-8c17-6c6706f1105f",
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - create dependency with invalid body 400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76247aec-ea5b-43ff-8c17-6c6706f1105f",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_all_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"phaseId\": \"abc\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "dce0cecf-a641-48bc-b17a-2d9d2e4d353a",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "7ffcb8a3-fa58-4b57-841d-8cb21561c8eb",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "get dependencies",
+					"item": [
+						{
+							"name": "get all dependencies",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6b6e6487-1cc3-4a73-8b10-fbd540e9640d",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get matched dependencies",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6b6e6487-1cc3-4a73-8b10-fbd540e9640d",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_read_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies?phaseId={{PHASE_ID}}&resourceRoleId={{SUBMITTER_RESOURCE_ROLE_ID}}&phaseState=false",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies"
+									],
+									"query": [
+										{
+											"key": "phaseId",
+											"value": "{{PHASE_ID}}"
+										},
+										{
+											"key": "resourceRoleId",
+											"value": "{{SUBMITTER_RESOURCE_ROLE_ID}}"
+										},
+										{
+											"key": "phaseState",
+											"value": "false"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - get dependencies with invalid query 400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6b6e6487-1cc3-4a73-8b10-fbd540e9640d",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_read_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies?phaseId=abc&resourceRoleId=123&phaseState=abc",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies"
+									],
+									"query": [
+										{
+											"key": "phaseId",
+											"value": "abc"
+										},
+										{
+											"key": "resourceRoleId",
+											"value": "123"
+										},
+										{
+											"key": "phaseState",
+											"value": "abc"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - get dependencies with forbidden M2M 403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6b6e6487-1cc3-4a73-8b10-fbd540e9640d",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_modify_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - get dependencies with forbidden user 403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6b6e6487-1cc3-4a73-8b10-fbd540e9640d",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user1_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5550fe41-c23d-4902-a6e3-af9c437f7f4e",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "95c6f3e0-36e6-4040-a618-312b18ea1a32",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "update dependency",
+					"item": [
+						{
+							"name": "update dependency via admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": true\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies/{{DEPENDENCY_ID_1}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies",
+										"{{DEPENDENCY_ID_1}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update dependency via m2m",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_modify_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies/{{DEPENDENCY_ID_1}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies",
+										"{{DEPENDENCY_ID_1}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - update dependency with not found role id 404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_modify_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{DEPENDENCY_ID_2}}\",\n\t\"phaseState\": false\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies/{{DEPENDENCY_ID_1}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies",
+										"{{DEPENDENCY_ID_1}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - update not found dependency 404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_modify_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies/{{COPILOT_RESOURCE_ROLE_ID}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies",
+										"{{COPILOT_RESOURCE_ROLE_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - update dependency with invalid body 400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_modify_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies/{{DEPENDENCY_ID_1}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies",
+										"{{DEPENDENCY_ID_1}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - update dependency via forbidden m2m 403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_read_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies/{{DEPENDENCY_ID_1}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies",
+										"{{DEPENDENCY_ID_1}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b92c19d6-d18f-4b3f-9313-330f6f2e6f43",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "7e683f43-c8ec-48bc-bf49-360c6a021878",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "delete dependency",
+					"item": [
+						{
+							"name": "delete dependency via admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies/{{DEPENDENCY_ID_1}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies",
+										"{{DEPENDENCY_ID_1}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete dependency via m2m",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_modify_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies/{{DEPENDENCY_ID_2}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies",
+										"{{DEPENDENCY_ID_2}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - delete not found dependency 404",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_modify_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies/{{SUBMITTER_RESOURCE_ROLE_ID}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies",
+										"{{SUBMITTER_RESOURCE_ROLE_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - delete dependency via invalid id 400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_modify_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies/abc",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies",
+										"abc"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - delete dependency via forbidden m2m 403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_read_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies/{{DEPENDENCY_ID_2}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies",
+										"{{DEPENDENCY_ID_2}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "failure - delete dependency via forbidden user 403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "144ffa2e-b4f0-47c7-8f24-87146e66267e",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user2_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{URL}}/resourceRolePhaseDependencies/{{DEPENDENCY_ID_2}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resourceRolePhaseDependencies",
+										"{{DEPENDENCY_ID_2}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b92c19d6-d18f-4b3f-9313-330f6f2e6f43",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "7e683f43-c8ec-48bc-bf49-360c6a021878",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "f19d9935-b04d-43d1-8fec-e4d85ac4b6ee",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0556a7ff-5b72-4319-8954-ecb79ab3f76d",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Resources",
@@ -2663,6 +4111,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -3193,6 +4642,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -3639,6 +5089,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -4461,9 +5912,11 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "health check",
@@ -4471,16 +5924,18 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL}}/health",
+					"raw": "{{URL}}/resources/health",
 					"host": [
 						"{{URL}}"
 					],
 					"path": [
+						"resources",
 						"health"
 					]
 				}
 			},
 			"response": []
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }

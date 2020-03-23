@@ -17,6 +17,10 @@ const initDB = async () => {
   for (const resource of resources) {
     await resource.delete()
   }
+  const dependencies = await helper.scan('ResourceRolePhaseDependency')
+  for (const d of dependencies) {
+    await d.delete()
+  }
 }
 
 initDB().then(() => {

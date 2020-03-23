@@ -46,6 +46,7 @@ The following parameters can be set in config files or in env variables:
 - MEMBER_API_URL: Member api url, default is 'https://api.topcoder-dev.com/v3/members'
 - USER_API_URL: User api url, default is 'https://api.topcoder-dev.com/v3/users'
 - CHALLENGE_API_URL: Challenge api url, default is 'http://localhost:4000/v5/challenges'.
+- CHALLENGE_PHASES_API_URL: Challenge phases API URL, default is 'https://api.topcoder-dev.com/v5/challengephases'.
 - DYNAMODB.AWS_ACCESS_KEY_ID: The Amazon certificate key to use when connecting. Use local dynamodb you can set fake value
 - DYNAMODB.AWS_SECRET_ACCESS_KEY: The Amazon certificate access key to use when connecting. Use local dynamodb you can set fake value
 - DYNAMODB.AWS_REGION: The Amazon certificate region to use when connecting. Use local dynamodb you can set fake value
@@ -99,18 +100,16 @@ You can also use your own AWS DynamoDB service for testing purpose.
 
 ### Mock Challenge V5 API
 
-As per specification, /v5/challenges/{id} endpoint does not exist thus need to mock it for this challenge. It is a simple server app, the code is under mock folder.
-
+The `GET /v5/challenges/{id}` is mocked. It is a simple server app, the code is under mock folder.
 You can start the mock server using command `npm run mock-challenge-api`.
 
 ### Scripts
 1. Creating tables: `npm run create-tables`
 2. Drop/delete tables: `npm run drop-tables`
 3. Seed/Insert data to tables: `npm run seed-tables`
-4. Initialize database in default environment: `npm run init-db`
-5. View table data in default environment: `npm run view-data <ModelName>`, ModelName can be `Resource` or `ResourceRole`
+4. Initialize database in default environment, it will clear all data: `npm run init-db`
+5. View table data in default environment: `npm run view-data <ModelName>`, ModelName can be `Resource`, `ResourceRole` or `ResourceRolePhaseDependency`
 
-  
 
 ## Production deployment
 
@@ -126,17 +125,16 @@ The following test parameters can be set in config file or in env variables:
 - WAIT_TIME: wait time
 - MOCK_CHALLENGE_API_PORT: mock challenge api port
 
-  
 
 ### Prepare
 
-- Start Local services.
+- Start Local DynamoDB.
 - Create DynamoDB tables.
 - Various config parameters should be properly set.
 
 ### Running unit tests
 
-#### You need to `stop` the app server before running unit tests.
+#### You need to `stop` the app server and mock API server before running unit tests.
 
 To run unit tests and generate coverage report.
 
@@ -146,7 +144,7 @@ npm run test
 
 ### Running integration tests
 
-#### You need to `stop` the app server before running e2e tests.
+#### You need to `stop` the app server and mock API server before running e2e tests.
 
 To run integration tests and generate coverage report.
 

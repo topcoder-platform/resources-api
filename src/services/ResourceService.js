@@ -9,6 +9,7 @@ const uuid = require('uuid/v4')
 const helper = require('../common/helper')
 const logger = require('../common/logger')
 const errors = require('../common/errors')
+const ResourceRolePhaseDependencyService = require('./ResourceRolePhaseDependencyService')
 
 const payloadFields = ['id', 'challengeId', 'memberId', 'memberHandle', 'roleId']
 
@@ -36,7 +37,7 @@ async function checkAccess (currentUser, resources) {
  * Get resources with given challenge id.
  * @param {Object} currentUser the current user
  * @param {String} challengeId the challenge id
- * @returns {Object} the search result
+ * @returns {Array} the search result
  */
 async function getResources (currentUser, challengeId) {
   // Verify that the challenge exists
@@ -106,7 +107,7 @@ async function getResourceRole (roleId, isCreated) {
 }
 
 /**
- * Perform initialization. It will validate the input parameters(memberHandle and roleId),
+ * Perform initialization. It will validate the input parameters(memberHandle, roleId and phase dependencies),
  * check access for operating user.
  * Resource entities with specified challenge id will be returned if operating user is not admin/M2M.
  * If operating user is admin/M2M, it will return resource entities matching specified
@@ -119,7 +120,8 @@ async function getResourceRole (roleId, isCreated) {
  */
 async function init (currentUser, challengeId, resource, isCreated) {
   // Verify that the challenge exists
-  await helper.getRequest(`${config.CHALLENGE_API_URL}/${challengeId}`)
+  const challengeRes = await helper.getRequest(`${config.CHALLENGE_API_URL}/${challengeId}`)
+  const challenge = challengeRes.body
 
   // get member information using v3 API
   const { memberId, handle } = await getMemberInfo(resource.memberHandle)
@@ -142,6 +144,30 @@ async function init (currentUser, challengeId, resource, isCreated) {
       range: { memberId: { eq: memberId } }
     })
   }
+  // check phases dependencies
+  const dependencies = await ResourceRolePhaseDependencyService.getDependencies({ resourceRoleId: resource.roleId })
+  _.forEach(dependencies, (dependency) => {
+    const phase = _.find(challenge.phases, (p) => p.phaseId === dependency.phaseId)
+    if (phase) {
+      let isOpen = phase.isOpen
+      if (_.isNil(isOpen)) {
+        isOpen = phase.actualStartDate && phase.actualEndDate &&
+          new Date(phase.actualStartDate) <= new Date() && new Date() <= new Date(phase.actualEndDate)
+      }
+      if (_.isNil(isOpen)) {
+        isOpen = phase.scheduledStartDate && phase.scheduledEndDate &&
+          new Date(phase.scheduledStartDate) <= new Date() && new Date() <= new Date(phase.scheduledEndDate)
+      }
+      if (_.isNil(isOpen)) {
+        isOpen = false
+      }
+      if (!_.isEqual(isOpen, dependency.phaseState)) {
+        throw new errors.BadRequestError(`Phase ${dependency.phaseId} should ${
+          dependency.phaseState ? 'be open' : 'not be open'
+        }`)
+      }
+    }
+  })
 
   // return resources and the member id
   return { resources, memberId, handle }

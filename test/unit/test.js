@@ -54,6 +54,10 @@ describe('Topcoder - Challenge Resource API Unit Test', () => {
     for (const resource of resources) {
       await resource.delete()
     }
+    const dependencies = await helper.scan('ResourceRolePhaseDependency')
+    for (const d of dependencies) {
+      await d.delete()
+    }
   }
 
   before(async () => {
@@ -95,6 +99,13 @@ describe('Topcoder - Challenge Resource API Unit Test', () => {
     require('./createResourceRole.test')
     require('./getResourceRoles.test')
     require('./updateResourceRole.test')
+  })
+
+  describe('ResourceRolePhaseDependencyService Unit Test', () => {
+    require('./createResourceRolePhaseDependency.test')
+    require('./getResourceRolePhaseDependencies.test')
+    require('./updateResourceRolePhaseDependency.test')
+    require('./deleteResourceRolePhaseDependency.test')
   })
 
   describe('ResourceService Unit Test', () => {

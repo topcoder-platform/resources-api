@@ -5,7 +5,8 @@
 const _ = require('lodash')
 const config = require('config')
 const should = require('should')
-const { postRequest, getRoleIds, assertResource } = require('../common/testHelper')
+const ResourceRolePhaseDependencyService = require('../../src/services/ResourceRolePhaseDependencyService')
+const { postRequest, getRoleIds, assertResource, clearDependencies } = require('../common/testHelper')
 const { token, requestBody } = require('../common/testData')
 
 const challengeId1 = 'fe6d0a58-ce7d-4521-8501-b8132b1c0391'
@@ -20,6 +21,7 @@ module.exports = describe('Create resource endpoint', () => {
   let observerRoleId
   let submitterRoleId
   let reviewerRoleId
+  let dependency
 
   before(async () => {
     const ret = await getRoleIds()
@@ -27,13 +29,41 @@ module.exports = describe('Create resource endpoint', () => {
     observerRoleId = ret.observerRoleId
     submitterRoleId = ret.submitterRoleId
     reviewerRoleId = ret.reviewerRoleId
+
+    const records = await ResourceRolePhaseDependencyService.getDependencies({ resourceRoleId: copilotRoleId })
+    dependency = records[0]
+  })
+
+  it('failure - create resource with wrong phase state', async () => {
+    await ResourceRolePhaseDependencyService.updateDependency(dependency.id, {
+      phaseId: dependency.phaseId,
+      resourceRoleId: dependency.resourceRoleId,
+      phaseState: false
+    })
+    try {
+      const body = resources.createBody('HoHoSKY', copilotRoleId, challengeId1)
+      await postRequest(resourceUrl, body, token.admin)
+      throw new Error('should not throw error here')
+    } catch (err) {
+      should.equal(err.status, 400)
+      should.equal(_.get(err, 'response.body.message'), `Phase ${dependency.phaseId} should not be open`)
+    }
   })
 
   it('create resource by admin', async () => {
+    await ResourceRolePhaseDependencyService.updateDependency(dependency.id, {
+      phaseId: dependency.phaseId,
+      resourceRoleId: dependency.resourceRoleId,
+      phaseState: true
+    })
+
     const body = resources.createBody('HoHoSKY', copilotRoleId, challengeId1)
     const res = await postRequest(resourceUrl, body, token.admin)
     should.equal(res.status, 200)
     await assertResource(res.body.id, res.body)
+
+    // remove the dependencies so that below tests will not have these limitations
+    await clearDependencies()
   })
 
   it('create another resource for user hohosky', async () => {

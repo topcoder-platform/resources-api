@@ -14,7 +14,7 @@ const payloadFields = ['id', 'name', 'fullAccess', 'isActive', 'selfObtainable']
 /**
  * Get resource roles.
  * @param {Object} criteria the search criteria
- * @returns {Object} the search result
+ * @returns {Array} the search result
  */
 async function getResourceRoles (criteria) {
   const list = await helper.scan('ResourceRole')

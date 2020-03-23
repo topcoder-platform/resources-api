@@ -6,7 +6,8 @@ info:
 
     GET/POST/DELETE `/Resources` endpoints can only be called from admins, via M2M, or users for whom there is at least one existing `Resource` where both `role.fullAccess` and `role.isActive` are `true`. Special Case: User can create/delte selfObtainable resource for its own.
     `Resource Roles` POST and PUT endpoints can only be called from admins or via M2M.
-    GET `/Resources/{memberId}/challenges` endpoints can be called from any authenticated user or via M2M
+    GET `/Resources/{memberId}/challenges` endpoints can be called from any authenticated user or via M2M.
+    Resource role phase dependencies APIs can only be called from admins or M2M with valid scopes.
 
   version: "1.0.0"
 host: api.topcoder.com
@@ -260,6 +261,142 @@ paths:
           $ref: '#/definitions/Conflict'
         500:
           $ref: '#/definitions/ServerError'
+  /resourceRolePhaseDependencies:
+    get:
+      description: Get resource role phase dependencies
+      tags:
+        - Resource Role Phase Dependencies
+      security:
+        - Bearer: []
+      parameters:
+        - name: phaseId
+          type: string
+          description: The phase id
+          format: UUID
+          in: query
+          required: false
+        - name: resourceRoleId
+          type: string
+          description: The resource role id
+          format: UUID
+          in: query
+          required: false
+        - name: phaseState
+          type: boolean
+          description: The phase state
+          in: query
+          required: false
+      responses:
+        200:
+          description: OK - the request was successful
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ResourceRolePhaseDependency'
+        400:
+          $ref: '#/definitions/BadRequest'
+        401:
+          $ref: '#/definitions/Unauthorized'
+        403:
+          $ref: '#/definitions/Forbidden'
+        404:
+          $ref: '#/definitions/NotFound'
+        500:
+          $ref: '#/definitions/ServerError'
+    post:
+      description: Create a new resource role phase dependency.
+      tags:
+        - Resource Role Phase Dependencies
+      security:
+        - Bearer: []
+      parameters:
+        - name: resourceRolePhaseDependency
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ResourceRolePhaseDependencyRequestBody'
+      responses:
+        200:
+          description: OK - the request was successful
+          schema:
+            $ref: '#/definitions/ResourceRolePhaseDependency'
+        400:
+          $ref: '#/definitions/BadRequest'
+        401:
+          $ref: '#/definitions/Unauthorized'
+        403:
+          $ref: '#/definitions/Forbidden'
+        404:
+          $ref: '#/definitions/NotFound'
+        409:
+          $ref: '#/definitions/Conflict'
+        500:
+          $ref: '#/definitions/ServerError'
+  /resourceRolePhaseDependencies/{id}:
+    put:
+      description: >
+        Update an existing resource role phase dependency.
+      tags:
+        - Resource Role Phase Dependencies
+      security:
+        - Bearer: []
+      parameters:
+        - name: id
+          type: string
+          format: UUID
+          in: path
+          required: true
+          description: the dependency id
+        - name: resourceRolePhaseDependency
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ResourceRolePhaseDependencyRequestBody'
+      responses:
+        200:
+          description: OK - the request was successful
+          schema:
+            $ref: '#/definitions/ResourceRolePhaseDependency'
+        400:
+          $ref: '#/definitions/BadRequest'
+        401:
+          $ref: '#/definitions/Unauthorized'
+        403:
+          $ref: '#/definitions/Forbidden'
+        404:
+          $ref: '#/definitions/NotFound'
+        409:
+          $ref: '#/definitions/Conflict'
+        500:
+          $ref: '#/definitions/ServerError'
+    delete:
+      description: Delete a resource role phase dependency
+      tags:
+        - Resource Role Phase Dependencies
+      security:
+        - Bearer: []
+      parameters:
+        - name: id
+          type: string
+          format: UUID
+          in: path
+          required: true
+          description: the dependency id
+      responses:
+        200:
+          description: OK - the request was successful
+          schema:
+            $ref: '#/definitions/ResourceRolePhaseDependency'
+        400:
+          $ref: '#/definitions/BadRequest'
+        401:
+          $ref: '#/definitions/Unauthorized'
+        403:
+          $ref: '#/definitions/Forbidden'
+        404:
+          $ref: '#/definitions/NotFound'
+        500:
+          $ref: '#/definitions/ServerError'
 definitions:
   Resource:
     type: object
@@ -323,6 +460,27 @@ definitions:
         type: boolean
       selfObtainable:
         type: boolean
+  ResourceRolePhaseDependency:
+    type: object
+    required:
+      - phaseId
+      - resourceRoleId
+      - phaseState
+    properties:
+      id:
+        type: string
+        format: UUID
+        readOnly: true
+      phaseId:
+        type: string
+        format: UUID
+        description: the phase id
+      resourceRoleId:
+        type: string
+        format: UUID
+        description: the resource role id
+      phaseState:
+        type: boolean
 
   # Schema for request body
   ResourceRequestBody:
@@ -343,6 +501,23 @@ definitions:
         type: string
         format: UUID
         description: The resource role ID
+  ResourceRolePhaseDependencyRequestBody:
+    type: object
+    required:
+      - phaseId
+      - resourceRoleId
+      - phaseState
+    properties:
+      phaseId:
+        type: string
+        format: UUID
+        description: the phase id
+      resourceRoleId:
+        type: string
+        format: UUID
+        description: the resource role id
+      phaseState:
+        type: boolean
 
   # Schema for error body
   Unauthorized:

@@ -68,5 +68,37 @@ module.exports = {
       access: [constants.UserRoles.Admin],
       scopes: [UPDATE, ALL]
     }
+  },
+  '/resourceRolePhaseDependencies': {
+    get: {
+      controller: 'ResourceRolePhaseDependencyController',
+      method: 'getDependencies',
+      auth: 'jwt',
+      access: [constants.UserRoles.Admin],
+      scopes: [READ, ALL]
+    },
+    post: {
+      controller: 'ResourceRolePhaseDependencyController',
+      method: 'createDependency',
+      auth: 'jwt',
+      access: [constants.UserRoles.Admin],
+      scopes: [CREATE, ALL]
+    }
+  },
+  '/resourceRolePhaseDependencies/:id': {
+    put: {
+      controller: 'ResourceRolePhaseDependencyController',
+      method: 'updateDependency',
+      auth: 'jwt',
+      access: [constants.UserRoles.Admin],
+      scopes: [UPDATE, ALL]
+    },
+    delete: {
+      controller: 'ResourceRolePhaseDependencyController',
+      method: 'deleteDependency',
+      auth: 'jwt',
+      access: [constants.UserRoles.Admin],
+      scopes: [DELETE, ALL]
+    }
   }
 }

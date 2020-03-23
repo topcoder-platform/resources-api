@@ -5,8 +5,9 @@
 const _ = require('lodash')
 const should = require('should')
 const service = require('../../src/services/ResourceService')
+const ResourceRolePhaseDependencyService = require('../../src/services/ResourceRolePhaseDependencyService')
 const { requestBody, user } = require('../common/testData')
-const { assertValidationError, assertError, assertResource, getRoleIds } = require('../common/testHelper')
+const { assertValidationError, assertError, assertResource, getRoleIds, clearDependencies } = require('../common/testHelper')
 
 const challengeId1 = 'fe6d0a58-ce7d-4521-8501-b8132b1c0391'
 const challengeId2 = 'fe6d0a58-ce7d-4521-8501-b8132b1c0392'
@@ -19,6 +20,7 @@ module.exports = describe('Create resource', () => {
   let observerRoleId
   let submitterRoleId
   let reviewerRoleId
+  let dependency
 
   before(async () => {
     const ret = await getRoleIds()
@@ -26,14 +28,41 @@ module.exports = describe('Create resource', () => {
     observerRoleId = ret.observerRoleId
     submitterRoleId = ret.submitterRoleId
     reviewerRoleId = ret.reviewerRoleId
+
+    const records = await ResourceRolePhaseDependencyService.getDependencies({ resourceRoleId: copilotRoleId })
+    dependency = records[0]
+  })
+
+  it('create resource - wrong phase state', async () => {
+    await ResourceRolePhaseDependencyService.updateDependency(dependency.id, {
+      phaseId: dependency.phaseId,
+      resourceRoleId: dependency.resourceRoleId,
+      phaseState: false
+    })
+    try {
+      const entity = resources.createBody('HoHoSKY', copilotRoleId, challengeId1)
+      await service.createResource(user.admin, entity)
+      throw new Error('should not throw error here')
+    } catch (err) {
+      should.equal(err.name, 'BadRequestError')
+      assertError(err, `Phase ${dependency.phaseId} should not be open`)
+    }
   })
 
   it('create resource by admin', async () => {
+    await ResourceRolePhaseDependencyService.updateDependency(dependency.id, {
+      phaseId: dependency.phaseId,
+      resourceRoleId: dependency.resourceRoleId,
+      phaseState: true
+    })
     const entity = resources.createBody('HoHoSKY', copilotRoleId, challengeId1)
     const ret = await service.createResource(user.admin, entity)
     should.equal(ret.roleId, entity.roleId)
     should.equal(ret.memberHandle.toLowerCase(), entity.memberHandle.toLowerCase())
     await assertResource(ret.id, ret)
+
+    // remove the dependencies so that below tests will not have these limitations
+    await clearDependencies()
   })
 
   it('create another resource for user hohosky', async () => {

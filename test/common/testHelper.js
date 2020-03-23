@@ -109,7 +109,7 @@ function assertValidationError (err, message) {
  * @param message the message
  */
 function assertError (err, message) {
-  should.equal(err.message, message)
+  should.equal(err.message.indexOf(message) >= 0, true)
   errorLogs.should.not.be.empty()
   errorLogs.should.containEql(err.stack)
 }
@@ -144,6 +144,29 @@ async function assertResource (id, expected) {
   should.equal(entity.createdBy, expected.createdBy)
 }
 
+/**
+ * Assert resource role phase dependency entity in database.
+ * @param {String} id the entity id
+ * @param {Object} expected the expected data
+ */
+async function assertResourceRolePhaseDependency (id, expected) {
+  should.exist(id)
+  const entity = await helper.getById('ResourceRolePhaseDependency', id)
+  should.equal(entity.phaseId, expected.phaseId)
+  should.equal(entity.resourceRoleId, expected.resourceRoleId)
+  should.equal(entity.phaseState, expected.phaseState)
+}
+
+/**
+ * Clear all resource role phase dependencies.
+ */
+async function clearDependencies () {
+  const dependencies = await helper.scan('ResourceRolePhaseDependency')
+  for (const d of dependencies) {
+    await d.delete()
+  }
+}
+
 module.exports = {
   getRequest,
   putRequest,
@@ -154,5 +177,7 @@ module.exports = {
   assertValidationError,
   assertResourceRole,
   assertResource,
-  initLogs
+  assertResourceRolePhaseDependency,
+  initLogs,
+  clearDependencies
 }
