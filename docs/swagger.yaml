@@ -261,7 +261,7 @@ paths:
           $ref: '#/definitions/Conflict'
         500:
           $ref: '#/definitions/ServerError'
-  /resourceRolePhaseDependencies:
+  /resourceRoles/PhaseDependencies:
     get:
       description: Get resource role phase dependencies
       tags:
@@ -332,7 +332,7 @@ paths:
           $ref: '#/definitions/Conflict'
         500:
           $ref: '#/definitions/ServerError'
-  /resourceRolePhaseDependencies/{id}:
+  /resourceRoles/PhaseDependencies/{id}:
     put:
       description: >
         Update an existing resource role phase dependency.

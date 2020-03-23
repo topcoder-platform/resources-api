@@ -69,7 +69,7 @@ module.exports = {
       scopes: [UPDATE, ALL]
     }
   },
-  '/resourceRolePhaseDependencies': {
+  '/resourceRoles/PhaseDependencies': {
     get: {
       controller: 'ResourceRolePhaseDependencyController',
       method: 'getDependencies',
@@ -85,7 +85,7 @@ module.exports = {
       scopes: [CREATE, ALL]
     }
   },
-  '/resourceRolePhaseDependencies/:id': {
+  '/resourceRoles/PhaseDependencies/:id': {
     put: {
       controller: 'ResourceRolePhaseDependencyController',
       method: 'updateDependency',

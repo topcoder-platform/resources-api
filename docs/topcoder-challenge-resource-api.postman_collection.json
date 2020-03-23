@@ -1688,12 +1688,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies"
+										"resourceRoles/PhaseDependencies"
 									]
 								}
 							},
@@ -1741,12 +1741,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": true\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies"
+										"resourceRoles/PhaseDependencies"
 									]
 								}
 							},
@@ -1793,12 +1793,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies"
+										"resourceRoles/PhaseDependencies"
 									]
 								}
 							},
@@ -1845,12 +1845,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies"
+										"resourceRoles/PhaseDependencies"
 									]
 								}
 							},
@@ -1897,12 +1897,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies"
+										"resourceRoles/PhaseDependencies"
 									]
 								}
 							},
@@ -1949,12 +1949,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies"
+										"resourceRoles/PhaseDependencies"
 									]
 								}
 							},
@@ -1996,12 +1996,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies"
+										"resourceRoles/PhaseDependencies"
 									]
 								}
 							},
@@ -2048,12 +2048,12 @@
 									"raw": "{\n\t\"phaseId\": \"abc\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies"
+										"resourceRoles/PhaseDependencies"
 									]
 								}
 							},
@@ -2124,12 +2124,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies"
+										"resourceRoles/PhaseDependencies"
 									]
 								}
 							},
@@ -2171,12 +2171,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies?phaseId={{PHASE_ID}}&resourceRoleId={{SUBMITTER_RESOURCE_ROLE_ID}}&phaseState=false",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies?phaseId={{PHASE_ID}}&resourceRoleId={{SUBMITTER_RESOURCE_ROLE_ID}}&phaseState=false",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies"
+										"resourceRoles/PhaseDependencies"
 									],
 									"query": [
 										{
@@ -2232,12 +2232,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies?phaseId=abc&resourceRoleId=123&phaseState=abc",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies?phaseId=abc&resourceRoleId=123&phaseState=abc",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies"
+										"resourceRoles/PhaseDependencies"
 									],
 									"query": [
 										{
@@ -2293,12 +2293,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies"
+										"resourceRoles/PhaseDependencies"
 									]
 								}
 							},
@@ -2340,12 +2340,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies"
+										"resourceRoles/PhaseDependencies"
 									]
 								}
 							},
@@ -2420,12 +2420,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": true\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies/{{DEPENDENCY_ID_1}}",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies/{{DEPENDENCY_ID_1}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies",
+										"resourceRoles/PhaseDependencies",
 										"{{DEPENDENCY_ID_1}}"
 									]
 								}
@@ -2472,12 +2472,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies/{{DEPENDENCY_ID_1}}",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies/{{DEPENDENCY_ID_1}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies",
+										"resourceRoles/PhaseDependencies",
 										"{{DEPENDENCY_ID_1}}"
 									]
 								}
@@ -2524,12 +2524,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{DEPENDENCY_ID_2}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies/{{DEPENDENCY_ID_1}}",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies/{{DEPENDENCY_ID_1}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies",
+										"resourceRoles/PhaseDependencies",
 										"{{DEPENDENCY_ID_1}}"
 									]
 								}
@@ -2576,12 +2576,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies/{{COPILOT_RESOURCE_ROLE_ID}}",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies/{{COPILOT_RESOURCE_ROLE_ID}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies",
+										"resourceRoles/PhaseDependencies",
 										"{{COPILOT_RESOURCE_ROLE_ID}}"
 									]
 								}
@@ -2628,12 +2628,12 @@
 									"raw": "{\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies/{{DEPENDENCY_ID_1}}",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies/{{DEPENDENCY_ID_1}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies",
+										"resourceRoles/PhaseDependencies",
 										"{{DEPENDENCY_ID_1}}"
 									]
 								}
@@ -2680,12 +2680,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies/{{DEPENDENCY_ID_1}}",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies/{{DEPENDENCY_ID_1}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies",
+										"resourceRoles/PhaseDependencies",
 										"{{DEPENDENCY_ID_1}}"
 									]
 								}
@@ -2761,12 +2761,12 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies/{{DEPENDENCY_ID_1}}",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies/{{DEPENDENCY_ID_1}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies",
+										"resourceRoles/PhaseDependencies",
 										"{{DEPENDENCY_ID_1}}"
 									]
 								}
@@ -2813,12 +2813,12 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies/{{DEPENDENCY_ID_2}}",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies/{{DEPENDENCY_ID_2}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies",
+										"resourceRoles/PhaseDependencies",
 										"{{DEPENDENCY_ID_2}}"
 									]
 								}
@@ -2865,12 +2865,12 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies/{{SUBMITTER_RESOURCE_ROLE_ID}}",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies/{{SUBMITTER_RESOURCE_ROLE_ID}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies",
+										"resourceRoles/PhaseDependencies",
 										"{{SUBMITTER_RESOURCE_ROLE_ID}}"
 									]
 								}
@@ -2917,12 +2917,12 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies/abc",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies/abc",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies",
+										"resourceRoles/PhaseDependencies",
 										"abc"
 									]
 								}
@@ -2969,12 +2969,12 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies/{{DEPENDENCY_ID_2}}",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies/{{DEPENDENCY_ID_2}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies",
+										"resourceRoles/PhaseDependencies",
 										"{{DEPENDENCY_ID_2}}"
 									]
 								}
@@ -3021,12 +3021,12 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRolePhaseDependencies/{{DEPENDENCY_ID_2}}",
+									"raw": "{{URL}}/resourceRoles/PhaseDependencies/{{DEPENDENCY_ID_2}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRolePhaseDependencies",
+										"resourceRoles/PhaseDependencies",
 										"{{DEPENDENCY_ID_2}}"
 									]
 								}

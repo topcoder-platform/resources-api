@@ -9,7 +9,7 @@ const service = require('../../src/services/ResourceRolePhaseDependencyService')
 const { deleteRequest, getRoleIds } = require('../common/testHelper')
 const { token } = require('../common/testData')
 
-const dependenciesUrl = `http://localhost:${config.PORT}/${config.API_VERSION}/resourceRolePhaseDependencies`
+const dependenciesUrl = `http://localhost:${config.PORT}/${config.API_VERSION}/resourceRoles/PhaseDependencies`
 
 module.exports = describe('Delete resource role phase dependency endpoint', () => {
   let dependency
