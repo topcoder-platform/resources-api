@@ -57,13 +57,13 @@ module.exports = (app) => {
       }
 
       actions.push(method)
-      app[verb](path, helper.autoWrapExpress(actions))
+      app[verb](`/${config.API_VERSION}${path}`, helper.autoWrapExpress(actions))
     })
   })
 
   // Check if the route is not found or HTTP method is not supported
   app.use('*', (req, res) => {
-    const route = routes[req.baseUrl]
+    const route = routes[req.baseUrl.replace(`/${config.API_VERSION}`, '')]
     if (route) {
       res.status(HttpStatus.METHOD_NOT_ALLOWED).json({ message: 'The requested HTTP method is not supported.' })
     } else {

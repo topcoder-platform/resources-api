@@ -4,11 +4,14 @@
 
 process.env.NODE_ENV = 'test'
 
-global.Promise = require('bluebird')
+require('../../app-bootstrap')
 
+const _ = require('lodash')
 const config = require('config')
+const should = require('should')
 const logger = require('../../src/common/logger')
 const helper = require('../../src/common/helper')
+const { getRequest, putRequest } = require('../common/testHelper')
 
 const { mockChallengeApi } = require('../../mock/mock-challenge-api')
 
@@ -62,6 +65,10 @@ describe('Topcoder - Challenge Resource API E2E Test', () => {
     for (const resource of resources) {
       await resource.delete()
     }
+    const dependencies = await helper.scan('ResourceRolePhaseDependency')
+    for (const d of dependencies) {
+      await d.delete()
+    }
   }
 
   before(async () => {
@@ -109,15 +116,53 @@ describe('Topcoder - Challenge Resource API E2E Test', () => {
     await initDB()
   })
 
+  describe('Health check endpoints', () => {
+    it('health check success', async () => {
+      const res = await getRequest(`http://localhost:${config.PORT}/${config.API_VERSION}/resources/health`)
+      should.equal(res.status, 200)
+      should.equal(res.body.checksRun, 1)
+    })
+  })
+
+  describe('Failure routes Tests', () => {
+    it('Unsupported http method, return 405', async () => {
+      try {
+        await putRequest(`http://localhost:${config.PORT}/${config.API_VERSION}/resourceRoles`, {})
+        throw new Error('should not throw error here')
+      } catch (err) {
+        should.equal(err.status, 405)
+        should.equal(_.get(err, 'response.body.message'), 'The requested HTTP method is not supported.')
+      }
+    })
+
+    it('Http resource not found, return 404', async () => {
+      try {
+        await getRequest(`http://localhost:${config.PORT}/${config.API_VERSION}/invalid`)
+        throw new Error('should not throw error here')
+      } catch (err) {
+        should.equal(err.status, 404)
+        should.equal(_.get(err, 'response.body.message'), 'The requested resource cannot be found.')
+      }
+    })
+  })
+
   describe('Resource Roles endpoints', () => {
     require('./createResourceRole.test')
     require('./getResourceRoles.test')
     require('./updateResourceRole.test')
   })
 
+  describe('Resource Role Phase Dependencies endpoints', () => {
+    require('./createResourceRolePhaseDependency.test')
+    require('./getResourceRolePhaseDependencies.test')
+    require('./updateResourceRolePhaseDependency.test')
+    require('./deleteResourceRolePhaseDependency.test')
+  })
+
   describe('Resources endpoints', () => {
     require('./createResource.test')
     require('./getResources.test')
+    require('./listChallengesByMember.test')
     require('./deleteResource.test')
   })
 })

@@ -5,10 +5,13 @@
 const _ = require('lodash')
 const should = require('should')
 const service = require('../../src/services/ResourceService')
+const ResourceRolePhaseDependencyService = require('../../src/services/ResourceRolePhaseDependencyService')
 const { requestBody, user } = require('../common/testData')
-const { assertValidationError, assertError, assertResource, getRoleIds } = require('../common/testHelper')
+const { assertValidationError, assertError, assertResource, getRoleIds, clearDependencies } = require('../common/testHelper')
 
-const challengeId = 'fe6d0a58-ce7d-4521-8501-b8132b1c0391'
+const challengeId1 = 'fe6d0a58-ce7d-4521-8501-b8132b1c0391'
+const challengeId2 = 'fe6d0a58-ce7d-4521-8501-b8132b1c0392'
+const challengeId3 = 'fe6d0a58-ce7d-4521-8501-b8132b1c0393'
 const challengeNotFoundId = '11111111-ce7d-4521-8501-b8132b1c0391'
 const resources = requestBody.resources
 
@@ -16,42 +19,126 @@ module.exports = describe('Create resource', () => {
   let copilotRoleId
   let observerRoleId
   let submitterRoleId
+  let reviewerRoleId
+  let dependency
 
   before(async () => {
     const ret = await getRoleIds()
     copilotRoleId = ret.copilotRoleId
     observerRoleId = ret.observerRoleId
     submitterRoleId = ret.submitterRoleId
+    reviewerRoleId = ret.reviewerRoleId
+
+    const records = await ResourceRolePhaseDependencyService.getDependencies({ resourceRoleId: copilotRoleId })
+    dependency = records[0]
+  })
+
+  it('create resource - wrong phase state', async () => {
+    await ResourceRolePhaseDependencyService.updateDependency(dependency.id, {
+      phaseId: dependency.phaseId,
+      resourceRoleId: dependency.resourceRoleId,
+      phaseState: false
+    })
+    try {
+      const entity = resources.createBody('HoHoSKY', copilotRoleId, challengeId1)
+      await service.createResource(user.admin, entity)
+      throw new Error('should not throw error here')
+    } catch (err) {
+      should.equal(err.name, 'BadRequestError')
+      assertError(err, `Phase ${dependency.phaseId} should not be open`)
+    }
   })
 
   it('create resource by admin', async () => {
-    const entity = resources.createBody('HoHoSKY', copilotRoleId)
-    const ret = await service.createResource(user.admin, challengeId, entity)
+    await ResourceRolePhaseDependencyService.updateDependency(dependency.id, {
+      phaseId: dependency.phaseId,
+      resourceRoleId: dependency.resourceRoleId,
+      phaseState: true
+    })
+    const entity = resources.createBody('HoHoSKY', copilotRoleId, challengeId1)
+    const ret = await service.createResource(user.admin, entity)
+    should.equal(ret.roleId, entity.roleId)
+    should.equal(ret.memberHandle.toLowerCase(), entity.memberHandle.toLowerCase())
+    await assertResource(ret.id, ret)
+
+    // remove the dependencies so that below tests will not have these limitations
+    await clearDependencies()
+  })
+
+  it('create another resource for user hohosky', async () => {
+    const entity = resources.createBody('HoHoSKY', reviewerRoleId, challengeId1)
+    const ret = await service.createResource(user.admin, entity)
     should.equal(ret.roleId, entity.roleId)
     should.equal(ret.memberHandle.toLowerCase(), entity.memberHandle.toLowerCase())
     await assertResource(ret.id, ret)
   })
 
   it('create resource by user', async () => {
-    const entity = resources.createBody('denis', submitterRoleId)
-    const ret = await service.createResource(user.hohosky, challengeId, entity)
+    const entity = resources.createBody('denis', submitterRoleId, challengeId1)
+    const ret = await service.createResource(user.hohosky, entity)
     should.equal(ret.roleId, entity.roleId)
     should.equal(ret.memberHandle.toLowerCase(), entity.memberHandle.toLowerCase())
     await assertResource(ret.id, ret)
   })
 
+  it('failure - create self obtainable resource for other user by normal user forbidden', async () => {
+    const entity = resources.createBody('lars2520', submitterRoleId, challengeId1)
+    try {
+      await service.createResource(user.denis, entity)
+      throw new Error('should not throw error here')
+    } catch (err) {
+      should.equal(err.name, 'ForbiddenError')
+      assertError(err, `Only M2M, admin or user with full access role can perform this action`)
+    }
+  })
+
+  it('create self obtainable resource by user itself', async () => {
+    const entity = resources.createBody('lars2520', submitterRoleId, challengeId1)
+    const ret = await service.createResource(user.lars2520, entity)
+    should.equal(ret.roleId, entity.roleId)
+    should.equal(ret.memberHandle.toLowerCase(), entity.memberHandle.toLowerCase())
+    await assertResource(ret.id, ret)
+  })
+
+  it('failure - create non self obtainable resource by normal user forbidden', async () => {
+    const entity = resources.createBody('lars2520', copilotRoleId, challengeId1)
+    try {
+      await service.createResource(user.lars2520, entity)
+      throw new Error('should not throw error here')
+    } catch (err) {
+      should.equal(err.name, 'ForbiddenError')
+      assertError(err, `Only M2M, admin or user with full access role can perform this action`)
+    }
+  })
+
   it('create resource using m2m token', async () => {
-    const entity = resources.createBody('ghostar', submitterRoleId)
-    const ret = await service.createResource(user.m2m, challengeId, entity)
+    const entity = resources.createBody('ghostar', submitterRoleId, challengeId1)
+    const ret = await service.createResource(user.m2m, entity)
+    should.equal(ret.roleId, entity.roleId)
+    should.equal(ret.memberHandle.toLowerCase(), entity.memberHandle.toLowerCase())
+    await assertResource(ret.id, ret)
+  })
+
+  it('create resource for user ghostar 1', async () => {
+    const entity = resources.createBody('ghostar', reviewerRoleId, challengeId2)
+    const ret = await service.createResource(user.m2m, entity)
+    should.equal(ret.roleId, entity.roleId)
+    should.equal(ret.memberHandle.toLowerCase(), entity.memberHandle.toLowerCase())
+    await assertResource(ret.id, ret)
+  })
+
+  it('create resource for user ghostar 2', async () => {
+    const entity = resources.createBody('ghostar', reviewerRoleId, challengeId3)
+    const ret = await service.createResource(user.m2m, entity)
     should.equal(ret.roleId, entity.roleId)
     should.equal(ret.memberHandle.toLowerCase(), entity.memberHandle.toLowerCase())
     await assertResource(ret.id, ret)
   })
 
   it('failure - create resource using inactive role', async () => {
-    const entity = resources.createBody('ghostar', observerRoleId)
+    const entity = resources.createBody('ghostar', observerRoleId, challengeId1)
     try {
-      await service.createResource(user.m2m, challengeId, entity)
+      await service.createResource(user.m2m, entity)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.name, 'BadRequestError')
@@ -60,20 +147,20 @@ module.exports = describe('Create resource', () => {
   })
 
   it('failure - create resource using non-existed role', async () => {
-    const entity = resources.createBody('ghostar', challengeId)
+    const entity = resources.createBody('ghostar', challengeId1, challengeId1)
     try {
-      await service.createResource(user.m2m, challengeId, entity)
+      await service.createResource(user.m2m, entity)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.name, 'BadRequestError')
-      assertError(err, `No resource role found with id: ${challengeId}.`)
+      assertError(err, `No resource role found with id: ${challengeId1}.`)
     }
   })
 
   it(`failure - create resource member doesn't exist`, async () => {
-    const entity = resources.createBody('123abcx', observerRoleId)
+    const entity = resources.createBody('123abcx', observerRoleId, challengeId1)
     try {
-      await service.createResource(user.m2m, challengeId, entity)
+      await service.createResource(user.m2m, entity)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.name, 'BadRequestError')
@@ -85,7 +172,9 @@ module.exports = describe('Create resource', () => {
 
   it(`test invalid parameters, challengeId must be UUID`, async () => {
     try {
-      await service.createResource(user.m2m, 'invalid', testBody)
+      let entity = _.cloneDeep(testBody)
+      entity.challengeId = 'invalid'
+      await service.createResource(user.m2m, entity)
       throw new Error('should not throw error here')
     } catch (err) {
       assertValidationError(err, '"challengeId" must be a valid GUID')
@@ -97,7 +186,7 @@ module.exports = describe('Create resource', () => {
       let entity = _.cloneDeep(testBody)
       _.set(entity, stringField, 123)
       try {
-        await service.createResource(user.m2m, challengeId, entity)
+        await service.createResource(user.m2m, entity)
         throw new Error('should not throw error here')
       } catch (err) {
         assertValidationError(err, `"${stringField}" must be a string`)
@@ -110,7 +199,7 @@ module.exports = describe('Create resource', () => {
       let entity = _.cloneDeep(testBody)
       entity = _.omit(entity, requiredField)
       try {
-        await service.createResource(user.m2m, challengeId, entity)
+        await service.createResource(user.m2m, entity)
         throw new Error('should not throw error here')
       } catch (err) {
         assertValidationError(err, `"${requiredField}" is required`)
@@ -119,9 +208,9 @@ module.exports = describe('Create resource', () => {
   }
 
   it('failure - create resource for non-existed challenge', async () => {
-    const entity = resources.createBody('ghostar', observerRoleId)
+    const entity = resources.createBody('ghostar', observerRoleId, challengeNotFoundId)
     try {
-      await service.createResource(user.m2m, challengeNotFoundId, entity)
+      await service.createResource(user.m2m, entity)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.status, 404)
@@ -130,13 +219,13 @@ module.exports = describe('Create resource', () => {
   })
 
   it('failure - create duplicate resource', async () => {
-    const entity = resources.createBody('hohosky', copilotRoleId)
+    const entity = resources.createBody('hohosky', copilotRoleId, challengeId1)
     try {
-      await service.createResource(user.m2m, challengeId, entity)
+      await service.createResource(user.m2m, entity)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.name, 'ConflictError')
-      assertError(err, `User hohosky already has resource with roleId: ${copilotRoleId} in challenge: ${challengeId}`)
+      assertError(err, `User hohosky already has resource with roleId: ${copilotRoleId} in challenge: ${challengeId1}`)
     }
   })
 })

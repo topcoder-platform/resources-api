@@ -14,12 +14,16 @@ const challengeNotFoundId = '11111111-ce7d-4521-8501-b8132b1c0391'
 module.exports = describe('Get resources', () => {
   let copilotRoleId
   let submitterRoleId
+  let reviewerRoleId
 
   before(async () => {
     const ret = await getRoleIds()
     copilotRoleId = ret.copilotRoleId
     submitterRoleId = ret.submitterRoleId
+    reviewerRoleId = ret.reviewerRoleId
   })
+
+  let hasCopilotRole, hasReviewerRole
 
   /**
    * Assert resource entity in database.
@@ -34,7 +38,12 @@ module.exports = describe('Get resources', () => {
     should.equal(entity.memberHandle.toLowerCase(), expected.memberHandle.toLowerCase())
     should.equal(entity.roleId, expected.roleId)
     if (entity.memberHandle.toLowerCase() === 'hohosky') {
-      should.equal(entity.roleId, copilotRoleId)
+      if (entity.roleId === copilotRoleId) {
+        hasCopilotRole = true
+      }
+      if (entity.roleId === reviewerRoleId) {
+        hasReviewerRole = true
+      }
     } else {
       should.equal(entity.roleId, submitterRoleId)
     }
@@ -44,27 +53,42 @@ module.exports = describe('Get resources', () => {
   }
 
   it('get resources by admin', async () => {
+    hasCopilotRole = false
+    hasReviewerRole = false
     const records = await service.getResources(user.admin, challengeId)
-    should.equal(records.length, 3)
+    should.equal(records.length, 5)
     for (const record of records) {
       await assertResource(record.id, record)
     }
+    // user hohosky should have two resources
+    should.equal(hasCopilotRole, true)
+    should.equal(hasReviewerRole, true)
   })
 
   it('get resources by user has full-access permission', async () => {
+    hasCopilotRole = false
+    hasReviewerRole = false
     const records = await service.getResources(user.hohosky, challengeId)
-    should.equal(records.length, 3)
+    should.equal(records.length, 5)
     for (const record of records) {
       await assertResource(record.id, record)
     }
+    // user hohosky should have two resources
+    should.equal(hasCopilotRole, true)
+    should.equal(hasReviewerRole, true)
   })
 
   it('get resources using m2m token', async () => {
+    hasCopilotRole = false
+    hasReviewerRole = false
     const records = await service.getResources(user.m2m, challengeId)
-    should.equal(records.length, 3)
+    should.equal(records.length, 5)
     for (const record of records) {
       await assertResource(record.id, record)
     }
+    // user hohosky should have two resources
+    should.equal(hasCopilotRole, true)
+    should.equal(hasReviewerRole, true)
   })
 
   it(`test invalid parameter, challengeId must be UUID`, async () => {

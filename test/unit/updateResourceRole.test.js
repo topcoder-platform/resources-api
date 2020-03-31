@@ -19,14 +19,14 @@ module.exports = describe('Update resource role', () => {
   })
 
   it('update resource role', async () => {
-    const entity = resourceRoles.createBody('co-pilot', false, false)
+    const entity = resourceRoles.createBody('co-pilot', false, false, true)
     const ret = await service.updateResourceRole(copilotRoleId, entity)
     should.equal(copilotRoleId, ret.id)
     await assertResourceRole(ret.id, entity)
   })
 
   it('update resource role again', async () => {
-    const entity = resourceRoles.createBody('CO-PILOT', true, true)
+    const entity = resourceRoles.createBody('CO-PILOT', true, true, false)
     const ret = await service.updateResourceRole(copilotRoleId, entity)
     should.equal(copilotRoleId, ret.id)
     await assertResourceRole(ret.id, entity)
@@ -93,7 +93,7 @@ module.exports = describe('Update resource role', () => {
   })
 
   it(`failure - update resource role name duplication`, async () => {
-    const entity = resourceRoles.createBody('SUBMITTER', false, true)
+    const entity = resourceRoles.createBody('SUBMITTER', false, true, true)
     try {
       await service.updateResourceRole(copilotRoleId, entity)
       throw new Error('should not throw error here')

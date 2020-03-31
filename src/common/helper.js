@@ -8,9 +8,37 @@ const request = require('superagent')
 const constants = require('../../app-constants')
 const models = require('../models')
 const errors = require('./errors')
+const logger = require('./logger')
 const m2mAuth = require('tc-core-library-js').auth.m2m
-
 const m2m = m2mAuth(_.pick(config, ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME', 'AUTH0_PROXY_SERVER_URL']))
+const busApi = require('tc-bus-api-wrapper')
+const busApiClient = busApi(_.pick(config, ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME', 'AUTH0_CLIENT_ID',
+  'AUTH0_CLIENT_SECRET', 'BUSAPI_URL', 'KAFKA_ERROR_TOPIC', 'AUTH0_PROXY_SERVER_URL']))
+
+/**
+ * Check the error is custom error.
+ * @returns {Boolean} true if error is custom error, false otherwise
+ */
+function isCustomError (err) {
+  return _.keys(errors).includes(err.name)
+}
+
+/**
+ * Send Kafka event message
+ * @params {String} topic the topic name
+ * @params {Object} payload the payload
+ */
+async function postEvent (topic, payload) {
+  logger.info(`Publish event to Kafka topic ${topic}`)
+  const message = {
+    topic,
+    originator: config.KAFKA_MESSAGE_ORIGINATOR,
+    timestamp: new Date().toISOString(),
+    'mime-type': 'application/json',
+    payload
+  }
+  await busApiClient.postEvent(message)
+}
 
 /**
  * Wrap async function to standard express function
@@ -99,12 +127,12 @@ async function getById (modelName, id) {
   return new Promise((resolve, reject) => {
     models[modelName].query('id').eq(id).exec((err, result) => {
       if (err) {
-        reject(err)
+        return reject(err)
       }
       if (result.length > 0) {
         return resolve(result[0])
       } else {
-        reject(new errors.NotFoundError(`${modelName} with id: ${id} doesn't exist`))
+        return reject(new errors.NotFoundError(`${modelName} with id: ${id} doesn't exist`))
       }
     })
   })
@@ -121,7 +149,7 @@ async function create (modelName, data) {
     const dbItem = new models[modelName](data)
     dbItem.save((err) => {
       if (err) {
-        reject(err)
+        return reject(err)
       }
 
       return resolve(dbItem)
@@ -142,7 +170,7 @@ async function update (dbItem, data) {
   return new Promise((resolve, reject) => {
     dbItem.save((err) => {
       if (err) {
-        reject(err)
+        return reject(err)
       }
 
       return resolve(dbItem)
@@ -160,7 +188,7 @@ async function scan (modelName, scanParams) {
   return new Promise((resolve, reject) => {
     models[modelName].scan(scanParams).exec((err, result) => {
       if (err) {
-        reject(err)
+        return reject(err)
       }
 
       return resolve(result.count === 0 ? [] : result)
@@ -178,7 +206,7 @@ async function query (modelName, queryParams) {
   return new Promise((resolve, reject) => {
     models[modelName].query(queryParams).exec((err, result) => {
       if (err) {
-        reject(err)
+        return reject(err)
       }
 
       return resolve(result.count === 0 ? [] : result)
@@ -203,9 +231,10 @@ async function validateDuplicate (modelName, queryParams, errorMessage) {
 /**
  * Uses superagent to proxy get request
  * @param {String} url the url
+ * @param {Object} query the query parameters, optional
  * @returns {Object} the response
  */
-async function getRequest (url) {
+async function getRequest (url, query) {
   const m2mToken = await m2m.getMachineToken(config.AUTH0_CLIENT_ID, config.AUTH0_CLIENT_SECRET)
 
   return request
@@ -213,6 +242,36 @@ async function getRequest (url) {
     .set('Authorization', `Bearer ${m2mToken}`)
     .set('Content-Type', 'application/json')
     .set('Accept', 'application/json')
+    .query(query || {})
+}
+
+/**
+ * Get all pages from TC API.
+ * @param {String} url the url
+ * @param {Object} query the query parameters, optional, it should not include page and perPage
+ * @returns {Array} the result records
+ */
+async function getAllPages (url, query) {
+  const perPage = 100
+  let page = 1
+  let result = []
+  for (;;) {
+    // get current page data
+    const res = await getRequest(url, _.assignIn({ page, perPage }, query || {}))
+    if (!_.isArray(res.body) || res.body.length === 0) {
+      break
+    }
+    result = _.concat(result, res.body)
+    if (res.headers['x-total']) {
+      const total = Number(res.headers['x-total'])
+      if (page * perPage >= total) {
+        break
+      }
+    }
+    // increment page
+    page += 1
+  }
+  return result
 }
 
 module.exports = {
@@ -226,5 +285,8 @@ module.exports = {
   query,
   scan,
   validateDuplicate,
-  getRequest
+  getRequest,
+  postEvent,
+  isCustomError,
+  getAllPages
 }

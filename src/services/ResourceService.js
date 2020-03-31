@@ -9,6 +9,9 @@ const uuid = require('uuid/v4')
 const helper = require('../common/helper')
 const logger = require('../common/logger')
 const errors = require('../common/errors')
+const ResourceRolePhaseDependencyService = require('./ResourceRolePhaseDependencyService')
+
+const payloadFields = ['id', 'challengeId', 'memberId', 'memberHandle', 'roleId']
 
 /**
  * Check whether the user can access resources
@@ -34,7 +37,7 @@ async function checkAccess (currentUser, resources) {
  * Get resources with given challenge id.
  * @param {Object} currentUser the current user
  * @param {String} challengeId the challenge id
- * @returns {Object} the search result
+ * @returns {Array} the search result
  */
 async function getResources (currentUser, challengeId) {
   // Verify that the challenge exists
@@ -83,16 +86,17 @@ async function getMemberInfo (memberHandle) {
 }
 
 /**
- * Validate the resource role.
+ * Get the resource role.
  * @param {String} roleId the resource role id
  * @param {Boolean} isCreated the flag indicate it is create operation.
  */
-async function validateResourceRole (roleId, isCreated) {
+async function getResourceRole (roleId, isCreated) {
   try {
     const resourceRole = await helper.getById('ResourceRole', roleId)
     if (isCreated && !resourceRole.isActive) {
       throw new errors.BadRequestError(`Resource role with id: ${roleId} is inactive, please use an active one.`)
     }
+    return resourceRole
   } catch (error) {
     if (error.name === 'NotFoundError') {
       throw new errors.BadRequestError(`No resource role found with id: ${roleId}.`)
@@ -103,7 +107,7 @@ async function validateResourceRole (roleId, isCreated) {
 }
 
 /**
- * Perform initialization. It will validate the input parameters(memberHandle and roleId),
+ * Perform initialization. It will validate the input parameters(memberHandle, roleId and phase dependencies),
  * check access for operating user.
  * Resource entities with specified challenge id will be returned if operating user is not admin/M2M.
  * If operating user is admin/M2M, it will return resource entities matching specified
@@ -116,18 +120,23 @@ async function validateResourceRole (roleId, isCreated) {
  */
 async function init (currentUser, challengeId, resource, isCreated) {
   // Verify that the challenge exists
-  await helper.getRequest(`${config.CHALLENGE_API_URL}/${challengeId}`)
+  const challengeRes = await helper.getRequest(`${config.CHALLENGE_API_URL}/${challengeId}`)
+  const challenge = challengeRes.body
 
   // get member information using v3 API
   const { memberId, handle } = await getMemberInfo(resource.memberHandle)
-  // validate resource role
-  await validateResourceRole(resource.roleId, isCreated)
+  // ensure resource role existed
+  const resourceRole = await getResourceRole(resource.roleId, isCreated)
 
   // perform access validation
   let resources
   if (!currentUser.isMachine && !helper.hasAdminRole(currentUser)) {
     resources = await helper.query('Resource', { challengeId })
-    await checkAccess(currentUser, resources)
+    if (!resourceRole.selfObtainable || memberId !== currentUser.userId) {
+      // if user is not creating/deleting a self obtainable resource for itself
+      // we need to perform check access first
+      await checkAccess(currentUser, resources)
+    }
   } else {
     // fetch resources for specified challenge and member
     resources = await helper.query('Resource', {
@@ -135,6 +144,30 @@ async function init (currentUser, challengeId, resource, isCreated) {
       range: { memberId: { eq: memberId } }
     })
   }
+  // check phases dependencies
+  const dependencies = await ResourceRolePhaseDependencyService.getDependencies({ resourceRoleId: resource.roleId })
+  _.forEach(dependencies, (dependency) => {
+    const phase = _.find(challenge.phases, (p) => p.phaseId === dependency.phaseId)
+    if (phase) {
+      let isOpen = phase.isOpen
+      if (_.isNil(isOpen)) {
+        isOpen = phase.actualStartDate && phase.actualEndDate &&
+          new Date(phase.actualStartDate) <= new Date() && new Date() <= new Date(phase.actualEndDate)
+      }
+      if (_.isNil(isOpen)) {
+        isOpen = phase.scheduledStartDate && phase.scheduledEndDate &&
+          new Date(phase.scheduledStartDate) <= new Date() && new Date() <= new Date(phase.scheduledEndDate)
+      }
+      if (_.isNil(isOpen)) {
+        isOpen = false
+      }
+      if (!_.isEqual(isOpen, dependency.phaseState)) {
+        throw new errors.BadRequestError(`Phase ${dependency.phaseId} should ${
+          dependency.phaseState ? 'be open' : 'not be open'
+        }`)
+      }
+    }
+  })
 
   // return resources and the member id
   return { resources, memberId, handle }
@@ -143,36 +176,48 @@ async function init (currentUser, challengeId, resource, isCreated) {
 /**
  * Create resource for a challenge.
  * @param {Object} currentUser the current user
- * @param {String} challengeId the challenge id
  * @param {Object} resource the resource to be created
  * @returns {Object} the created resource
  */
-async function createResource (currentUser, challengeId, resource) {
-  const { resources, memberId, handle } = await init(currentUser, challengeId, resource, true)
-  if (handle) {
-    resource.memberHandle = handle
-  }
+async function createResource (currentUser, resource) {
+  try {
+    const challengeId = resource.challengeId
 
-  if (_.reduce(resources,
-    (result, r) => r.memberId === memberId && r.roleId === resource.roleId ? true : result,
-    false)) {
-    throw new errors.ConflictError(`User ${resource.memberHandle} already has resource with roleId: ${resource.roleId} in challenge: ${challengeId}`)
-  }
+    const { resources, memberId, handle } = await init(currentUser, challengeId, resource, true)
+    if (handle) {
+      resource.memberHandle = handle
+    }
 
-  const ret = await helper.create('Resource', _.assign({
-    id: uuid(),
-    challengeId,
-    memberId,
-    created: new Date(),
-    createdBy: currentUser.handle || currentUser.sub
-  }, resource))
-  return ret
+    if (_.reduce(resources,
+      (result, r) => r.memberId === memberId && r.roleId === resource.roleId ? true : result,
+      false)) {
+      throw new errors.ConflictError(`User ${resource.memberHandle} already has resource with roleId: ${resource.roleId} in challenge: ${challengeId}`)
+    }
+
+    const ret = await helper.create('Resource', _.assign({
+      id: uuid(),
+      memberId,
+      created: new Date(),
+      createdBy: currentUser.handle || currentUser.sub
+    }, resource))
+
+    console.log('Created resource:', ret)
+
+    await helper.postEvent(config.RESOURCE_CREATE_TOPIC, _.pick(ret, payloadFields))
+
+    return ret
+  } catch (err) {
+    if (!helper.isCustomError(err)) {
+      await helper.postEvent(config.KAFKA_ERROR_TOPIC, { error: _.pick(err, 'name', 'message', 'stack') })
+    }
+    throw err
+  }
 }
 
 createResource.schema = {
   currentUser: Joi.any(),
-  challengeId: Joi.id(),
   resource: Joi.object().keys({
+    challengeId: Joi.id(),
     memberHandle: Joi.string().required(),
     roleId: Joi.id()
   }).required()
@@ -181,38 +226,79 @@ createResource.schema = {
 /**
  * Delete resource from a challenge.
  * @param {Object} currentUser the current user
- * @param {String} challengeId the challenge id
  * @param {Object} resource the resource to be deleted
  * @returns {Object} the deleted resource
  */
-async function deleteResource (currentUser, challengeId, resource) {
-  const { resources, memberId, handle } = await init(currentUser, challengeId, resource)
+async function deleteResource (currentUser, resource) {
+  try {
+    const challengeId = resource.challengeId
 
-  const ret = _.reduce(resources,
-    (result, r) => r.memberId === memberId && r.roleId === resource.roleId ? r : result,
-    undefined)
+    const { resources, memberId, handle } = await init(currentUser, challengeId, resource)
 
-  if (!ret) {
-    throw new errors.BadRequestError(`User ${handle || resource.memberHandle} doesn't have resource with roleId: ${resource.roleId} in challenge ${challengeId}`)
+    const ret = _.reduce(resources,
+      (result, r) => r.memberId === memberId && r.roleId === resource.roleId ? r : result,
+      undefined)
+
+    if (!ret) {
+      throw new errors.BadRequestError(`User ${handle || resource.memberHandle} doesn't have resource with roleId: ${resource.roleId} in challenge ${challengeId}`)
+    }
+
+    await ret.delete()
+
+    await helper.postEvent(config.RESOURCE_DELETE_TOPIC, _.pick(ret, payloadFields))
+    return ret
+  } catch (err) {
+    if (!helper.isCustomError(err)) {
+      await helper.postEvent(config.KAFKA_ERROR_TOPIC, { error: _.pick(err, 'name', 'message', 'stack') })
+    }
+    throw err
   }
-
-  await ret.delete()
-  return ret
 }
 
 deleteResource.schema = {
   currentUser: Joi.any(),
-  challengeId: Joi.id(),
   resource: Joi.object().keys({
+    challengeId: Joi.id(),
     memberHandle: Joi.string().required(),
     roleId: Joi.id()
+  }).required()
+}
+
+/**
+ * List all challenge ids that given member has access to.
+ * @param {Number} memberId the member id
+ * @param {Object} criteria the criteria, only has resourceRoleId filter
+ * @returns {Array} an array of challenge ids represents challenges that given member has access to.
+ */
+async function listChallengesByMember (memberId, criteria) {
+  const res = await helper.getRequest(`${config.USER_API_URL}?filter=id=${memberId}`)
+  if (_.get(res, 'body.result.content').length === 0) {
+    throw new errors.BadRequestError(`User with id: ${memberId} doesn't exist`)
+  }
+  // const queryParams = { hash: { memberId: { eq: String(memberId) } } }
+  const queryParams = { memberId: memberId }
+  if (criteria.resourceRoleId) {
+    queryParams.roleId = criteria.resourceRoleId
+    // ensure resource role exists
+    await getResourceRole(criteria.resourceRoleId)
+  }
+  console.log(queryParams)
+  const result = await helper.scan('Resource', queryParams)
+  return _.uniq(_.map(result, 'challengeId'))
+}
+
+listChallengesByMember.schema = {
+  memberId: Joi.number().integer().positive().required(),
+  criteria: Joi.object().keys({
+    resourceRoleId: Joi.string().uuid()
   }).required()
 }
 
 module.exports = {
   getResources,
   createResource,
-  deleteResource
+  deleteResource,
+  listChallengesByMember
 }
 
 logger.buildService(module.exports)

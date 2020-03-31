@@ -8,7 +8,7 @@ const should = require('should')
 const { putRequest, getRoleIds, assertResourceRole } = require('../common/testHelper')
 const { token, requestBody } = require('../common/testData')
 
-const resourceRoleUrl = `http://localhost:${config.PORT}/resourceRoles`
+const resourceRoleUrl = `http://localhost:${config.PORT}/${config.API_VERSION}/resourceRoles`
 const resourceRoles = requestBody.resourceRoles
 
 module.exports = describe('Update resource roles endpoint', () => {
@@ -20,7 +20,7 @@ module.exports = describe('Update resource roles endpoint', () => {
   })
 
   it('update resource role using m2m all token', async () => {
-    const body = resourceRoles.createBody('UPDATE-CO-PILOT', true, false)
+    const body = resourceRoles.createBody('UPDATE-CO-PILOT', true, false, true)
     const res = await putRequest(`${resourceRoleUrl}/${copilotRoleId}`, body, token.m2m)
     should.equal(res.status, 200)
     should.equal(copilotRoleId, res.body.id)
@@ -28,15 +28,15 @@ module.exports = describe('Update resource roles endpoint', () => {
   })
 
   it('update resource role using m2m resource roles token', async () => {
-    const body = resourceRoles.createBody('UPDATE-CO-PILOT', false, false)
-    const res = await putRequest(`${resourceRoleUrl}/${copilotRoleId}`, body, token.m2mResourceRoles)
+    const body = resourceRoles.createBody('UPDATE-CO-PILOT', false, false, false)
+    const res = await putRequest(`${resourceRoleUrl}/${copilotRoleId}`, body, token.m2mModify)
     should.equal(res.status, 200)
     should.equal(copilotRoleId, res.body.id)
     await assertResourceRole(copilotRoleId, res.body)
   })
 
   it('update resource role via admin', async () => {
-    const body = resourceRoles.createBody('CO-PILOT', true, true)
+    const body = resourceRoles.createBody('CO-PILOT', true, true, false)
     const res = await putRequest(`${resourceRoleUrl}/${copilotRoleId}`, body, token.admin)
     should.equal(res.status, 200)
     should.equal(copilotRoleId, res.body.id)
@@ -139,7 +139,7 @@ module.exports = describe('Update resource roles endpoint', () => {
 
   it(`test with invalid M2M token, expected 403`, async () => {
     try {
-      await putRequest(`${resourceRoleUrl}/${copilotRoleId}`, testBody, token.m2mResources)
+      await putRequest(`${resourceRoleUrl}/${copilotRoleId}`, testBody, token.m2mRead)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.status, 403)
@@ -159,7 +159,7 @@ module.exports = describe('Update resource roles endpoint', () => {
   })
 
   it(`update resource role name duplication, expected 409`, async () => {
-    const body = resourceRoles.createBody('SUBMITTER', false, true)
+    const body = resourceRoles.createBody('SUBMITTER', false, true, true)
     try {
       await putRequest(`${resourceRoleUrl}/${copilotRoleId}`, body, token.admin)
       throw new Error('should not throw error here')

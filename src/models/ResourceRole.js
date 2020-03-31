@@ -1,7 +1,8 @@
 /**
- * This defines ChallengeSetting model.
+ * This defines ResourceRole model.
  */
 
+const config = require('config')
 const dynamoose = require('dynamoose')
 
 const Schema = dynamoose.Schema
@@ -24,6 +25,10 @@ const schema = new Schema({
     type: Boolean,
     required: true
   },
+  selfObtainable: {
+    type: Boolean,
+    required: true
+  },
   nameLower: {
     type: String,
     required: true,
@@ -31,12 +36,12 @@ const schema = new Schema({
       global: true,
       project: true,
       name: 'resourceRole-nameLower-index',
-      throughput: { read: 2, write: 2 }
+      throughput: { read: config.DYNAMODB.AWS_READ_UNITS, write: config.DYNAMODB.AWS_WRITE_UNITS }
     }
   }
 },
 {
-  throughput: { read: 4, write: 2 }
+  throughput: { read: config.DYNAMODB.AWS_READ_UNITS, write: config.DYNAMODB.AWS_WRITE_UNITS }
 })
 
 module.exports = schema

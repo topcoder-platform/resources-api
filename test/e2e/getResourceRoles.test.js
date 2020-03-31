@@ -8,14 +8,14 @@ const should = require('should')
 const { getRequest, assertResourceRole } = require('../common/testHelper')
 const { token } = require('../common/testData')
 
-const resourceRoleUrl = `http://localhost:${config.PORT}/resourceRoles`
+const resourceRoleUrl = `http://localhost:${config.PORT}/${config.API_VERSION}/resourceRoles`
 
 module.exports = describe('Get resource roles endpoint', () => {
   it('get all resource roles', async () => {
     const res = await getRequest(resourceRoleUrl, token.admin)
     should.equal(res.status, 200)
     const records = res.body
-    should.equal(records.length, 3)
+    should.equal(records.length, 4)
     for (const record of records) {
       await assertResourceRole(record.id, record)
     }
@@ -25,7 +25,7 @@ module.exports = describe('Get resource roles endpoint', () => {
     const res = await getRequest(`${resourceRoleUrl}?isActive=true`, token.admin)
     should.equal(res.status, 200)
     const records = res.body
-    should.equal(records.length, 2)
+    should.equal(records.length, 3)
     for (const record of records) {
       should.equal(record.isActive, true)
       await assertResourceRole(record.id, record)
@@ -83,7 +83,7 @@ module.exports = describe('Get resource roles endpoint', () => {
 
   it(`test with invalid M2M token, expected 403`, async () => {
     try {
-      await getRequest(resourceRoleUrl, token.m2mResources)
+      await getRequest(resourceRoleUrl, token.m2mModify)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.status, 403)

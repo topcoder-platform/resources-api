@@ -4,8 +4,10 @@ info:
   description: |
     ## Security constraints
 
-    `Resources` endpoints can only be called from admins, via M2M, or users for whom there is at least one existing `Resource` where both `role.fullAccess` and `role.isActive` are `true`.
+    GET/POST/DELETE `/Resources` endpoints can only be called from admins, via M2M, or users for whom there is at least one existing `Resource` where both `role.fullAccess` and `role.isActive` are `true`. Special Case: User can create/delte selfObtainable resource for its own.
     `Resource Roles` POST and PUT endpoints can only be called from admins or via M2M.
+    GET `/Resources/{memberId}/challenges` endpoints can be called from any authenticated user or via M2M.
+    Resource role phase dependencies APIs can only be called from admins or M2M with valid scopes.
 
   version: "1.0.0"
 host: api.topcoder.com
@@ -22,20 +24,37 @@ produces:
   - application/json
 consumes:
   - application/json
-security:
-  - Bearer: []
 
 paths:
-  /challenges/{challengeId}/resources:
+  /health:
+    get:
+      description: Health check endpoint
+      tags:
+        - Health
+      responses:
+        200:
+          description: success
+          schema:
+            type: object
+            properties:
+              checksRun:
+                type: integer
+                example: 1
+        503:
+          $ref: '#/definitions/ServiceUnavailable'
+  /resources:
     get:
       description: Get all resources for a challenge
       tags:
         - Resources
+      security:
+        - Bearer: []
       parameters:
         - name: challengeId
           type: string
+          description: The challenge id
           format: UUID
-          in: path
+          in: query
           required: true
       responses:
         200:
@@ -58,12 +77,9 @@ paths:
       description: Create a new resource for a challenge. Verify that the challenge exists by calling the **/v5/challenges/{id}** endpoint using an M2M token.
       tags:
         - Resources
+      security:
+        - Bearer: []
       parameters:
-        - name: challengeId
-          type: string
-          format: UUID
-          in: path
-          required: true
         - name: resource
           in: body
           required: true
@@ -73,7 +89,6 @@ paths:
         200:
           description: OK - the request was successful
           schema:
-            type: object
             $ref: '#/definitions/Resource'
         400:
           $ref: '#/definitions/BadRequest'
@@ -91,12 +106,9 @@ paths:
       description: Delete a resource from a challenge
       tags:
         - Resources
+      security:
+        - Bearer: []
       parameters:
-        - name: challengeId
-          type: string
-          format: UUID
-          in: path
-          required: true
         - name: resource
           in: body
           required: true
@@ -106,7 +118,6 @@ paths:
         200:
           description: OK - the request was successful
           schema:
-            type: object
             $ref: '#/definitions/Resource'
         400:
           $ref: '#/definitions/BadRequest'
@@ -118,11 +129,50 @@ paths:
           $ref: '#/definitions/NotFound'
         500:
           $ref: '#/definitions/ServerError'
+  /resources/{memberId}/challenges:
+    get:
+      description: List all challenges that given topcoder member has access to.
+      tags:
+        - Resources
+      security:
+        - Bearer: []
+      parameters:
+        - name: memberId
+          type: integer
+          in: path
+          required: true
+          description: the user id
+        - name: resourceRoleId
+          type: string
+          format: UUID
+          in: query
+          required: false
+          description: the resource role id filter
+      responses:
+        200:
+          description: OK - the request was successful
+          schema:
+            type: array
+            items:
+              type: string
+              description: the challenge id
+              format: UUID
+              example: '97ee7396-5946-4a2e-968a-b35c7b009753'
+        400:
+          $ref: '#/definitions/BadRequest'
+        401:
+          $ref: '#/definitions/Unauthorized'
+        403:
+          $ref: '#/definitions/Forbidden'
+        500:
+          $ref: '#/definitions/ServerError'
   /resourceRoles:
     get:
       description: Get all resource roles. If isActive parameter is provided, filter the results by isActive property.
       tags:
         - Resource Roles
+      security:
+        - Bearer: []
       parameters:
         - name: isActive
           type: boolean
@@ -150,6 +200,8 @@ paths:
         Only admins can call this endpoint.
       tags:
         - Resource Roles
+      security:
+        - Bearer: []
       parameters:
         - name: resource
           in: body
@@ -160,7 +212,6 @@ paths:
         200:
           description: OK - the request was successful
           schema:
-            type: object
             $ref: '#/definitions/ResourceRole'
         400:
           $ref: '#/definitions/BadRequest'
@@ -180,6 +231,8 @@ paths:
         Only admins can call this endpoint.
       tags:
         - Resource Roles
+      security:
+        - Bearer: []
       parameters:
         - name: resourceRoleId
           type: string
@@ -195,7 +248,6 @@ paths:
         200:
           description: OK - the request was successful
           schema:
-            type: object
             $ref: '#/definitions/ResourceRole'
         400:
           $ref: '#/definitions/BadRequest'
@@ -207,6 +259,142 @@ paths:
           $ref: '#/definitions/NotFound'
         409:
           $ref: '#/definitions/Conflict'
+        500:
+          $ref: '#/definitions/ServerError'
+  /resourceRoles/PhaseDependencies:
+    get:
+      description: Get resource role phase dependencies
+      tags:
+        - Resource Role Phase Dependencies
+      security:
+        - Bearer: []
+      parameters:
+        - name: phaseId
+          type: string
+          description: The phase id
+          format: UUID
+          in: query
+          required: false
+        - name: resourceRoleId
+          type: string
+          description: The resource role id
+          format: UUID
+          in: query
+          required: false
+        - name: phaseState
+          type: boolean
+          description: The phase state
+          in: query
+          required: false
+      responses:
+        200:
+          description: OK - the request was successful
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ResourceRolePhaseDependency'
+        400:
+          $ref: '#/definitions/BadRequest'
+        401:
+          $ref: '#/definitions/Unauthorized'
+        403:
+          $ref: '#/definitions/Forbidden'
+        404:
+          $ref: '#/definitions/NotFound'
+        500:
+          $ref: '#/definitions/ServerError'
+    post:
+      description: Create a new resource role phase dependency.
+      tags:
+        - Resource Role Phase Dependencies
+      security:
+        - Bearer: []
+      parameters:
+        - name: resourceRolePhaseDependency
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ResourceRolePhaseDependencyRequestBody'
+      responses:
+        200:
+          description: OK - the request was successful
+          schema:
+            $ref: '#/definitions/ResourceRolePhaseDependency'
+        400:
+          $ref: '#/definitions/BadRequest'
+        401:
+          $ref: '#/definitions/Unauthorized'
+        403:
+          $ref: '#/definitions/Forbidden'
+        404:
+          $ref: '#/definitions/NotFound'
+        409:
+          $ref: '#/definitions/Conflict'
+        500:
+          $ref: '#/definitions/ServerError'
+  /resourceRoles/PhaseDependencies/{id}:
+    put:
+      description: >
+        Update an existing resource role phase dependency.
+      tags:
+        - Resource Role Phase Dependencies
+      security:
+        - Bearer: []
+      parameters:
+        - name: id
+          type: string
+          format: UUID
+          in: path
+          required: true
+          description: the dependency id
+        - name: resourceRolePhaseDependency
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ResourceRolePhaseDependencyRequestBody'
+      responses:
+        200:
+          description: OK - the request was successful
+          schema:
+            $ref: '#/definitions/ResourceRolePhaseDependency'
+        400:
+          $ref: '#/definitions/BadRequest'
+        401:
+          $ref: '#/definitions/Unauthorized'
+        403:
+          $ref: '#/definitions/Forbidden'
+        404:
+          $ref: '#/definitions/NotFound'
+        409:
+          $ref: '#/definitions/Conflict'
+        500:
+          $ref: '#/definitions/ServerError'
+    delete:
+      description: Delete a resource role phase dependency
+      tags:
+        - Resource Role Phase Dependencies
+      security:
+        - Bearer: []
+      parameters:
+        - name: id
+          type: string
+          format: UUID
+          in: path
+          required: true
+          description: the dependency id
+      responses:
+        200:
+          description: OK - the request was successful
+          schema:
+            $ref: '#/definitions/ResourceRolePhaseDependency'
+        400:
+          $ref: '#/definitions/BadRequest'
+        401:
+          $ref: '#/definitions/Unauthorized'
+        403:
+          $ref: '#/definitions/Forbidden'
+        404:
+          $ref: '#/definitions/NotFound'
         500:
           $ref: '#/definitions/ServerError'
 definitions:
@@ -257,6 +445,7 @@ definitions:
       - name
       - fullAccess
       - isActive
+      - selfObtainable
     properties:
       id:
         type: string
@@ -269,14 +458,42 @@ definitions:
         type: boolean
       isActive:
         type: boolean
+      selfObtainable:
+        type: boolean
+  ResourceRolePhaseDependency:
+    type: object
+    required:
+      - phaseId
+      - resourceRoleId
+      - phaseState
+    properties:
+      id:
+        type: string
+        format: UUID
+        readOnly: true
+      phaseId:
+        type: string
+        format: UUID
+        description: the phase id
+      resourceRoleId:
+        type: string
+        format: UUID
+        description: the resource role id
+      phaseState:
+        type: boolean
 
   # Schema for request body
   ResourceRequestBody:
     type: object
     required:
+      - challengeId
       - memberHandle
       - roleId
     properties:
+      challengeId:
+        type: string
+        format: UUID
+        description: The challenge id
       memberHandle:
         type: string
         description: The member handle
@@ -284,6 +501,23 @@ definitions:
         type: string
         format: UUID
         description: The resource role ID
+  ResourceRolePhaseDependencyRequestBody:
+    type: object
+    required:
+      - phaseId
+      - resourceRoleId
+      - phaseState
+    properties:
+      phaseId:
+        type: string
+        format: UUID
+        description: the phase id
+      resourceRoleId:
+        type: string
+        format: UUID
+        description: the resource role id
+      phaseState:
+        type: boolean
 
   # Schema for error body
   Unauthorized:
@@ -312,6 +546,15 @@ definitions:
         type: string
         description: The server error message.
         example: Something went wrong while processing your request. We’re sorry for the trouble. We’ve been notified of the error and will correct it as soon as possible. Please try your request again in a moment.
+
+  ServiceUnavailable:
+    type: object
+    description: The server is unavailable
+    properties:
+      message:
+        type: string
+        description: The server error message.
+        example: Something went wrong with the server.
 
   BadRequest:
     type: object

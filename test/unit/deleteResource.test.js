@@ -26,9 +26,9 @@ module.exports = describe('Delete resource', () => {
   })
 
   it(`failure - delete resource that user doesn't have`, async () => {
-    const entity = resources.createBody('HoHosky', observerRoleId)
+    const entity = resources.createBody('HoHosky', observerRoleId, challengeId)
     try {
-      await service.deleteResource(user.m2m, challengeId, entity)
+      await service.deleteResource(user.m2m, entity)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.name, 'BadRequestError')
@@ -37,9 +37,9 @@ module.exports = describe('Delete resource', () => {
   })
 
   it('failure - delete resource using non-existed role', async () => {
-    const entity = resources.createBody('ghostar', challengeId)
+    const entity = resources.createBody('ghostar', challengeId, challengeId)
     try {
-      await service.deleteResource(user.m2m, challengeId, entity)
+      await service.deleteResource(user.m2m, entity)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.name, 'BadRequestError')
@@ -48,9 +48,9 @@ module.exports = describe('Delete resource', () => {
   })
 
   it(`failure - delete resource member doesn't exist`, async () => {
-    const entity = resources.createBody('123abcx', observerRoleId)
+    const entity = resources.createBody('123abcx', observerRoleId, challengeId)
     try {
-      await service.deleteResource(user.m2m, challengeId, entity)
+      await service.deleteResource(user.m2m, entity)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.name, 'BadRequestError')
@@ -61,8 +61,10 @@ module.exports = describe('Delete resource', () => {
   let { stringFields, requiredFields, testBody } = resources
 
   it(`test invalid parameter, challengeId must be UUID`, async () => {
+    let entity = _.cloneDeep(testBody)
+    entity.challengeId = 'invalid'
     try {
-      await service.deleteResource(user.m2m, 'invalid', testBody)
+      await service.deleteResource(user.m2m, entity)
       throw new Error('should not throw error here')
     } catch (err) {
       assertValidationError(err, `"challengeId" must be a valid GUID`)
@@ -74,7 +76,7 @@ module.exports = describe('Delete resource', () => {
       let entity = _.cloneDeep(testBody)
       _.set(entity, stringField, 123)
       try {
-        await service.deleteResource(user.m2m, challengeId, entity)
+        await service.deleteResource(user.m2m, entity)
         throw new Error('should not throw error here')
       } catch (err) {
         assertValidationError(err, `"${stringField}" must be a string`)
@@ -87,7 +89,7 @@ module.exports = describe('Delete resource', () => {
       let entity = _.cloneDeep(testBody)
       entity = _.omit(entity, requiredField)
       try {
-        await service.deleteResource(user.m2m, challengeId, entity)
+        await service.deleteResource(user.m2m, entity)
         throw new Error('should not throw error here')
       } catch (err) {
         assertValidationError(err, `"${requiredField}" is required`)
@@ -96,9 +98,20 @@ module.exports = describe('Delete resource', () => {
   }
 
   it(`failure - delete resource with user without permission`, async () => {
-    const entity = resources.createBody('tonyj', submitterRoleId)
+    const entity = resources.createBody('tonyj', submitterRoleId, challengeId)
     try {
-      await service.deleteResource(user.denis, challengeId, entity)
+      await service.deleteResource(user.denis, entity)
+      throw new Error('should not throw error here')
+    } catch (err) {
+      should.equal(err.name, 'ForbiddenError')
+      assertError(err, 'Only M2M, admin or user with full access role can perform this action')
+    }
+  })
+
+  it(`failure - delete self obtainable resource for other user by normal user forbidden`, async () => {
+    const entity = resources.createBody('lars2520', submitterRoleId, challengeId)
+    try {
+      await service.deleteResource(user.denis, entity)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.name, 'ForbiddenError')
@@ -107,9 +120,9 @@ module.exports = describe('Delete resource', () => {
   })
 
   it('failure - delete resource for non-existed challenge', async () => {
-    const entity = resources.createBody('ghostar', observerRoleId)
+    const entity = resources.createBody('ghostar', observerRoleId, challengeNotFoundId)
     try {
-      await service.deleteResource(user.admin, challengeNotFoundId, entity)
+      await service.deleteResource(user.admin, entity)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.status, 404)
@@ -118,8 +131,8 @@ module.exports = describe('Delete resource', () => {
   })
 
   it('delete resource using m2m', async () => {
-    const data = resources.createBody('ghostar', submitterRoleId)
-    const ret = await service.deleteResource(user.m2m, challengeId, data)
+    const data = resources.createBody('ghostar', submitterRoleId, challengeId)
+    const ret = await service.deleteResource(user.m2m, data)
     should.exist(ret.id)
     try {
       await helper.getById('Resource', ret.id)
@@ -136,8 +149,8 @@ module.exports = describe('Delete resource', () => {
   })
 
   it('delete resource by user', async () => {
-    const data = resources.createBody('DENIS', submitterRoleId)
-    const ret = await service.deleteResource(user.hohosky, challengeId, data)
+    const data = resources.createBody('DENIS', submitterRoleId, challengeId)
+    const ret = await service.deleteResource(user.hohosky, data)
     should.exist(ret.id)
     try {
       await helper.getById('Resource', ret.id)
@@ -154,8 +167,8 @@ module.exports = describe('Delete resource', () => {
   })
 
   it('delete resource by admin', async () => {
-    const data = resources.createBody('HoHoSKY', copilotRoleId)
-    const ret = await service.deleteResource(user.admin, challengeId, data)
+    const data = resources.createBody('HoHoSKY', copilotRoleId, challengeId)
+    const ret = await service.deleteResource(user.admin, data)
     should.exist(ret.id)
     try {
       await helper.getById('Resource', ret.id)
@@ -169,5 +182,23 @@ module.exports = describe('Delete resource', () => {
     should.equal(ret.roleId, copilotRoleId)
     should.exist(ret.created)
     should.equal(ret.createdBy.toLowerCase(), 'tonyj')
+  })
+
+  it(`delete self obtainable resource by user itself`, async () => {
+    const data = resources.createBody('lars2520', submitterRoleId, challengeId)
+    const ret = await service.deleteResource(user.lars2520, data)
+    should.exist(ret.id)
+    try {
+      await helper.getById('Resource', ret.id)
+      throw new Error('should not throw error here')
+    } catch (err) {
+      should.equal(err.name, 'NotFoundError')
+    }
+    should.equal(ret.challengeId, challengeId)
+    should.exist(ret.memberId)
+    should.equal(ret.memberHandle.toLowerCase(), 'lars2520')
+    should.equal(ret.roleId, submitterRoleId)
+    should.exist(ret.created)
+    should.equal(ret.createdBy.toLowerCase(), 'lars2520')
   })
 })

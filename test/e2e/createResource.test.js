@@ -5,51 +5,133 @@
 const _ = require('lodash')
 const config = require('config')
 const should = require('should')
-const { postRequest, getRoleIds, assertResource } = require('../common/testHelper')
+const ResourceRolePhaseDependencyService = require('../../src/services/ResourceRolePhaseDependencyService')
+const { postRequest, getRoleIds, assertResource, clearDependencies } = require('../common/testHelper')
 const { token, requestBody } = require('../common/testData')
 
-const challengeId = 'fe6d0a58-ce7d-4521-8501-b8132b1c0391'
+const challengeId1 = 'fe6d0a58-ce7d-4521-8501-b8132b1c0391'
+const challengeId2 = 'fe6d0a58-ce7d-4521-8501-b8132b1c0392'
+const challengeId3 = 'fe6d0a58-ce7d-4521-8501-b8132b1c0393'
 const challengeNotFoundId = '11111111-ce7d-4521-8501-b8132b1c0391'
-const resourceUrl = `http://localhost:${config.PORT}/challenges/${challengeId}/resources`
-const resource400Url = `http://localhost:${config.PORT}/challenges/invalid/resources`
-const resource404Url = `http://localhost:${config.PORT}/challenges/${challengeNotFoundId}/resources`
+const resourceUrl = `http://localhost:${config.PORT}/${config.API_VERSION}/resources`
 const resources = requestBody.resources
 
 module.exports = describe('Create resource endpoint', () => {
   let copilotRoleId
   let observerRoleId
   let submitterRoleId
+  let reviewerRoleId
+  let dependency
 
   before(async () => {
     const ret = await getRoleIds()
     copilotRoleId = ret.copilotRoleId
     observerRoleId = ret.observerRoleId
     submitterRoleId = ret.submitterRoleId
+    reviewerRoleId = ret.reviewerRoleId
+
+    const records = await ResourceRolePhaseDependencyService.getDependencies({ resourceRoleId: copilotRoleId })
+    dependency = records[0]
+  })
+
+  it('failure - create resource with wrong phase state', async () => {
+    await ResourceRolePhaseDependencyService.updateDependency(dependency.id, {
+      phaseId: dependency.phaseId,
+      resourceRoleId: dependency.resourceRoleId,
+      phaseState: false
+    })
+    try {
+      const body = resources.createBody('HoHoSKY', copilotRoleId, challengeId1)
+      await postRequest(resourceUrl, body, token.admin)
+      throw new Error('should not throw error here')
+    } catch (err) {
+      should.equal(err.status, 400)
+      should.equal(_.get(err, 'response.body.message'), `Phase ${dependency.phaseId} should not be open`)
+    }
   })
 
   it('create resource by admin', async () => {
-    const body = resources.createBody('HoHoSKY', copilotRoleId)
+    await ResourceRolePhaseDependencyService.updateDependency(dependency.id, {
+      phaseId: dependency.phaseId,
+      resourceRoleId: dependency.resourceRoleId,
+      phaseState: true
+    })
+
+    const body = resources.createBody('HoHoSKY', copilotRoleId, challengeId1)
+    const res = await postRequest(resourceUrl, body, token.admin)
+    should.equal(res.status, 200)
+    await assertResource(res.body.id, res.body)
+
+    // remove the dependencies so that below tests will not have these limitations
+    await clearDependencies()
+  })
+
+  it('create another resource for user hohosky', async () => {
+    const body = resources.createBody('HoHoSKY', reviewerRoleId, challengeId1)
     const res = await postRequest(resourceUrl, body, token.admin)
     should.equal(res.status, 200)
     await assertResource(res.body.id, res.body)
   })
 
   it('create resource by user', async () => {
-    const body = resources.createBody('denis', submitterRoleId)
+    const body = resources.createBody('denis', submitterRoleId, challengeId1)
     const res = await postRequest(resourceUrl, body, token.hohosky)
     should.equal(res.status, 200)
     await assertResource(res.body.id, res.body)
   })
 
+  it('failure - create self obtainable resource for other user by normal user 403', async () => {
+    const body = resources.createBody('lars2520', submitterRoleId, challengeId1)
+    try {
+      await postRequest(resourceUrl, body, token.denis)
+      throw new Error('should not throw error here')
+    } catch (err) {
+      should.equal(err.status, 403)
+      should.equal(_.get(err, 'response.body.message'), `Only M2M, admin or user with full access role can perform this action`)
+    }
+  })
+
+  it('create self obtainable resource by user itself', async () => {
+    const body = resources.createBody('lars2520', submitterRoleId, challengeId1)
+    const res = await postRequest(resourceUrl, body, token.lars2520)
+    should.equal(res.status, 200)
+    await assertResource(res.body.id, res.body)
+  })
+
+  it('failure - create non self obtainable resource by normal user 403', async () => {
+    const body = resources.createBody('lars2520', copilotRoleId, challengeId1)
+    try {
+      await postRequest(resourceUrl, body, token.lars2520)
+      throw new Error('should not throw error here')
+    } catch (err) {
+      should.equal(err.status, 403)
+      should.equal(_.get(err, 'response.body.message'), `Only M2M, admin or user with full access role can perform this action`)
+    }
+  })
+
   it('create resource using m2m token', async () => {
-    const body = resources.createBody('ghostar', submitterRoleId)
+    const body = resources.createBody('ghostar', submitterRoleId, challengeId1)
+    const res = await postRequest(resourceUrl, body, token.m2m)
+    should.equal(res.status, 200)
+    await assertResource(res.body.id, res.body)
+  })
+
+  it('create resource for user ghostar 1', async () => {
+    const body = resources.createBody('ghostar', reviewerRoleId, challengeId2)
+    const res = await postRequest(resourceUrl, body, token.m2m)
+    should.equal(res.status, 200)
+    await assertResource(res.body.id, res.body)
+  })
+
+  it('create resource for user ghostar 2', async () => {
+    const body = resources.createBody('ghostar', reviewerRoleId, challengeId3)
     const res = await postRequest(resourceUrl, body, token.m2m)
     should.equal(res.status, 200)
     await assertResource(res.body.id, res.body)
   })
 
   it('create resource using inactive role, expected 400', async () => {
-    const body = resources.createBody('ghostar', observerRoleId)
+    const body = resources.createBody('ghostar', observerRoleId, challengeId1)
     try {
       await postRequest(resourceUrl, body, token.m2m)
       throw new Error('should not throw error here')
@@ -60,18 +142,18 @@ module.exports = describe('Create resource endpoint', () => {
   })
 
   it('create resource using non-existed role, expected 400', async () => {
-    const body = resources.createBody('ghostar', challengeId)
+    const body = resources.createBody('ghostar', challengeId1, challengeId1)
     try {
       await postRequest(resourceUrl, body, token.m2m)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.status, 400)
-      should.equal(_.get(err, 'response.body.message'), `No resource role found with id: ${challengeId}.`)
+      should.equal(_.get(err, 'response.body.message'), `No resource role found with id: ${challengeId1}.`)
     }
   })
 
   it(`create resource member doesn't exist, expected 400`, async () => {
-    const body = resources.createBody('123abcx', observerRoleId)
+    const body = resources.createBody('123abcx', challengeId1, challengeId1)
     try {
       await postRequest(resourceUrl, body, token.m2m)
       throw new Error('should not throw error here')
@@ -84,8 +166,10 @@ module.exports = describe('Create resource endpoint', () => {
   let { stringFields, requiredFields, testBody } = resources
 
   it(`test invalid path parameter, challengeId must be UUID`, async () => {
+    let body = _.cloneDeep(testBody)
+    body.challengeId = 'invalid'
     try {
-      await postRequest(resource400Url, testBody, token.admin)
+      await postRequest(resourceUrl, body, token.admin)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.status, 400)
@@ -152,7 +236,7 @@ module.exports = describe('Create resource endpoint', () => {
   })
 
   it(`test with user without permission, expected 403`, async () => {
-    const body = resources.createBody('tonyj', submitterRoleId)
+    const body = resources.createBody('tonyj', submitterRoleId, challengeId1)
     try {
       await postRequest(resourceUrl, body, token.denis)
       throw new Error('should not throw error here')
@@ -163,9 +247,9 @@ module.exports = describe('Create resource endpoint', () => {
   })
 
   it(`test with invalid M2M token, expected 403`, async () => {
-    const body = resources.createBody('tonyj', submitterRoleId)
+    const body = resources.createBody('tonyj', submitterRoleId, challengeId1)
     try {
-      await postRequest(resourceUrl, body, token.m2mResourceRoles)
+      await postRequest(resourceUrl, body, token.m2mRead)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.status, 403)
@@ -174,9 +258,9 @@ module.exports = describe('Create resource endpoint', () => {
   })
 
   it('create resource for non-existed challenge, expected 404', async () => {
-    const body = resources.createBody('ghostar', observerRoleId)
+    const body = resources.createBody('ghostar', observerRoleId, challengeNotFoundId)
     try {
-      await postRequest(resource404Url, body, token.m2m)
+      await postRequest(resourceUrl, body, token.m2m)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.status, 404)
@@ -185,13 +269,13 @@ module.exports = describe('Create resource endpoint', () => {
   })
 
   it(`create duplicate resource, expected 409`, async () => {
-    const body = resources.createBody('hohosky', copilotRoleId)
+    const body = resources.createBody('hohosky', copilotRoleId, challengeId1)
     try {
-      await postRequest(resourceUrl, body, token.m2mResources)
+      await postRequest(resourceUrl, body, token.m2mModify)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.status, 409)
-      should.equal(_.get(err, 'response.body.message'), `User hohosky already has resource with roleId: ${copilotRoleId} in challenge: ${challengeId}`)
+      should.equal(_.get(err, 'response.body.message'), `User hohosky already has resource with roleId: ${copilotRoleId} in challenge: ${challengeId1}`)
     }
   })
 })

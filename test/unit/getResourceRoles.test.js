@@ -9,7 +9,7 @@ const { assertValidationError, assertResourceRole } = require('../common/testHel
 module.exports = describe('Get resource role', () => {
   it('get all resource roles', async () => {
     const records = await service.getResourceRoles({})
-    should.equal(records.length, 3)
+    should.equal(records.length, 4)
     for (const record of records) {
       await assertResourceRole(record.id, record)
     }
@@ -17,7 +17,7 @@ module.exports = describe('Get resource role', () => {
 
   it('get active resource roles', async () => {
     const records = await service.getResourceRoles({ isActive: true })
-    should.equal(records.length, 2)
+    should.equal(records.length, 3)
     for (const record of records) {
       should.equal(record.isActive, true)
       await assertResourceRole(record.id, record)

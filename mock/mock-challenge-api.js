@@ -1,5 +1,5 @@
 /**
- * The mock challenge API.
+ * The mock challenge APIs.
  */
 
 const config = require('config')
@@ -24,6 +24,7 @@ const mockChallengeApi = http.createServer((req, res) => {
     if (error) {
       res.statusCode = 401
       res.end('Not Authorized')
+      return
     }
 
     if (req.method === 'GET' && req.url.match(/^\/v5\/challenges\/[a-zA-Z0-9-]+$/)) {
@@ -33,7 +34,16 @@ const mockChallengeApi = http.createServer((req, res) => {
         if (challengeId.startsWith('11111111')) {
           return send(res, 404, { message: `Challenge with id: ${challengeId} doesn't exist.` })
         } else {
-          return send(res, 200, { id: challengeId })
+          return send(res, 200, {
+            id: challengeId,
+            phases: [{
+              phaseId: 'aa5a3f78-79e0-4bf7-93ff-b11e8f5b398b',
+              isOpen: true
+            }, {
+              phaseId: 'cfe12b3f-2a12-4639-9d8b-ec86726f7644',
+              isOpen: false
+            }]
+          })
         }
       } else {
         return send(res, 400, { message: `Challenge id: ${challengeId} should be a UUID.` })
@@ -47,7 +57,7 @@ const mockChallengeApi = http.createServer((req, res) => {
 })
 
 if (!module.parent) {
-  const port = config.MOCK_CHALLENGE_API_PORT
+  const port = config.MOCK_CHALLENGE_API_PORT || 4000
   mockChallengeApi.listen(port)
   console.log(`mock challenge api is listen port ${port}`)
 }
