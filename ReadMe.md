@@ -12,6 +12,7 @@ This microservice provides interaction with Challenge Resources.
 -  [Swagger](https://github.com/topcoder-platform/resources-api/blob/develop/docs/swagger.yaml)
 
 ## Intended use
+
 - Production API
 
 ## Related repos
