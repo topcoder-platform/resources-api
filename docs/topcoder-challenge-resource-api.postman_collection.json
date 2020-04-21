@@ -53,12 +53,12 @@
 									"raw": "{\n\t\"name\": \"co-pilot\",\n\t\"fullAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles",
+									"raw": "{{URL}}/resource-roles",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles"
+										"resource-roles"
 									]
 								}
 							},
@@ -106,12 +106,12 @@
 									"raw": "{\n\t\"name\": \"Observer\",\n\t\"fullAccess\": true,\n\t\"isActive\": false,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles",
+									"raw": "{{URL}}/resource-roles",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles"
+										"resource-roles"
 									]
 								}
 							},
@@ -159,12 +159,12 @@
 									"raw": "{\n\t\"name\": \"submitter\",\n\t\"fullAccess\": false,\n\t\"isActive\": true,\n\t\"selfObtainable\": true\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles",
+									"raw": "{{URL}}/resource-roles",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles"
+										"resource-roles"
 									]
 								}
 							},
@@ -212,12 +212,12 @@
 									"raw": "{\n\t\"name\": \"reviewer\",\n\t\"fullAccess\": false,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles",
+									"raw": "{{URL}}/resource-roles",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles"
+										"resource-roles"
 									]
 								}
 							},
@@ -264,12 +264,12 @@
 									"raw": "{\n\t\"invalid\": \"invalid\",\n\t\"fullAccess\": true,\n\t\"isActive\": true\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles",
+									"raw": "{{URL}}/resource-roles",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles"
+										"resource-roles"
 									]
 								}
 							},
@@ -316,12 +316,12 @@
 									"raw": "{\n\t\"name\": \"failure-test\",\n\t\"fullAccess\": true\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles",
+									"raw": "{{URL}}/resource-roles",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles"
+										"resource-roles"
 									]
 								}
 							},
@@ -363,12 +363,12 @@
 									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": false,\n\t\"isActive\": true\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles",
+									"raw": "{{URL}}/resource-roles",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles"
+										"resource-roles"
 									]
 								}
 							},
@@ -415,12 +415,12 @@
 									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": false,\n\t\"isActive\": true\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles",
+									"raw": "{{URL}}/resource-roles",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles"
+										"resource-roles"
 									]
 								}
 							},
@@ -467,12 +467,12 @@
 									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": false,\n\t\"isActive\": true\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles",
+									"raw": "{{URL}}/resource-roles",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles"
+										"resource-roles"
 									]
 								}
 							},
@@ -519,12 +519,12 @@
 									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": false,\n\t\"isActive\": true\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles",
+									"raw": "{{URL}}/resource-roles",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles"
+										"resource-roles"
 									]
 								}
 							},
@@ -571,12 +571,12 @@
 									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": false,\n\t\"isActive\": true\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles",
+									"raw": "{{URL}}/resource-roles",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles"
+										"resource-roles"
 									]
 								}
 							},
@@ -623,12 +623,12 @@
 									"raw": "{\n\t\"name\": \"SUBMITTER\",\n\t\"fullAccess\": false,\n\t\"isActive\": true,\n\t\"selfObtainable\": true\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles",
+									"raw": "{{URL}}/resource-roles",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles"
+										"resource-roles"
 									]
 								}
 							},
@@ -677,12 +677,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{URL}}/resourceRoles",
+									"raw": "{{URL}}/resource-roles",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles"
+										"resource-roles"
 									]
 								}
 							},
@@ -724,12 +724,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{URL}}/resourceRoles?isActive=true",
+									"raw": "{{URL}}/resource-roles?isActive=true",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles"
+										"resource-roles"
 									],
 									"query": [
 										{
@@ -777,12 +777,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{URL}}/resourceRoles?isActive=false",
+									"raw": "{{URL}}/resource-roles?isActive=false",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles"
+										"resource-roles"
 									],
 									"query": [
 										{
@@ -830,12 +830,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{URL}}/resourceRoles?isActive=invalid",
+									"raw": "{{URL}}/resource-roles?isActive=invalid",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles"
+										"resource-roles"
 									],
 									"query": [
 										{
@@ -888,12 +888,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{URL}}/resourceRoles?isActive=true",
+									"raw": "{{URL}}/resource-roles?isActive=true",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles"
+										"resource-roles"
 									],
 									"query": [
 										{
@@ -936,12 +936,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{URL}}/resourceRoles?isActive=true",
+									"raw": "{{URL}}/resource-roles?isActive=true",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles"
+										"resource-roles"
 									],
 									"query": [
 										{
@@ -989,12 +989,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{URL}}/resourceRoles?isActive=true",
+									"raw": "{{URL}}/resource-roles?isActive=true",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles"
+										"resource-roles"
 									],
 									"query": [
 										{
@@ -1042,12 +1042,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{URL}}/resourceRoles?isActive=true",
+									"raw": "{{URL}}/resource-roles?isActive=true",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles"
+										"resource-roles"
 									],
 									"query": [
 										{
@@ -1106,12 +1106,12 @@
 									"raw": "{\n\t\"name\": \"failure-test\",\n\t\"fullAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/test",
+									"raw": "{{URL}}/resource-roles/test",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles",
+										"resource-roles",
 										"test"
 									]
 								}
@@ -1158,12 +1158,12 @@
 									"raw": "{\n\t\"name\": \"failure\",\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
+									"raw": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles",
+										"resource-roles",
 										"{{COPILOT_RESOURCE_ROLE_ID}}"
 									]
 								}
@@ -1205,12 +1205,12 @@
 									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
+									"raw": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles",
+										"resource-roles",
 										"{{COPILOT_RESOURCE_ROLE_ID}}"
 									]
 								}
@@ -1257,12 +1257,12 @@
 									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
+									"raw": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles",
+										"resource-roles",
 										"{{COPILOT_RESOURCE_ROLE_ID}}"
 									]
 								}
@@ -1309,12 +1309,12 @@
 									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
+									"raw": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles",
+										"resource-roles",
 										"{{COPILOT_RESOURCE_ROLE_ID}}"
 									]
 								}
@@ -1361,12 +1361,12 @@
 									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
+									"raw": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles",
+										"resource-roles",
 										"{{COPILOT_RESOURCE_ROLE_ID}}"
 									]
 								}
@@ -1413,12 +1413,12 @@
 									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
+									"raw": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles",
+										"resource-roles",
 										"{{COPILOT_RESOURCE_ROLE_ID}}"
 									]
 								}
@@ -1465,12 +1465,12 @@
 									"raw": "{\n\t\"name\": \"failure-test\",\n\t\"fullAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/{{CHALLENGE_ID}}",
+									"raw": "{{URL}}/resource-roles/{{CHALLENGE_ID}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles",
+										"resource-roles",
 										"{{CHALLENGE_ID}}"
 									]
 								}
@@ -1517,12 +1517,12 @@
 									"raw": "{\n\t\"name\": \"SUBMITTER\",\n\t\"fullAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
+									"raw": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles",
+										"resource-roles",
 										"{{COPILOT_RESOURCE_ROLE_ID}}"
 									]
 								}
@@ -1569,12 +1569,12 @@
 									"raw": "{\n\t\"name\": \"UPDATE-CO-PILOT\",\n\t\"fullAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
+									"raw": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles",
+										"resource-roles",
 										"{{COPILOT_RESOURCE_ROLE_ID}}"
 									]
 								}
@@ -1621,12 +1621,12 @@
 									"raw": "{\n\t\"name\": \"CO-PILOT\",\n\t\"fullAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/{{COPILOT_RESOURCE_ROLE_ID}}",
+									"raw": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles",
+										"resource-roles",
 										"{{COPILOT_RESOURCE_ROLE_ID}}"
 									]
 								}
@@ -1688,12 +1688,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies"
+										"resource-roles/Phase-dependencies"
 									]
 								}
 							},
@@ -1741,12 +1741,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": true\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies"
+										"resource-roles/Phase-dependencies"
 									]
 								}
 							},
@@ -1793,12 +1793,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies"
+										"resource-roles/Phase-dependencies"
 									]
 								}
 							},
@@ -1845,12 +1845,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies"
+										"resource-roles/Phase-dependencies"
 									]
 								}
 							},
@@ -1897,12 +1897,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies"
+										"resource-roles/Phase-dependencies"
 									]
 								}
 							},
@@ -1949,12 +1949,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies"
+										"resource-roles/Phase-dependencies"
 									]
 								}
 							},
@@ -1996,12 +1996,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies"
+										"resource-roles/Phase-dependencies"
 									]
 								}
 							},
@@ -2048,12 +2048,12 @@
 									"raw": "{\n\t\"phaseId\": \"abc\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies"
+										"resource-roles/Phase-dependencies"
 									]
 								}
 							},
@@ -2124,12 +2124,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies"
+										"resource-roles/Phase-dependencies"
 									]
 								}
 							},
@@ -2171,12 +2171,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies?phaseId={{PHASE_ID}}&resourceRoleId={{SUBMITTER_RESOURCE_ROLE_ID}}&phaseState=false",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies?phaseId={{PHASE_ID}}&resourceRoleId={{SUBMITTER_RESOURCE_ROLE_ID}}&phaseState=false",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies"
+										"resource-roles/Phase-dependencies"
 									],
 									"query": [
 										{
@@ -2232,12 +2232,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies?phaseId=abc&resourceRoleId=123&phaseState=abc",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies?phaseId=abc&resourceRoleId=123&phaseState=abc",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies"
+										"resource-roles/Phase-dependencies"
 									],
 									"query": [
 										{
@@ -2293,12 +2293,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies"
+										"resource-roles/Phase-dependencies"
 									]
 								}
 							},
@@ -2340,12 +2340,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies"
+										"resource-roles/Phase-dependencies"
 									]
 								}
 							},
@@ -2420,12 +2420,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": true\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies/{{DEPENDENCY_ID_1}}",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_1}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies",
+										"resource-roles/Phase-dependencies",
 										"{{DEPENDENCY_ID_1}}"
 									]
 								}
@@ -2472,12 +2472,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies/{{DEPENDENCY_ID_1}}",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_1}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies",
+										"resource-roles/Phase-dependencies",
 										"{{DEPENDENCY_ID_1}}"
 									]
 								}
@@ -2524,12 +2524,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{DEPENDENCY_ID_2}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies/{{DEPENDENCY_ID_1}}",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_1}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies",
+										"resource-roles/Phase-dependencies",
 										"{{DEPENDENCY_ID_1}}"
 									]
 								}
@@ -2576,12 +2576,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies/{{COPILOT_RESOURCE_ROLE_ID}}",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{COPILOT_RESOURCE_ROLE_ID}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies",
+										"resource-roles/Phase-dependencies",
 										"{{COPILOT_RESOURCE_ROLE_ID}}"
 									]
 								}
@@ -2628,12 +2628,12 @@
 									"raw": "{\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies/{{DEPENDENCY_ID_1}}",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_1}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies",
+										"resource-roles/Phase-dependencies",
 										"{{DEPENDENCY_ID_1}}"
 									]
 								}
@@ -2680,12 +2680,12 @@
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies/{{DEPENDENCY_ID_1}}",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_1}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies",
+										"resource-roles/Phase-dependencies",
 										"{{DEPENDENCY_ID_1}}"
 									]
 								}
@@ -2761,12 +2761,12 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies/{{DEPENDENCY_ID_1}}",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_1}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies",
+										"resource-roles/Phase-dependencies",
 										"{{DEPENDENCY_ID_1}}"
 									]
 								}
@@ -2813,12 +2813,12 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies/{{DEPENDENCY_ID_2}}",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_2}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies",
+										"resource-roles/Phase-dependencies",
 										"{{DEPENDENCY_ID_2}}"
 									]
 								}
@@ -2865,12 +2865,12 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies/{{SUBMITTER_RESOURCE_ROLE_ID}}",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{SUBMITTER_RESOURCE_ROLE_ID}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies",
+										"resource-roles/Phase-dependencies",
 										"{{SUBMITTER_RESOURCE_ROLE_ID}}"
 									]
 								}
@@ -2917,12 +2917,12 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies/abc",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies/abc",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies",
+										"resource-roles/Phase-dependencies",
 										"abc"
 									]
 								}
@@ -2969,12 +2969,12 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies/{{DEPENDENCY_ID_2}}",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_2}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies",
+										"resource-roles/Phase-dependencies",
 										"{{DEPENDENCY_ID_2}}"
 									]
 								}
@@ -3021,12 +3021,12 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{URL}}/resourceRoles/PhaseDependencies/{{DEPENDENCY_ID_2}}",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_2}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
-										"resourceRoles/PhaseDependencies",
+										"resource-roles/Phase-dependencies",
 										"{{DEPENDENCY_ID_2}}"
 									]
 								}

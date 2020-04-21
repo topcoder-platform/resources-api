@@ -166,7 +166,7 @@ paths:
           $ref: '#/definitions/Forbidden'
         500:
           $ref: '#/definitions/ServerError'
-  /resourceRoles:
+  /resource-roles:
     get:
       description: Get all resource roles. If isActive parameter is provided, filter the results by isActive property.
       tags:
@@ -223,7 +223,7 @@ paths:
           $ref: '#/definitions/Conflict'
         500:
           $ref: '#/definitions/ServerError'
-  /resourceRoles/{resourceRoleId}:
+  /resource-roles/{resourceRoleId}:
     put:
       description: >
         Update an existing resource role.
@@ -261,7 +261,7 @@ paths:
           $ref: '#/definitions/Conflict'
         500:
           $ref: '#/definitions/ServerError'
-  /resourceRoles/PhaseDependencies:
+  /resource-roles/Phase-dependencies:
     get:
       description: Get resource role phase dependencies
       tags:
@@ -332,7 +332,7 @@ paths:
           $ref: '#/definitions/Conflict'
         500:
           $ref: '#/definitions/ServerError'
-  /resourceRoles/PhaseDependencies/{id}:
+  /resource-roles/Phase-dependencies/{id}:
     put:
       description: >
         Update an existing resource role phase dependency.

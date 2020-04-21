@@ -44,7 +44,7 @@ module.exports = {
       scopes: [READ, ALL]
     }
   },
-  '/resourceRoles': {
+  '/resource-roles': {
     get: {
       controller: 'ResourceRoleController',
       method: 'getResourceRoles',
@@ -60,7 +60,7 @@ module.exports = {
       scopes: [CREATE, ALL]
     }
   },
-  '/resourceRoles/:resourceRoleId': {
+  '/resource-roles/:resourceRoleId': {
     put: {
       controller: 'ResourceRoleController',
       method: 'updateResourceRole',
@@ -69,7 +69,7 @@ module.exports = {
       scopes: [UPDATE, ALL]
     }
   },
-  '/resourceRoles/PhaseDependencies': {
+  '/resource-roles/phase-dependencies': {
     get: {
       controller: 'ResourceRolePhaseDependencyController',
       method: 'getDependencies',
@@ -85,7 +85,7 @@ module.exports = {
       scopes: [CREATE, ALL]
     }
   },
-  '/resourceRoles/PhaseDependencies/:id': {
+  '/resource-roles/phase-dependencies/:id': {
     put: {
       controller: 'ResourceRolePhaseDependencyController',
       method: 'updateDependency',
