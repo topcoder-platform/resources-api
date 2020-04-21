@@ -9,7 +9,7 @@ const service = require('../../src/services/ResourceRolePhaseDependencyService')
 const { putRequest, assertResourceRolePhaseDependency, getRoleIds } = require('../common/testHelper')
 const { token, requestBody } = require('../common/testData')
 
-const dependenciesUrl = `http://localhost:${config.PORT}/${config.API_VERSION}/resourceRoles/PhaseDependencies`
+const dependenciesUrl = `http://localhost:${config.PORT}/${config.API_VERSION}/resource-roles/phase-dependencies`
 const dependencies = requestBody.resourceRolePhaseDependencies
 
 module.exports = describe('Update resource role phase dependency endpoint', () => {

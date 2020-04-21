@@ -8,7 +8,7 @@ const should = require('should')
 const { postRequest, assertResourceRole } = require('../common/testHelper')
 const { token, requestBody } = require('../common/testData')
 
-const resourceRoleUrl = `http://localhost:${config.PORT}/${config.API_VERSION}/resourceRoles`
+const resourceRoleUrl = `http://localhost:${config.PORT}/${config.API_VERSION}/resource-roles`
 const resourceRoles = requestBody.resourceRoles
 
 module.exports = describe('Create resource role endpoint', () => {
