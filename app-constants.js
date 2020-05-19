@@ -3,7 +3,8 @@
  */
 
 const UserRoles = {
-  Admin: 'Administrator',
+  Admin: 'administrator',
+  Copilot: 'copilot',
   User: 'Topcoder User'
 }
 
