@@ -11,21 +11,21 @@ module.exports = {
       controller: 'ResourceController',
       method: 'getResources',
       auth: 'jwt',
-      access: [constants.UserRoles.Admin, constants.UserRoles.User],
+      access: [constants.UserRoles.Admin, constants.UserRoles.Copilot, constants.UserRoles.User],
       scopes: [READ, ALL]
     },
     post: {
       controller: 'ResourceController',
       method: 'createResource',
       auth: 'jwt',
-      access: [constants.UserRoles.Admin, constants.UserRoles.User],
+      access: [constants.UserRoles.Admin, constants.UserRoles.Copilot, constants.UserRoles.User],
       scopes: [CREATE, ALL]
     },
     delete: {
       controller: 'ResourceController',
       method: 'deleteResource',
       auth: 'jwt',
-      access: [constants.UserRoles.Admin, constants.UserRoles.User],
+      access: [constants.UserRoles.Admin, constants.UserRoles.Copilot, constants.UserRoles.User],
       scopes: [DELETE, ALL]
     }
   },
@@ -40,7 +40,7 @@ module.exports = {
       controller: 'ResourceController',
       method: 'listChallengesByMember',
       auth: 'jwt',
-      access: [constants.UserRoles.Admin, constants.UserRoles.User],
+      access: [constants.UserRoles.Admin, constants.UserRoles.Copilot, constants.UserRoles.User],
       scopes: [READ, ALL]
     }
   },
@@ -49,7 +49,7 @@ module.exports = {
       controller: 'ResourceRoleController',
       method: 'getResourceRoles',
       auth: 'jwt',
-      access: [constants.UserRoles.Admin, constants.UserRoles.User],
+      access: [constants.UserRoles.Admin, constants.UserRoles.Copilot, constants.UserRoles.User],
       scopes: [READ, ALL]
     },
     post: {
