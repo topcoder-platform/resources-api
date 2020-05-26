@@ -178,6 +178,10 @@ paths:
           type: boolean
           in: query
           description: Filters the results based on the `isActive` property
+        - name: name
+          type: string
+          in: query
+          description: Filters the results based on the `name` property
       responses:
         200:
           description: OK - the request was successful
