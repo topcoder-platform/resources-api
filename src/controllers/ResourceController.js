@@ -3,6 +3,7 @@
  */
 
 const service = require('../services/ResourceService')
+const helper = require('../common/helper')
 
 /**
  * Get all resources of a challenge
@@ -11,6 +12,7 @@ const service = require('../services/ResourceService')
  */
 async function getResources (req, res) {
   const result = await service.getResources(req.authUser, req.query.challengeId)
+  helper.setResHeaders(req, res, result)
   res.send(result)
 }
 
