@@ -26,6 +26,7 @@ This microservice provides interaction with Challenge Resources.
 -  [NodeJS](https://nodejs.org/en/) (v10)
 -  [DynamoDB](https://aws.amazon.com/dynamodb/)
 -  [Docker](https://www.docker.com/)
+-  [Elasticsearch v6](https://www.elastic.co/)
 -  [Docker Compose](https://docs.docker.com/compose/)
 
 ## Configuration
@@ -56,6 +57,12 @@ The following parameters can be set in config files or in env variables:
 - DYNAMODB.AWS_READ_UNITS: The DynamoDB table read unit configuration, default is 4
 - DYNAMODB.AWS_WRITE_UNITS: The DynamoDB table write unit configuration, default is 2
 - DYNAMODB.TIMEOUT: The timeout setting used in health check
+- ES: config object for Elasticsearch
+- ES.HOST: Elasticsearch host
+- ES.API_VERSION: Elasticsearch API version
+- ES.CHALLENGE_ES_INDEX: Elasticsearch index name for the Challenge model
+- ES.CHALLENGE_ES_TYPE: Elasticsearch index type for the Challenge model
+- ES.ES_REFRESH: Elasticsearch refresh method. Default to string `true`(i.e. refresh immediately)
 - SCOPES: The M2M scopes, refer `config/default.js` for more information
 - BUSAPI_URL: the bus api, default value is 'https://api.topcoder-dev.com/v5'
 - KAFKA_ERROR_TOPIC: Kafka error topic, default value is 'common.error.reporting',
@@ -75,6 +82,7 @@ Configuration for testing is at `config/test.js`, only add such new configuratio
 - Run lint fix `npm run lint:fix`
 - Create tables `npm run create-tables`
 - Clear and init db `npm run init-db`
+- Seed/Insert data to ES: `npm run seed-es`
 - Start app `npm start`
 - App is running at `http://localhost:3000`
 - Start mock server `npm run mock-challenge-api`
@@ -131,6 +139,7 @@ The following test parameters can be set in config file or in env variables:
 
 - Start Local DynamoDB.
 - Create DynamoDB tables.
+- Initialize ES indexes.
 - Various config parameters should be properly set.
 
 ### Running unit tests

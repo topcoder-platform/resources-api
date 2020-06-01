@@ -10,6 +10,7 @@ const helper = require('../common/helper')
 const logger = require('../common/logger')
 const errors = require('../common/errors')
 const ResourceRolePhaseDependencyService = require('./ResourceRolePhaseDependencyService')
+const ResourceRole = require('./ResourceRoleService')
 
 const payloadFields = ['id', 'challengeId', 'memberId', 'memberHandle', 'roleId']
 
@@ -19,7 +20,7 @@ const payloadFields = ['id', 'challengeId', 'memberId', 'memberHandle', 'roleId'
  * @param {Array} the resources of specified challenge id
  */
 async function checkAccess (currentUser, resources) {
-  const list = await helper.scan('ResourceRole')
+  const list = await ResourceRole.getResourceRoles()
   const fullAccessRoles = new Set()
   _.each(list, e => {
     if (e.isActive && e.fullAccess) {
@@ -92,7 +93,7 @@ async function getMemberInfo (memberHandle) {
  */
 async function getResourceRole (roleId, isCreated) {
   try {
-    const resourceRole = await helper.getById('ResourceRole', roleId)
+    const resourceRole = await ResourceRole.getResourceRole(roleId)
     if (isCreated && !resourceRole.isActive) {
       throw new errors.BadRequestError(`Resource role with id: ${roleId} is inactive, please use an active one.`)
     }

@@ -13,8 +13,8 @@ module.exports = {
   AUTH0_URL: process.env.AUTH0_URL || 'https://topcoder-dev.auth0.com/oauth/token',
   AUTH0_AUDIENCE: process.env.AUTH0_AUDIENCE || 'https://m2m.topcoder-dev.com/',
   TOKEN_CACHE_TIME: process.env.TOKEN_CACHE_TIME || 90,
-  AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID || '',
-  AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET || '',
+  AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID || 'jGIf2pd3f44B1jqvOai30BIKTZanYBfU',
+  AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET || 'ldzqVaVEbqhwjM5KtZ79sG8djZpAVK8Z7qieVcC3vRjI4NirgcinKSBpPwk6mYYP',
   AUTH0_PROXY_SERVER_URL: process.env.AUTH0_PROXY_SERVER_URL,
 
   MEMBER_API_URL: process.env.MEMBER_API_URL || 'https://api.topcoder-dev.com/v3/members',
@@ -31,6 +31,17 @@ module.exports = {
     AWS_READ_UNITS: process.env.AWS_READ_UNITS || 4,
     AWS_WRITE_UNITS: process.env.AWS_WRITE_UNITS || 2,
     TIMEOUT: process.env.DYNAMODB_TIMEOUT || 10000
+  },
+
+  ES: {
+    // above AWS_REGION is used if we use AWS ES
+    HOST: process.env.ES_HOST || 'localhost:9200',
+    API_VERSION: process.env.ES_API_VERSION || '6.8',
+    RESOURCE_ROLES_ES_INDEX: process.env.RESOURCE_ROLES_ES_INDEX || 'resource_role',
+    RESOURCE_ROLES_ES_TYPE: process.env.RESOURCE_ROLES_ES_TYPE || '_doc', // ES 6.x accepts only 1 Type per index and it's mandatory to define it
+    RESOURCE_ROLE_PHASE_DEPENDENCY_ES_INDEX: process.env.RESOURCE_ROLE_PHASE_DEPENDENCY_ES_INDEX || 'resource_role_phase_dependency',
+    RESOURCE_ROLE_PHASE_DEPENDENCY_ES_TYPE: process.env.RESOURCE_ROLE_PHASE_DEPENDENCY_ES_TYPE || '_doc', // ES 6.x accepts only 1 Type per index and it's mandatory to define it
+    ES_REFRESH: process.env.ES_REFRESH || 'true'
   },
 
   SCOPES: {

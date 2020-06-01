@@ -2,8 +2,11 @@
  * This file defines helper methods
  */
 
+const Joi = require('joi')
 const _ = require('lodash')
 const config = require('config')
+const elasticsearch = require('elasticsearch')
+const AWS = require('aws-sdk')
 const request = require('superagent')
 const constants = require('../../app-constants')
 const models = require('../models')
@@ -14,6 +17,41 @@ const m2m = m2mAuth(_.pick(config, ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_
 const busApi = require('tc-bus-api-wrapper')
 const busApiClient = busApi(_.pick(config, ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME', 'AUTH0_CLIENT_ID',
   'AUTH0_CLIENT_SECRET', 'BUSAPI_URL', 'KAFKA_ERROR_TOPIC', 'AUTH0_PROXY_SERVER_URL']))
+
+// Elasticsearch client
+let esClient
+
+// validate ES refresh method
+validateESRefreshMethod(config.ES.ES_REFRESH)
+
+/**
+ * Get ES Client
+ * @return {Object} Elasticsearch Client Instance
+ */
+function getESClient () {
+  if (esClient) {
+    return esClient
+  }
+  const esHost = config.get('ES.HOST')
+  // AWS ES configuration is different from other providers
+  if (/.*amazonaws.*/.test(esHost)) {
+    esClient = elasticsearch.Client({
+      apiVersion: config.get('ES.API_VERSION'),
+      hosts: esHost,
+      connectionClass: require('http-aws-es'), // eslint-disable-line global-require
+      amazonES: {
+        region: config.get('AMAZON.AWS_REGION'),
+        credentials: new AWS.EnvironmentCredentials('AWS')
+      }
+    })
+  } else {
+    esClient = new elasticsearch.Client({
+      apiVersion: config.get('ES.API_VERSION'),
+      hosts: esHost
+    })
+  }
+  return esClient
+}
 
 /**
  * Check the error is custom error.
@@ -274,6 +312,17 @@ async function getAllPages (url, query) {
   return result
 }
 
+/**
+ * Check if ES refresh method is valid.
+ *
+ * @param {String} method method to be tested
+ * @returns {String} method valid method
+ */
+async function validateESRefreshMethod (method) {
+  Joi.attempt(method, Joi.string().label('ES_REFRESH').valid(['true', 'false', 'wait_for']))
+  return method
+}
+
 module.exports = {
   wrapExpress,
   autoWrapExpress,
@@ -288,5 +337,7 @@ module.exports = {
   getRequest,
   postEvent,
   isCustomError,
-  getAllPages
+  getAllPages,
+  getESClient,
+  validateESRefreshMethod
 }
