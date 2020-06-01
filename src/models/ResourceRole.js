@@ -29,6 +29,10 @@ const schema = new Schema({
     type: Boolean,
     required: true
   },
+  legacyId: {
+    type: Number,
+    required: false
+  },
   nameLower: {
     type: String,
     required: true,
