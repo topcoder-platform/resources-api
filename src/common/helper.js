@@ -4,6 +4,7 @@
 
 const _ = require('lodash')
 const config = require('config')
+const querystring = require('querystring')
 const request = require('superagent')
 const constants = require('../../app-constants')
 const models = require('../models')
@@ -246,6 +247,48 @@ async function getRequest (url, query) {
 }
 
 /**
+ * Get link for a given page.
+ * @param {Object} req the HTTP request
+ * @param {Number} page the page number
+ * @returns {String} link for the page
+ */
+function getPageLink (req, page) {
+  const q = _.assignIn({}, req.query, { page })
+  return `${config.API_BASE_URL}/${req.path}?${querystring.stringify(q)}`
+}
+
+/**
+ * Set HTTP response headers from result.
+ * @param {Object} req the HTTP request
+ * @param {Object} res the HTTP response
+ * @param {Object} result the operation result
+ */
+function setResHeaders (req, res, result) {
+  const totalPages = Math.ceil(result.total / result.perPage)
+  if (result.page > 1) {
+    res.set('X-Prev-Page', result.page - 1)
+  }
+  if (result.page < totalPages) {
+    res.set('X-Next-Page', result.page + 1)
+  }
+  res.set('X-Page', result.page)
+  res.set('X-Per-Page', result.perPage)
+  res.set('X-Total', result.total)
+  res.set('X-Total-Pages', totalPages)
+  // set Link header
+  if (totalPages > 0) {
+    let link = `<${getPageLink(req, 1)}>; rel="first", <${getPageLink(req, totalPages)}>; rel="last"`
+    if (result.page > 1) {
+      link += `, <${getPageLink(req, result.page - 1)}>; rel="prev"`
+    }
+    if (result.page < totalPages) {
+      link += `, <${getPageLink(req, result.page + 1)}>; rel="next"`
+    }
+    res.set('Link', link)
+  }
+}
+
+/**
  * Get all pages from TC API.
  * @param {String} url the url
  * @param {Object} query the query parameters, optional, it should not include page and perPage
@@ -288,5 +331,6 @@ module.exports = {
   getRequest,
   postEvent,
   isCustomError,
+  setResHeaders,
   getAllPages
 }

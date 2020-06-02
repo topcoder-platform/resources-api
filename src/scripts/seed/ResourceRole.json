@@ -4,6 +4,7 @@
     "name": "Copilot",
     "fullAccess": true,
     "isActive": true,
+    "legacyId": 14,
     "nameLower": "copilot",
     "selfObtainable": false
   },
@@ -12,6 +13,7 @@
     "name": "Observer",
     "fullAccess": true,
     "isActive": true,
+    "legacyId": 12,
     "nameLower": "observer",
     "selfObtainable": false
   },
@@ -20,6 +22,7 @@
     "name": "Submitter",
     "fullAccess": false,
     "isActive": true,
+    "legacyId": 1,
     "nameLower": "submitter",
     "selfObtainable": true
   }

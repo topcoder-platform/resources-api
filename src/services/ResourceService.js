@@ -6,6 +6,7 @@ const _ = require('lodash')
 const config = require('config')
 const Joi = require('joi')
 const uuid = require('uuid/v4')
+const moment = require('moment')
 const helper = require('../common/helper')
 const logger = require('../common/logger')
 const errors = require('../common/errors')
@@ -152,11 +153,11 @@ async function init (currentUser, challengeId, resource, isCreated) {
       let isOpen = phase.isOpen
       if (_.isNil(isOpen)) {
         isOpen = phase.actualStartDate && phase.actualEndDate &&
-          new Date(phase.actualStartDate) <= new Date() && new Date() <= new Date(phase.actualEndDate)
+          moment(phase.actualStartDate).utc() <= moment().utc() && moment().utc() <= moment(phase.actualEndDate).utc()
       }
       if (_.isNil(isOpen)) {
         isOpen = phase.scheduledStartDate && phase.scheduledEndDate &&
-          new Date(phase.scheduledStartDate) <= new Date() && new Date() <= new Date(phase.scheduledEndDate)
+        moment(phase.scheduledStartDate).utc() <= moment().utc() && moment().utc() <= moment(phase.scheduledEndDate).utc()
       }
       if (_.isNil(isOpen)) {
         isOpen = false
@@ -194,14 +195,16 @@ async function createResource (currentUser, resource) {
       throw new errors.ConflictError(`User ${resource.memberHandle} already has resource with roleId: ${resource.roleId} in challenge: ${challengeId}`)
     }
 
+    // logger.warn(JSON.stringify(currentUser))
+
     const ret = await helper.create('Resource', _.assign({
       id: uuid(),
       memberId,
-      created: new Date(),
+      created: moment().utc(),
       createdBy: currentUser.handle || currentUser.sub
     }, resource))
 
-    console.log('Created resource:', ret)
+    // console.log('Created resource:', ret)
 
     await helper.postEvent(config.RESOURCE_CREATE_TOPIC, _.pick(ret, payloadFields))
 
