@@ -1,5 +1,5 @@
 /**
- * This defines MemberStats model.
+ * This defines MemberProfile model.
  */
 
 const config = require('config')
@@ -23,9 +23,6 @@ const schema = new Schema({
       name: 'handleLower-index',
       project: true
     }
-  },
-  maxRating: {
-    type: Object
   }
 },
 {

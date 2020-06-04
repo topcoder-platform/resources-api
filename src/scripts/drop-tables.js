@@ -3,14 +3,16 @@
  */
 
 const models = require('../models')
+const { includes } = require('lodash')
 const logger = require('../common/logger')
 
 logger.info('Requesting to delete tables...')
 
 const promises = []
+const skipModels = ['DynamoDB', 'MemberStats', 'MemberProfile']
 
 Object.keys(models).forEach(modelName => {
-  if (modelName !== 'DynamoDB' && modelName !== 'MemberStats') {
+  if (!includes(skipModels, modelName)) {
     promises.push(models[modelName].$__.table.delete())
   }
 })

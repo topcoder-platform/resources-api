@@ -59,7 +59,7 @@ async function getResources (currentUser, challengeId, roleId = '') {
   let memberObjects = []
   for (let i = 0; i < memberIds.length; i += 1) {
     const id = memberIds[i]
-    memberObjects.push(await helper.getMemberById(id))
+    memberObjects.push(await helper.getMemberInfoById(id))
   }
 
   memberObjects = _.compact(memberObjects)
@@ -93,10 +93,11 @@ getResources.schema = {
  * @param {String} memberHandle the member handle
  * @returns {String} the member id and member handle
  */
-async function getMemberInfo (memberHandle) {
-  const member = await helper.getMemberByHandle(memberHandle)
-  return { memberId: member.userId, handle: member.handle }
-}
+// async function getMemberInfo (memberHandle) {
+//   const member = await helper.getMemberByHandle(memberHandle)
+//   if (member) return { memberId: member.userId, handle: member.handle }
+//   return 
+// }
 
 /**
  * Get the resource role.
@@ -138,7 +139,8 @@ async function init (currentUser, challengeId, resource, isCreated) {
 
   // logger.error(`Init Member for ${JSON.stringify(currentUser)}`)
   // get member information using v3 API
-  const { memberId, handle } = await getMemberInfo(resource.memberHandle)
+  const handle = resource.memberHandle
+  const memberId = await helper.getMemberIdByHandle(resource.memberHandle)
   // ensure resource role existed
   const resourceRole = await getResourceRole(resource.roleId, isCreated)
 

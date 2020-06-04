@@ -8,6 +8,7 @@ const querystring = require('querystring')
 const request = require('superagent')
 const constants = require('../../app-constants')
 const models = require('../models')
+const { MemberProfile, MemberStats } = require('../models')
 const errors = require('./errors')
 const logger = require('./logger')
 const m2mAuth = require('tc-core-library-js').auth.m2m
@@ -144,8 +145,10 @@ async function getById (modelName, id) {
  * @param {Number} id The id value
  * @returns {Promise<void>}
  */
-async function getMemberById (id) {
-  return models.MemberStats.query('userId').eq(id).exec().then(r => r[0])
+async function getMemberInfoById (id) {
+  const memberInfo = await MemberStats.query('userId').eq(id).exec().then(r => r[0])
+  // logger.warn(`Got Member Info ${JSON.stringify(MemberStats)}`)
+  return memberInfo
 }
 
 /**
@@ -153,9 +156,40 @@ async function getMemberById (id) {
  * @param {String} handle The member handle
  * @returns {Promise<void>}
  */
-async function getMemberByHandle (handle) {
-  return models.MemberStats.query('handleLower').eq(_.lowerCase(handle)).exec().then(r => r[0])
+async function getMemberIdByHandle (handle) {
+  const profile = await MemberProfile.query('handleLower').eq(_.lowerCase(handle)).exec().then(r => r[0])
+  if (profile) {
+    return profile.userId
+  } else {
+    // fall back to v3 api...
+    return getMemberIdByHandleFromV3Members(handle)
+  }
 }
+
+async function getMemberIdByHandleFromV3Members (handle) {
+  let memberId
+  try {
+    logger.warn(`getMemberIdByHandle ${handle} from v3`)
+    const res = await getRequest(`${config.MEMBER_API_URL}/${handle}`)
+    if (_.get(res, 'body.result.content.userId')) {
+      memberId = String(res.body.result.content.userId)
+    }
+    // handle return from v3 API, handle and memberHandle are the same under case-insensitive condition
+    handle = _.get(res, 'body.result.content.handle')
+  } catch (error) {
+    // re-throw all error except 404 Not-Founded, BadRequestError should be thrown if 404 occurs
+    if (error.status !== 404) {
+      throw error
+    }
+  }
+
+  if (_.isUndefined(memberId)) {
+    throw new errors.BadRequestError(`User with handle: ${handle} doesn't exist`)
+  }
+
+  return memberId
+}
+
 
 /**
  * Create item in database
@@ -338,8 +372,8 @@ async function getAllPages (url, query) {
 module.exports = {
   wrapExpress,
   autoWrapExpress,
-  getMemberById,
-  getMemberByHandle,
+  getMemberInfoById,
+  getMemberIdByHandle,
   checkIfExists,
   hasAdminRole,
   getById,
