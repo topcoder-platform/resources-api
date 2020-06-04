@@ -140,6 +140,24 @@ async function getById (modelName, id) {
 }
 
 /**
+ * Get Member by memberId
+ * @param {Number} id The id value
+ * @returns {Promise<void>}
+ */
+async function getMemberById (id) {
+  return models.MemberStats.query('userId').eq(id).exec().then(r => r[0])
+}
+
+/**
+ * Get Data by model id
+ * @param {String} handle The member handle
+ * @returns {Promise<void>}
+ */
+async function getMemberByHandle (handle) {
+  return models.MemberStats.query('handleLower').eq(_.lowerCase(handle)).exec().then(r => r[0])
+}
+
+/**
  * Create item in database
  * @param {Object} modelName The dynamoose model name
  * @param {Object} data The create data object
@@ -320,6 +338,8 @@ async function getAllPages (url, query) {
 module.exports = {
   wrapExpress,
   autoWrapExpress,
+  getMemberById,
+  getMemberByHandle,
   checkIfExists,
   hasAdminRole,
   getById,
@@ -332,5 +352,6 @@ module.exports = {
   postEvent,
   isCustomError,
   setResHeaders,
-  getAllPages
+  getAllPages,
+  getESClient
 }

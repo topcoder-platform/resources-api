@@ -32,5 +32,6 @@ module.exports = {
   DynamoDB: dynamoose.ddb(),
   Resource: dynamoose.model('Resource', require('./Resource')),
   ResourceRole: dynamoose.model('ResourceRole', require('./ResourceRole')),
+  MemberStats: dynamoose.model('MemberStats', require('./MemberStats')),
   ResourceRolePhaseDependency: dynamoose.model('ResourceRolePhaseDependency', require('./ResourceRolePhaseDependency'))
 }
