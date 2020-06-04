@@ -352,6 +352,5 @@ module.exports = {
   postEvent,
   isCustomError,
   setResHeaders,
-  getAllPages,
-  getESClient
+  getAllPages
 }
