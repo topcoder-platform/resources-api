@@ -272,7 +272,7 @@ async function getRequest (url, query) {
  */
 function getPageLink (req, page) {
   const q = _.assignIn({}, req.query, { page })
-  return `${config.API_BASE_URL}/${req.path}?${querystring.stringify(q)}`
+  return `${config.API_BASE_URL}${req.path}?${querystring.stringify(q)}`
 }
 
 /**
