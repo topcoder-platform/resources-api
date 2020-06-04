@@ -38,24 +38,54 @@ async function checkAccess (currentUser, resources) {
  * Get resources with given challenge id.
  * @param {Object} currentUser the current user
  * @param {String} challengeId the challenge id
+ * @param {String} roleId the role id to filter on
  * @returns {Array} the search result
  */
-async function getResources (currentUser, challengeId) {
+async function getResources (currentUser, challengeId, roleId = '') {
   // Verify that the challenge exists
   await helper.getRequest(`${config.CHALLENGE_API_URL}/${challengeId}`)
 
-  const resources = await helper.query('Resource', { challengeId })
+  let resources = await helper.query('Resource', { challengeId })
+
+  // if the user filters on roleId, pull them from the stack
+  if (roleId) resources = _.filter(resources, { roleId })
 
   if (!currentUser.isMachine && !helper.hasAdminRole(currentUser)) {
     await checkAccess(currentUser, resources)
   }
 
-  return resources
+  const memberIds = _.uniq(_.map(resources, r => r.memberId))
+
+  let memberObjects = []
+  for (let i = 0; i < memberIds.length; i += 1) {
+    const id = memberIds[i]
+    memberObjects.push(await helper.getMemberById(id))
+  }
+
+  memberObjects = _.compact(memberObjects)
+  const completeResources = []
+  for (const resource of resources) {
+    const memberInfo = _.find(memberObjects, (o) => _.toNumber(o.userId) === _.toNumber(resource.memberId))
+    if (memberInfo) {
+      const completeResource = {
+        ...resource,
+        rating: memberInfo.maxRating.rating || 0,
+        memberHandle: memberInfo.handle
+      }
+      completeResources.push(completeResource)
+    } else {
+      logger.warn(`memberInfo not found in db for memberId [${resource.memberId}]}`)
+      completeResources.push(resource)
+    }
+  }
+
+  return completeResources
 }
 
 getResources.schema = {
   currentUser: Joi.any(),
-  challengeId: Joi.id()
+  challengeId: Joi.id(),
+  roleId: Joi.optionalId()
 }
 
 /**
@@ -64,26 +94,8 @@ getResources.schema = {
  * @returns {String} the member id and member handle
  */
 async function getMemberInfo (memberHandle) {
-  let memberId, handle
-  try {
-    const res = await helper.getRequest(`${config.MEMBER_API_URL}/${memberHandle}`)
-    if (_.get(res, 'body.result.content.userId')) {
-      memberId = String(res.body.result.content.userId)
-    }
-    // handle return from v3 API, handle and memberHandle are the same under case-insensitive condition
-    handle = _.get(res, 'body.result.content.handle')
-  } catch (error) {
-    // re-throw all error except 404 Not-Founded, BadRequestError should be thrown if 404 occurs
-    if (error.status !== 404) {
-      throw error
-    }
-  }
-
-  if (_.isUndefined(memberId)) {
-    throw new errors.BadRequestError(`User with handle: ${memberHandle} doesn't exist`)
-  }
-
-  return { memberId, handle }
+  const member = await helper.getMemberByHandle(memberHandle)
+  return { memberId: member.userId, handle: member.handle }
 }
 
 /**
@@ -124,6 +136,7 @@ async function init (currentUser, challengeId, resource, isCreated) {
   const challengeRes = await helper.getRequest(`${config.CHALLENGE_API_URL}/${challengeId}`)
   const challenge = challengeRes.body
 
+  // logger.error(`Init Member for ${JSON.stringify(currentUser)}`)
   // get member information using v3 API
   const { memberId, handle } = await getMemberInfo(resource.memberHandle)
   // ensure resource role existed

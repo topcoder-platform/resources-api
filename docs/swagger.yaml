@@ -56,6 +56,12 @@ paths:
           format: UUID
           in: query
           required: true
+        - name: roleId
+          type: string
+          description: role id to filter on
+          format: UUID
+          in: query
+          required: false
       responses:
         200:
           description: OK - the request was successful
