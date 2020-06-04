@@ -96,7 +96,7 @@ getResources.schema = {
 // async function getMemberInfo (memberHandle) {
 //   const member = await helper.getMemberByHandle(memberHandle)
 //   if (member) return { memberId: member.userId, handle: member.handle }
-//   return 
+// return
 // }
 
 /**

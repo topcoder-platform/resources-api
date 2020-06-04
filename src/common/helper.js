@@ -190,7 +190,6 @@ async function getMemberIdByHandleFromV3Members (handle) {
   return memberId
 }
 
-
 /**
  * Create item in database
  * @param {Object} modelName The dynamoose model name
