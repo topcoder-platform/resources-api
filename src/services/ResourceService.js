@@ -285,7 +285,7 @@ deleteResource.schema = {
 /**
  * List all challenge ids that given member has access to.
  * @param {Number} memberId the member id
- * @param {Object} criteria the criteria, only has resourceRoleId filter
+ * @param {Object} criteria the criteria: {resourceRoleId, page, perPage}
  * @returns {Array} an array of challenge ids represents challenges that given member has access to.
  */
 async function listChallengesByMember (memberId, criteria) {
@@ -293,15 +293,55 @@ async function listChallengesByMember (memberId, criteria) {
   if (_.get(res, 'body.result.content').length === 0) {
     throw new errors.BadRequestError(`User with id: ${memberId} doesn't exist`)
   }
-  // const queryParams = { hash: { memberId: { eq: String(memberId) } } }
-  const queryParams = { memberId: memberId }
-  if (criteria.resourceRoleId) {
-    queryParams.roleId = criteria.resourceRoleId
-    // ensure resource role exists
-    await getResourceRole(criteria.resourceRoleId)
+
+  const boolQuery = []
+  const mustQuery = []
+  const perPage = criteria.perPage || 50
+  const page = criteria.page || 1
+  boolQuery.push({ match: { memberId } })
+  if (criteria.resourceRoleId) boolQuery.push({ match: { roleId: criteria.resourceRoleId } })
+
+  if (boolQuery.length > 0) {
+    mustQuery.push({
+      bool: {
+        filter: boolQuery
+      }
+    })
   }
-  console.log(queryParams)
-  const result = await helper.scan('Resource', queryParams)
+
+  const esQuery = {
+    index: config.get('ES.ES_INDEX'),
+    type: config.get('ES.ES_TYPE'),
+    size: perPage,
+    from: perPage * (page - 1), // Es Index starts from 0
+    body: {
+      query: mustQuery.length > 0 ? {
+        bool: {
+          must: mustQuery
+          // must_not: mustNotQuery
+        }
+      } : {
+        match_all: {}
+      }
+    }
+  }
+
+  const esClient = await helper.getESClient()
+  let docs
+  try {
+    docs = await esClient.search(esQuery)
+  } catch (e) {
+    // Catch error when the ES is fresh and has no data
+    logger.info(`Query Error from ES ${JSON.stringify(e)}`)
+    docs = {
+      hits: {
+        total: 0,
+        hits: []
+      }
+    }
+  }
+  // Extract data from hits
+  let result = _.map(docs.hits.hits, item => item._source)
   return _.uniq(_.map(result, 'challengeId'))
 }
 

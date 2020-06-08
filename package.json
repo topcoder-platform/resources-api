@@ -27,11 +27,13 @@
     "nock": "^10.0.6"
   },
   "dependencies": {
+    "aws-sdk": "^2.692.0",
     "bluebird": "^3.5.1",
     "body-parser": "^1.15.1",
     "config": "^3.0.1",
     "cors": "^2.7.1",
     "dynamoose": "^1.7.2",
+    "elasticsearch": "^16.1.1",
     "express": "^4.16.4",
     "express-interceptor": "^1.2.0",
     "get-parameter-names": "^0.3.0",
