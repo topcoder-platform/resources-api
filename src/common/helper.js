@@ -146,8 +146,8 @@ async function getById (modelName, id) {
  * @returns {Promise<void>}
  */
 async function getMemberInfoById (id) {
+  // logger.warn('getMemberInfoById')
   const memberInfo = await MemberStats.query('userId').eq(id).exec().then(r => r[0])
-  // logger.warn(`Got Member Info ${JSON.stringify(MemberStats)}`)
   return memberInfo
 }
 
@@ -157,10 +157,11 @@ async function getMemberInfoById (id) {
  * @returns {Promise<void>}
  */
 async function getMemberIdByHandle (handle) {
-  const profile = await MemberProfile.query('handleLower').eq(_.lowerCase(handle)).exec().then(r => r[0])
-  if (profile) {
+  try {
+    // logger.warn(`getMemberIdByHandle ${handle}`)
+    const profile = await MemberProfile.query('handleLower').eq(_.lowerCase(handle)).exec().then(r => r[0])
     return profile.userId
-  } else {
+  } catch (e) {
     // fall back to v3 api...
     return getMemberIdByHandleFromV3Members(handle)
   }
