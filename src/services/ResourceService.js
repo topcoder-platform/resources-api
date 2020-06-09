@@ -325,6 +325,7 @@ async function listChallengesByMember (memberId, criteria) {
       }
     }
   }
+  logger.warn(`esQuery ${JSON.stringify(esQuery)}`)
 
   const esClient = await helper.getESClient()
   let docs
@@ -361,4 +362,4 @@ module.exports = {
   listChallengesByMember
 }
 
-logger.buildService(module.exports)
+// logger.buildService(module.exports)
