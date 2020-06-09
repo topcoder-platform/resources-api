@@ -39,7 +39,7 @@ module.exports = (app) => {
 
         actions.push((req, res, next) => {
           if (req.authUser.isMachine) {
-            logger.warn(`Request Auth User ${req.authUser} calling ${controllerPath} ${method}`)
+            // logger.warn(`Request Auth User ${req.authUser} calling ${controllerPath} ${method}`)
             // M2M
             if (!req.authUser.scopes || !helper.checkIfExists(def.scopes, req.authUser.scopes)) {
               next(new errors.ForbiddenError('You are not allowed to perform this action!'))
