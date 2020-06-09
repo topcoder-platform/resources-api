@@ -348,7 +348,9 @@ async function listChallengesByMember (memberId, criteria) {
 listChallengesByMember.schema = {
   memberId: Joi.number().integer().positive().required(),
   criteria: Joi.object().keys({
-    resourceRoleId: Joi.string().uuid()
+    resourceRoleId: Joi.string().uuid(),
+    page: Joi.page(),
+    perPage: Joi.perPage()
   }).required()
 }
 
