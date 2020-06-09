@@ -390,7 +390,7 @@ function getESClient () {
       hosts: esHost,
       connectionClass: require('http-aws-es'), // eslint-disable-line global-require
       amazonES: {
-        region: config.get('AMAZON.AWS_REGION'),
+        region: config.get('DYNAMODB.AWS_REGION'),
         credentials: new AWS.EnvironmentCredentials('AWS')
       }
     })
