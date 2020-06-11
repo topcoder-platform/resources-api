@@ -422,7 +422,6 @@ function partialMatch (filter, value) {
   }
 }
 
-
 module.exports = {
   wrapExpress,
   autoWrapExpress,
