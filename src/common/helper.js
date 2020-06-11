@@ -6,6 +6,7 @@ const _ = require('lodash')
 const config = require('config')
 const querystring = require('querystring')
 const request = require('superagent')
+const xss = require('xss')
 const constants = require('../../app-constants')
 const models = require('../models')
 const { MemberProfile, MemberStats } = require('../models')
@@ -402,12 +403,32 @@ function getESClient () {
   }
   return esClient
 }
+/**
+ * Test whether the given value is partially match the filter.
+ * @param {String} filter the filter
+ * @param {String} value the value to test
+ * @returns {Boolean} the match result
+ */
+function partialMatch (filter, value) {
+  if (filter) {
+    if (value) {
+      const filtered = xss(filter)
+      return _.toLower(value).includes(_.toLower(filtered))
+    } else {
+      return false
+    }
+  } else {
+    return true
+  }
+}
+
 
 module.exports = {
   wrapExpress,
   autoWrapExpress,
   getMemberInfoById,
   getMemberIdByHandle,
+  partialMatch,
   checkIfExists,
   hasAdminRole,
   getById,
