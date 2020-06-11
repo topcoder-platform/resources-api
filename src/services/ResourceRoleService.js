@@ -17,10 +17,11 @@ const payloadFields = ['id', 'name', 'fullAccess', 'isActive', 'selfObtainable']
  * @returns {Array} the search result
  */
 async function getResourceRoles (criteria) {
-  const list = await helper.scan('ResourceRole')
-  const activeFiltered = _.filter(list, e => _.isUndefined(criteria.isActive) || criteria.isActive === e.isActive)
-  const nameFiltered = _.filter(activeFiltered, e => _.isUndefined(criteria.name) || criteria.name === e.name)
-  return _.map(nameFiltered, e => _.pick(e, payloadFields))
+  let records = await helper.scan('ResourceRole')
+  if (criteria.name) records = _.filter(records, e => helper.partialMatch(criteria.name, e.name))
+  if (!_.isUndefined(criteria.isActive)) records = _.filter(records, e => (e.isActive === (criteria.isActive === 'true')))
+
+  return _.map(records, e => _.pick(e, payloadFields))
 }
 
 getResourceRoles.schema = {
