@@ -18,8 +18,10 @@ const payloadFields = ['id', 'name', 'fullAccess', 'isActive', 'selfObtainable']
  */
 async function getResourceRoles (criteria) {
   let records = await helper.scan('ResourceRole')
-  if (criteria.name) records = _.filter(records, e => helper.partialMatch(criteria.name, e.name))
+  if (criteria.name) records = _.filter(records, e => (criteria.name === e.name))
   if (!_.isUndefined(criteria.isActive)) records = _.filter(records, e => (e.isActive === (criteria.isActive === 'true')))
+  if (!_.isUndefined(criteria.selfObtainable)) records = _.filter(records, e => (e.selfObtainable === (criteria.selfObtainable === 'true')))
+  if (!_.isUndefined(criteria.fullAccess)) records = _.filter(records, e => (e.fullAccess === (criteria.fullAccess === 'true')))
 
   return _.map(records, e => _.pick(e, payloadFields))
 }
@@ -27,6 +29,8 @@ async function getResourceRoles (criteria) {
 getResourceRoles.schema = {
   criteria: Joi.object().keys({
     isActive: Joi.boolean(),
+    selfObtainable: Joi.boolean(),
+    fullAccess: Joi.boolean(),
     name: Joi.string()
   }).required()
 }
