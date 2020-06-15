@@ -11,6 +11,7 @@ const helper = require('../common/helper')
 const logger = require('../common/logger')
 const errors = require('../common/errors')
 const ResourceRolePhaseDependencyService = require('./ResourceRolePhaseDependencyService')
+const ResourceRoleService = require('./ResourceRoleService')
 
 const payloadFields = ['id', 'challengeId', 'memberId', 'memberHandle', 'roleId']
 
@@ -34,6 +35,12 @@ async function checkAccess (currentUser, resources) {
   }
 }
 
+async function filterForSubmittersOnly (resources) {
+  const { resourceRoleId } = await ResourceRoleService.getResourceRoles({ name: 'Submitter' })
+  const resourcesForSubmitters = _.filter(resources, { roleId: resourceRoleId })
+  return resourcesForSubmitters
+}
+
 /**
  * Get resources with given challenge id.
  * @param {Object} currentUser the current user
@@ -51,7 +58,9 @@ async function getResources (currentUser, challengeId, roleId = '') {
   if (roleId) resources = _.filter(resources, { roleId })
 
   if (!currentUser.isMachine && !helper.hasAdminRole(currentUser)) {
-    await checkAccess(currentUser, resources)
+    // await checkAccess(currentUser, resources)
+    // if not admin, and not machine, only return submitters
+    await filterForSubmittersOnly(resources)
   }
 
   const memberIds = _.uniq(_.map(resources, r => r.memberId))
