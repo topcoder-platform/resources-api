@@ -58,7 +58,7 @@ async function getResources (currentUser, challengeId, roleId = '') {
   if (!currentUser || (!currentUser.isMachine && !helper.hasAdminRole(currentUser))) {
     // await checkAccess(currentUser, resources)
     // if not admin, and not machine, only return submitters
-    await filterForSubmittersOnly(resources)
+    resources = await filterForSubmittersOnly(resources)
   }
 
   const memberIds = _.uniq(_.map(resources, r => r.memberId))
