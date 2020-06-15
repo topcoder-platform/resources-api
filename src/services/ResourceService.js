@@ -11,7 +11,6 @@ const helper = require('../common/helper')
 const logger = require('../common/logger')
 const errors = require('../common/errors')
 const ResourceRolePhaseDependencyService = require('./ResourceRolePhaseDependencyService')
-const ResourceRoleService = require('./ResourceRoleService')
 
 const payloadFields = ['id', 'challengeId', 'memberId', 'memberHandle', 'roleId']
 
@@ -36,8 +35,7 @@ async function checkAccess (currentUser, resources) {
 }
 
 async function filterForSubmittersOnly (resources) {
-  const { resourceRoleId } = await ResourceRoleService.getResourceRoles({ name: 'Submitter' })
-  const resourcesForSubmitters = _.filter(resources, { roleId: resourceRoleId })
+  const resourcesForSubmitters = _.filter(resources, { roleId: config.SUBMITTER_RESOURCE_ROLE_ID })
   return resourcesForSubmitters
 }
 
