@@ -34,28 +34,38 @@ module.exports = (app) => {
       // add Authenticator check if route has auth
       if (def.auth) {
         actions.push((req, res, next) => {
-          authenticator(_.pick(config, ['AUTH_SECRET', 'VALID_ISSUERS']))(req, res, next)
-        })
-
-        actions.push((req, res, next) => {
-          if (req.authUser.isMachine) {
-            // logger.warn(`Request Auth User ${req.authUser} calling ${controllerPath} ${method}`)
-            // M2M
-            if (!req.authUser.scopes || !helper.checkIfExists(def.scopes, req.authUser.scopes)) {
-              next(new errors.ForbiddenError('You are not allowed to perform this action!'))
-            } else {
-              next()
-            }
+          let token
+          if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+            token = req.headers.authorization.split(' ')[1]
+          }
+          if (def.allowAnonymous && !token) {
+            next()
           } else {
-            // User
-            req.authUser.userId = String(req.authUser.userId)
-            if (!req.authUser.roles || !helper.checkIfExists(def.access, req.authUser.roles)) {
-              next(new errors.ForbiddenError('You are not allowed to perform this action!'))
-            } else {
-              next()
-            }
+            authenticator(_.pick(config, ['AUTH_SECRET', 'VALID_ISSUERS']))(req, res, next)
           }
         })
+
+        if (!def.allowAnonymous) {
+          actions.push((req, res, next) => {
+            if (req.authUser.isMachine) {
+              // logger.warn(`Request Auth User ${req.authUser} calling ${controllerPath} ${method}`)
+              // M2M
+              if (!req.authUser.scopes || !helper.checkIfExists(def.scopes, req.authUser.scopes)) {
+                next(new errors.ForbiddenError('You are not allowed to perform this action!'))
+              } else {
+                next()
+              }
+            } else {
+              // User
+              req.authUser.userId = String(req.authUser.userId)
+              if (!req.authUser.roles || !helper.checkIfExists(def.access, req.authUser.roles)) {
+                next(new errors.ForbiddenError('You are not allowed to perform this action!'))
+              } else {
+                next()
+              }
+            }
+          })
+        }
       }
 
       actions.push(method)

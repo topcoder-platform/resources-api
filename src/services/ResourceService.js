@@ -55,7 +55,7 @@ async function getResources (currentUser, challengeId, roleId = '') {
   // if the user filters on roleId, pull them from the stack
   if (roleId) resources = _.filter(resources, { roleId })
 
-  if (!currentUser.isMachine && !helper.hasAdminRole(currentUser)) {
+  if (!currentUser || (!currentUser.isMachine && !helper.hasAdminRole(currentUser))) {
     // await checkAccess(currentUser, resources)
     // if not admin, and not machine, only return submitters
     await filterForSubmittersOnly(resources)
