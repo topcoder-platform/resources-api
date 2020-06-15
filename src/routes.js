@@ -10,6 +10,7 @@ module.exports = {
     get: {
       controller: 'ResourceController',
       method: 'getResources',
+      allowAnonymous: true,
       auth: 'jwt',
       access: [constants.UserRoles.Admin, constants.UserRoles.Copilot, constants.UserRoles.User],
       scopes: [READ, ALL]
