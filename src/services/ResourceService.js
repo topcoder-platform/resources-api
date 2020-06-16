@@ -28,7 +28,7 @@ async function checkAccess (currentUser, resources) {
     }
   })
   if (!_.reduce(resources,
-    (result, r) => r.memberId === currentUser.userId && fullAccessRoles.has(r.roleId) ? true : result,
+    (result, r) => _.toString(r.memberId) === _.toString(currentUser.userId) && fullAccessRoles.has(r.roleId) ? true : result,
     false)) {
     throw new errors.ForbiddenError(`Only M2M, admin or user with full access role can perform this action`)
   }
@@ -155,7 +155,7 @@ async function init (currentUser, challengeId, resource, isCreated) {
   let resources
   if (!currentUser.isMachine && !helper.hasAdminRole(currentUser)) {
     resources = await helper.query('Resource', { challengeId })
-    if (!resourceRole.selfObtainable || memberId !== currentUser.userId) {
+    if (!resourceRole.selfObtainable || _.toString(memberId) !== _.toString(currentUser.userId)) {
       // if user is not creating/deleting a self obtainable resource for itself
       // we need to perform check access first
       await checkAccess(currentUser, resources)
