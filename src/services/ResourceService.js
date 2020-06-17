@@ -81,7 +81,7 @@ async function getResources (currentUser, challengeId, roleId = '') {
       }
       completeResources.push(completeResource)
     } else {
-      logger.warn(`memberInfo not found in db for memberId [${resource.memberId}]}`)
+      // logger.warn(`memberInfo not found in db for memberId [${resource.memberId}]}`)
       completeResources.push(resource)
     }
   }
