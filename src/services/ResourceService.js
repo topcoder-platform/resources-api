@@ -76,7 +76,7 @@ async function getResources (currentUser, challengeId, roleId = '') {
     if (memberInfo) {
       const completeResource = {
         ...resource,
-        rating: memberInfo.maxRating.rating || 0,
+        rating: (memberInfo && memberInfo.maxRating) ? memberInfo.maxRating.rating : 0,
         memberHandle: memberInfo.handle
       }
       completeResources.push(completeResource)
