@@ -430,7 +430,7 @@ function partialMatch (filter, value) {
 async function checkAgreedTerms (userId, terms) {
   const unAgreedTerms = []
   for (const term of terms) {
-    const res = await getRequest(`${config.TERMS_API_URL}/${term}`, { userId })
+    const res = await getRequest(`${config.TERMS_API_URL}/${term.id}`, { userId })
     if (!_.get(res, 'body.agreed', false)) {
       unAgreedTerms.push(_.get(res, 'body.title', term))
     }
