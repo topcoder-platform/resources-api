@@ -1,29 +1,219 @@
 [
   {
-    "id": "cfe12b3f-2a24-4639-9d8b-ec86726f76bd",
-    "name": "Copilot",
-    "fullAccess": true,
+    "fullAccess": false,
+    "id": "06bc4878-5187-4ae9-872c-2dce5cf88b91",
     "isActive": true,
-    "legacyId": 14,
-    "nameLower": "copilot",
+    "legacyId": 1002,
+    "name": "Free Agent",
+    "nameLower": "free agent",
     "selfObtainable": false
   },
   {
-    "id": "2a4dc376-a31c-4d00-b173-13934d89e286",
-    "name": "Observer",
     "fullAccess": true,
+    "id": "0e9c6879-39e4-4eb6-b8df-92407890faf1",
+    "isActive": true,
+    "legacyId": 13,
+    "name": "Manager",
+    "nameLower": "manager",
+    "selfObtainable": false
+  },
+  {
+    "fullAccess": true,
+    "id": "2a4dc376-a31c-4d00-b173-13934d89e286",
     "isActive": true,
     "legacyId": 12,
+    "name": "Observer",
     "nameLower": "observer",
     "selfObtainable": false
   },
   {
-    "id": "732339e7-8e30-49d7-9198-cccf9451e221",
-    "name": "Submitter",
     "fullAccess": false,
+    "id": "318b9c07-079a-42d9-a81f-b96be1dc1099",
+    "isActive": true,
+    "legacyId": 4,
+    "name": "Reviewer",
+    "nameLower": "reviewer",
+    "selfObtainable": false
+  },
+  {
+    "fullAccess": false,
+    "id": "32a76a3a-acc9-4f12-93ea-c63eec7a3025",
+    "isActive": true,
+    "legacyId": 7,
+    "name": "Stress Reviewer",
+    "nameLower": "stress reviewer",
+    "selfObtainable": false
+  },
+  {
+    "fullAccess": false,
+    "id": "3970272b-85b4-48d8-8439-672b4f6031bd",
+    "isActive": true,
+    "legacyId": 20,
+    "name": "Checkpoint Reviewer",
+    "nameLower": "checkpoint reviewer",
+    "selfObtainable": false
+  },
+  {
+    "fullAccess": false,
+    "id": "3eedd4a4-3c68-4f68-8de4-a1ca5c2055e5",
+    "isActive": true,
+    "legacyId": 2,
+    "name": "Primary Screener",
+    "nameLower": "primary screener",
+    "selfObtainable": false
+  },
+  {
+    "fullAccess": false,
+    "id": "4857fd2e-d9d2-44bb-a429-f75b7c5d5feb",
+    "isActive": true,
+    "legacyId": 5,
+    "name": "Accuracy Reviewer",
+    "nameLower": "accuracy reviewer",
+    "selfObtainable": false
+  },
+  {
+    "fullAccess": false,
+    "id": "732339e7-8e30-49d7-9198-cccf9451e221",
     "isActive": true,
     "legacyId": 1,
+    "name": "Submitter",
     "nameLower": "submitter",
     "selfObtainable": true
+  },
+  {
+    "fullAccess": false,
+    "id": "92276e89-08cb-4071-a59b-ffc8f10b0ec4",
+    "isActive": true,
+    "legacyId": 17,
+    "name": "Specification Submitter",
+    "nameLower": "specification submitter",
+    "selfObtainable": false
+  },
+  {
+    "fullAccess": false,
+    "id": "9b2f1905-8128-42da-85df-ed64410f4781",
+    "isActive": true,
+    "legacyId": 15,
+    "name": "Client Manager",
+    "nameLower": "client manager",
+    "selfObtainable": false
+  },
+  {
+    "fullAccess": false,
+    "id": "9c952ddc-47c8-4030-8618-16b4c653fe51",
+    "isActive": true,
+    "legacyId": 1003,
+    "name": "Payment Manager",
+    "nameLower": "payment manager",
+    "selfObtainable": false
+  },
+  {
+    "fullAccess": false,
+    "id": "ac953811-8268-403a-ac06-fd88a100c9c7",
+    "isActive": true,
+    "legacyId": 3,
+    "name": "Screener",
+    "nameLower": "screener",
+    "selfObtainable": false
+  },
+  {
+    "fullAccess": false,
+    "id": "ae0c60b7-b2c2-4142-88a1-197ee932ef27",
+    "isActive": true,
+    "legacyId": 1001,
+    "name": "Team Captain",
+    "nameLower": "team captain",
+    "selfObtainable": false
+  },
+  {
+    "fullAccess": false,
+    "id": "af06095d-755a-48a6-b155-de99cd4ec05c",
+    "isActive": true,
+    "legacyId": 10,
+    "name": "Approver",
+    "nameLower": "approver",
+    "selfObtainable": false
+  },
+  {
+    "fullAccess": false,
+    "id": "caf7b717-3dee-41e0-8bf8-3217cc5a878c",
+    "isActive": true,
+    "legacyId": 6,
+    "name": "Failure Reviewer",
+    "nameLower": "failure reviewer",
+    "selfObtainable": false
+  },
+  {
+    "fullAccess": false,
+    "id": "ceb81a40-f939-492c-9f34-32edbb5ee432",
+    "isActive": true,
+    "legacyId": 16,
+    "name": "Post-Mortem Reviewer",
+    "nameLower": "post-mortem reviewer",
+    "selfObtainable": false
+  },
+  {
+    "fullAccess": true,
+    "id": "cfe12b3f-2a24-4639-9d8b-ec86726f76bd",
+    "isActive": true,
+    "legacyId": 14,
+    "name": "Copilot",
+    "nameLower": "copilot",
+    "selfObtainable": false
+  },
+  {
+    "fullAccess": false,
+    "id": "d663fc84-5c37-43d1-a537-793feffb7667",
+    "isActive": true,
+    "legacyId": 18,
+    "name": "Specification Reviewer",
+    "nameLower": "specification reviewer",
+    "selfObtainable": false
+  },
+  {
+    "fullAccess": false,
+    "id": "e0544b94-6420-4afc-8f63-238eddc751b9",
+    "isActive": true,
+    "legacyId": 9,
+    "name": "Final Reviewer",
+    "nameLower": "final reviewer",
+    "selfObtainable": false
+  },
+  {
+    "fullAccess": false,
+    "id": "e7331f1a-cbe3-4640-a62c-c72466ce99cd",
+    "isActive": true,
+    "legacyId": 11,
+    "name": "Designer",
+    "nameLower": "designer",
+    "selfObtainable": false
+  },
+  {
+    "fullAccess": false,
+    "id": "f6df7212-b9d6-4193-bfb1-b383586fce63",
+    "isActive": true,
+    "legacyId": 21,
+    "name": "Iterative Reviewer",
+    "nameLower": "iterative reviewer",
+    "selfObtainable": false
+  },
+  {
+    "fullAccess": false,
+    "id": "fd672cca-556e-4d16-b0a2-718218edd412",
+    "isActive": true,
+    "legacyId": 19,
+    "name": "Checkpoint Screener",
+    "nameLower": "checkpoint screener",
+    "selfObtainable": false
+  },
+  {
+    "fullAccess": false,
+    "id": "ff556573-5da6-4392-b38c-08c1d7599c4a",
+    "isActive": true,
+    "legacyId": 8,
+    "name": "Aggregator",
+    "nameLower": "aggregator",
+    "selfObtainable": false
   }
 ]
+
