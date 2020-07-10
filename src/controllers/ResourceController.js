@@ -43,6 +43,7 @@ async function deleteResource (req, res) {
  */
 async function listChallengesByMember (req, res) {
   const result = await service.listChallengesByMember(req.params.memberId, req.query)
+  helper.setResHeaders(req, res, result)
   res.send(result)
 }
 
