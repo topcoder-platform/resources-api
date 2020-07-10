@@ -323,10 +323,7 @@ async function listChallengesByMember (memberId, criteria) {
     type: config.get('ES.ES_TYPE'),
     size: perPage,
     from: perPage * (page - 1), // Es Index starts from 0
-
-    // return only challengeId
     body: {
-      _source: ['challengeId'],
       query: mustQuery.length > 0 ? {
         bool: {
           must: mustQuery
@@ -355,7 +352,7 @@ async function listChallengesByMember (memberId, criteria) {
   }
   // Extract data from hits
   let result = _.map(docs.hits.hits, item => item._source)
-  return _.uniq(result)
+  return _.uniq(_.map(result, 'challengeId'))
 }
 
 listChallengesByMember.schema = {
