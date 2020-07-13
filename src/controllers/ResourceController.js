@@ -11,7 +11,7 @@ const helper = require('../common/helper')
  * @param {Object} res the response
  */
 async function getResources (req, res) {
-  const result = await service.getResources(req.authUser, req.query.challengeId, req.query.roleId)
+  const result = await service.getResources(req.authUser, req.query.challengeId, req.query.roleId, req.query.page, req.query.perPage)
   helper.setResHeaders(req, res, result)
   res.send(result)
 }

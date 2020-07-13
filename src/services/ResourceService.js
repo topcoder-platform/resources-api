@@ -34,32 +34,71 @@ async function checkAccess (currentUser, resources) {
   }
 }
 
-async function filterForSubmittersOnly (resources) {
-  const resourcesForSubmitters = _.filter(resources, { roleId: config.SUBMITTER_RESOURCE_ROLE_ID })
-  return resourcesForSubmitters
-}
-
 /**
  * Get resources with given challenge id.
  * @param {Object} currentUser the current user
  * @param {String} challengeId the challenge id
  * @param {String} roleId the role id to filter on
+ * @param {Number} page The page number
+ * @param {Number} perPage The number of items to list per page
  * @returns {Array} the search result
  */
-async function getResources (currentUser, challengeId, roleId = '') {
+async function getResources (currentUser, challengeId, roleId, page, perPage) {
   // Verify that the challenge exists
   await helper.getRequest(`${config.CHALLENGE_API_URL}/${challengeId}`)
 
-  let resources = await helper.query('Resource', { challengeId })
+  const boolQuery = []
+  const mustQuery = []
+  page = page || 1
+  perPage = perPage || 20
 
-  // if the user filters on roleId, pull them from the stack
-  if (roleId) resources = _.filter(resources, { roleId })
+  boolQuery.push({ match: { challengeId } })
 
   if (!currentUser || (!currentUser.isMachine && !helper.hasAdminRole(currentUser))) {
     // await checkAccess(currentUser, resources)
     // if not admin, and not machine, only return submitters
-    resources = await filterForSubmittersOnly(resources)
+    boolQuery.push({ match: { roleId: config.SUBMITTER_RESOURCE_ROLE_ID } })
+  } else if (roleId) {
+    boolQuery.push({ match: { roleId } })
   }
+
+  mustQuery.push({
+    bool: {
+      filter: boolQuery
+    }
+  })
+
+  const esQuery = {
+    index: config.get('ES.ES_INDEX'),
+    type: config.get('ES.ES_TYPE'),
+    size: perPage,
+    from: perPage * (page - 1), // Es Index starts from 0
+    body: {
+      query: {
+        bool: {
+          must: mustQuery
+        }
+      }
+    }
+  }
+
+  const esClient = await helper.getESClient()
+  let docs
+  try {
+    docs = await esClient.search(esQuery)
+  } catch (e) {
+    // Catch error when the ES is fresh and has no data
+    logger.info(`Query Error from ES ${JSON.stringify(e)}`)
+
+    docs = {
+      hits: {
+        total: 0,
+        hits: []
+      }
+    }
+  }
+  // Extract data from hits
+  const resources = _.map(docs.hits.hits, item => item._source)
 
   const memberIds = _.uniq(_.map(resources, r => r.memberId))
 
@@ -92,7 +131,9 @@ async function getResources (currentUser, challengeId, roleId = '') {
 getResources.schema = {
   currentUser: Joi.any(),
   challengeId: Joi.id(),
-  roleId: Joi.optionalId()
+  roleId: Joi.optionalId(),
+  page: Joi.page(),
+  perPage: Joi.perPage()
 }
 
 /**
