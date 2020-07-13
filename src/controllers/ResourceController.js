@@ -13,7 +13,7 @@ const helper = require('../common/helper')
 async function getResources (req, res) {
   const result = await service.getResources(req.authUser, req.query.challengeId, req.query.roleId, req.query.page, req.query.perPage)
   helper.setResHeaders(req, res, result)
-  res.send(result)
+  res.send(result.data)
 }
 
 /**
@@ -44,7 +44,7 @@ async function deleteResource (req, res) {
 async function listChallengesByMember (req, res) {
   const result = await service.listChallengesByMember(req.params.memberId, req.query)
   helper.setResHeaders(req, res, result)
-  res.send(result)
+  res.send(result.data)
 }
 
 module.exports = {

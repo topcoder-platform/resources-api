@@ -50,7 +50,7 @@ async function getResources (currentUser, challengeId, roleId, page, perPage) {
   const boolQuery = []
   const mustQuery = []
   page = page || 1
-  perPage = perPage || 20
+  perPage = perPage || config.DEFAULT_PAGE_SIZE
 
   boolQuery.push({ match: { challengeId } })
 
@@ -81,9 +81,9 @@ async function getResources (currentUser, challengeId, roleId, page, perPage) {
       }
     }
   }
-
   const esClient = await helper.getESClient()
   let docs
+  logger.info(`ES Query ${JSON.stringify(esQuery)}`)
   try {
     docs = await esClient.search(esQuery)
   } catch (e) {
@@ -125,7 +125,12 @@ async function getResources (currentUser, challengeId, roleId, page, perPage) {
     }
   }
 
-  return completeResources
+  return {
+    data: completeResources,
+    total: docs.hits.total,
+    page,
+    perPage
+  }
 }
 
 getResources.schema = {
@@ -346,7 +351,7 @@ async function listChallengesByMember (memberId, criteria) {
 
   const boolQuery = []
   const mustQuery = []
-  const perPage = criteria.perPage || 50
+  const perPage = criteria.perPage || config.DEFAULT_PAGE_SIZE
   const page = criteria.page || 1
   boolQuery.push({ match: { memberId } })
   if (criteria.resourceRoleId) boolQuery.push({ match: { roleId: criteria.resourceRoleId } })
@@ -393,7 +398,13 @@ async function listChallengesByMember (memberId, criteria) {
   }
   // Extract data from hits
   let result = _.map(docs.hits.hits, item => item._source)
-  return _.uniq(_.map(result, 'challengeId'))
+  const arr = _.uniq(_.map(result, 'challengeId'))
+  return {
+    data: arr,
+    total: docs.hits.total,
+    page,
+    perPage
+  }
 }
 
 listChallengesByMember.schema = {
