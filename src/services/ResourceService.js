@@ -83,7 +83,7 @@ async function getResources (currentUser, challengeId, roleId, page, perPage) {
   }
   const esClient = await helper.getESClient()
   let docs
-  logger.info(`ES Query ${JSON.stringify(esQuery)}`)
+  // logger.info(`ES Query ${JSON.stringify(esQuery)}`)
   try {
     docs = await esClient.search(esQuery)
   } catch (e) {
@@ -380,7 +380,7 @@ async function listChallengesByMember (memberId, criteria) {
       }
     }
   }
-  logger.warn(`esQuery ${JSON.stringify(esQuery)}`)
+  // logger.warn(`esQuery ${JSON.stringify(esQuery)}`)
 
   const esClient = await helper.getESClient()
   let docs
