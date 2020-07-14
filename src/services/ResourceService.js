@@ -52,14 +52,15 @@ async function getResources (currentUser, challengeId, roleId, page, perPage) {
   page = page || 1
   perPage = perPage || config.DEFAULT_PAGE_SIZE
 
-  boolQuery.push({ match: { challengeId } })
+  boolQuery.push({ match_phrase: { challengeId } })
 
+  // logger.warn('User Check')
   if (!currentUser || (!currentUser.isMachine && !helper.hasAdminRole(currentUser))) {
     // await checkAccess(currentUser, resources)
     // if not admin, and not machine, only return submitters
-    boolQuery.push({ match: { roleId: config.SUBMITTER_RESOURCE_ROLE_ID } })
+    boolQuery.push({ match_phrase: { roleId: config.SUBMITTER_RESOURCE_ROLE_ID } })
   } else if (roleId) {
-    boolQuery.push({ match: { roleId } })
+    boolQuery.push({ match_phrase: { roleId } })
   }
 
   mustQuery.push({
@@ -83,7 +84,7 @@ async function getResources (currentUser, challengeId, roleId, page, perPage) {
   }
   const esClient = await helper.getESClient()
   let docs
-  // logger.info(`ES Query ${JSON.stringify(esQuery)}`)
+  logger.info(`ES Query ${JSON.stringify(esQuery)}`)
   try {
     docs = await esClient.search(esQuery)
   } catch (e) {
@@ -99,6 +100,7 @@ async function getResources (currentUser, challengeId, roleId, page, perPage) {
   }
   // Extract data from hits
   const resources = _.map(docs.hits.hits, item => item._source)
+  // logger.warn('Resources extracted')
 
   const memberIds = _.uniq(_.map(resources, r => r.memberId))
 
