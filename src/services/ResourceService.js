@@ -355,8 +355,8 @@ async function listChallengesByMember (memberId, criteria) {
   const mustQuery = []
   const perPage = criteria.perPage || config.DEFAULT_PAGE_SIZE
   const page = criteria.page || 1
-  boolQuery.push({ match: { memberId } })
-  if (criteria.resourceRoleId) boolQuery.push({ match: { roleId: criteria.resourceRoleId } })
+  boolQuery.push({ match_phrase: { memberId } })
+  if (criteria.resourceRoleId) boolQuery.push({ match_phrase: { roleId: criteria.resourceRoleId } })
 
   if (boolQuery.length > 0) {
     mustQuery.push({
