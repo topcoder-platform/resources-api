@@ -262,7 +262,7 @@ async function createResource (currentUser, resource) {
     }
 
     if (_.reduce(resources,
-      (result, r) => _.toNumber(r.memberId) === _.toNumber(memberId) && r.roleId === resource.roleId ? true : result,
+      (result, r) => _.toString(r.memberId) === _.toString(memberId) && r.roleId === resource.roleId ? true : result,
       false)) {
       throw new errors.ConflictError(`User ${resource.memberHandle} already has resource with roleId: ${resource.roleId} in challenge: ${challengeId}`)
     }
@@ -311,7 +311,7 @@ async function deleteResource (currentUser, resource) {
     const { resources, memberId, handle } = await init(currentUser, challengeId, resource)
 
     const ret = _.reduce(resources,
-      (result, r) => _.toNumber(r.memberId) === _.toNumber(memberId) && r.roleId === resource.roleId ? r : result,
+      (result, r) => _.toString(r.memberId) === _.toString(memberId) && r.roleId === resource.roleId ? r : result,
       undefined)
 
     if (!ret) {
@@ -410,7 +410,7 @@ async function listChallengesByMember (memberId, criteria) {
 }
 
 listChallengesByMember.schema = {
-  memberId: Joi.number().integer().positive().required(),
+  memberId: Joi.string().required(),
   criteria: Joi.object().keys({
     resourceRoleId: Joi.string().uuid(),
     page: Joi.page(),
