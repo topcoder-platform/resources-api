@@ -12,7 +12,7 @@ const logger = require('../common/logger')
 const errors = require('../common/errors')
 const ResourceRolePhaseDependencyService = require('./ResourceRolePhaseDependencyService')
 
-const payloadFields = ['id', 'challengeId', 'memberId', 'memberHandle', 'roleId']
+const payloadFields = ['id', 'challengeId', 'memberId', 'memberHandle', 'roleId', 'created', 'createdBy', 'updated', 'updatedBy', 'legacyId']
 
 /**
  * Check whether the user can access resources
