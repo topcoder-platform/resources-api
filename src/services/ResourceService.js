@@ -84,7 +84,7 @@ async function getResources (currentUser, challengeId, roleId, page, perPage) {
   }
   const esClient = await helper.getESClient()
   let docs
-  logger.info(`ES Query ${JSON.stringify(esQuery)}`)
+  // logger.debug(`ES Query ${JSON.stringify(esQuery)}`)
   try {
     docs = await esClient.search(esQuery)
   } catch (e) {
