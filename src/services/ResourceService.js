@@ -346,10 +346,11 @@ deleteResource.schema = {
  * @returns {Array} an array of challenge ids represents challenges that given member has access to.
  */
 async function listChallengesByMember (memberId, criteria) {
-  const res = await helper.getRequest(`${config.USER_API_URL}?filter=id=${memberId}`)
-  if (_.get(res, 'body.result.content').length === 0) {
-    throw new errors.BadRequestError(`User with id: ${memberId} doesn't exist`)
-  }
+  // removing this call. If a member doesn't exist, it won't find any challenges
+  // const res = await helper.getRequest(`${config.USER_API_URL}?filter=id=${memberId}`)
+  // if (_.get(res, 'body.result.content').length === 0) {
+  //   throw new errors.BadRequestError(`User with id: ${memberId} doesn't exist`)
+  // }
 
   const boolQuery = []
   const mustQuery = []
