@@ -169,6 +169,7 @@ async function getMemberIdByHandle (handle) {
     return profile.userId
   } catch (e) {
     // fall back to v3 api...
+    logger.warn(`Get MemberID by Handle from Dynamo Failed, trying v3 Members API. Error: ${JSON.stringify(e)}`)
     return getMemberIdByHandleFromV3Members(handle)
   }
 }
