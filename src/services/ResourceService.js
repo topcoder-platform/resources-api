@@ -57,8 +57,24 @@ async function getResources (currentUser, challengeId, roleId, page, perPage) {
   // logger.warn('User Check')
   if (!currentUser || (!currentUser.isMachine && !helper.hasAdminRole(currentUser))) {
     // await checkAccess(currentUser, resources)
-    // if not admin, and not machine, only return submitters
-    boolQuery.push({ match_phrase: { roleId: config.SUBMITTER_RESOURCE_ROLE_ID } })
+    // if not admin, and not machine, only return submitters + all my roles
+    boolQuery.push({
+      bool: {
+        should: [
+          { match_phrase: { memberId: currentUser.userId } },
+          {
+            bool: {
+              must: [
+                { match_phrase: { roleId: config.SUBMITTER_RESOURCE_ROLE_ID } }
+              ],
+              must_not: [
+                { match_phrase: { memberId: currentUser.userId } }
+              ]
+            }
+          }
+        ]
+      }
+    })
   } else if (roleId) {
     boolQuery.push({ match_phrase: { roleId } })
   }
