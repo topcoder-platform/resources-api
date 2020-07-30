@@ -99,7 +99,8 @@ async function getResources (currentUser, challengeId, roleId, page, perPage) {
     }
   }
   // Extract data from hits
-  const resources = _.map(docs.hits.hits, item => item._source)
+  const allResources = _.map(docs.hits.hits, item => item._source)
+  const resources = _.map(allResources, item => ({ ...item, memberId: (_.toString(item.memberId)) }))
   // logger.warn('Resources extracted')
 
   const memberIds = _.uniq(_.map(resources, r => r.memberId))
