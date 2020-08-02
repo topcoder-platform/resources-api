@@ -303,6 +303,16 @@ async function createResource (currentUser, resource) {
       createdBy: currentUser.handle || currentUser.sub
     }, resource))
 
+    // Create resources in ES
+    const esClient = await helper.getESClient()
+    await esClient.create({
+      index: config.ES.ES_INDEX,
+      type: config.ES.ES_TYPE,
+      id: ret.id,
+      body: _.pick(ret, payloadFields),
+      refresh: 'true' // refresh ES so that it is visible for read operations instantly
+    })
+
     // console.log('Created resource:', ret)
 
     await helper.postEvent(config.RESOURCE_CREATE_TOPIC, _.pick(ret, payloadFields))
@@ -346,6 +356,15 @@ async function deleteResource (currentUser, resource) {
     }
 
     await ret.delete()
+
+    // delete from ES
+    const esClient = await helper.getESClient()
+    await esClient.delete({
+      index: config.ES.ES_INDEX,
+      type: config.ES.ES_TYPE,
+      id: ret.id,
+      refresh: 'true' // refresh ES so that it is effective for read operations instantly
+    })
 
     await helper.postEvent(config.RESOURCE_DELETE_TOPIC, _.pick(ret, payloadFields))
     return ret
