@@ -299,7 +299,7 @@ async function createResource (currentUser, resource) {
     const ret = await helper.create('Resource', _.assign({
       id: uuid(),
       memberId,
-      created: moment().utc(),
+      created: moment().utc().format(),
       createdBy: currentUser.handle || currentUser.sub
     }, resource))
 
