@@ -212,6 +212,14 @@ async function init (currentUser, challengeId, resource, isCreated) {
   const challengeRes = await helper.getRequest(`${config.CHALLENGE_API_URL}/${challengeId}`)
   const challenge = challengeRes.body
 
+  // Prevent from creating more than 1 submitter resources on tasks
+  if (_.get(challenge, 'task.isTask', false) && isCreated && resource.roleId === config.SUBMITTER_RESOURCE_ROLE_ID) {
+    const existing = await getResources(currentUser, challengeId, config.SUBMITTER_RESOURCE_ROLE_ID, 1, 1)
+    if (existing.total > 0) {
+      throw new errors.ConflictError(`The Task is already assigned`)
+    }
+  }
+
   // logger.error(`Init Member for ${JSON.stringify(currentUser)}`)
   // get member information using v3 API
   const handle = resource.memberHandle
@@ -292,9 +300,19 @@ async function createResource (currentUser, resource) {
     const ret = await helper.create('Resource', _.assign({
       id: uuid(),
       memberId,
-      created: moment().utc(),
+      created: moment().utc().format(),
       createdBy: currentUser.handle || currentUser.sub
     }, resource))
+
+    // Create resources in ES
+    const esClient = await helper.getESClient()
+    await esClient.create({
+      index: config.ES.ES_INDEX,
+      type: config.ES.ES_TYPE,
+      id: ret.id,
+      body: _.pick(ret, payloadFields),
+      refresh: 'true' // refresh ES so that it is visible for read operations instantly
+    })
 
     // console.log('Created resource:', ret)
 
@@ -339,6 +357,15 @@ async function deleteResource (currentUser, resource) {
     }
 
     await ret.delete()
+
+    // delete from ES
+    const esClient = await helper.getESClient()
+    await esClient.delete({
+      index: config.ES.ES_INDEX,
+      type: config.ES.ES_TYPE,
+      id: ret.id,
+      refresh: 'true' // refresh ES so that it is effective for read operations instantly
+    })
 
     await helper.postEvent(config.RESOURCE_DELETE_TOPIC, _.pick(ret, payloadFields))
     return ret
