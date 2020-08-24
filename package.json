@@ -48,6 +48,7 @@
     "tc-bus-api-wrapper": "topcoder-platform/tc-bus-api-wrapper.git",
     "tc-core-library-js": "appirio-tech/tc-core-library-js.git#v2.6.4",
     "uuid": "^3.3.2",
+    "uuidv4": "^6.2.3",
     "winston": "^3.2.1",
     "xss": "^1.0.7",
     "yamljs": "^0.3.0"
