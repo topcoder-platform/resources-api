@@ -6,6 +6,7 @@ const _ = require('lodash')
 const config = require('config')
 const Joi = require('joi')
 const uuid = require('uuid/v4')
+const { validate: uuidValidate } = require('uuid')
 const moment = require('moment')
 const helper = require('../common/helper')
 const logger = require('../common/logger')
@@ -44,6 +45,9 @@ async function checkAccess (currentUser, resources) {
  * @returns {Array} the search result
  */
 async function getResources (currentUser, challengeId, roleId, page, perPage) {
+  if (!uuidValidate(challengeId)) {
+    throw new errors.BadRequestError(`Challenge ID ${challengeId} must be a valid UUID`)
+  }
   // Verify that the challenge exists
   await helper.getRequest(`${config.CHALLENGE_API_URL}/${challengeId}`)
 
