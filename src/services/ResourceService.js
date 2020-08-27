@@ -327,6 +327,7 @@ async function createResource (currentUser, resource) {
 
     return ret
   } catch (err) {
+    logger.error(`Create Resource Error ${JSON.stringify(err)}`)
     if (!helper.isCustomError(err)) {
       await helper.postEvent(config.KAFKA_ERROR_TOPIC, { error: _.pick(err, 'name', 'message', 'stack') })
     }
@@ -377,6 +378,7 @@ async function deleteResource (currentUser, resource) {
     await helper.postEvent(config.RESOURCE_DELETE_TOPIC, _.pick(ret, payloadFields))
     return ret
   } catch (err) {
+    logger.error(`Delete Resource Error ${JSON.stringify(err)}`)
     if (!helper.isCustomError(err)) {
       await helper.postEvent(config.KAFKA_ERROR_TOPIC, { error: _.pick(err, 'name', 'message', 'stack') })
     }
