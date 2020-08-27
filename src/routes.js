@@ -48,10 +48,7 @@ module.exports = {
   '/resource-roles': {
     get: {
       controller: 'ResourceRoleController',
-      method: 'getResourceRoles',
-      auth: 'jwt',
-      access: [constants.UserRoles.Admin, constants.UserRoles.Copilot, constants.UserRoles.Manager, constants.UserRoles.User],
-      scopes: [READ, ALL]
+      method: 'getResourceRoles'
     },
     post: {
       controller: 'ResourceRoleController',
