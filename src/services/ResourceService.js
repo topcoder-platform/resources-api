@@ -6,6 +6,7 @@ const _ = require('lodash')
 const config = require('config')
 const Joi = require('joi')
 const uuid = require('uuid/v4')
+const uuidV4 = require('uuidv4')
 const moment = require('moment')
 const helper = require('../common/helper')
 const logger = require('../common/logger')
@@ -44,8 +45,15 @@ async function checkAccess (currentUser, resources) {
  * @returns {Array} the search result
  */
 async function getResources (currentUser, challengeId, roleId, page, perPage) {
-  // Verify that the challenge exists
-  await helper.getRequest(`${config.CHALLENGE_API_URL}/${challengeId}`)
+  if (!uuidV4.isUuid(challengeId)) {
+    throw new errors.BadRequestError(`Challenge ID ${challengeId} must be a valid v5 Challenge Id (UUID)`)
+  }
+  try {
+    // Verify that the challenge exists
+    await helper.getRequest(`${config.CHALLENGE_API_URL}/${challengeId}`)
+  } catch (e) {
+    throw new errors.NotFoundError(`Challenge ID ${challengeId} not found`)
+  }
 
   const boolQuery = []
   const mustQuery = []
@@ -320,6 +328,7 @@ async function createResource (currentUser, resource) {
 
     return ret
   } catch (err) {
+    logger.error(`Create Resource Error ${JSON.stringify(err)}`)
     if (!helper.isCustomError(err)) {
       await helper.postEvent(config.KAFKA_ERROR_TOPIC, { error: _.pick(err, 'name', 'message', 'stack') })
     }
@@ -370,6 +379,7 @@ async function deleteResource (currentUser, resource) {
     await helper.postEvent(config.RESOURCE_DELETE_TOPIC, _.pick(ret, payloadFields))
     return ret
   } catch (err) {
+    logger.error(`Delete Resource Error ${JSON.stringify(err)}`)
     if (!helper.isCustomError(err)) {
       await helper.postEvent(config.KAFKA_ERROR_TOPIC, { error: _.pick(err, 'name', 'message', 'stack') })
     }
