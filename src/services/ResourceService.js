@@ -232,7 +232,7 @@ async function init (currentUser, challengeId, resource, isCreated) {
   // get member information using v3 API
   const handle = resource.memberHandle
   const memberId = await helper.getMemberIdByHandle(resource.memberHandle)
-  logger.debug(`memberId ${memberId}`)
+
   // ensure resource role existed
   const resourceRole = await getResourceRole(resource.roleId, isCreated)
 
