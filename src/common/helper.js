@@ -165,7 +165,7 @@ async function getMemberInfoById (id) {
 async function getMemberIdByHandle (handle) {
   try {
     // logger.warn(`getMemberIdByHandle ${handle}`)
-    const profile = await MemberProfile.query('handleLower').eq(_.lowerCase(handle)).exec().then(r => r[0])
+    const profile = await MemberProfile.query('handleLower').eq(_.toLower(handle)).exec().then(r => r[0])
     return profile.userId
   } catch (e) {
     // fall back to v3 api...
