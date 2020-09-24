@@ -254,6 +254,10 @@ async function init (currentUser, challengeId, resource, isCreated) {
       range: { memberId: { eq: memberId } }
     })
   }
+  // skip phase dependency checks for tasks
+  if (_.get(challenge, 'task.isTask', false)) {
+    return { resources, memberId, handle }
+  }
   // check phases dependencies
   const dependencies = await ResourceRolePhaseDependencyService.getDependencies({ resourceRoleId: resource.roleId })
   _.forEach(dependencies, (dependency) => {
