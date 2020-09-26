@@ -9,7 +9,7 @@ const { v4: uuid } = require('uuid')
 const helper = require('../common/helper')
 // const logger = require('../common/logger')
 
-const payloadFields = ['id', 'name', 'legacyId', 'fullAccess', 'isActive', 'selfObtainable']
+const payloadFields = ['id', 'name', 'legacyId', 'fullReadAccess', 'fullWriteAccess', 'isActive', 'selfObtainable']
 
 /**
  * Get resource roles.
@@ -22,7 +22,8 @@ async function getResourceRoles (criteria) {
   if (criteria.id) records = _.filter(records, e => (criteria.id === e.id))
   if (!_.isUndefined(criteria.isActive)) records = _.filter(records, e => (e.isActive === (criteria.isActive === 'true')))
   if (!_.isUndefined(criteria.selfObtainable)) records = _.filter(records, e => (e.selfObtainable === (criteria.selfObtainable === 'true')))
-  if (!_.isUndefined(criteria.fullAccess)) records = _.filter(records, e => (e.fullAccess === (criteria.fullAccess === 'true')))
+  if (!_.isUndefined(criteria.fullReadAccess)) records = _.filter(records, e => (e.fullReadAccess === (criteria.fullReadAccess === 'true')))
+  if (!_.isUndefined(criteria.fullWriteAccess)) records = _.filter(records, e => (e.fullWriteAccess === (criteria.fullWriteAccess === 'true')))
 
   return _.map(records, e => _.pick(e, payloadFields))
 }
@@ -31,7 +32,8 @@ getResourceRoles.schema = {
   criteria: Joi.object().keys({
     isActive: Joi.boolean(),
     selfObtainable: Joi.boolean(),
-    fullAccess: Joi.boolean(),
+    fullReadAccess: Joi.boolean(),
+    fullWriteAccess: Joi.boolean(),
     id: Joi.id(),
     name: Joi.string()
   }).required()
@@ -62,7 +64,8 @@ async function createResourceRole (resourceRole) {
 createResourceRole.schema = {
   resourceRole: Joi.object().keys({
     name: Joi.string().required(),
-    fullAccess: Joi.boolean().required(),
+    fullReadAccess: Joi.boolean(),
+    fullWriteAccess: Joi.boolean(),
     isActive: Joi.boolean().required(),
     selfObtainable: Joi.boolean().required()
   }).required()
@@ -98,7 +101,8 @@ updateResourceRole.schema = {
   resourceRoleId: Joi.id(),
   data: Joi.object().keys({
     name: Joi.string().required(),
-    fullAccess: Joi.boolean().required(),
+    fullReadAccess: Joi.boolean(),
+    fullWriteAccess: Joi.boolean(),
     isActive: Joi.boolean().required(),
     selfObtainable: Joi.boolean().required()
   }).required()

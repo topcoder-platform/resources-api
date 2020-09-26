@@ -17,7 +17,11 @@ const schema = new Schema({
     type: String,
     required: true
   },
-  fullAccess: {
+  fullReadAccess: {
+    type: Boolean,
+    required: true
+  },
+  fullWriteAccess: {
     type: Boolean,
     required: true
   },

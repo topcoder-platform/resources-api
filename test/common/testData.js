@@ -96,16 +96,17 @@ const user = {
 const requestBody = {
   resourceRoles: {
     stringFields: ['name'],
-    booleanFields: ['fullAccess', 'isActive', 'selfObtainable'],
-    requiredFields: ['name', 'fullAccess', 'isActive', 'selfObtainable'],
+    booleanFields: ['fullReadAccess', 'fullWriteAccess', 'isActive', 'selfObtainable'],
+    requiredFields: ['name', 'fullReadAccess', 'fullWriteAccess', 'isActive', 'selfObtainable'],
     testBody: {
       name: 'name',
-      fullAccess: true,
+      fullReadAccess: true,
+      fullWriteAccess: true,
       isActive: true,
       selfObtainable: false
     },
-    createBody: (name, fullAccess, isActive, selfObtainable) => {
-      return { name, fullAccess, isActive, selfObtainable }
+    createBody: (name, fullReadAccess, fullWriteAccess, isActive, selfObtainable) => {
+      return { name, fullReadAccess, fullWriteAccess, isActive, selfObtainable }
     }
   },
   resources: {
