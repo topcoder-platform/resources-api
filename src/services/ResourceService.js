@@ -327,8 +327,7 @@ async function createResource (currentUser, resource) {
       refresh: 'true' // refresh ES so that it is visible for read operations instantly
     })
 
-    // console.log('Created resource:', ret)
-
+    logger.debug(`Created resource: ${JSON.stringify(_.pick(ret, payloadFields))}`)
     await helper.postEvent(config.RESOURCE_CREATE_TOPIC, _.pick(ret, payloadFields))
 
     return ret
@@ -381,6 +380,7 @@ async function deleteResource (currentUser, resource) {
       refresh: 'true' // refresh ES so that it is effective for read operations instantly
     })
 
+    logger.debug(`Deleted resource, posting to Bus API: ${JSON.stringify(_.pick(ret, payloadFields))}`)
     await helper.postEvent(config.RESOURCE_DELETE_TOPIC, _.pick(ret, payloadFields))
     return ret
   } catch (err) {
