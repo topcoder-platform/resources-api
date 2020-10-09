@@ -223,7 +223,7 @@ async function init (currentUser, challengeId, resource, isCreated) {
   // Prevent from creating more than 1 submitter resources on tasks
   if (_.get(challenge, 'task.isTask', false) && isCreated && resource.roleId === config.SUBMITTER_RESOURCE_ROLE_ID) {
     const existing = await getResources(currentUser, challengeId, config.SUBMITTER_RESOURCE_ROLE_ID, 1, 1)
-    if (existing.total > 0) {
+    if (_.find(existing.data, r => r.roleId === config.SUBMITTER_RESOURCE_ROLE_ID)) {
       throw new errors.ConflictError(`The Task is already assigned`)
     }
   }
@@ -253,6 +253,10 @@ async function init (currentUser, challengeId, resource, isCreated) {
       hash: { challengeId: { eq: challengeId } },
       range: { memberId: { eq: memberId } }
     })
+  }
+  // skip phase dependency checks for tasks
+  if (_.get(challenge, 'task.isTask', false)) {
+    return { resources, memberId, handle }
   }
   // check phases dependencies
   const dependencies = await ResourceRolePhaseDependencyService.getDependencies({ resourceRoleId: resource.roleId })
@@ -323,8 +327,7 @@ async function createResource (currentUser, resource) {
       refresh: 'true' // refresh ES so that it is visible for read operations instantly
     })
 
-    // console.log('Created resource:', ret)
-
+    logger.debug(`Created resource: ${JSON.stringify(_.pick(ret, payloadFields))}`)
     await helper.postEvent(config.RESOURCE_CREATE_TOPIC, _.pick(ret, payloadFields))
 
     return ret
@@ -377,6 +380,7 @@ async function deleteResource (currentUser, resource) {
       refresh: 'true' // refresh ES so that it is effective for read operations instantly
     })
 
+    logger.debug(`Deleted resource, posting to Bus API: ${JSON.stringify(_.pick(ret, payloadFields))}`)
     await helper.postEvent(config.RESOURCE_DELETE_TOPIC, _.pick(ret, payloadFields))
     return ret
   } catch (err) {
