@@ -20,6 +20,7 @@ async function getResourceRoles (criteria) {
   let records = await helper.scan('ResourceRole')
   if (criteria.name) records = _.filter(records, e => (criteria.name === e.name))
   if (criteria.id) records = _.filter(records, e => (criteria.id === e.id))
+  if (criteria.legacyId) records = _.filter(records, e => (criteria.legacyId === e.legacyId))
   if (!_.isUndefined(criteria.isActive)) records = _.filter(records, e => (e.isActive === (criteria.isActive === 'true')))
   if (!_.isUndefined(criteria.selfObtainable)) records = _.filter(records, e => (e.selfObtainable === (criteria.selfObtainable === 'true')))
   if (!_.isUndefined(criteria.fullAccess)) records = _.filter(records, e => (e.fullAccess === (criteria.fullAccess === 'true')))
@@ -33,6 +34,7 @@ getResourceRoles.schema = {
     selfObtainable: Joi.boolean(),
     fullAccess: Joi.boolean(),
     id: Joi.id(),
+    legacyId: Joi.number(),
     name: Joi.string()
   }).required()
 }

@@ -188,7 +188,7 @@ paths:
     get:
       description: >-
         Get all resource roles. If isActive parameter is provided, filter the
-        results by isActive property.
+        results by the set properties.
       tags:
         - Resource Roles
       security:
@@ -202,6 +202,18 @@ paths:
           type: string
           in: query
           description: Filters the results based on the `name` property
+        - name: legacyId
+          type: number
+          in: query
+          description: Filters the results based on the `legacyId` property
+        - name: selfObtainable
+          type: boolean
+          in: query
+          description: Filters the results based on the `selfObtainable` property
+        - name: fullAccess
+          type: boolean
+          in: query
+          description: Filters the results based on the `fullAccess` property
       responses:
         '200':
           description: OK - the request was successful
