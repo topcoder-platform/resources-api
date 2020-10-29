@@ -238,9 +238,12 @@ async function init (currentUser, challengeId, resource, isCreated) {
 
   // perform access validation
   let resources
+  // Verify the member has agreed to the challenge terms
+  if (isCreated) {
+    await helper.checkAgreedTerms(memberId, _.filter(_.get(challenge, 'terms', []), t => t.roleId === resourceRole.id))
+  }
   if (!currentUser.isMachine && !helper.hasAdminRole(currentUser)) {
     // Check if user has agreed to the challenge terms
-    await helper.checkAgreedTerms(currentUser.userId, _.filter(_.get(challenge, 'terms', []), t => t.roleId === resourceRole.id))
     resources = await helper.query('Resource', { challengeId })
     if (!resourceRole.selfObtainable || _.toString(memberId) !== _.toString(currentUser.userId)) {
       // if user is not creating/deleting a self obtainable resource for itself
