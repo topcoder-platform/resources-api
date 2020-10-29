@@ -246,7 +246,7 @@ async function update (dbItem, data) {
  */
 async function scan (modelName, scanParams) {
   return new Promise((resolve, reject) => {
-    models[modelName].scan(scanParams).exec((err, result) => {
+    models[modelName].scan(scanParams).all(0, 0).exec((err, result) => {
       if (err) {
         return reject(err)
       }
@@ -264,7 +264,7 @@ async function scan (modelName, scanParams) {
  */
 async function query (modelName, queryParams) {
   return new Promise((resolve, reject) => {
-    models[modelName].query(queryParams).exec((err, result) => {
+    models[modelName].query(queryParams).all(0, 0).exec((err, result) => {
       if (err) {
         return reject(err)
       }
