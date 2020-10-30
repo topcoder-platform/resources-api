@@ -59,6 +59,18 @@ async function getResources (currentUser, challengeId, roleId, page, perPage) {
   const mustQuery = []
   page = page || 1
   perPage = perPage || config.DEFAULT_PAGE_SIZE
+  let hasFullAccess
+
+  // Check if the user has a resource with full access on the challenge
+  if (currentUser) {
+    const resources = await helper.query('Resource', { challengeId })
+    try {
+      await checkAccess(currentUser, resources)
+      hasFullAccess = true
+    } catch (e) {
+      hasFullAccess = false
+    }
+  }
 
   boolQuery.push({ match_phrase: { challengeId } })
 
@@ -66,7 +78,7 @@ async function getResources (currentUser, challengeId, roleId, page, perPage) {
   if (!currentUser) {
     // if the user is not logged in, only return resources with submitter role ID
     boolQuery.push({ match_phrase: { roleId: config.SUBMITTER_RESOURCE_ROLE_ID } })
-  } else if ((!currentUser.isMachine && !helper.hasAdminRole(currentUser))) {
+  } else if (!currentUser.isMachine && !helper.hasAdminRole(currentUser) && !hasFullAccess) {
     // await checkAccess(currentUser, resources)
     // if not admin, and not machine, only return submitters + all my roles
     boolQuery.push({
