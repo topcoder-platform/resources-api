@@ -22,7 +22,10 @@ const app = express()
 // serve resources V5 API swagger definition
 app.use('/v5/resources/docs', swaggerUi.serve, swaggerUi.setup(resourcesAPISwaggerDoc))
 
-app.use(cors())
+app.use(cors({
+  // Allow browsers access pagination data in headers
+  exposedHeaders: ['X-Page', 'X-Per-Page', 'X-Total', 'X-Total-Pages', 'X-Prev-Page', 'X-Next-Page']
+}))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.set('port', config.PORT)
