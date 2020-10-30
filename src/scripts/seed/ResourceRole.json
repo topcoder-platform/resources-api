@@ -1,6 +1,7 @@
 [
   {
-    "fullAccess": false,
+    "fullWriteAccess": false,
+    "fullReadAccess":  true,
     "id": "06bc4878-5187-4ae9-872c-2dce5cf88b91",
     "isActive": true,
     "legacyId": 1002,
@@ -9,7 +10,8 @@
     "selfObtainable": false
   },
   {
-    "fullAccess": true,
+    "fullWriteAccess": true,
+    "fullReadAccess":  true,
     "id": "0e9c6879-39e4-4eb6-b8df-92407890faf1",
     "isActive": true,
     "legacyId": 13,
@@ -18,7 +20,8 @@
     "selfObtainable": false
   },
   {
-    "fullAccess": true,
+    "fullWriteAccess": false,
+    "fullReadAccess":  true,
     "id": "2a4dc376-a31c-4d00-b173-13934d89e286",
     "isActive": true,
     "legacyId": 12,
@@ -27,7 +30,8 @@
     "selfObtainable": false
   },
   {
-    "fullAccess": false,
+    "fullWriteAccess": false,
+    "fullReadAccess":  false,
     "id": "318b9c07-079a-42d9-a81f-b96be1dc1099",
     "isActive": true,
     "legacyId": 4,
@@ -36,7 +40,8 @@
     "selfObtainable": false
   },
   {
-    "fullAccess": false,
+    "fullWriteAccess": false,
+    "fullReadAccess":  false,
     "id": "32a76a3a-acc9-4f12-93ea-c63eec7a3025",
     "isActive": true,
     "legacyId": 7,
@@ -45,7 +50,8 @@
     "selfObtainable": false
   },
   {
-    "fullAccess": false,
+    "fullWriteAccess": false,
+    "fullReadAccess":  true,
     "id": "3970272b-85b4-48d8-8439-672b4f6031bd",
     "isActive": true,
     "legacyId": 20,
@@ -54,7 +60,8 @@
     "selfObtainable": false
   },
   {
-    "fullAccess": false,
+    "fullWriteAccess": false,
+    "fullReadAccess":  false,
     "id": "3eedd4a4-3c68-4f68-8de4-a1ca5c2055e5",
     "isActive": true,
     "legacyId": 2,
@@ -63,7 +70,8 @@
     "selfObtainable": false
   },
   {
-    "fullAccess": false,
+    "fullWriteAccess": false,
+    "fullReadAccess":  false,
     "id": "4857fd2e-d9d2-44bb-a429-f75b7c5d5feb",
     "isActive": true,
     "legacyId": 5,
@@ -72,7 +80,8 @@
     "selfObtainable": false
   },
   {
-    "fullAccess": false,
+    "fullWriteAccess": false,
+    "fullReadAccess":  false,
     "id": "732339e7-8e30-49d7-9198-cccf9451e221",
     "isActive": true,
     "legacyId": 1,
@@ -81,7 +90,8 @@
     "selfObtainable": true
   },
   {
-    "fullAccess": false,
+    "fullWriteAccess": false,
+    "fullReadAccess":  false,
     "id": "92276e89-08cb-4071-a59b-ffc8f10b0ec4",
     "isActive": true,
     "legacyId": 17,
@@ -90,7 +100,8 @@
     "selfObtainable": false
   },
   {
-    "fullAccess": false,
+    "fullWriteAccess": false,
+    "fullReadAccess":  false,
     "id": "9b2f1905-8128-42da-85df-ed64410f4781",
     "isActive": true,
     "legacyId": 15,
@@ -99,7 +110,8 @@
     "selfObtainable": false
   },
   {
-    "fullAccess": false,
+    "fullWriteAccess": false,
+    "fullReadAccess":  false,
     "id": "9c952ddc-47c8-4030-8618-16b4c653fe51",
     "isActive": true,
     "legacyId": 1003,
@@ -108,7 +120,8 @@
     "selfObtainable": false
   },
   {
-    "fullAccess": false,
+    "fullWriteAccess": false,
+    "fullReadAccess":  false,
     "id": "ac953811-8268-403a-ac06-fd88a100c9c7",
     "isActive": true,
     "legacyId": 3,
@@ -117,7 +130,8 @@
     "selfObtainable": false
   },
   {
-    "fullAccess": false,
+    "fullWriteAccess": false,
+    "fullReadAccess":  false,
     "id": "ae0c60b7-b2c2-4142-88a1-197ee932ef27",
     "isActive": true,
     "legacyId": 1001,
@@ -126,7 +140,8 @@
     "selfObtainable": false
   },
   {
-    "fullAccess": false,
+    "fullWriteAccess": false,
+    "fullReadAccess":  true,
     "id": "af06095d-755a-48a6-b155-de99cd4ec05c",
     "isActive": true,
     "legacyId": 10,
@@ -135,7 +150,8 @@
     "selfObtainable": false
   },
   {
-    "fullAccess": false,
+    "fullWriteAccess": false,
+    "fullReadAccess":  false,
     "id": "caf7b717-3dee-41e0-8bf8-3217cc5a878c",
     "isActive": true,
     "legacyId": 6,
@@ -144,7 +160,8 @@
     "selfObtainable": false
   },
   {
-    "fullAccess": false,
+    "fullWriteAccess": false,
+    "fullReadAccess":  false,
     "id": "ceb81a40-f939-492c-9f34-32edbb5ee432",
     "isActive": true,
     "legacyId": 16,
@@ -153,7 +170,8 @@
     "selfObtainable": false
   },
   {
-    "fullAccess": true,
+    "fullWriteAccess": true,
+    "fullReadAccess":  true,
     "id": "cfe12b3f-2a24-4639-9d8b-ec86726f76bd",
     "isActive": true,
     "legacyId": 14,
@@ -162,7 +180,8 @@
     "selfObtainable": false
   },
   {
-    "fullAccess": false,
+    "fullWriteAccess": false,
+    "fullReadAccess":  false,
     "id": "d663fc84-5c37-43d1-a537-793feffb7667",
     "isActive": true,
     "legacyId": 18,
@@ -171,7 +190,8 @@
     "selfObtainable": false
   },
   {
-    "fullAccess": false,
+    "fullWriteAccess": false,
+    "fullReadAccess":  false,
     "id": "e0544b94-6420-4afc-8f63-238eddc751b9",
     "isActive": true,
     "legacyId": 9,
@@ -180,7 +200,8 @@
     "selfObtainable": false
   },
   {
-    "fullAccess": false,
+    "fullWriteAccess": false,
+    "fullReadAccess":  false,
     "id": "e7331f1a-cbe3-4640-a62c-c72466ce99cd",
     "isActive": true,
     "legacyId": 11,
@@ -189,7 +210,8 @@
     "selfObtainable": false
   },
   {
-    "fullAccess": false,
+    "fullWriteAccess": false,
+    "fullReadAccess":  false,
     "id": "f6df7212-b9d6-4193-bfb1-b383586fce63",
     "isActive": true,
     "legacyId": 21,
@@ -198,7 +220,8 @@
     "selfObtainable": false
   },
   {
-    "fullAccess": false,
+    "fullWriteAccess": false,
+    "fullReadAccess":  false,
     "id": "fd672cca-556e-4d16-b0a2-718218edd412",
     "isActive": true,
     "legacyId": 19,
@@ -207,7 +230,8 @@
     "selfObtainable": false
   },
   {
-    "fullAccess": false,
+    "fullWriteAccess": false,
+    "fullReadAccess":  false,
     "id": "ff556573-5da6-4392-b38c-08c1d7599c4a",
     "isActive": true,
     "legacyId": 8,

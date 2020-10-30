@@ -123,7 +123,8 @@ async function assertResourceRole (id, expected) {
   should.exist(id)
   const entity = await helper.getById('ResourceRole', id)
   should.equal(entity.name, expected.name)
-  should.equal(entity.fullAccess, expected.fullAccess)
+  should.equal(entity.fullReadAccess, expected.fullReadAccess)
+  should.equal(entity.fullWriteAccess, expected.fullWriteAccess)
   should.equal(entity.isActive, expected.isActive)
   should.equal(entity.selfObtainable, expected.selfObtainable)
 }

@@ -24,7 +24,7 @@ async function checkAccess (currentUser, resources) {
   const list = await helper.scan('ResourceRole')
   const fullAccessRoles = new Set()
   _.each(list, e => {
-    if (e.isActive && e.fullAccess) {
+    if (e.isActive && e.fullReadAccess && e.fullWriteAccess) {
       fullAccessRoles.add(e.id)
     }
   })
