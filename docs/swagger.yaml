@@ -6,9 +6,9 @@ info:
 
 
     GET/POST/DELETE `/Resources` endpoints can only be called from admins, via
-    M2M, or users for whom there is at least one existing `Resource` where both
-    `role.fullAccess` and `role.isActive` are `true`. Special Case: User can
-    create/delte selfObtainable resource for its own.
+    M2M, or users for whom there is at least one existing `Resource` where
+    `role.fullReadAccess`, `role.fullWriteAccess` and `role.isActive` are `true`.
+    Special Case: User can create/delte selfObtainable resource for its own.
 
     `Resource Roles` POST and PUT endpoints can only be called from admins or
     via M2M.
@@ -493,7 +493,8 @@ definitions:
     type: object
     required:
       - name
-      - fullAccess
+      - fullReadccess
+      - fullWriteAccess
       - isActive
       - selfObtainable
     properties:
@@ -504,7 +505,9 @@ definitions:
       name:
         type: string
         description: 'Unique resource role name, case in-sensitive'
-      fullAccess:
+      fullReadAccess:
+        type: boolean
+      fullWriteAccess:
         type: boolean
       isActive:
         type: boolean
