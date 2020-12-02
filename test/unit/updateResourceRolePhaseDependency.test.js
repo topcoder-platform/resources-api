@@ -13,16 +13,24 @@ const dependencies = requestBody.resourceRolePhaseDependencies
 module.exports = describe('Update resource role phase dependency', () => {
   let dependency
   let copilotRoleId
+  let reviewerRoleId
 
   before(async () => {
     const ret = await getRoleIds()
     copilotRoleId = ret.copilotRoleId
+    reviewerRoleId = ret.reviewerRoleId
     const submitterRoleId = ret.submitterRoleId
     const records = await service.getDependencies({ resourceRoleId: submitterRoleId })
     dependency = records[0]
   })
 
   it('update dependency', async () => {
+    const entity = dependencies.createBody(dependency.phaseId, reviewerRoleId, true)
+    const ret = await service.updateDependency(dependency.id, entity)
+    await assertResourceRolePhaseDependency(ret.id, entity)
+  })
+
+  it('update dependency again', async () => {
     const entity = dependencies.createBody(dependency.phaseId, dependency.resourceRoleId, true)
     const ret = await service.updateDependency(dependency.id, entity)
     await assertResourceRolePhaseDependency(ret.id, entity)

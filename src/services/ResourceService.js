@@ -6,7 +6,6 @@ const _ = require('lodash')
 const config = require('config')
 const Joi = require('joi')
 const { v4: uuid } = require('uuid')
-const { validate: validateUUID } = require('uuid')
 const moment = require('moment')
 const helper = require('../common/helper')
 const logger = require('../common/logger')
@@ -45,11 +44,8 @@ async function checkAccess (currentUser, resources) {
  * @returns {Array} the search result
  */
 async function getResources (currentUser, challengeId, roleId, page, perPage) {
-  if (!validateUUID(challengeId)) {
-    throw new errors.BadRequestError(`Challenge ID ${challengeId} must be a valid v5 Challenge Id (UUID)`)
-  }
   try {
-    // Verify that the challenge exists
+  // Verify that the challenge exists
     await helper.getRequest(`${config.CHALLENGE_API_URL}/${challengeId}`)
   } catch (e) {
     throw new errors.NotFoundError(`Challenge ID ${challengeId} not found`)
@@ -57,8 +53,6 @@ async function getResources (currentUser, challengeId, roleId, page, perPage) {
 
   const boolQuery = []
   const mustQuery = []
-  page = page || 1
-  perPage = perPage || config.DEFAULT_PAGE_SIZE
   let hasFullAccess
 
   // Check if the user has a resource with full access on the challenge
@@ -316,10 +310,14 @@ async function createResource (currentUser, resource) {
   try {
     const challengeId = resource.challengeId
 
-    const { resources, memberId, handle } = await init(currentUser, challengeId, resource, true)
-    if (handle) {
-      resource.memberHandle = handle
-    }
+    // handle doesn't change in current version
+    // Seems we don't need handle auto-correction(e.g. "THomaskranitsas"->"thomaskranitsas")
+    // const { resources, memberId, handle } = await init(currentUser, challengeId, resource, true)
+    const { resources, memberId } = await init(currentUser, challengeId, resource, true)
+
+    // if (handle) {
+    //  resource.memberHandle = handle
+    // }
 
     if (_.reduce(resources,
       (result, r) => _.toString(r.memberId) === _.toString(memberId) && r.roleId === resource.roleId ? true : result,
@@ -385,7 +383,7 @@ async function deleteResource (currentUser, resource) {
       undefined)
 
     if (!ret) {
-      throw new errors.BadRequestError(`User ${handle || resource.memberHandle} doesn't have resource with roleId: ${resource.roleId} in challenge ${challengeId}`)
+      throw new errors.BadRequestError(`User ${handle} doesn't have resource with roleId: ${resource.roleId} in challenge ${challengeId}`)
     }
 
     await ret.delete()
@@ -435,18 +433,16 @@ async function listChallengesByMember (memberId, criteria) {
 
   const boolQuery = []
   const mustQuery = []
-  const perPage = criteria.perPage || config.DEFAULT_PAGE_SIZE
-  const page = criteria.page || 1
+  const perPage = criteria.perPage
+  const page = criteria.page
   boolQuery.push({ match_phrase: { memberId } })
   if (criteria.resourceRoleId) boolQuery.push({ match_phrase: { roleId: criteria.resourceRoleId } })
 
-  if (boolQuery.length > 0) {
-    mustQuery.push({
-      bool: {
-        filter: boolQuery
-      }
-    })
-  }
+  mustQuery.push({
+    bool: {
+      filter: boolQuery
+    }
+  })
 
   const esQuery = {
     index: config.get('ES.ES_INDEX'),
@@ -454,13 +450,11 @@ async function listChallengesByMember (memberId, criteria) {
     size: perPage,
     from: perPage * (page - 1), // Es Index starts from 0
     body: {
-      query: mustQuery.length > 0 ? {
+      query: {
         bool: {
           must: mustQuery
           // must_not: mustNotQuery
         }
-      } : {
-        match_all: {}
       }
     }
   }
@@ -507,4 +501,4 @@ module.exports = {
   listChallengesByMember
 }
 
-// logger.buildService(module.exports)
+logger.buildService(module.exports)

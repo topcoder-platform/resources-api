@@ -97,7 +97,7 @@ const requestBody = {
   resourceRoles: {
     stringFields: ['name'],
     booleanFields: ['fullReadAccess', 'fullWriteAccess', 'isActive', 'selfObtainable'],
-    requiredFields: ['name', 'fullReadAccess', 'fullWriteAccess', 'isActive', 'selfObtainable'],
+    requiredFields: ['name', 'isActive', 'selfObtainable'],
     testBody: {
       name: 'name',
       fullReadAccess: true,

@@ -5,6 +5,7 @@
 const _ = require('lodash')
 const config = require('config')
 const should = require('should')
+const helper = require('../../src/common/helper')
 const { postRequest, assertResourceRole } = require('../common/testHelper')
 const { token, requestBody } = require('../common/testData')
 
@@ -13,7 +14,7 @@ const resourceRoles = requestBody.resourceRoles
 
 module.exports = describe('Create resource role endpoint', () => {
   it('create active full-access resource role by admin', async () => {
-    const body = resourceRoles.createBody('co-pilot', true, true, false)
+    const body = resourceRoles.createBody('co-pilot', true, true, true, false)
     const res = await postRequest(resourceRoleUrl, body, token.admin)
     should.equal(res.status, 200)
     const copilotRoleId = res.body.id
@@ -21,15 +22,17 @@ module.exports = describe('Create resource role endpoint', () => {
   })
 
   it('create inactive full-access resource role by M2M', async () => {
-    const body = resourceRoles.createBody('Observer', true, false, false)
+    const body = resourceRoles.createBody('Observer', true, false, false, false)
     const res = await postRequest(resourceRoleUrl, body, token.m2m)
     should.equal(res.status, 200)
     const observerRoleId = res.body.id
     await assertResourceRole(observerRoleId, body)
+    const resourceRole = await helper.getById('ResourceRole', res.body.id)
+    await helper.update(resourceRole, { legacyId: 1 })
   })
 
   it('create active not full-access resource role by admin', async () => {
-    const body = resourceRoles.createBody('submitter', false, true, true)
+    const body = resourceRoles.createBody('submitter', false, true, true, true)
     const res = await postRequest(resourceRoleUrl, body, token.admin)
     should.equal(res.status, 200)
     const submitterRoleId = res.body.id
@@ -37,7 +40,7 @@ module.exports = describe('Create resource role endpoint', () => {
   })
 
   it('create reviewer resource role', async () => {
-    const body = resourceRoles.createBody('reviewer', false, true, false)
+    const body = resourceRoles.createBody('reviewer', false, true, true, false)
     const res = await postRequest(resourceRoleUrl, body, token.admin)
     should.equal(res.status, 200)
     const reviewerRoleId = res.body.id
@@ -139,7 +142,7 @@ module.exports = describe('Create resource role endpoint', () => {
   })
 
   it(`create duplicate resource role, expected 409`, async () => {
-    const body = resourceRoles.createBody('SUBMITTER', false, true, true)
+    const body = resourceRoles.createBody('SUBMITTER', false, true, true, true)
     try {
       await postRequest(resourceRoleUrl, body, token.admin)
       throw new Error('should not throw error here')

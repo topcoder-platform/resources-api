@@ -13,11 +13,13 @@ const dependencies = requestBody.resourceRolePhaseDependencies
 module.exports = describe('Create resource role phase dependency', () => {
   let copilotRoleId
   let submitterRoleId
+  let observerRoleId
 
   before(async () => {
     const ret = await getRoleIds()
     copilotRoleId = ret.copilotRoleId
     submitterRoleId = ret.submitterRoleId
+    observerRoleId = ret.observerRoleId
   })
 
   it('create copilot dependency', async () => {
@@ -30,6 +32,17 @@ module.exports = describe('Create resource role phase dependency', () => {
     const entity = dependencies.createBody(dependencies.testBody.phaseId, submitterRoleId, false)
     const ret = await service.createDependency(entity)
     await assertResourceRolePhaseDependency(ret.id, entity)
+  })
+
+  it('create dependency - resource role is inactive', async () => {
+    try {
+      const entity = dependencies.createBody(dependencies.testBody.phaseId, observerRoleId, true)
+      await service.createDependency(entity)
+      throw new Error('should not throw error here')
+    } catch (err) {
+      should.equal(err.name, 'BadRequestError')
+      should.equal(err.message, `Resource role with id: ${observerRoleId} is inactive`)
+    }
   })
 
   it('create dependency - phaseId not found', async () => {

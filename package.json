@@ -11,6 +11,8 @@
     "init-es": "node src/init-es.js",
     "drop-tables": "node src/scripts/drop-tables.js",
     "create-tables": "node src/scripts/create-tables.js",
+    "drop-tables:test": "NODE_ENV=test node src/scripts/drop-tables.js",
+    "create-tables:test": "NODE_ENV=test node src/scripts/create-tables.js",
     "seed-tables": "node src/scripts/seed-tables.js",
     "view-data": "node src/scripts/view-data.js",
     "mock-challenge-api": "NODE_ENV=test node mock/mock-challenge-api",
