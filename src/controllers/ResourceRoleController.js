@@ -3,6 +3,7 @@
  */
 
 const service = require('../services/ResourceRoleService')
+const helper = require('../common/helper')
 
 /**
  * Get resource roles.
@@ -11,7 +12,8 @@ const service = require('../services/ResourceRoleService')
  */
 async function getResourceRoles (req, res) {
   const result = await service.getResourceRoles(req.query)
-  res.send(result)
+  helper.setResHeaders(req, res, result)
+  res.send(result.data)
 }
 
 /**

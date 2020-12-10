@@ -24,10 +24,15 @@ async function getDependencies (criteria) {
     options.resourceRoleId = { eq: criteria.resourceRoleId }
   }
   if (!_.isNil(criteria.phaseState)) {
-    options.phaseState = { eq: criteria.phaseState }
+    options.phaseState = { eq: criteria.phaseState === 'true' }
   }
-  const list = await helper.scan('ResourceRolePhaseDependency', options)
-  return list
+  const list = await helper.scanAll('ResourceRolePhaseDependency', options)
+  return {
+    data: list,
+    total: list.length,
+    page: 1,
+    perPage: Math.max(10, list.length)
+  }
 }
 
 getDependencies.schema = {

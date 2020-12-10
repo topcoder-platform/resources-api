@@ -257,6 +257,23 @@ async function scan (modelName, scanParams) {
 }
 
 /**
+ * Get all data collection (avoid default page limit of DynamoDB) by scan parameters
+ * @param {Object} modelName The dynamoose model name
+ * @param {Object} scanParams The scan parameters object
+ * @returns {Array}
+ */
+async function scanAll (modelName, scanParams) {
+  let results = await models[modelName].scan(scanParams).exec()
+  let lastKey = results.lastKey
+  while (!_.isUndefined(results.lastKey)) {
+    const newResult = await models[modelName].scan(scanParams).startAt(lastKey).exec()
+    results = [...results, ...newResult]
+    lastKey = newResult.lastKey
+  }
+  return results
+}
+
+/**
  * Get data collection by query parameters
  * @param {Object} modelName The dynamoose model name
  * @param {Object} queryParams The query parameters object
@@ -455,6 +472,7 @@ module.exports = {
   update,
   query,
   scan,
+  scanAll,
   validateDuplicate,
   getRequest,
   postEvent,
