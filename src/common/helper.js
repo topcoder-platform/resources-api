@@ -427,18 +427,26 @@ function partialMatch (filter, value) {
  * Check if the user has agreed to all challenge terms
  * @param {Number} userId the user ID
  * @param {Array<String>} terms an array of term UUIDs to check
+ * @param {String} roleId the role ID
  */
-async function checkAgreedTerms (userId, terms) {
+async function checkAgreedTerms (userId, terms, roleId) {
   const unAgreedTerms = []
+  const unAgreedTermIds = []
   for (const term of terms) {
     const res = await getRequest(`${config.TERMS_API_URL}/${term.id}`, { userId })
     if (!_.get(res, 'body.agreed', false)) {
       unAgreedTerms.push(_.get(res, 'body.title', term))
+      unAgreedTermIds.push({
+        termId: term.id,
+        roleId
+      })
     }
   }
 
   if (unAgreedTerms.length > 0) {
-    throw new errors.ForbiddenError(`The user has not yet agreed to the following terms: [${unAgreedTerms.join(', ')}]`)
+    throw new errors.ForbiddenError(`The user has not yet agreed to the following terms: [${unAgreedTerms.join(', ')}]`, null, {
+      missingTerms: unAgreedTermIds
+    })
   }
 }
 
