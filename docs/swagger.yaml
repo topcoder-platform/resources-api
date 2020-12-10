@@ -577,6 +577,9 @@ definitions:
         type: string
         description: The unauthorized error message.
         example: Unable to authenticate the user.
+      metadata:
+        type: object
+        description: freeform metadata object
   NotFound:
     type: object
     description: The not found error entity.
@@ -585,6 +588,9 @@ definitions:
         type: string
         description: The not found error message.
         example: A resource with the name could not be found.
+      metadata:
+        type: object
+        description: freeform metadata object
   ServerError:
     type: object
     description: The server error entity.
@@ -596,6 +602,9 @@ definitions:
           Something went wrong while processing your request. We’re sorry for
           the trouble. We’ve been notified of the error and will correct it as
           soon as possible. Please try your request again in a moment.
+      metadata:
+        type: object
+        description: freeform metadata object
   ServiceUnavailable:
     type: object
     description: The server is unavailable
@@ -604,6 +613,9 @@ definitions:
         type: string
         description: The server error message.
         example: Something went wrong with the server.
+      metadata:
+        type: object
+        description: freeform metadata object
   BadRequest:
     type: object
     description: The bad request error entity.
@@ -612,6 +624,9 @@ definitions:
         type: string
         description: The bad request error message.
         example: Invalid input.
+      metadata:
+        type: object
+        description: freeform metadata object
   Forbidden:
     type: object
     description: The permission error entity.
@@ -620,6 +635,9 @@ definitions:
         type: string
         description: The forbidden error message.
         example: You are not allowed to access the request.
+      metadata:
+        type: object
+        description: freeform metadata object
   Conflict:
     type: object
     description: The conflict error entity.
@@ -630,3 +648,6 @@ definitions:
         type: string
         description: The conflict error message.
         example: Creating a resource with a name already exists.
+      metadata:
+        type: object
+        description: freeform metadata object
