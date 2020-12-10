@@ -15,13 +15,15 @@ function createError (name, statusCode) {
    * The error constructor
    * @param {String} message the error message
    * @param {String} [cause] the error cause
+   * @param {Object} metadata the metadata
    * @constructor
    */
-  function ErrorCtor (message, cause) {
+  function ErrorCtor (message, cause, metadata) {
     Error.call(this)
     Error.captureStackTrace(this)
     this.message = message || name
     this.cause = cause
+    this.metadata = metadata
     this.httpStatus = statusCode
   }
 

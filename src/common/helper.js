@@ -430,15 +430,20 @@ function partialMatch (filter, value) {
  */
 async function checkAgreedTerms (userId, terms) {
   const unAgreedTerms = []
+  const missingTerms = []
   for (const term of terms) {
     const res = await getRequest(`${config.TERMS_API_URL}/${term.id}`, { userId })
     if (!_.get(res, 'body.agreed', false)) {
       unAgreedTerms.push(_.get(res, 'body.title', term))
+      missingTerms.push({
+        termId: term.id,
+        roleId: term.roleId
+      })
     }
   }
 
   if (unAgreedTerms.length > 0) {
-    throw new errors.ForbiddenError(`The user has not yet agreed to the following terms: [${unAgreedTerms.join(', ')}]`)
+    throw new errors.ForbiddenError(`The user has not yet agreed to the following terms: [${unAgreedTerms.join(', ')}]`, null, { missingTerms })
   }
 }
 
