@@ -252,7 +252,7 @@ async function init (currentUser, challengeId, resource, isCreated) {
   let resources
   // Verify the member has agreed to the challenge terms
   if (isCreated) {
-    await helper.checkAgreedTerms(memberId, _.filter(_.get(challenge, 'terms', []), t => t.roleId === resourceRole.id), resourceRole.id)
+    await helper.checkAgreedTerms(memberId, _.filter(_.get(challenge, 'terms', []), t => t.roleId === resourceRole.id))
   }
   if (!currentUser.isMachine && !helper.hasAdminRole(currentUser)) {
     // Check if user has agreed to the challenge terms
