@@ -177,13 +177,13 @@ async function getMemberIdByHandle (handle) {
 async function getMemberIdByHandleFromV3Members (handle) {
   let memberId
   try {
-    logger.warn(`getMemberIdByHandle ${handle} from v3`)
+    logger.warn(`getMemberIdByHandle ${handle} from v5`)
     const res = await getRequest(`${config.MEMBER_API_URL}/${handle}`)
-    if (_.get(res, 'body.result.content.userId')) {
-      memberId = String(res.body.result.content.userId)
+    if (_.get(res, 'body.userId')) {
+      memberId = String(res.body.userId)
     }
     // handle return from v3 API, handle and memberHandle are the same under case-insensitive condition
-    handle = _.get(res, 'body.result.content.handle')
+    handle = _.get(res, 'body.handle')
   } catch (error) {
     // re-throw all error except 404 Not-Founded, BadRequestError should be thrown if 404 occurs
     if (error.status !== 404) {
