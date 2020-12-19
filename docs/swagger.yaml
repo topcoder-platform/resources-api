@@ -72,6 +72,16 @@ paths:
           format: UUID
           in: query
           required: false
+        - name: sortBy
+          type: string
+          description: Sort the results by the field.
+          in: query
+          required: false
+        - name: sortOrder
+          type: string
+          description: Order the results by the asc/desc.
+          in: query
+          required: false
       responses:
         '200':
           description: OK - the request was successful

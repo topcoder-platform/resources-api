@@ -33,7 +33,7 @@ module.exports = {
     // AWS_SECRET_ACCESS_KEY: process.env.AWS_FAKE_KEY,
     AWS_REGION: process.env.AWS_REGION || 'us-east-1',
     IS_LOCAL_DB: process.env.IS_LOCAL_DB ? process.env.IS_LOCAL_DB === 'true' : true,
-    URL: process.env.DYNAMODB_URL || 'http://localhost:8000',
+    DYNAMODB_URL: process.env.DYNAMODB_URL || 'http://localhost:8000',
     AWS_READ_UNITS: process.env.AWS_READ_UNITS || 4,
     AWS_WRITE_UNITS: process.env.AWS_WRITE_UNITS || 2,
     TIMEOUT: process.env.DYNAMODB_TIMEOUT || 10000
