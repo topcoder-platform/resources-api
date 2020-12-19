@@ -385,7 +385,7 @@ async function deleteResource (currentUser, resource) {
       undefined)
 
     if (!ret) {
-      throw new errors.BadRequestError(`User ${handle || resource.memberHandle} doesn't have resource with roleId: ${resource.roleId} in challenge ${challengeId}`)
+      throw new errors.NotFoundError(`User ${handle || resource.memberHandle} doesn't have resource with roleId: ${resource.roleId} in challenge ${challengeId}`)
     }
 
     await ret.delete()
