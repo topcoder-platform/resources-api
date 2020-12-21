@@ -44,7 +44,7 @@ async function checkAccess (currentUser, resources) {
  * @param {Number} perPage The number of items to list per page
  * @returns {Array} the search result
  */
-async function getResources (currentUser, challengeId, roleId, page, perPage) {
+async function getResources (currentUser, challengeId, roleId, page, perPage, sortBy, sortOrder) {
   if (!validateUUID(challengeId)) {
     throw new errors.BadRequestError(`Challenge ID ${challengeId} must be a valid v5 Challenge Id (UUID)`)
   }
@@ -118,7 +118,8 @@ async function getResources (currentUser, challengeId, roleId, page, perPage) {
         bool: {
           must: mustQuery
         }
-      }
+      },
+      sort: [{ [sortBy]: { 'order': sortOrder } }]
     }
   }
   const esClient = await helper.getESClient()
@@ -180,7 +181,9 @@ getResources.schema = {
   challengeId: Joi.id(),
   roleId: Joi.optionalId(),
   page: Joi.page(),
-  perPage: Joi.perPage()
+  perPage: Joi.perPage(),
+  sortBy: Joi.string().valid('memberHandle', 'created').required(),
+  sortOrder: Joi.string().valid('desc', 'asc').required()
 }
 
 /**
