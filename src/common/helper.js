@@ -177,13 +177,13 @@ async function getMemberIdByHandle (handle) {
 async function getMemberIdByHandleFromV3Members (handle) {
   let memberId
   try {
-    logger.warn(`getMemberIdByHandle ${handle} from v3`)
+    logger.warn(`getMemberIdByHandle ${handle} from v5`)
     const res = await getRequest(`${config.MEMBER_API_URL}/${handle}`)
-    if (_.get(res, 'body.result.content.userId')) {
-      memberId = String(res.body.result.content.userId)
+    if (_.get(res, 'body.userId')) {
+      memberId = String(res.body.userId)
     }
     // handle return from v3 API, handle and memberHandle are the same under case-insensitive condition
-    handle = _.get(res, 'body.result.content.handle')
+    handle = _.get(res, 'body.handle')
   } catch (error) {
     // re-throw all error except 404 Not-Founded, BadRequestError should be thrown if 404 occurs
     if (error.status !== 404) {
@@ -254,6 +254,23 @@ async function scan (modelName, scanParams) {
       return resolve(result.count === 0 ? [] : result)
     })
   })
+}
+
+/**
+ * Get all data collection (avoid default page limit of DynamoDB) by scan parameters
+ * @param {Object} modelName The dynamoose model name
+ * @param {Object} scanParams The scan parameters object
+ * @returns {Array}
+ */
+async function scanAll (modelName, scanParams) {
+  let results = await models[modelName].scan(scanParams).exec()
+  let lastKey = results.lastKey
+  while (!_.isUndefined(results.lastKey)) {
+    const newResult = await models[modelName].scan(scanParams).startAt(lastKey).exec()
+    results = [...results, ...newResult]
+    lastKey = newResult.lastKey
+  }
+  return results
 }
 
 /**
@@ -430,15 +447,20 @@ function partialMatch (filter, value) {
  */
 async function checkAgreedTerms (userId, terms) {
   const unAgreedTerms = []
+  const missingTerms = []
   for (const term of terms) {
     const res = await getRequest(`${config.TERMS_API_URL}/${term.id}`, { userId })
     if (!_.get(res, 'body.agreed', false)) {
       unAgreedTerms.push(_.get(res, 'body.title', term))
+      missingTerms.push({
+        termId: term.id,
+        roleId: term.roleId
+      })
     }
   }
 
   if (unAgreedTerms.length > 0) {
-    throw new errors.ForbiddenError(`The user has not yet agreed to the following terms: [${unAgreedTerms.join(', ')}]`)
+    throw new errors.ForbiddenError(`The user has not yet agreed to the following terms: [${unAgreedTerms.join(', ')}]`, null, { missingTerms })
   }
 }
 
@@ -455,6 +477,7 @@ module.exports = {
   update,
   query,
   scan,
+  scanAll,
   validateDuplicate,
   getRequest,
   postEvent,

@@ -3,6 +3,7 @@
  */
 
 const service = require('../services/ResourceRolePhaseDependencyService')
+const helper = require('../common/helper')
 
 /**
  * Get dependencies.
@@ -11,7 +12,8 @@ const service = require('../services/ResourceRolePhaseDependencyService')
  */
 async function getDependencies (req, res) {
   const result = await service.getDependencies(req.query)
-  res.send(result)
+  helper.setResHeaders(req, res, result)
+  res.send(result.data)
 }
 
 /**
