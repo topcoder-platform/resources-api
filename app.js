@@ -92,6 +92,10 @@ app.use((err, req, res, next) => {
     }
   }
 
+  if (!_.isUndefined(err.metadata)) {
+    errorResponse.metadata = err.metadata
+  }
+
   res.status(status).json(errorResponse)
 })
 

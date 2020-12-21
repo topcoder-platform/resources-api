@@ -17,7 +17,7 @@ const payloadFields = ['id', 'name', 'legacyId', 'fullReadAccess', 'fullWriteAcc
  * @returns {Array} the search result
  */
 async function getResourceRoles (criteria) {
-  let records = await helper.scan('ResourceRole')
+  let records = await helper.scanAll('ResourceRole')
   if (criteria.name) records = _.filter(records, e => (criteria.name === e.name))
   if (criteria.id) records = _.filter(records, e => (criteria.id === e.id))
   if (criteria.legacyId) records = _.filter(records, e => (_.toNumber(criteria.legacyId) === _.toNumber(e.legacyId)))
@@ -26,7 +26,13 @@ async function getResourceRoles (criteria) {
   if (!_.isUndefined(criteria.fullReadAccess)) records = _.filter(records, e => (e.fullReadAccess === criteria.fullReadAccess))
   if (!_.isUndefined(criteria.fullWriteAccess)) records = _.filter(records, e => (e.fullWriteAccess === criteria.fullWriteAccess))
 
-  return _.map(records, e => _.pick(e, payloadFields))
+  const result = _.map(records, e => _.pick(e, payloadFields))
+  return {
+    data: result,
+    total: result.length,
+    page: 1,
+    perPage: Math.max(10, result.length)
+  }
 }
 
 getResourceRoles.schema = {

@@ -43,7 +43,10 @@ async function checkAccess (currentUser, resources) {
  * @param {Number} perPage The number of items to list per page
  * @returns {Array} the search result
  */
-async function getResources (currentUser, challengeId, roleId, page, perPage) {
+async function getResources (currentUser, challengeId, roleId, page, perPage, sortBy, sortOrder) {
+  if (!validateUUID(challengeId)) {
+    throw new errors.BadRequestError(`Challenge ID ${challengeId} must be a valid v5 Challenge Id (UUID)`)
+  }
   try {
   // Verify that the challenge exists
     await helper.getRequest(`${config.CHALLENGE_API_URL}/${challengeId}`)
@@ -112,7 +115,8 @@ async function getResources (currentUser, challengeId, roleId, page, perPage) {
         bool: {
           must: mustQuery
         }
-      }
+      },
+      sort: [{ [sortBy]: { 'order': sortOrder } }]
     }
   }
   const esClient = await helper.getESClient()
@@ -174,7 +178,9 @@ getResources.schema = {
   challengeId: Joi.id(),
   roleId: Joi.optionalId(),
   page: Joi.page(),
-  perPage: Joi.perPage()
+  perPage: Joi.perPage(),
+  sortBy: Joi.string().valid('memberHandle', 'created').required(),
+  sortOrder: Joi.string().valid('desc', 'asc').required()
 }
 
 /**
@@ -383,7 +389,7 @@ async function deleteResource (currentUser, resource) {
       undefined)
 
     if (!ret) {
-      throw new errors.BadRequestError(`User ${handle} doesn't have resource with roleId: ${resource.roleId} in challenge ${challengeId}`)
+      throw new errors.NotFoundError(`User ${handle || resource.memberHandle} doesn't have resource with roleId: ${resource.roleId} in challenge ${challengeId}`)
     }
 
     await ret.delete()
