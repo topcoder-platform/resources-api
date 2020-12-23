@@ -180,8 +180,8 @@ getResources.schema = {
   roleId: Joi.optionalId(),
   page: Joi.page(),
   perPage: Joi.perPage(),
-  sortBy: Joi.string().valid('memberHandle', 'created').required(),
-  sortOrder: Joi.string().valid('desc', 'asc').required()
+  sortBy: Joi.string().valid('memberHandle', 'created').default('created'),
+  sortOrder: Joi.string().valid('desc', 'asc').default('asc')
 }
 
 /**
