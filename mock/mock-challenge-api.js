@@ -36,18 +36,58 @@ const mockChallengeApi = http.createServer((req, res) => {
         } else {
           return send(res, 200, {
             id: challengeId,
+            task: {
+              isTask: challengeId === 'fe6d0a58-ce7d-4521-8501-b8132b1c0392'
+            },
+            terms: challengeId === 'fe6d0a58-ce7d-4521-8501-b8132b1c0392' ? [{
+              id: 'ae6d0a58-ce7d-4521-8501-b8132b1c0391',
+              roleId: 'aa5a3f78-79e0-4bf7-93ff-b11e8f5b398b'
+            }] : [{
+              id: 'ae6d0a58-ce7d-4521-8501-b8132b1c0392',
+              roleId: config.SUBMITTER_RESOURCE_ROLE_ID
+            }, {
+              id: 'ae6d0a58-ce7d-4521-8501-b8132b1c0393',
+              roleId: config.SUBMITTER_RESOURCE_ROLE_ID
+            }],
             phases: [{
               phaseId: 'aa5a3f78-79e0-4bf7-93ff-b11e8f5b398b',
               isOpen: true
             }, {
               phaseId: 'cfe12b3f-2a12-4639-9d8b-ec86726f7644',
               isOpen: false
+            }, {
+              phaseId: 'ad123e44-c6c4-4cb3-8c60-e0339e1eaa3e',
+              actualStartDate: '2020-01-01',
+              actualEndDate: '2020-01-02'
+            }, {
+              phaseId: 'ad123e44-c6c4-4cb3-8c60-e0339e1eaa40',
+              scheduledStartDate: '2020-01-01',
+              scheduledEndDate: '2020-01-02'
+            }, {
+              phaseId: 'ad123e44-c6c4-4cb3-8c60-e0339e1eaa41'
             }]
           })
         }
       } else {
         return send(res, 400, { message: `Challenge id: ${challengeId} should be a UUID.` })
       }
+    } else if (req.method === 'GET' && req.url.match(/^\/v5\/terms\/[a-zA-Z0-9-]+\?userId=[0-9]+$/)) {
+      const list1 = req.url.split('/')
+      const list2 = list1[3].split('?')
+      const termId = list2[0]
+      return send(res, 200, { agreed: termId.endsWith('3'), title: 'term_title' })
+    } else if (req.method === 'GET' && req.url.match(/^\/v5\/challenge-phases.*$/)) {
+      res.setHeader('x-total', '6')
+      return send(res, 200, [
+        { id: 'aa5a3f78-79e0-4bf7-93ff-b11e8f5b398b' },
+        { id: 'cfe12b3f-2a12-4639-9d8b-ec86726f7644' },
+        { id: 'ad123e44-c6c4-4cb3-8c60-e0339e1eaa3e' },
+        { id: 'ad123e44-c6c4-4cb3-8c60-e0339e1eaa40' },
+        { id: 'ad123e44-c6c4-4cb3-8c60-e0339e1eaa41' },
+        { id: 'ad123e44-c6c4-4cb3-8c60-e0339e1eaa42' }
+      ])
+    } else if (req.method === 'POST' && req.url.match(/^\/v5\/bus\/events$/)) {
+      return send(res, 200, {})
     } else {
       // 404 for other routes
       res.statusCode = 404

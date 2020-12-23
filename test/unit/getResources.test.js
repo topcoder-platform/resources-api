@@ -44,7 +44,11 @@ module.exports = describe('Get resources', () => {
       if (entity.roleId === reviewerRoleId) {
         hasReviewerRole = true
       }
+      should.equal(expected.rating, 2000)
     } else {
+      if (entity.memberHandle.toLowerCase() === 'denis') {
+        should.equal(expected.rating, 0)
+      }
       should.equal(entity.roleId, submitterRoleId)
     }
     should.exist(expected.created)
@@ -55,9 +59,9 @@ module.exports = describe('Get resources', () => {
   it('get resources by admin', async () => {
     hasCopilotRole = false
     hasReviewerRole = false
-    const records = await service.getResources(user.admin, challengeId)
-    should.equal(records.length, 5)
-    for (const record of records) {
+    const result = await service.getResources(user.admin, challengeId)
+    should.equal(result.total, 5)
+    for (const record of result.data) {
       await assertResource(record.id, record)
     }
     // user hohosky should have two resources
@@ -68,9 +72,9 @@ module.exports = describe('Get resources', () => {
   it('get resources by user has full-access permission', async () => {
     hasCopilotRole = false
     hasReviewerRole = false
-    const records = await service.getResources(user.hohosky, challengeId)
-    should.equal(records.length, 5)
-    for (const record of records) {
+    const result = await service.getResources(user.hohosky, challengeId)
+    should.equal(result.total, 5)
+    for (const record of result.data) {
       await assertResource(record.id, record)
     }
     // user hohosky should have two resources
@@ -78,17 +82,40 @@ module.exports = describe('Get resources', () => {
     should.equal(hasReviewerRole, true)
   })
 
+  it(`get resources using user without permission`, async () => {
+    const result = await service.getResources(user.denis, challengeId)
+    should.equal(result.total, 1)
+    should.equal(result.data[0].memberHandle, 'denis')
+  })
+
   it('get resources using m2m token', async () => {
     hasCopilotRole = false
     hasReviewerRole = false
-    const records = await service.getResources(user.m2m, challengeId)
-    should.equal(records.length, 5)
-    for (const record of records) {
+    const result = await service.getResources(user.m2m, challengeId)
+    should.equal(result.total, 5)
+    for (const record of result.data) {
       await assertResource(record.id, record)
     }
     // user hohosky should have two resources
     should.equal(hasCopilotRole, true)
     should.equal(hasReviewerRole, true)
+  })
+
+  it('get resources with role id using m2m token', async () => {
+    hasCopilotRole = false
+    hasReviewerRole = false
+    const result = await service.getResources(user.m2m, challengeId, copilotRoleId)
+    should.equal(result.total, 1)
+    for (const record of result.data) {
+      await assertResource(record.id, record)
+    }
+    // user hohosky should have copilot role
+    should.equal(hasCopilotRole, true)
+  })
+
+  it('get resources without user login', async () => {
+    const result = await service.getResources(null, challengeId)
+    should.equal(result.total, 0)
   })
 
   it(`test invalid parameter, challengeId must be UUID`, async () => {
@@ -100,23 +127,13 @@ module.exports = describe('Get resources', () => {
     }
   })
 
-  it(`failure - get resources using user without permission`, async () => {
-    try {
-      await service.getResources(user.denis, challengeId)
-      throw new Error('should not throw error here')
-    } catch (err) {
-      should.equal(err.name, 'ForbiddenError')
-      assertError(err, `Only M2M, admin or user with full access role can perform this action`)
-    }
-  })
-
   it('failure - get resource from non-existed challenge', async () => {
     try {
       await service.getResources(user.m2m, challengeNotFoundId)
       throw new Error('should not throw error here')
     } catch (err) {
-      should.equal(err.status, 404)
-      should.equal(err.response.body.message, `Challenge with id: ${challengeNotFoundId} doesn't exist.`)
+      should.equal(err.name, 'NotFoundError')
+      assertError(err, `Challenge ID ${challengeNotFoundId} not found`)
     }
   })
 })

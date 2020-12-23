@@ -2,6 +2,7 @@
  * This file defines helper methods
  */
 
+const config = require('config')
 const request = require('superagent')
 const should = require('should')
 const helper = require('../../src/common/helper')
@@ -168,6 +169,22 @@ async function clearDependencies () {
   }
 }
 
+/**
+ * Clear the ES documents.
+ */
+async function initES () {
+  const client = helper.getESClient()
+  await client.deleteByQuery({
+    index: config.ES.ES_INDEX,
+    type: config.ES.ES_TYPE,
+    body: {
+      query: {
+        match_all: {}
+      }
+    }
+  })
+}
+
 module.exports = {
   getRequest,
   putRequest,
@@ -180,5 +197,6 @@ module.exports = {
   assertResource,
   assertResourceRolePhaseDependency,
   initLogs,
-  clearDependencies
+  clearDependencies,
+  initES
 }

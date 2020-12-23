@@ -8,17 +8,19 @@ const should = require('should')
 const { postRequest, assertResourceRolePhaseDependency, getRoleIds } = require('../common/testHelper')
 const { token, requestBody } = require('../common/testData')
 
-const dependenciesUrl = `http://localhost:${config.PORT}/${config.API_VERSION}/resourceRoles/phase-dependencies`
+const dependenciesUrl = `http://localhost:${config.PORT}/${config.API_VERSION}/resource-roles/phase-dependencies`
 const dependencies = requestBody.resourceRolePhaseDependencies
 
 module.exports = describe('Create resource role phase dependency endpoint', () => {
   let copilotRoleId
   let submitterRoleId
+  let observerRoleId
 
   before(async () => {
     const ret = await getRoleIds()
     copilotRoleId = ret.copilotRoleId
     submitterRoleId = ret.submitterRoleId
+    observerRoleId = ret.observerRoleId
   })
 
   it('create copilot dependency', async () => {
@@ -33,6 +35,17 @@ module.exports = describe('Create resource role phase dependency endpoint', () =
     const ret = await postRequest(dependenciesUrl, entity, token.m2m)
     should.equal(ret.status, 200)
     await assertResourceRolePhaseDependency(ret.body.id, entity)
+  })
+
+  it('create dependency - resource role is inactive', async () => {
+    try {
+      const entity = dependencies.createBody(dependencies.testBody.phaseId, observerRoleId, true)
+      await postRequest(dependenciesUrl, entity, token.m2m)
+      throw new Error('should not throw error here')
+    } catch (err) {
+      should.equal(err.status, 400)
+      should.equal(_.get(err, 'response.body.message'), `Resource role with id: ${observerRoleId} is inactive`)
+    }
   })
 
   it('create dependency - phaseId not found', async () => {

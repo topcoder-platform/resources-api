@@ -48,7 +48,11 @@ module.exports = describe('Get resource endpoint', () => {
       if (entity.roleId === reviewerRoleId) {
         hasReviewerRole = true
       }
+      should.equal(expected.rating, 2000)
     } else {
+      if (entity.memberHandle.toLowerCase() === 'denis') {
+        should.equal(expected.rating, 0)
+      }
       should.equal(entity.roleId, submitterRoleId)
     }
     should.exist(expected.created)
@@ -57,6 +61,18 @@ module.exports = describe('Get resource endpoint', () => {
   }
 
   it('get resources by admin', async () => {
+    hasCopilotRole = false
+    hasReviewerRole = false
+    const res = await getRequest(`${resourceUrl}&page=2&perPage=1`, token.admin)
+    should.equal(res.status, 200)
+    should.equal(res.headers['x-prev-page'], '1')
+    should.equal(res.headers['x-next-page'], '3')
+    should.equal(res.headers['x-total'], '5')
+    should.equal(res.headers['x-total-pages'], '5')
+    should.equal(res.body.length, 1)
+  })
+
+  it('get resources with pagination', async () => {
     hasCopilotRole = false
     hasReviewerRole = false
     const res = await getRequest(resourceUrl, token.admin)
@@ -86,6 +102,14 @@ module.exports = describe('Get resource endpoint', () => {
     should.equal(hasReviewerRole, true)
   })
 
+  it(`get resources using user without permission`, async () => {
+    const res = await getRequest(resourceUrl, token.denis)
+    should.equal(res.status, 200)
+    const records = res.body
+    should.equal(records.length, 1)
+    should.equal(records[0].memberHandle, 'denis')
+  })
+
   it('get resources using m2m token', async () => {
     hasCopilotRole = false
     hasReviewerRole = false
@@ -99,6 +123,25 @@ module.exports = describe('Get resource endpoint', () => {
     // user hohosky should have two resources
     should.equal(hasCopilotRole, true)
     should.equal(hasReviewerRole, true)
+  })
+
+  it('get resources with role id using m2m token', async () => {
+    hasCopilotRole = false
+    hasReviewerRole = false
+    const res = await getRequest(`${resourceUrl}&roleId=${copilotRoleId}`, token.m2m)
+    should.equal(res.status, 200)
+    const records = res.body
+    should.equal(records.length, 1)
+    for (const record of records) {
+      await assertResource(record.id, record)
+    }
+    // user hohosky should have copilot role
+    should.equal(hasCopilotRole, true)
+  })
+
+  it('get resources without user login', async () => {
+    const res = await getRequest(resourceUrl)
+    should.equal(res.body.length, 0)
   })
 
   it(`test invalid url, challengeId query parameter is required`, async () => {
@@ -118,16 +161,6 @@ module.exports = describe('Get resource endpoint', () => {
     } catch (err) {
       should.equal(err.status, 400)
       should.equal(_.get(err, 'response.body.message'), `"challengeId" must be a valid GUID`)
-    }
-  })
-
-  it(`test without token, expected 401`, async () => {
-    try {
-      await getRequest(resourceUrl)
-      throw new Error('should not throw error here')
-    } catch (err) {
-      should.equal(err.status, 401)
-      should.equal(_.get(err, 'response.body.message'), 'No token provided.')
     }
   })
 
@@ -151,33 +184,13 @@ module.exports = describe('Get resource endpoint', () => {
     }
   })
 
-  it(`test with user without permission, expected 403`, async () => {
-    try {
-      await getRequest(resourceUrl, token.denis)
-      throw new Error('should not throw error here')
-    } catch (err) {
-      should.equal(err.status, 403)
-      should.equal(_.get(err, 'response.body.message'), 'Only M2M, admin or user with full access role can perform this action')
-    }
-  })
-
-  it(`test with invalid M2M token, expected 403`, async () => {
-    try {
-      await getRequest(resourceUrl, token.m2mModify)
-      throw new Error('should not throw error here')
-    } catch (err) {
-      should.equal(err.status, 403)
-      should.equal(_.get(err, 'response.body.message'), 'You are not allowed to perform this action!')
-    }
-  })
-
   it('get resource from non-existed challenge, expected 404', async () => {
     try {
       await getRequest(resource404Url, token.m2mRead)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.status, 404)
-      should.equal(_.get(err, 'response.body.message'), `Challenge with id: ${challengeNotFoundId} doesn't exist.`)
+      should.equal(_.get(err, 'response.body.message'), `Challenge ID ${challengeNotFoundId} not found`)
     }
   })
 })

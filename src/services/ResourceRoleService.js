@@ -7,7 +7,7 @@ const config = require('config')
 const Joi = require('joi')
 const { v4: uuid } = require('uuid')
 const helper = require('../common/helper')
-// const logger = require('../common/logger')
+const logger = require('../common/logger')
 
 const payloadFields = ['id', 'name', 'legacyId', 'fullReadAccess', 'fullWriteAccess', 'isActive', 'selfObtainable']
 
@@ -21,10 +21,10 @@ async function getResourceRoles (criteria) {
   if (criteria.name) records = _.filter(records, e => (criteria.name === e.name))
   if (criteria.id) records = _.filter(records, e => (criteria.id === e.id))
   if (criteria.legacyId) records = _.filter(records, e => (_.toNumber(criteria.legacyId) === _.toNumber(e.legacyId)))
-  if (!_.isUndefined(criteria.isActive)) records = _.filter(records, e => (e.isActive === (criteria.isActive === 'true')))
-  if (!_.isUndefined(criteria.selfObtainable)) records = _.filter(records, e => (e.selfObtainable === (criteria.selfObtainable === 'true')))
-  if (!_.isUndefined(criteria.fullReadAccess)) records = _.filter(records, e => (e.fullReadAccess === (criteria.fullReadAccess === 'true')))
-  if (!_.isUndefined(criteria.fullWriteAccess)) records = _.filter(records, e => (e.fullWriteAccess === (criteria.fullWriteAccess === 'true')))
+  if (!_.isUndefined(criteria.isActive)) records = _.filter(records, e => (e.isActive === criteria.isActive))
+  if (!_.isUndefined(criteria.selfObtainable)) records = _.filter(records, e => (e.selfObtainable === criteria.selfObtainable))
+  if (!_.isUndefined(criteria.fullReadAccess)) records = _.filter(records, e => (e.fullReadAccess === criteria.fullReadAccess))
+  if (!_.isUndefined(criteria.fullWriteAccess)) records = _.filter(records, e => (e.fullWriteAccess === criteria.fullWriteAccess))
 
   const result = _.map(records, e => _.pick(e, payloadFields))
   return {
@@ -41,7 +41,7 @@ getResourceRoles.schema = {
     selfObtainable: Joi.boolean(),
     fullReadAccess: Joi.boolean(),
     fullWriteAccess: Joi.boolean(),
-    id: Joi.id(),
+    id: Joi.optionalId(),
     legacyId: Joi.number(),
     name: Joi.string()
   }).required()
@@ -122,4 +122,4 @@ module.exports = {
   updateResourceRole
 }
 
-// logger.buildService(module.exports)
+logger.buildService(module.exports)

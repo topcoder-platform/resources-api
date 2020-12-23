@@ -32,7 +32,7 @@ module.exports = describe('Delete resource', () => {
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.name, 'BadRequestError')
-      assertError(err, `User hohosky doesn't have resource with roleId: ${observerRoleId} in challenge ${challengeId}`)
+      assertError(err, `User HoHosky doesn't have resource with roleId: ${observerRoleId} in challenge ${challengeId}`)
     }
   })
 

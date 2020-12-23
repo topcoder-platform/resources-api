@@ -33,7 +33,7 @@ module.exports = describe('Delete resource endpoint', () => {
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.status, 400)
-      should.equal(_.get(err, 'response.body.message'), `User hohosky doesn't have resource with roleId: ${observerRoleId} in challenge ${challengeId}`)
+      should.equal(_.get(err, 'response.body.message'), `User HoHosky doesn't have resource with roleId: ${observerRoleId} in challenge ${challengeId}`)
     }
   })
 

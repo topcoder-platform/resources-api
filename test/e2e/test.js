@@ -11,7 +11,7 @@ const config = require('config')
 const should = require('should')
 const logger = require('../../src/common/logger')
 const helper = require('../../src/common/helper')
-const { getRequest, putRequest } = require('../common/testHelper')
+const { getRequest, putRequest, initES } = require('../common/testHelper')
 
 const { mockChallengeApi } = require('../../mock/mock-challenge-api')
 
@@ -69,6 +69,10 @@ describe('Topcoder - Challenge Resource API E2E Test', () => {
     for (const d of dependencies) {
       await d.delete()
     }
+    const staties = await helper.scan('MemberStats')
+    for (const s of staties) {
+      await s.delete()
+    }
   }
 
   before(async () => {
@@ -101,6 +105,20 @@ describe('Topcoder - Challenge Resource API E2E Test', () => {
     }
 
     await initDB()
+    await initES()
+
+    await helper.create('MemberStats', {
+      userId: '16096823',
+      handle: 'hohosky',
+      handleLower: 'hohosky',
+      maxRating: { rating: 2000 }
+    })
+
+    await helper.create('MemberStats', {
+      userId: '251280',
+      handle: 'denis',
+      handleLower: 'denis'
+    })
   })
 
   after(async () => {
@@ -114,6 +132,7 @@ describe('Topcoder - Challenge Resource API E2E Test', () => {
     logger.debug = debug
 
     await initDB()
+    await initES()
   })
 
   describe('Health check endpoints', () => {
@@ -127,7 +146,7 @@ describe('Topcoder - Challenge Resource API E2E Test', () => {
   describe('Failure routes Tests', () => {
     it('Unsupported http method, return 405', async () => {
       try {
-        await putRequest(`http://localhost:${config.PORT}/${config.API_VERSION}/resourceRoles`, {})
+        await putRequest(`http://localhost:${config.PORT}/${config.API_VERSION}/resource-roles`, {})
         throw new Error('should not throw error here')
       } catch (err) {
         should.equal(err.status, 405)
@@ -160,6 +179,18 @@ describe('Topcoder - Challenge Resource API E2E Test', () => {
   })
 
   describe('Resources endpoints', () => {
+    before(async () => {
+      await helper.create('ResourceRole', {
+        id: config.SUBMITTER_RESOURCE_ROLE_ID,
+        name: 'dummy_submitter',
+        fullReadAccess: false,
+        fullWriteAccess: true,
+        isActive: true,
+        selfObtainable: true,
+        nameLower: 'dummy_submitter'
+      })
+    })
+    require('./edgeCasesForResourceService.test')
     require('./createResource.test')
     require('./getResources.test')
     require('./listChallengesByMember.test')
