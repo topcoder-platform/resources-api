@@ -9,11 +9,7 @@ const logger = require('../common/logger')
 logger.info('Requesting to create tables...')
 
 const promises = []
-
-let skipModels = ['DynamoDB', 'MemberProfile']
-if (process.env.NODE_ENV === 'test') {
-  skipModels = ['DynamoDB']
-}
+const skipModels = ['DynamoDB', 'MemberStats', 'MemberProfile']
 
 Object.keys(models).forEach(modelName => {
   if (!includes(skipModels, modelName)) {

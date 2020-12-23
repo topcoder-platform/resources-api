@@ -1,7 +1,7 @@
 /**
  * Seed table data in database
  */
-const { get } = require('lodash')
+const { get, includes } = require('lodash')
 const models = require('../models')
 const logger = require('../common/logger')
 
@@ -9,13 +9,17 @@ logger.info('Requesting to seed data to the resources tables...')
 
 const promises = []
 
+const skipModels = ['DynamoDB', 'MemberStats', 'MemberProfile']
+
 Object.keys(models).forEach(modelName => {
-  try {
-    const data = require(`./seed/${modelName}.json`)
-    logger.info(`Inserting ${get(data, 'length')} records in table ${modelName}`)
-    promises.push(models[modelName].batchPut(data))
-  } catch (e) {
-    logger.warn(`No records will be inserted in table ${modelName} error: ${e}`)
+  if (!includes(skipModels, modelName)) {
+    try {
+      const data = require(`./seed/${modelName}.json`)
+      logger.info(`Inserting ${get(data, 'length')} records in table ${modelName}`)
+      promises.push(models[modelName].batchPut(data))
+    } catch (e) {
+      logger.warn(`No records will be inserted in table ${modelName} error: ${e}`)
+    }
   }
 })
 

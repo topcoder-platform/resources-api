@@ -9,10 +9,7 @@ const logger = require('../common/logger')
 logger.info('Requesting to delete tables...')
 
 const promises = []
-let skipModels = ['DynamoDB', 'MemberStats', 'MemberProfile']
-if (process.env.NODE_ENV === 'test') {
-  skipModels = ['DynamoDB']
-}
+const skipModels = ['DynamoDB', 'MemberStats', 'MemberProfile']
 
 Object.keys(models).forEach(modelName => {
   if (!includes(skipModels, modelName)) {
