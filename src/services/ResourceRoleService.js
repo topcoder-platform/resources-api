@@ -122,4 +122,4 @@ module.exports = {
   updateResourceRole
 }
 
-logger.buildService(module.exports)
+// logger.buildService(module.exports)

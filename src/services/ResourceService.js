@@ -180,7 +180,8 @@ getResources.schema = {
   roleId: Joi.optionalId(),
   page: Joi.page().default(1),
   perPage: Joi.perPage().default(50),
-  sortBy: Joi.string().valid('memberHandle', 'created').default('created'),
+  // sortBy: Joi.string().valid('memberHandle', 'created').default('created'), // have to reindex to sort by memberHandle
+  sortBy: Joi.string().valid('created').default('created'),
   sortOrder: Joi.string().valid('desc', 'asc').default('asc')
 }
 
@@ -508,4 +509,4 @@ module.exports = {
   listChallengesByMember
 }
 
-logger.buildService(module.exports)
+// logger.buildService(module.exports)
