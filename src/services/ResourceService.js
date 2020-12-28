@@ -116,8 +116,9 @@ async function getResources (currentUser, challengeId, roleId, page, perPage, so
         bool: {
           must: mustQuery
         }
-      },
-      sort: [{ [sortBy]: { 'order': sortOrder } }]
+      }
+      // TODO: We need to reindex the data with updated mappings for sorting to work
+      // sort: [{ [sortBy]: { 'order': sortOrder } }]
     }
   }
   const esClient = await helper.getESClient()
@@ -179,7 +180,7 @@ getResources.schema = {
   challengeId: Joi.id(),
   roleId: Joi.optionalId(),
   page: Joi.page().default(1),
-  perPage: Joi.perPage().default(50),
+  perPage: Joi.perPage(),
   // sortBy: Joi.string().valid('memberHandle', 'created').default('created'), // have to reindex to sort by memberHandle
   sortBy: Joi.string().valid('created').default('created'),
   sortOrder: Joi.string().valid('desc', 'asc').default('asc')
@@ -497,7 +498,7 @@ listChallengesByMember.schema = {
   memberId: Joi.string().required(),
   criteria: Joi.object().keys({
     resourceRoleId: Joi.string().uuid(),
-    page: Joi.page(),
+    page: Joi.page().default(1),
     perPage: Joi.perPage()
   }).required()
 }

@@ -7,7 +7,7 @@ const config = require('config')
 const Joi = require('joi')
 const { v4: uuid } = require('uuid')
 const helper = require('../common/helper')
-const logger = require('../common/logger')
+// const logger = require('../common/logger')
 
 const payloadFields = ['id', 'name', 'legacyId', 'fullReadAccess', 'fullWriteAccess', 'isActive', 'selfObtainable']
 
