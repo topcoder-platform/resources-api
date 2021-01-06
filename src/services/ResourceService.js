@@ -179,7 +179,7 @@ getResources.schema = {
   currentUser: Joi.any(),
   challengeId: Joi.id(),
   roleId: Joi.optionalId(),
-  page: Joi.page().default(1),
+  page: Joi.page(),
   perPage: Joi.perPage(),
   // sortBy: Joi.string().valid('memberHandle', 'created').default('created'), // have to reindex to sort by memberHandle
   sortBy: Joi.string().valid('created').default('created'),
@@ -499,7 +499,7 @@ listChallengesByMember.schema = {
   memberId: Joi.string().required(),
   criteria: Joi.object().keys({
     resourceRoleId: Joi.string().uuid(),
-    page: Joi.page().default(1),
+    page: Joi.page(),
     perPage: Joi.perPage()
   }).required()
 }
