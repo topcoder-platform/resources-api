@@ -472,7 +472,7 @@ async function listChallengesByMember (memberId, criteria) {
   const esClient = await helper.getESClient()
   let docs
   try {
-    // logger.debug(`es query: ${JSON.stringify(esQuery)}`)
+    logger.debug(`es query: ${JSON.stringify(esQuery)}`)
     docs = await esClient.search(esQuery)
   } catch (e) {
     // Catch error when the ES is fresh and has no data
