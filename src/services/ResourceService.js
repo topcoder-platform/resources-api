@@ -179,8 +179,8 @@ getResources.schema = {
   currentUser: Joi.any(),
   challengeId: Joi.id(),
   roleId: Joi.optionalId(),
-  page: Joi.page(),
-  perPage: Joi.perPage(),
+  page: Joi.page().default(1),
+  perPage: Joi.perPage().default(config.DEFAULT_PAGE_SIZE),
   // sortBy: Joi.string().valid('memberHandle', 'created').default('created'), // have to reindex to sort by memberHandle
   sortBy: Joi.string().valid('created').default('created'),
   sortOrder: Joi.string().valid('desc', 'asc').default('asc')
@@ -472,7 +472,7 @@ async function listChallengesByMember (memberId, criteria) {
   const esClient = await helper.getESClient()
   let docs
   try {
-    logger.debug(`es query: ${JSON.stringify(esQuery)}`)
+    // logger.debug(`es query: ${JSON.stringify(esQuery)}`)
     docs = await esClient.search(esQuery)
   } catch (e) {
     // Catch error when the ES is fresh and has no data
@@ -499,8 +499,8 @@ listChallengesByMember.schema = {
   memberId: Joi.string().required(),
   criteria: Joi.object().keys({
     resourceRoleId: Joi.string().uuid(),
-    page: Joi.page(),
-    perPage: Joi.perPage()
+    page: Joi.page().default(1),
+    perPage: Joi.perPage().default(config.DEFAULT_PAGE_SIZE)
   }).required()
 }
 
