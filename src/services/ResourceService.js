@@ -45,6 +45,8 @@ async function checkAccess (currentUser, resources) {
  * @returns {Array} the search result
  */
 async function getResources (currentUser, challengeId, roleId, page, perPage, sortBy, sortOrder) {
+  page = page || 1
+  perPage = perPage || config.DEFAULT_PAGE_SIZE
   if (!validateUUID(challengeId)) {
     throw new errors.BadRequestError(`Challenge ID ${challengeId} must be a valid v5 Challenge Id (UUID)`)
   }
@@ -442,8 +444,8 @@ async function listChallengesByMember (memberId, criteria) {
 
   const boolQuery = []
   const mustQuery = []
-  const perPage = criteria.perPage
-  const page = criteria.page
+  const perPage = criteria.perPage || config.DEFAULT_PAGE_SIZE
+  const page = criteria.page || 1
   boolQuery.push({ match_phrase: { memberId } })
   if (criteria.resourceRoleId) boolQuery.push({ match_phrase: { roleId: criteria.resourceRoleId } })
 
@@ -472,7 +474,7 @@ async function listChallengesByMember (memberId, criteria) {
   const esClient = await helper.getESClient()
   let docs
   try {
-    logger.debug(`es query: ${JSON.stringify(esQuery)}`)
+    // logger.debug(`es query: ${JSON.stringify(esQuery)}`)
     docs = await esClient.search(esQuery)
   } catch (e) {
     // Catch error when the ES is fresh and has no data
