@@ -184,3 +184,7 @@ npm run e2e
 ## Verification
 
 Refer to the verification document `Verification.md`
+
+## Postman PoC test
+
+Refer to the PoC test document [**PoC-test.md**](PoC-test.md)
