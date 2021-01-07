@@ -21,7 +21,7 @@ async function getResourceRoles (criteria) {
   if (criteria.name) records = _.filter(records, e => (criteria.name === e.name))
   if (criteria.id) records = _.filter(records, e => (criteria.id === e.id))
   if (criteria.legacyId) records = _.filter(records, e => (_.toNumber(criteria.legacyId) === _.toNumber(e.legacyId)))
-  if (!_.isUndefined(criteria.isActive)) records = _.filter(records, e => (e.isActive === criteria.isActive))
+  if (!_.isUndefined(criteria.isActive)) records = _.filter(records, e => (_.toString(e.isActive) === _.toString(criteria.isActive)))
   if (!_.isUndefined(criteria.selfObtainable)) records = _.filter(records, e => (e.selfObtainable === criteria.selfObtainable))
   if (!_.isUndefined(criteria.fullReadAccess)) records = _.filter(records, e => (e.fullReadAccess === criteria.fullReadAccess))
   if (!_.isUndefined(criteria.fullWriteAccess)) records = _.filter(records, e => (e.fullWriteAccess === criteria.fullWriteAccess))
