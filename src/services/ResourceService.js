@@ -47,6 +47,8 @@ async function checkAccess (currentUser, resources) {
 async function getResources (currentUser, challengeId, roleId, page, perPage, sortBy, sortOrder) {
   page = page || 1
   perPage = perPage || config.DEFAULT_PAGE_SIZE
+  sortBy = sortBy || 'created'
+  sortOrder = sortOrder || 'asc'
   if (!validateUUID(challengeId)) {
     throw new errors.BadRequestError(`Challenge ID ${challengeId} must be a valid v5 Challenge Id (UUID)`)
   }
@@ -182,8 +184,7 @@ getResources.schema = {
   roleId: Joi.optionalId(),
   page: Joi.page().default(1),
   perPage: Joi.perPage().default(config.DEFAULT_PAGE_SIZE),
-  // sortBy: Joi.string().valid('memberHandle', 'created').default('created'), // have to reindex to sort by memberHandle
-  sortBy: Joi.string().valid('created').default('created'),
+  sortBy: Joi.string().valid('memberHandle', 'created').default('created'),
   sortOrder: Joi.string().valid('desc', 'asc').default('asc')
 }
 
