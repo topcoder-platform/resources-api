@@ -118,14 +118,13 @@ async function getResources (currentUser, challengeId, roleId, page, perPage, so
         bool: {
           must: mustQuery
         }
-      }
-      // TODO: We need to reindex the data with updated mappings for sorting to work
-      // sort: [{ [sortBy]: { 'order': sortOrder } }]
+      },
+      sort: [{ [sortBy]: { 'order': sortOrder } }]
     }
   }
   const esClient = await helper.getESClient()
   let docs
-  // logger.debug(`ES Query ${JSON.stringify(esQuery)}`)
+  logger.debug(`ES Query ${JSON.stringify(esQuery)}`)
   try {
     docs = await esClient.search(esQuery)
   } catch (e) {
