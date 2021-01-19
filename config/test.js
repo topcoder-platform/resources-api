@@ -4,7 +4,7 @@
 
 module.exports = {
   TERMS_API_URL: 'http://localhost:4000/v5/terms',
-  BUSAPI_URL: 'http://localhost:4000/v5',
+  BUSAPI_URL: 'https://65279208-4c97-4d1a-a925-041b2433787a.mock.pstmn.io/v5',
   CHALLENGE_PHASES_API_URL: 'http://localhost:4000/v5/challenge-phases',
   DYNAMODB: {
     AWS_ACCESS_KEY_ID: 'FAKE_ACCESS_KEY',
