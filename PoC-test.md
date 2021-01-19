@@ -30,8 +30,14 @@
   $ NODE_ENV=test npm start
   ```
 
+## newman test
+  ```bash
+  $ npm run test:newman
+  ```
+
 ## Postman test
 Please refer to: https://drive.google.com/file/d/1VcTtNwI5_TXgnEKT4TruqG0Z-ts0J83G/view?usp=sharing
+
 
 ## Postman mock server
 E2E tests use nock to mock `BUSAPI_URL`, where postman mock server could be used to replace nock.
