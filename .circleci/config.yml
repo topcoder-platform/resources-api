@@ -1,4 +1,8 @@
 version: 2
+parameters:
+  run_automatedtesting:
+    default: false
+    type: boolean
 defaults: &defaults
     docker:
       - image: circleci/python:2.7-stretch-browsers
@@ -94,10 +98,6 @@ jobs:
 
 workflows:
   version: 2
-  parameters:
-  run_automatedtesting:
-    default: false
-    type: boolean
   build:
     when: not << pipeline.parameters.run_automatedtesting >>
     jobs:
