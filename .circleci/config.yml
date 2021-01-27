@@ -100,7 +100,7 @@ workflows:
   version: 2
   build:
     when: 
-      - not << pipeline.parameters.run_automatedtesting >>
+      - not: << pipeline.parameters.run_automatedtesting >>
     jobs:
       # Development builds are executed on "develop" branch only.
       - "build-dev":
