@@ -33,7 +33,6 @@ save_cache_settings: &save_cache_settings
 builddeploy_steps: &builddeploy_steps
       - checkout
       - setup_remote_docker
-      - run: echo "<< pipeline.parameters.run_automatedtesting >>"
       - run: *install_dependency
       - run: *install_deploysuite
       - restore_cache: *restore_cache_settings_for_build
