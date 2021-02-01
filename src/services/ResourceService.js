@@ -12,6 +12,7 @@ const helper = require('../common/helper')
 const logger = require('../common/logger')
 const errors = require('../common/errors')
 const ResourceRolePhaseDependencyService = require('./ResourceRolePhaseDependencyService')
+const constants = require('../../app-constants')
 
 const payloadFields = ['id', 'challengeId', 'memberId', 'memberHandle', 'roleId', 'created', 'createdBy', 'updated', 'updatedBy', 'legacyId']
 
@@ -236,6 +237,10 @@ async function init (currentUser, challengeId, resource, isCreated) {
   // Verify that the challenge exists
   const challengeRes = await helper.getRequest(`${config.CHALLENGE_API_URL}/${challengeId}`)
   const challenge = challengeRes.body
+
+  if (_.get(challenge, 'status') === constants.ChallengeStatuses.Completed && !isCreated) {
+    throw new errors.BadRequestError('Cannot delete resources of a completed challenge!')
+  }
 
   // Prevent from creating more than 1 submitter resources on tasks
   if (_.get(challenge, 'task.isTask', false) && isCreated && resource.roleId === config.SUBMITTER_RESOURCE_ROLE_ID) {
