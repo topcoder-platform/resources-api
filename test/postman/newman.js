@@ -1,4 +1,5 @@
 const newman = require('newman')
+const _ = require('lodash')
 
 const requests = [
   {
@@ -86,12 +87,12 @@ const options = {
 }
 
 const runner = (options) => new Promise((resolve, reject) => {
-  newman.run(options, function (err) {
+  newman.run(options, function (err, results) {
     if (err) {
       reject(err)
       return
     }
-    resolve()
+    resolve(results)
   })
 })
 
@@ -102,7 +103,10 @@ const runner = (options) => new Promise((resolve, reject) => {
     options.folder = request.folder
     options.iterationData = request.iterationData
     try {
-      await runner(options)
+      const results = await runner(options)
+      if (_.get(results, 'run.failures.length', 0) > 0) {
+        process.exit(-1)
+      }
     } catch (err) {
       console.log(err)
     }
