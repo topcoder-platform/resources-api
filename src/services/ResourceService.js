@@ -41,11 +41,15 @@ async function checkAccess (currentUser, resources) {
  * @param {Object} currentUser the current user
  * @param {String} challengeId the challenge id
  * @param {String} roleId the role id to filter on
+ * @param {String} memberId the member id
+ * @param {String} memberHandle the member handle
  * @param {Number} page The page number
  * @param {Number} perPage The number of items to list per page
- * @returns {Array} the search result
+ * @param {Number} sortBy The field that becomes the sorting criteria
+ * @param {Number} sortOrder The sort order
+ * @returns {Object} the search result
  */
-async function getResources (currentUser, challengeId, roleId, page, perPage, sortBy, sortOrder) {
+async function getResources (currentUser, challengeId, roleId, memberId, memberHandle, page, perPage, sortBy, sortOrder) {
   page = page || 1
   perPage = perPage || config.DEFAULT_PAGE_SIZE
   sortBy = sortBy || 'created'
@@ -77,12 +81,10 @@ async function getResources (currentUser, challengeId, roleId, page, perPage, so
 
   boolQuery.push({ match_phrase: { challengeId } })
 
-  // logger.warn('User Check')
   if (!currentUser) {
     // if the user is not logged in, only return resources with submitter role ID
     boolQuery.push({ match_phrase: { roleId: config.SUBMITTER_RESOURCE_ROLE_ID } })
   } else if (!currentUser.isMachine && !helper.hasAdminRole(currentUser) && !hasFullAccess) {
-    // await checkAccess(currentUser, resources)
     // if not admin, and not machine, only return submitters + all my roles
     boolQuery.push({
       bool: {
@@ -101,8 +103,15 @@ async function getResources (currentUser, challengeId, roleId, page, perPage, so
         ]
       }
     })
-  } else if (roleId) {
-    boolQuery.push({ match_phrase: { roleId } })
+  } else {
+    if (roleId) {
+      boolQuery.push({ match_phrase: { roleId } })
+    }
+    if (memberId) {
+      boolQuery.push({ match_phrase: { memberId } })
+    } else if (memberHandle) {
+      boolQuery.push({ match_phrase: { memberHandle } })
+    }
   }
 
   mustQuery.push({
@@ -111,40 +120,12 @@ async function getResources (currentUser, challengeId, roleId, page, perPage, so
     }
   })
 
-  const esQuery = {
-    index: config.get('ES.ES_INDEX'),
-    type: config.get('ES.ES_TYPE'),
-    size: perPage,
-    from: perPage * (page - 1), // Es Index starts from 0
-    body: {
-      query: {
-        bool: {
-          must: mustQuery
-        }
-      },
-      sort: [{ [sortBy]: { 'order': sortOrder } }]
-    }
-  }
-  const esClient = await helper.getESClient()
-  let docs
-  logger.debug(`ES Query ${JSON.stringify(esQuery)}`)
-  try {
-    docs = await esClient.search(esQuery)
-  } catch (e) {
-    // Catch error when the ES is fresh and has no data
-    logger.info(`Query Error from ES ${JSON.stringify(e)}`)
+  const sortCriteria = [{ [sortBy]: { 'order': sortOrder } }]
+  const docs = await searchES(mustQuery, perPage, page, sortCriteria)
 
-    docs = {
-      hits: {
-        total: 0,
-        hits: []
-      }
-    }
-  }
   // Extract data from hits
   const allResources = _.map(docs.hits.hits, item => item._source)
   const resources = _.map(allResources, item => ({ ...item, memberId: (_.toString(item.memberId)) }))
-  // logger.warn('Resources extracted')
 
   const memberIds = _.uniq(_.map(resources, r => r.memberId))
 
@@ -166,7 +147,6 @@ async function getResources (currentUser, challengeId, roleId, page, perPage, so
       }
       completeResources.push(completeResource)
     } else {
-      // logger.warn(`memberInfo not found in db for memberId [${resource.memberId}]}`)
       completeResources.push(resource)
     }
   }
@@ -183,22 +163,13 @@ getResources.schema = {
   currentUser: Joi.any(),
   challengeId: Joi.id(),
   roleId: Joi.optionalId(),
+  memberId: Joi.string(),
+  memberHandle: Joi.string(),
   page: Joi.page().default(1),
   perPage: Joi.perPage().default(config.DEFAULT_PAGE_SIZE),
   sortBy: Joi.string().valid('memberHandle', 'created').default('created'),
   sortOrder: Joi.string().valid('desc', 'asc').default('asc')
 }
-
-/**
- * Get member information using v3 API
- * @param {String} memberHandle the member handle
- * @returns {String} the member id and member handle
- */
-// async function getMemberInfo (memberHandle) {
-//   const member = await helper.getMemberByHandle(memberHandle)
-//   if (member) return { memberId: member.userId, handle: member.handle }
-// return
-// }
 
 /**
  * Get the resource role.
@@ -250,7 +221,6 @@ async function init (currentUser, challengeId, resource, isCreated) {
     }
   }
 
-  // logger.error(`Init Member for ${JSON.stringify(currentUser)}`)
   // get member information using v3 API
   const handle = resource.memberHandle
   const memberId = await helper.getMemberIdByHandle(resource.memberHandle)
@@ -328,20 +298,13 @@ async function createResource (currentUser, resource) {
 
     // handle doesn't change in current version
     // Seems we don't need handle auto-correction(e.g. "THomaskranitsas"->"thomaskranitsas")
-    // const { resources, memberId, handle } = await init(currentUser, challengeId, resource, true)
     const { resources, memberId } = await init(currentUser, challengeId, resource, true)
-
-    // if (handle) {
-    //  resource.memberHandle = handle
-    // }
 
     if (_.reduce(resources,
       (result, r) => _.toString(r.memberId) === _.toString(memberId) && r.roleId === resource.roleId ? true : result,
       false)) {
       throw new errors.ConflictError(`User ${resource.memberHandle} already has resource with roleId: ${resource.roleId} in challenge: ${challengeId}`)
     }
-
-    // logger.warn(JSON.stringify(currentUser))
 
     const ret = await helper.create('Resource', _.assign({
       id: uuid(),
@@ -441,12 +404,6 @@ deleteResource.schema = {
  * @returns {Array} an array of challenge ids represents challenges that given member has access to.
  */
 async function listChallengesByMember (memberId, criteria) {
-  // removing this call. If a member doesn't exist, it won't find any challenges
-  // const res = await helper.getRequest(`${config.USER_API_URL}?filter=id=${memberId}`)
-  // if (_.get(res, 'body.result.content').length === 0) {
-  //   throw new errors.BadRequestError(`User with id: ${memberId} doesn't exist`)
-  // }
-
   const boolQuery = []
   const mustQuery = []
   const perPage = criteria.perPage || config.DEFAULT_PAGE_SIZE
@@ -460,37 +417,8 @@ async function listChallengesByMember (memberId, criteria) {
     }
   })
 
-  const esQuery = {
-    index: config.get('ES.ES_INDEX'),
-    type: config.get('ES.ES_TYPE'),
-    size: perPage,
-    from: perPage * (page - 1), // Es Index starts from 0
-    body: {
-      query: {
-        bool: {
-          must: mustQuery
-          // must_not: mustNotQuery
-        }
-      }
-    }
-  }
-  // logger.warn(`esQuery ${JSON.stringify(esQuery)}`)
+  const docs = await searchES(mustQuery, perPage, page)
 
-  const esClient = await helper.getESClient()
-  let docs
-  try {
-    // logger.debug(`es query: ${JSON.stringify(esQuery)}`)
-    docs = await esClient.search(esQuery)
-  } catch (e) {
-    // Catch error when the ES is fresh and has no data
-    logger.info(`Query Error from ES ${JSON.stringify(e)}`)
-    docs = {
-      hits: {
-        total: 0,
-        hits: []
-      }
-    }
-  }
   // Extract data from hits
   let result = _.map(docs.hits.hits, item => item._source)
   const arr = _.uniq(_.map(result, 'challengeId'))
@@ -511,11 +439,66 @@ listChallengesByMember.schema = {
   }).required()
 }
 
+/**
+ * Execute ES query
+ * @param {Object} mustQuery the query that will be sent to ES
+ * @param {Number} perPage number of search result per page
+ * @param {Number} page the current page
+ * @returns {Object} doc from ES
+ */
+async function searchES (mustQuery, perPage, page, sortCriteria) {
+  let esQuery
+  if (sortCriteria) {
+    esQuery = {
+      index: config.get('ES.ES_INDEX'),
+      type: config.get('ES.ES_TYPE'),
+      size: perPage,
+      from: perPage * (page - 1), // Es Index starts from 0
+      body: {
+        query: {
+          bool: {
+            must: mustQuery
+          }
+        },
+        sort: sortCriteria
+      }
+    }
+  } else {
+    esQuery = {
+      index: config.get('ES.ES_INDEX'),
+      type: config.get('ES.ES_TYPE'),
+      size: perPage,
+      from: perPage * (page - 1), // Es Index starts from 0
+      body: {
+        query: {
+          bool: {
+            must: mustQuery
+          }
+        }
+      }
+    }
+  }
+  logger.debug(`ES Query ${JSON.stringify(esQuery)}`)
+  const esClient = await helper.getESClient()
+  let docs
+  try {
+    docs = await esClient.search(esQuery)
+  } catch (e) {
+    // Catch error when the ES is fresh and has no data
+    logger.info(`Query Error from ES ${JSON.stringify(e)}`)
+    docs = {
+      hits: {
+        total: 0,
+        hits: []
+      }
+    }
+  }
+  return docs
+}
+
 module.exports = {
   getResources,
   createResource,
   deleteResource,
   listChallengesByMember
 }
-
-// logger.buildService(module.exports)

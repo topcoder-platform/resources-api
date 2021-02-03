@@ -1,15 +1,19 @@
 {
+	"variables": [],
 	"info": {
-		"_postman_id": "4220e314-878c-42fa-b36b-a3e9f8f2db00",
 		"name": "topcoder-challenge-resource-api",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"_postman_id": "de2a0476-0ad4-d78a-f9c2-8db33ee75cc8",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "Resource Roles",
+			"description": "",
 			"item": [
 				{
 					"name": "create resource role",
+					"description": "",
 					"item": [
 						{
 							"name": "create active read only access resource role by admin",
@@ -17,18 +21,18 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "cb7a7fa3-80d2-4d2a-97a6-558e97041fb4",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"    pm.environment.set(\"COPILOT_RESOURCE_ROLE_ID\", pm.response.json().id);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles",
 								"method": "POST",
 								"header": [
 									{
@@ -52,15 +56,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"co-pilot\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": false,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -70,18 +66,18 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "8caf10f3-8e53-4e35-83a5-ce4225e5014b",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"    pm.environment.set(\"OBSERVER_RESOURCE_ROLE_ID\", pm.response.json().id);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles",
 								"method": "POST",
 								"header": [
 									{
@@ -105,15 +101,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"Observer\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": true,\n\t\"isActive\": false,\n\t\"selfObtainable\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -123,18 +111,18 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "ca220ef8-27ac-4ef3-b763-f66c5a3887d1",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"    pm.environment.set(\"SUBMITTER_RESOURCE_ROLE_ID\", pm.response.json().id);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles",
 								"method": "POST",
 								"header": [
 									{
@@ -158,15 +146,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"submitter\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": true\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -176,18 +156,18 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "284c6c8a-c7e5-4131-ba30-b07cd404e7be",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"    pm.environment.set(\"REVIEWER_RESOURCE_ROLE_ID\", pm.response.json().id);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles",
 								"method": "POST",
 								"header": [
 									{
@@ -211,15 +191,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"reviewer\",\n\t\"fullReadAccess\": false,\n    \"fullWriteAccess\": false,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -229,17 +201,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "f19a9655-0688-4912-b2fa-d2b3c669fe66",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles",
 								"method": "POST",
 								"header": [
 									{
@@ -263,15 +235,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"invalid\": \"invalid\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": false,\n\t\"isActive\": true\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -281,17 +245,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "f339ac6a-b858-494e-aede-c5e769ac9a80",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles",
 								"method": "POST",
 								"header": [
 									{
@@ -315,15 +279,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"failure-test\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -333,17 +289,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "36a6886b-b3e5-47c2-896b-71301f5fc5b7",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 401\", function () {",
 											"    pm.response.to.have.status(401);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles",
 								"method": "POST",
 								"header": [
 									{
@@ -362,15 +318,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": false,\n\t\"isActive\": true\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -380,17 +328,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "d9433b01-b75e-4d32-898c-daa89d874529",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 401\", function () {",
 											"    pm.response.to.have.status(401);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles",
 								"method": "POST",
 								"header": [
 									{
@@ -414,15 +362,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": false,\n\t\"isActive\": true\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -432,17 +372,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "afd35294-3a18-4eea-bf71-725bb4f02dda",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 401\", function () {",
 											"    pm.response.to.have.status(401);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles",
 								"method": "POST",
 								"header": [
 									{
@@ -466,15 +406,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": false,\n\t\"isActive\": true\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -484,17 +416,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "0e91af82-2110-4d79-9b06-9713b2a1b8f3",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 403\", function () {",
 											"    pm.response.to.have.status(403);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles",
 								"method": "POST",
 								"header": [
 									{
@@ -518,15 +450,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": false,\n\t\"isActive\": true\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -536,17 +460,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "cacaeb82-1ae4-41e7-949b-3c275fc35642",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 403\", function () {",
 											"    pm.response.to.have.status(403);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles",
 								"method": "POST",
 								"header": [
 									{
@@ -570,15 +494,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": false,\n\t\"isActive\": true\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -588,17 +504,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "b61880be-12b5-4e15-a42c-f845b686623d",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 409\", function () {",
 											"    pm.response.to.have.status(409);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles",
 								"method": "POST",
 								"header": [
 									{
@@ -622,24 +538,16 @@
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"SUBMITTER\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": false,\n\t\"isActive\": true,\n\t\"selfObtainable\": true\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						}
 					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
 					"name": "get resource roles",
+					"description": "",
 					"item": [
 						{
 							"name": "get all resource roles",
@@ -647,17 +555,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "6aacc23b-b91b-48c8-a1da-9a2c3c7ad043",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles",
 								"method": "GET",
 								"header": [
 									{
@@ -676,15 +584,11 @@
 										"type": "text"
 									}
 								],
-								"url": {
-									"raw": "{{URL}}/resource-roles",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles"
-									]
-								}
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						},
@@ -694,35 +598,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "b298d260-2b10-4cbb-9c78-35f18e0e47b8",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{m2m_all_token}}"
-									}
-								],
 								"url": {
 									"raw": "{{URL}}/resource-roles?name=Reviewer",
 									"host": [
@@ -736,28 +621,9 @@
 											"key": "name",
 											"value": "Reviewer"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "get active resource roles",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "87e8825e-a0e1-4059-8ba6-b700bbd5d319",
-										"exec": [
-											"pm.test(\"Status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [
 									{
@@ -776,6 +642,30 @@
 										"value": "Bearer {{m2m_all_token}}"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "get active resource roles",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
 								"url": {
 									"raw": "{{URL}}/resource-roles?isActive=true",
 									"host": [
@@ -789,8 +679,32 @@
 											"key": "isActive",
 											"value": "true"
 										}
-									]
-								}
+									],
+									"variable": []
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_all_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						},
@@ -800,17 +714,32 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "52ba1f88-7f91-4101-8f21-e8bb59d15bfb",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": {
+									"raw": "{{URL}}/resource-roles?isActive=false",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resource-roles"
+									],
+									"query": [
+										{
+											"key": "isActive",
+											"value": "false"
+										}
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [
 									{
@@ -829,21 +758,11 @@
 										"value": "Bearer {{user1_token}}"
 									}
 								],
-								"url": {
-									"raw": "{{URL}}/resource-roles?isActive=false",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles"
-									],
-									"query": [
-										{
-											"key": "isActive",
-											"value": "false"
-										}
-									]
-								}
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						},
@@ -853,35 +772,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "98093523-8bd4-4106-b71f-151e85b6e9a6",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{admin_token}}"
-									}
-								],
 								"url": {
 									"raw": "{{URL}}/resource-roles?isActive=invalid",
 									"host": [
@@ -900,8 +800,32 @@
 											"value": "invalid",
 											"disabled": true
 										}
-									]
-								}
+									],
+									"variable": []
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						},
@@ -911,17 +835,32 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "61523250-4acf-486d-af7e-8ef604303aac",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 401\", function () {",
 											"    pm.response.to.have.status(401);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": {
+									"raw": "{{URL}}/resource-roles?isActive=true",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resource-roles"
+									],
+									"query": [
+										{
+											"key": "isActive",
+											"value": "true"
+										}
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [
 									{
@@ -940,6 +879,30 @@
 										"value": "Bearer {{expire_token}}"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "failure - get resource roles without token 401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
 								"url": {
 									"raw": "{{URL}}/resource-roles?isActive=true",
 									"host": [
@@ -953,28 +916,9 @@
 											"key": "isActive",
 											"value": "true"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "failure - get resource roles without token 401",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "d116ab18-cc47-44a8-b1cf-2520d17d97a9",
-										"exec": [
-											"pm.test(\"Status code is 401\", function () {",
-											"    pm.response.to.have.status(401);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [
 									{
@@ -988,6 +932,30 @@
 										"value": "application/json"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "failure - get resource roles using invalid token 401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
 								"url": {
 									"raw": "{{URL}}/resource-roles?isActive=true",
 									"host": [
@@ -1001,28 +969,9 @@
 											"key": "isActive",
 											"value": "true"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "failure - get resource roles using invalid token 401",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "b2109b9f-5190-443d-b589-514757a5b82f",
-										"exec": [
-											"pm.test(\"Status code is 401\", function () {",
-											"    pm.response.to.have.status(401);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [
 									{
@@ -1041,6 +990,30 @@
 										"value": "Bearer invalid"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "failure - get resource roles using invalid m2m token 403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
 								"url": {
 									"raw": "{{URL}}/resource-roles?isActive=true",
 									"host": [
@@ -1054,28 +1027,9 @@
 											"key": "isActive",
 											"value": "true"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "failure - get resource roles using invalid m2m token 403",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "24a733a9-3187-43cb-9c97-e7a89c00e7b6",
-										"exec": [
-											"pm.test(\"Status code is 403\", function () {",
-											"    pm.response.to.have.status(403);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [
 									{
@@ -1094,30 +1048,20 @@
 										"value": "Bearer {{m2m_modify_token}}"
 									}
 								],
-								"url": {
-									"raw": "{{URL}}/resource-roles?isActive=true",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles"
-									],
-									"query": [
-										{
-											"key": "isActive",
-											"value": "true"
-										}
-									]
-								}
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						}
 					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
 					"name": "update resource role",
+					"description": "",
 					"item": [
 						{
 							"name": "failure - update resource role invalid id 400",
@@ -1125,17 +1069,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "17b52390-60f1-4365-b8e8-740944ccc7e6",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/test",
 								"method": "PUT",
 								"header": [
 									{
@@ -1158,16 +1102,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"failure-test\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": false,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/test",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"test"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -1177,17 +1112,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "45d0c550-b0aa-4fed-af26-f6300f367af0",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
 								"method": "PUT",
 								"header": [
 									{
@@ -1210,16 +1145,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"failure\",\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"{{COPILOT_RESOURCE_ROLE_ID}}"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -1229,17 +1155,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "e8bb59ea-f00b-433c-b684-5b4b0ee356ad",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 401\", function () {",
 											"    pm.response.to.have.status(401);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
 								"method": "PUT",
 								"header": [
 									{
@@ -1257,16 +1183,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": false,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"{{COPILOT_RESOURCE_ROLE_ID}}"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -1276,17 +1193,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "228491e4-72d2-48c9-ba82-17bf582a8679",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 401\", function () {",
 											"    pm.response.to.have.status(401);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
 								"method": "PUT",
 								"header": [
 									{
@@ -1309,16 +1226,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": false,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"{{COPILOT_RESOURCE_ROLE_ID}}"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -1328,17 +1236,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "e2ba26ca-a34f-495a-a761-112e1ca15993",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 401\", function () {",
 											"    pm.response.to.have.status(401);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
 								"method": "PUT",
 								"header": [
 									{
@@ -1361,16 +1269,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": false,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"{{COPILOT_RESOURCE_ROLE_ID}}"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -1380,17 +1279,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "aef5f4e1-97f7-4df8-8c63-42b752591e98",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 403\", function () {",
 											"    pm.response.to.have.status(403);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
 								"method": "PUT",
 								"header": [
 									{
@@ -1413,16 +1312,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": false,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"{{COPILOT_RESOURCE_ROLE_ID}}"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -1432,17 +1322,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "2a44cc37-f3f0-491f-bd01-385744b8a695",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 403\", function () {",
 											"    pm.response.to.have.status(403);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
 								"method": "PUT",
 								"header": [
 									{
@@ -1465,16 +1355,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"failure\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": false,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"{{COPILOT_RESOURCE_ROLE_ID}}"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -1484,17 +1365,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "769cb23d-00ba-4f7d-9835-5a84db507f32",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 404\", function () {",
 											"    pm.response.to.have.status(404);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/{{CHALLENGE_ID}}",
 								"method": "PUT",
 								"header": [
 									{
@@ -1517,16 +1398,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"failure-test\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": false,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/{{CHALLENGE_ID}}",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"{{CHALLENGE_ID}}"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -1536,17 +1408,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "467fbd81-2923-466d-906e-786ac09f9257",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 409\", function () {",
 											"    pm.response.to.have.status(409);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
 								"method": "PUT",
 								"header": [
 									{
@@ -1569,16 +1441,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"SUBMITTER\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": false,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"{{COPILOT_RESOURCE_ROLE_ID}}"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -1588,17 +1451,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "953ce406-a554-4710-87fa-dd1a6e691fe7",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
 								"method": "PUT",
 								"header": [
 									{
@@ -1621,16 +1484,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"UPDATE-CO-PILOT\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"{{COPILOT_RESOURCE_ROLE_ID}}"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -1640,17 +1494,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "5e3f7f7d-1176-4231-862d-be65b18c0d67",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
 								"method": "PUT",
 								"header": [
 									{
@@ -1673,31 +1527,22 @@
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"CO-PILOT\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": true,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"{{COPILOT_RESOURCE_ROLE_ID}}"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						}
 					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Resource Role Phase Dependencies",
+			"description": "",
 			"item": [
 				{
 					"name": "create dependency",
+					"description": "",
 					"item": [
 						{
 							"name": "create dependency by admin",
@@ -1705,18 +1550,18 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "3ba3a204-2ad3-4736-ac77-aa8bafd02512",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"    pm.environment.set(\"DEPENDENCY_ID_1\", pm.response.json().id);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies",
 								"method": "POST",
 								"header": [
 									{
@@ -1740,16 +1585,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -1759,18 +1595,18 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "fcc7f082-66fa-4f7a-98be-765e099fa571",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"    pm.environment.set(\"DEPENDENCY_ID_2\", pm.response.json().id);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies",
 								"method": "POST",
 								"header": [
 									{
@@ -1794,16 +1630,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": true\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -1813,17 +1640,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "875ef910-a757-480c-ad83-51bea42bc8c0",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 404\", function () {",
 											"    pm.response.to.have.status(404);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies",
 								"method": "POST",
 								"header": [
 									{
@@ -1847,16 +1674,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"phaseId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -1866,17 +1684,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "f589c0b3-a174-47ab-a60a-cbbbd3ed5139",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 409\", function () {",
 											"    pm.response.to.have.status(409);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies",
 								"method": "POST",
 								"header": [
 									{
@@ -1900,16 +1718,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -1919,17 +1728,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "0d5e34a1-2ec0-4648-800d-f464ba1c895a",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 403\", function () {",
 											"    pm.response.to.have.status(403);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies",
 								"method": "POST",
 								"header": [
 									{
@@ -1953,16 +1762,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -1972,17 +1772,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "6323fd61-600b-4d4e-b07f-4afe417ec4b3",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 401\", function () {",
 											"    pm.response.to.have.status(401);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies",
 								"method": "POST",
 								"header": [
 									{
@@ -2006,16 +1806,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -2025,17 +1816,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "79ddb7af-142a-4c36-ba26-e04a3e1a67b9",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 401\", function () {",
 											"    pm.response.to.have.status(401);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies",
 								"method": "POST",
 								"header": [
 									{
@@ -2054,16 +1845,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -2073,17 +1855,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "04c35650-71ef-4f62-aae6-bea3bb9443e4",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies",
 								"method": "POST",
 								"header": [
 									{
@@ -2107,47 +1889,16 @@
 									"mode": "raw",
 									"raw": "{\n\t\"phaseId\": \"abc\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						}
 					],
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "76f81880-36b0-409e-8c0e-ff688e76e180",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "cd550f97-32d2-4220-8441-b10213cefa3f",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						}
-					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
 					"name": "get dependencies",
+					"description": "",
 					"item": [
 						{
 							"name": "get all dependencies",
@@ -2155,17 +1906,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "20bd39d1-eef6-41f9-9655-ce00a225c9e8",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies",
 								"method": "GET",
 								"header": [
 									{
@@ -2184,16 +1935,11 @@
 										"value": "Bearer {{admin_token}}"
 									}
 								],
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies"
-									]
-								}
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						},
@@ -2203,35 +1949,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "7990a99d-2c13-40e1-9753-5ea49dec2d0f",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{m2m_read_token}}"
-									}
-								],
 								"url": {
 									"raw": "{{URL}}/resource-roles/Phase-dependencies?phaseId={{PHASE_ID}}&resourceRoleId={{SUBMITTER_RESOURCE_ROLE_ID}}&phaseState=false",
 									"host": [
@@ -2254,28 +1981,9 @@
 											"key": "phaseState",
 											"value": "false"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "failure - get dependencies with invalid query 400",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "0a297dcd-5ba0-41ec-bafd-ed20bdeb6ea3",
-										"exec": [
-											"pm.test(\"Status code is 400\", function () {",
-											"    pm.response.to.have.status(400);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [
 									{
@@ -2294,6 +2002,30 @@
 										"value": "Bearer {{m2m_read_token}}"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "failure - get dependencies with invalid query 400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
 								"url": {
 									"raw": "{{URL}}/resource-roles/Phase-dependencies?phaseId=abc&resourceRoleId=123&phaseState=abc",
 									"host": [
@@ -2316,8 +2048,32 @@
 											"key": "phaseState",
 											"value": "abc"
 										}
-									]
-								}
+									],
+									"variable": []
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_read_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						},
@@ -2327,17 +2083,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "dc4537d7-ec80-47d2-9722-5c5061610ce1",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 403\", function () {",
 											"    pm.response.to.have.status(403);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies",
 								"method": "GET",
 								"header": [
 									{
@@ -2356,16 +2112,11 @@
 										"value": "Bearer {{m2m_modify_token}}"
 									}
 								],
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies"
-									]
-								}
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						},
@@ -2375,17 +2126,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "1edea7c1-c521-472c-83f6-240e0d86ff7c",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 403\", function () {",
 											"    pm.response.to.have.status(403);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies",
 								"method": "GET",
 								"header": [
 									{
@@ -2404,47 +2155,20 @@
 										"value": "Bearer {{user1_token}}"
 									}
 								],
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies"
-									]
-								}
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						}
 					],
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "b0ebe117-ff1b-40d4-964e-79edf475de13",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "60578d7d-f1cd-47ab-b57d-b0b8ac2da0eb",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						}
-					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
 					"name": "update dependency",
+					"description": "",
 					"item": [
 						{
 							"name": "update dependency via admin",
@@ -2452,17 +2176,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "9939790a-9331-47c0-ad48-859247bf5174",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_1}}",
 								"method": "PUT",
 								"header": [
 									{
@@ -2485,17 +2209,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": true\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_1}}",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies",
-										"{{DEPENDENCY_ID_1}}"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -2505,17 +2219,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "a52a3d60-6d4a-468b-a483-759038cbd93e",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_1}}",
 								"method": "PUT",
 								"header": [
 									{
@@ -2538,17 +2252,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_1}}",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies",
-										"{{DEPENDENCY_ID_1}}"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -2558,17 +2262,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "5047d51e-4848-4395-8487-222a2281d277",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 404\", function () {",
 											"    pm.response.to.have.status(404);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_1}}",
 								"method": "PUT",
 								"header": [
 									{
@@ -2591,17 +2295,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{DEPENDENCY_ID_2}}\",\n\t\"phaseState\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_1}}",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies",
-										"{{DEPENDENCY_ID_1}}"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -2611,17 +2305,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "20185088-dc5e-4a27-bd2a-54287f754470",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 404\", function () {",
 											"    pm.response.to.have.status(404);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies/{{COPILOT_RESOURCE_ROLE_ID}}",
 								"method": "PUT",
 								"header": [
 									{
@@ -2644,17 +2338,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{COPILOT_RESOURCE_ROLE_ID}}",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies",
-										"{{COPILOT_RESOURCE_ROLE_ID}}"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -2664,17 +2348,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "c6179d10-63ca-4391-814f-53512458cd7e",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_1}}",
 								"method": "PUT",
 								"header": [
 									{
@@ -2697,17 +2381,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_1}}",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies",
-										"{{DEPENDENCY_ID_1}}"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -2717,17 +2391,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "98f78bed-3e9c-42c9-8534-72f0cd043692",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 403\", function () {",
 											"    pm.response.to.have.status(403);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_1}}",
 								"method": "PUT",
 								"header": [
 									{
@@ -2750,48 +2424,16 @@
 									"mode": "raw",
 									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_1}}",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies",
-										"{{DEPENDENCY_ID_1}}"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						}
 					],
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "cf487aa9-93b4-4cfc-b4e9-810881d1aeaf",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "2a201a9a-c917-41d4-92ce-915a7b1048e2",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						}
-					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
 					"name": "delete dependency",
+					"description": "",
 					"item": [
 						{
 							"name": "delete dependency via admin",
@@ -2799,17 +2441,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "44b6b67a-76fe-4ad8-aa6a-760ee8937eb1",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_1}}",
 								"method": "DELETE",
 								"header": [
 									{
@@ -2832,17 +2474,7 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_1}}",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies",
-										"{{DEPENDENCY_ID_1}}"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -2852,17 +2484,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "44058474-d0b2-4604-98d5-839ec3c99065",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_2}}",
 								"method": "DELETE",
 								"header": [
 									{
@@ -2885,17 +2517,7 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_2}}",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies",
-										"{{DEPENDENCY_ID_2}}"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -2905,17 +2527,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "ee4b409a-f523-44a1-8c04-f0d3bbb7cc5a",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 404\", function () {",
 											"    pm.response.to.have.status(404);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies/{{SUBMITTER_RESOURCE_ROLE_ID}}",
 								"method": "DELETE",
 								"header": [
 									{
@@ -2938,17 +2560,7 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{SUBMITTER_RESOURCE_ROLE_ID}}",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies",
-										"{{SUBMITTER_RESOURCE_ROLE_ID}}"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -2958,17 +2570,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "4af99993-227a-4ad4-8bd5-393946f6f97e",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies/abc",
 								"method": "DELETE",
 								"header": [
 									{
@@ -2991,17 +2603,7 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies/abc",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies",
-										"abc"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -3011,17 +2613,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "556ef0ca-0c76-485e-ae10-22f83e49cf26",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 403\", function () {",
 											"    pm.response.to.have.status(403);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_2}}",
 								"method": "DELETE",
 								"header": [
 									{
@@ -3044,17 +2646,7 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_2}}",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies",
-										"{{DEPENDENCY_ID_2}}"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -3064,17 +2656,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "8c97f313-2c76-4bd3-8da5-fe45bf4d931c",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 403\", function () {",
 											"    pm.response.to.have.status(403);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_2}}",
 								"method": "DELETE",
 								"header": [
 									{
@@ -3097,76 +2689,22 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_2}}",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resource-roles",
-										"Phase-dependencies",
-										"{{DEPENDENCY_ID_2}}"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						}
 					],
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "b7f41473-d775-4272-9f59-d165a0727e28",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "ceefc87e-8b45-4f6c-a8e2-bf40394d5edf",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						}
-					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
-			],
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "6776ec77-db26-4c73-a506-33ccf8d3979c",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"id": "ce9b86a2-9e3e-4e91-a55e-29c6961bafd7",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Resources",
+			"description": "",
 			"item": [
 				{
 					"name": "create resource",
+					"description": "",
 					"item": [
 						{
 							"name": "create resource by admin",
@@ -3174,17 +2712,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "82ecf77b-c1ee-42ce-b521-db5b253e71e6",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "POST",
 								"header": [
 									{
@@ -3207,15 +2745,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"HoHoSKY\",\n\t\"roleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -3225,17 +2755,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "6a878f42-8f78-4266-9673-922d947e0914",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "POST",
 								"header": [
 									{
@@ -3258,15 +2788,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"HoHoSKY\",\n\t\"roleId\": \"{{REVIEWER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -3276,17 +2798,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "50a54b4f-0f8a-4922-9fb1-b7fbd8ab9a22",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "POST",
 								"header": [
 									{
@@ -3309,15 +2831,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"denis\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -3327,17 +2841,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "f6430ae0-1a8d-4b20-98b9-a9a37b05f08c",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "POST",
 								"header": [
 									{
@@ -3360,15 +2874,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"ghostar\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -3378,17 +2884,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "8654a3de-859b-4aae-a633-927617b49837",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "POST",
 								"header": [
 									{
@@ -3411,15 +2917,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{TEST_CHALLENGE_ID1}}\",\n\t\"memberHandle\": \"ghostar\",\n\t\"roleId\": \"{{REVIEWER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -3429,17 +2927,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "1b439548-d7a0-41bd-a8f0-7270e4121c99",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "POST",
 								"header": [
 									{
@@ -3462,15 +2960,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{TEST_CHALLENGE_ID2}}\",\n\t\"memberHandle\": \"ghostar\",\n\t\"roleId\": \"{{REVIEWER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -3480,17 +2970,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "e9638d12-8fa5-4fd5-9659-718da388cafc",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "POST",
 								"header": [
 									{
@@ -3513,15 +3003,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"ghostar\",\n\t\"roleId\": \"{{OBSERVER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -3531,17 +3013,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "3e64615c-028d-4d56-93e1-e0336cde29ae",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "POST",
 								"header": [
 									{
@@ -3564,15 +3046,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"ghostar\",\n\t\"roleId\": \"{{CHALLENGE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -3582,17 +3056,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "7270766f-d8da-41f2-bd8f-67c5639c6d5d",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "POST",
 								"header": [
 									{
@@ -3615,15 +3089,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"invalid\",\n\t\"memberHandle\": \"ghostar\",\n\t\"roleId\": \"{{OBSERVER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -3633,17 +3099,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "058a119b-3c7f-4560-a831-14351feb4ada",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "POST",
 								"header": [
 									{
@@ -3666,15 +3132,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": true,\n\t\"roleId\": \"{{OBSERVER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -3684,17 +3142,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "221b1c28-04c9-419d-ae92-1a4de473e4bc",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "POST",
 								"header": [
 									{
@@ -3717,15 +3175,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"123abcx\",\n\t\"roleId\": \"{{OBSERVER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -3735,17 +3185,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "3d5d66aa-ff8b-4e31-852d-55f311bae1f5",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 401\", function () {",
 											"    pm.response.to.have.status(401);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "POST",
 								"header": [
 									{
@@ -3768,15 +3218,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"tonyj\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -3786,17 +3228,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "23c90b60-0028-462a-8c36-0ea9764b4e22",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 401\", function () {",
 											"    pm.response.to.have.status(401);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "POST",
 								"header": [
 									{
@@ -3819,15 +3261,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"tonyj\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -3837,17 +3271,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "4f468a08-5dda-446e-b676-16774ba390b3",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 403\", function () {",
 											"    pm.response.to.have.status(403);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "POST",
 								"header": [
 									{
@@ -3870,15 +3304,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"tonyj\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -3888,17 +3314,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "bd11e2ac-93cb-4c31-9e57-c22fb56c685e",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 403\", function () {",
 											"    pm.response.to.have.status(403);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "POST",
 								"header": [
 									{
@@ -3921,15 +3347,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"tonyj\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -3939,17 +3357,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "60db2e07-51a3-4e41-bf46-b8d85a66c782",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 404\", function () {",
 											"    pm.response.to.have.status(404);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "POST",
 								"header": [
 									{
@@ -3972,15 +3390,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_NOT_FOUND_ID}}\",\n\t\"memberHandle\": \"ghostar\",\n\t\"roleId\": \"{{OBSERVER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -3990,17 +3400,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "c1f1382c-7c5a-426a-9006-959eef991ba6",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 409\", function () {",
 											"    pm.response.to.have.status(409);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "POST",
 								"header": [
 									{
@@ -4023,15 +3433,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"HoHoSKY\",\n\t\"roleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -4041,17 +3443,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "8b653688-eb5f-481d-89c3-c86a980adb10",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "POST",
 								"header": [
 									{
@@ -4074,15 +3476,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"memberHandle\": \"HoHoSKY\",\n\t\"roleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -4092,17 +3486,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "0bfa26ec-7b42-40f6-be15-69027b3cf300",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "POST",
 								"header": [
 									{
@@ -4125,15 +3519,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"lars2520\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -4143,17 +3529,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "fa575441-2cfa-4ba1-b250-bad44009d291",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 403\", function () {",
 											"    pm.response.to.have.status(403);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "POST",
 								"header": [
 									{
@@ -4176,24 +3562,16 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"thomaskranitsas\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						}
 					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
 					"name": "get resources",
+					"description": "",
 					"item": [
 						{
 							"name": "get resources by admin",
@@ -4201,17 +3579,32 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "984eb9d3-f950-408b-844e-61958fe69cb2",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": {
+									"raw": "{{URL}}/resources?challengeId={{CHALLENGE_ID}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
+									],
+									"query": [
+										{
+											"key": "challengeId",
+											"value": "{{CHALLENGE_ID}}"
+										}
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [
 									{
@@ -4230,6 +3623,156 @@
 										"type": "text"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "get resources by admin with member ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"url": {
+									"raw": "{{URL}}/resources?challengeId={{CHALLENGE_ID}}&memberId={{MEMBER_ID}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
+									],
+									"query": [
+										{
+											"key": "challengeId",
+											"value": "{{CHALLENGE_ID}}",
+											"equals": true,
+											"description": ""
+										},
+										{
+											"key": "memberId",
+											"value": "{{MEMBER_ID}}",
+											"equals": true,
+											"description": ""
+										}
+									],
+									"variable": []
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}}",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "get resources by admin with member handle",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"url": {
+									"raw": "{{URL}}/resources?challengeId={{CHALLENGE_ID}}&memberHandle={{MEMBER_HANDLE}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
+									],
+									"query": [
+										{
+											"key": "challengeId",
+											"value": "{{CHALLENGE_ID}}",
+											"equals": true,
+											"description": ""
+										},
+										{
+											"key": "memberHandle",
+											"value": "{{MEMBER_HANDLE}}",
+											"equals": true,
+											"description": ""
+										}
+									],
+									"variable": []
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}}",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "get resources by user has full-access permission",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
 								"url": {
 									"raw": "{{URL}}/resources?challengeId={{CHALLENGE_ID}}",
 									"host": [
@@ -4243,28 +3786,9 @@
 											"key": "challengeId",
 											"value": "{{CHALLENGE_ID}}"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "get resources by user has full-access permission",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "c9eb1189-68be-4c75-9778-cec3b4cebf50",
-										"exec": [
-											"pm.test(\"Status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [
 									{
@@ -4283,6 +3807,156 @@
 										"value": "Bearer {{user2_token}}"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "get resources by user has full-access permission with member ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"url": {
+									"raw": "{{URL}}/resources?challengeId={{CHALLENGE_ID}}&memberId={{MEMBER_ID}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
+									],
+									"query": [
+										{
+											"key": "challengeId",
+											"value": "{{CHALLENGE_ID}}",
+											"equals": true,
+											"description": ""
+										},
+										{
+											"key": "memberId",
+											"value": "{{MEMBER_ID}}",
+											"equals": true,
+											"description": ""
+										}
+									],
+									"variable": []
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{user2_token}}",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "get resources by user has full-access permission with member handle",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"url": {
+									"raw": "{{URL}}/resources?challengeId={{CHALLENGE_ID}}&memberHandle={{MEMBER_HANDLE}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
+									],
+									"query": [
+										{
+											"key": "challengeId",
+											"value": "{{CHALLENGE_ID}}",
+											"equals": true,
+											"description": ""
+										},
+										{
+											"key": "memberHandle",
+											"value": "{{MEMBER_HANDLE}}",
+											"equals": true,
+											"description": ""
+										}
+									],
+									"variable": []
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{user2_token}}",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "get resources using m2m token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
 								"url": {
 									"raw": "{{URL}}/resources?challengeId={{CHALLENGE_ID}}",
 									"host": [
@@ -4296,28 +3970,9 @@
 											"key": "challengeId",
 											"value": "{{CHALLENGE_ID}}"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "get resources using m2m token",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "cfdb716a-9cd6-4147-8a8a-7178582578af",
-										"exec": [
-											"pm.test(\"Status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [
 									{
@@ -4336,8 +3991,32 @@
 										"value": "Bearer {{m2m_read_token}}"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "get resources using m2m token with member ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
 								"url": {
-									"raw": "{{URL}}/resources?challengeId={{CHALLENGE_ID}}",
+									"raw": "{{URL}}/resources?challengeId={{CHALLENGE_ID}}&memberId={{MEMBER_ID}}",
 									"host": [
 										"{{URL}}"
 									],
@@ -4347,10 +4026,102 @@
 									"query": [
 										{
 											"key": "challengeId",
-											"value": "{{CHALLENGE_ID}}"
+											"value": "{{CHALLENGE_ID}}",
+											"equals": true,
+											"description": ""
+										},
+										{
+											"key": "memberId",
+											"value": "{{MEMBER_ID}}",
+											"equals": true,
+											"description": ""
 										}
-									]
+									],
+									"variable": []
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{m2m_read_token}}",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "get resources using m2m token with member handle",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										]
+									}
 								}
+							],
+							"request": {
+								"url": {
+									"raw": "{{URL}}/resources?challengeId={{CHALLENGE_ID}}&memberHandle={{MEMBER_HANDLE}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
+									],
+									"query": [
+										{
+											"key": "challengeId",
+											"value": "{{CHALLENGE_ID}}",
+											"equals": true,
+											"description": ""
+										},
+										{
+											"key": "memberHandle",
+											"value": "{{MEMBER_HANDLE}}",
+											"equals": true,
+											"description": ""
+										}
+									],
+									"variable": []
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{m2m_read_token}}",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
 							},
 							"response": []
 						},
@@ -4360,17 +4131,32 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "621032e7-dccb-4573-a6ad-06fc24491780",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": {
+									"raw": "{{URL}}/resources?challengeId=invalid",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
+									],
+									"query": [
+										{
+											"key": "challengeId",
+											"value": "invalid"
+										}
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [
 									{
@@ -4389,21 +4175,11 @@
 										"value": "Bearer {{admin_token}}"
 									}
 								],
-								"url": {
-									"raw": "{{URL}}/resources?challengeId=invalid",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									],
-									"query": [
-										{
-											"key": "challengeId",
-											"value": "invalid"
-										}
-									]
-								}
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						},
@@ -4413,17 +4189,32 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "57037df4-c094-4c9d-97c3-93b4ff319ad2",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 401\", function () {",
 											"    pm.response.to.have.status(401);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": {
+									"raw": "{{URL}}/resources?challengeId={{CHALLENGE_ID}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
+									],
+									"query": [
+										{
+											"key": "challengeId",
+											"value": "{{CHALLENGE_ID}}"
+										}
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [
 									{
@@ -4442,6 +4233,30 @@
 										"value": "Bearer invalid"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "failure - get resources using expire token 401",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
 								"url": {
 									"raw": "{{URL}}/resources?challengeId={{CHALLENGE_ID}}",
 									"host": [
@@ -4455,28 +4270,9 @@
 											"key": "challengeId",
 											"value": "{{CHALLENGE_ID}}"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "failure - get resources using expire token 401",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "21fce931-9840-4ab6-9f21-929a52e372dd",
-										"exec": [
-											"pm.test(\"Status code is 401\", function () {",
-											"    pm.response.to.have.status(401);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [
 									{
@@ -4495,6 +4291,30 @@
 										"value": "Bearer {{expire_token}}"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "failure - get resources by user without full-access permission 403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
 								"url": {
 									"raw": "{{URL}}/resources?challengeId={{CHALLENGE_ID}}",
 									"host": [
@@ -4508,28 +4328,9 @@
 											"key": "challengeId",
 											"value": "{{CHALLENGE_ID}}"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "failure - get resources by user without full-access permission 403",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "42e3821e-890e-434e-a8ae-1d2ef6ee1eb7",
-										"exec": [
-											"pm.test(\"Status code is 403\", function () {",
-											"    pm.response.to.have.status(403);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [
 									{
@@ -4548,6 +4349,30 @@
 										"value": "Bearer {{user1_token}}"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "failure - get resources using invalid m2m token 403",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
 								"url": {
 									"raw": "{{URL}}/resources?challengeId={{CHALLENGE_ID}}",
 									"host": [
@@ -4561,28 +4386,9 @@
 											"key": "challengeId",
 											"value": "{{CHALLENGE_ID}}"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "failure - get resources using invalid m2m token 403",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "718634b1-7557-4fcb-932f-3413858e84ef",
-										"exec": [
-											"pm.test(\"Status code is 403\", function () {",
-											"    pm.response.to.have.status(403);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [
 									{
@@ -4601,21 +4407,11 @@
 										"value": "Bearer {{m2m_modify_token}}"
 									}
 								],
-								"url": {
-									"raw": "{{URL}}/resources?challengeId={{CHALLENGE_ID}}",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									],
-									"query": [
-										{
-											"key": "challengeId",
-											"value": "{{CHALLENGE_ID}}"
-										}
-									]
-								}
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						},
@@ -4625,35 +4421,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "0f06b26b-4630-472a-a6f2-9984f4c9d061",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 404\", function () {",
 											"    pm.response.to.have.status(404);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{admin_token}}"
-									}
-								],
 								"url": {
 									"raw": "{{URL}}/resources?challengeId={{CHALLENGE_NOT_FOUND_ID}}",
 									"host": [
@@ -4667,28 +4444,9 @@
 											"key": "challengeId",
 											"value": "{{CHALLENGE_NOT_FOUND_ID}}"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "failure - get resources challengeId is missing 400",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "b946d6f6-45da-4517-a898-c0e1d5ee2284",
-										"exec": [
-											"pm.test(\"Status code is 400\", function () {",
-											"    pm.response.to.have.status(400);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [
 									{
@@ -4707,24 +4465,63 @@
 										"value": "Bearer {{admin_token}}"
 									}
 								],
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "failure - get resources challengeId is missing 400",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										]
+									}
 								}
+							],
+							"request": {
+								"url": "{{URL}}/resources",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						}
 					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
 					"name": "list challenge by member",
+					"description": "",
 					"item": [
 						{
 							"name": "get challenges hohosky can access",
@@ -4732,17 +4529,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "e9a08004-e1b8-4ba2-81ab-bb816f36a2ec",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources/16096823/challenges",
 								"method": "GET",
 								"header": [
 									{
@@ -4763,17 +4560,11 @@
 										"disabled": true
 									}
 								],
-								"url": {
-									"raw": "{{URL}}/resources/16096823/challenges",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources",
-										"16096823",
-										"challenges"
-									]
-								}
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						},
@@ -4783,17 +4574,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "a2cf4848-a8e0-466c-a9d7-68a5f1cfaf42",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources/151743/challenges",
 								"method": "GET",
 								"header": [
 									{
@@ -4820,17 +4611,11 @@
 										"type": "text"
 									}
 								],
-								"url": {
-									"raw": "{{URL}}/resources/151743/challenges",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources",
-										"151743",
-										"challenges"
-									]
-								}
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						},
@@ -4840,43 +4625,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "8c970a0e-3bf3-4b2d-8316-e49db5f380a8",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{user1_token}}",
-										"disabled": true
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{user2_token}}",
-										"disabled": true
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{admin_token}}"
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{m2m_read_token}}",
-										"disabled": true
-									}
-								],
 								"url": {
 									"raw": "{{URL}}/resources/151743/challenges?resourceRoleId={{REVIEWER_RESOURCE_ROLE_ID}}",
 									"host": [
@@ -4897,8 +4655,40 @@
 											"value": "{{SUBMITTER_RESOURCE_ROLE_ID}}",
 											"disabled": true
 										}
-									]
-								}
+									],
+									"variable": []
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user1_token}}",
+										"disabled": true
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user2_token}}",
+										"disabled": true
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_read_token}}",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						},
@@ -4908,17 +4698,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "fc215944-5683-4ba1-a696-e2a3f5b310de",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources/111111111/challenges",
 								"method": "GET",
 								"header": [
 									{
@@ -4927,17 +4717,11 @@
 										"value": "Bearer {{m2m_all_token}}"
 									}
 								],
-								"url": {
-									"raw": "{{URL}}/resources/111111111/challenges",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources",
-										"111111111",
-										"challenges"
-									]
-								}
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						},
@@ -4947,25 +4731,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "3c4b9772-5cfa-4d8d-ac17-568245390248",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{m2m_read_token}}"
-									}
-								],
 								"url": {
 									"raw": "{{URL}}/resources/151743/challenges?resourceRoleId={{TEST_CHALLENGE_ID1}}",
 									"host": [
@@ -4981,8 +4756,22 @@
 											"key": "resourceRoleId",
 											"value": "{{TEST_CHALLENGE_ID1}}"
 										}
-									]
-								}
+									],
+									"variable": []
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_read_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						},
@@ -4992,30 +4781,24 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "eb64ce86-2990-400f-bb39-a10388cf8245",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 401\", function () {",
 											"    pm.response.to.have.status(401);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources/16096823/challenges",
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "{{URL}}/resources/16096823/challenges",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources",
-										"16096823",
-										"challenges"
-									]
-								}
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						},
@@ -5025,17 +4808,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "85544f13-5c94-4a2e-8e0c-fdda47133e1f",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 403\", function () {",
 											"    pm.response.to.have.status(403);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources/16096823/challenges",
 								"method": "GET",
 								"header": [
 									{
@@ -5044,17 +4827,11 @@
 										"value": "Bearer {{m2m_modify_token}}"
 									}
 								],
-								"url": {
-									"raw": "{{URL}}/resources/16096823/challenges",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources",
-										"16096823",
-										"challenges"
-									]
-								}
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						},
@@ -5064,17 +4841,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "bda9b04f-d640-4e2f-a6f1-01ddc0ec5532",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources/invalid/challenges",
 								"method": "GET",
 								"header": [
 									{
@@ -5095,17 +4872,11 @@
 										"disabled": true
 									}
 								],
-								"url": {
-									"raw": "{{URL}}/resources/invalid/challenges",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources",
-										"invalid",
-										"challenges"
-									]
-								}
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						},
@@ -5115,37 +4886,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "9389854d-f4f8-46ec-ba06-b696b351b159",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{user1_token}}"
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{user2_token}}",
-										"disabled": true
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{admin_token}}",
-										"disabled": true
-									}
-								],
 								"url": {
 									"raw": "{{URL}}/resources/16096823/challenges?resourceRoleId=111111",
 									"host": [
@@ -5161,17 +4911,43 @@
 											"key": "resourceRoleId",
 											"value": "111111"
 										}
-									]
-								}
+									],
+									"variable": []
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user1_token}}"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{user2_token}}",
+										"disabled": true
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						}
 					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
 					"name": "delete resource",
+					"description": "",
 					"item": [
 						{
 							"name": "failure - delete resource that user doesn't have 400",
@@ -5179,17 +4955,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "9abc6b1e-7ff1-4616-9ae4-98d5015b9d7b",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "DELETE",
 								"header": [
 									{
@@ -5212,15 +4988,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"hohoSKY\",\n\t\"roleId\": \"{{OBSERVER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -5230,17 +4998,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "433efe13-eb00-47ca-bf86-db37ae68599e",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "DELETE",
 								"header": [
 									{
@@ -5263,15 +5031,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"invalid\",\n\t\"memberHandle\": \"hohoSKY\",\n\t\"roleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -5281,17 +5041,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "fa5a2a45-7a20-4a75-9229-8b441600da6c",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "DELETE",
 								"header": [
 									{
@@ -5314,15 +5074,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"ghostar\",\n\t\"roleId\": \"{{CHALLENGE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -5332,17 +5084,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "670eed47-a699-4c2a-aa7c-6ac0c676d71d",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "DELETE",
 								"header": [
 									{
@@ -5365,15 +5117,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"123abcx\",\n\t\"roleId\": \"{{OBSERVER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -5383,17 +5127,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "7a52952e-54da-4da5-bb4c-a9225f5a23ab",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "DELETE",
 								"header": [
 									{
@@ -5416,15 +5160,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": true,\n\t\"roleId\": \"{{OBSERVER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -5434,17 +5170,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "a36016c0-6955-49be-b560-8b0906a59952",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 401\", function () {",
 											"    pm.response.to.have.status(401);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "DELETE",
 								"header": [
 									{
@@ -5467,15 +5203,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"tonyj\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -5485,17 +5213,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "6bedf956-11b6-4307-a69f-339f17d759ff",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 401\", function () {",
 											"    pm.response.to.have.status(401);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "DELETE",
 								"header": [
 									{
@@ -5518,15 +5246,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"tonyj\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -5536,17 +5256,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "af91fa6a-ee62-474d-a1fe-9a75192de257",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 403\", function () {",
 											"    pm.response.to.have.status(403);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "DELETE",
 								"header": [
 									{
@@ -5569,15 +5289,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"tonyj\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -5587,17 +5299,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "a6d5447b-5a43-4ea7-b4b1-042da53f5dac",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 403\", function () {",
 											"    pm.response.to.have.status(403);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "DELETE",
 								"header": [
 									{
@@ -5620,15 +5332,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"tonyj\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -5638,17 +5342,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "0c6d9f15-7017-40c2-8073-d1c8aa1c2a41",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 404\", function () {",
 											"    pm.response.to.have.status(404);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "DELETE",
 								"header": [
 									{
@@ -5671,15 +5375,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_NOT_FOUND_ID}}\",\n\t\"memberHandle\": \"hohoSKY\",\n\t\"roleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -5689,17 +5385,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "d80ed568-ed9a-4122-bdc7-6e297e4092b4",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "DELETE",
 								"header": [
 									{
@@ -5722,15 +5418,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"ghostar\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -5740,17 +5428,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "80b20480-1202-45a8-bfeb-bfead3aa9c43",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "DELETE",
 								"header": [
 									{
@@ -5773,15 +5461,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"denis\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -5791,17 +5471,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "7f6a283f-84ce-47e1-b02b-b76b842974dd",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "DELETE",
 								"header": [
 									{
@@ -5824,15 +5504,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"HoHoSKY\",\n\t\"roleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -5842,17 +5514,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "b4db4893-701b-4fd2-8fb0-a40da526cb77",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "DELETE",
 								"header": [
 									{
@@ -5875,15 +5547,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"memberHandle\": \"HoHoSKY\",\n\t\"roleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -5893,17 +5557,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "67cc4abc-b98f-48c9-bc14-4a3e2ff341ef",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 403\", function () {",
 											"    pm.response.to.have.status(403);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "DELETE",
 								"header": [
 									{
@@ -5926,15 +5590,7 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"lars2520\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -5944,17 +5600,17 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "5ebaa610-2635-4f01-a47e-0b325d682246",
+										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
 											"});"
-										],
-										"type": "text/javascript"
+										]
 									}
 								}
 							],
 							"request": {
+								"url": "{{URL}}/resources",
 								"method": "DELETE",
 								"header": [
 									{
@@ -5977,43 +5633,28 @@
 									"mode": "raw",
 									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"lars2520\",\n\t\"roleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\"\n}"
 								},
-								"url": {
-									"raw": "{{URL}}/resources",
-									"host": [
-										"{{URL}}"
-									],
-									"path": [
-										"resources"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						}
 					],
-					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "health check",
 			"request": {
+				"url": "{{URL}}/resources/health",
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "{{URL}}/resources/health",
-					"host": [
-						"{{URL}}"
-					],
-					"path": [
-						"resources",
-						"health"
-					]
-				}
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
 			},
 			"response": []
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
