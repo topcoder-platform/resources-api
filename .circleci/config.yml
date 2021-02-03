@@ -124,8 +124,12 @@ workflows:
   testingflow:
     when: << pipeline.parameters.run_automatedtesting >>
     jobs:
+      - Hold [Performance-Testing]:
+          type: approval
       - "Run-Newman-Test":
-          context : org-global        
+          context : org-global   
+          requires:
+            - Hold [Performance-Testing]     
           filters:
             branches:
               only:
