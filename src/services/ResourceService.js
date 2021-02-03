@@ -54,14 +54,19 @@ async function getResources (currentUser, challengeId, roleId, memberId, memberH
   perPage = perPage || config.DEFAULT_PAGE_SIZE
   sortBy = sortBy || 'created'
   sortOrder = sortOrder || 'asc'
-  if (!validateUUID(challengeId)) {
+  if (!challengeId && !memberId && !memberHandle) {
+    throw new errors.BadRequestError('At least one of the following parameters is required: [challengeId, memberId, memberHandle]')
+  }
+  if (challengeId && !validateUUID(challengeId)) {
     throw new errors.BadRequestError(`Challenge ID ${challengeId} must be a valid v5 Challenge Id (UUID)`)
   }
-  try {
-  // Verify that the challenge exists
-    await helper.getRequest(`${config.CHALLENGE_API_URL}/${challengeId}`)
-  } catch (e) {
-    throw new errors.NotFoundError(`Challenge ID ${challengeId} not found`)
+  if (challengeId) {
+    try {
+    // Verify that the challenge exists
+      await helper.getRequest(`${config.CHALLENGE_API_URL}/${challengeId}`)
+    } catch (e) {
+      throw new errors.NotFoundError(`Challenge ID ${challengeId} not found`)
+    }
   }
 
   const boolQuery = []
@@ -69,17 +74,29 @@ async function getResources (currentUser, challengeId, roleId, memberId, memberH
   let hasFullAccess
 
   // Check if the user has a resource with full access on the challenge
-  if (currentUser) {
-    const resources = await helper.query('Resource', { challengeId })
-    try {
-      await checkAccess(currentUser, resources)
-      hasFullAccess = true
-    } catch (e) {
-      hasFullAccess = false
+  if (currentUser && !helper.hasAdminRole(currentUser) && !hasFullAccess) {
+    if (challengeId) {
+      const resources = await helper.query('Resource', { challengeId })
+      try {
+        await checkAccess(currentUser, resources)
+        hasFullAccess = true
+      } catch (e) {
+        hasFullAccess = false
+      }
+    }
+    if (memberId && memberId !== currentUser.useId) {
+      throw new errors.ForbiddenError('You are not allowed to perform this operation!')
+    }
+    if (memberHandle && memberHandle !== currentUser.handle) {
+      throw new errors.ForbiddenError('You are not allowed to perform this operation!')
     }
   }
 
-  boolQuery.push({ match_phrase: { challengeId } })
+  if (challengeId) {
+    boolQuery.push({ match_phrase: { challengeId } })
+  } else if (!currentUser) {
+    throw new errors.ForbiddenError('You are not allowed to perform this operation!')
+  }
 
   if (!currentUser) {
     // if the user is not logged in, only return resources with submitter role ID
@@ -161,7 +178,7 @@ async function getResources (currentUser, challengeId, roleId, memberId, memberH
 
 getResources.schema = {
   currentUser: Joi.any(),
-  challengeId: Joi.id(),
+  challengeId: Joi.optionalId(),
   roleId: Joi.optionalId(),
   memberId: Joi.string(),
   memberHandle: Joi.string(),
