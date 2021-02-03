@@ -74,7 +74,7 @@ async function getResources (currentUser, challengeId, roleId, memberId, memberH
   let hasFullAccess
 
   // Check if the user has a resource with full access on the challenge
-  if (currentUser && !helper.hasAdminRole(currentUser) && !hasFullAccess) {
+  if (currentUser && !currentUser.isMachine && !helper.hasAdminRole(currentUser)) {
     if (challengeId) {
       const resources = await helper.query('Resource', { challengeId })
       try {
