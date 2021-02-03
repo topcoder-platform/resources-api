@@ -66,6 +66,14 @@ paths:
           format: UUID
           in: query
           required: true
+        - name: memberId
+          type: integer
+          description: The member id
+          in: query
+        - name: memberHandle
+          type: string
+          description: The member handle
+          in: query
         - name: roleId
           type: string
           description: role id to filter on
