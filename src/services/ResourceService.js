@@ -54,9 +54,10 @@ async function getResources (currentUser, challengeId, roleId, memberId, memberH
   perPage = perPage || config.DEFAULT_PAGE_SIZE
   sortBy = sortBy || 'created'
   sortOrder = sortOrder || 'asc'
-  if (!challengeId && !memberId && !memberHandle) {
-    throw new errors.BadRequestError('At least one of the following parameters is required: [challengeId, memberId, memberHandle]')
-  }
+  // if (!challengeId && !memberId && !memberHandle) {
+  //   throw new errors.BadRequestError('At least one of the following parameters is required: [challengeId, memberId, memberHandle]')
+  // }
+  logger.debug(`getResources ${JSON.stringify([currentUser, challengeId, roleId, memberId, memberHandle, page, perPage, sortBy, sortOrder])}`)
   if (challengeId && !validateUUID(challengeId)) {
     throw new errors.BadRequestError(`Challenge ID ${challengeId} must be a valid v5 Challenge Id (UUID)`)
   }
