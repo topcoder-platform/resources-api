@@ -54,6 +54,7 @@ async function getResources (currentUser, challengeId, roleId, memberId, memberH
   perPage = perPage || config.DEFAULT_PAGE_SIZE
   sortBy = sortBy || 'created'
   sortOrder = sortOrder || 'asc'
+  logger.debug(`getResources ${JSON.stringify([currentUser, challengeId, roleId, memberId, memberHandle, page, perPage, sortBy, sortOrder])}`)
   if (!challengeId && !memberId && !memberHandle) {
     throw new errors.BadRequestError('At least one of the following parameters is required: [challengeId, memberId, memberHandle]')
   }
