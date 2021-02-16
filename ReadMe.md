@@ -25,6 +25,7 @@ This microservice provides interaction with Challenge Resources.
 ## Prerequisites
 -  [NodeJS](https://nodejs.org/en/) (v10)
 -  [DynamoDB](https://aws.amazon.com/dynamodb/)
+-  [ElasticSearch](https://www.elastic.co/)
 -  [Docker](https://www.docker.com/)
 -  [Docker Compose](https://docs.docker.com/compose/)
 
@@ -58,6 +59,11 @@ The following parameters can be set in config files or in env variables:
 - DYNAMODB.AWS_WRITE_UNITS: The DynamoDB table write unit configuration, default is 2
 - DYNAMODB.TIMEOUT: The timeout setting used in health check
 - SCOPES: The M2M scopes, refer `config/default.js` for more information
+- ES.HOST: Elasticsearch host, default value is 'localhost:9200'
+- ES.API_VERSION: Elasticsearch API version, default value is '6.8'
+- ES.ES_INDEX: Elasticsearch index name for resources, default value is 'resources'
+- ES.ES_TYPE: Elasticsearch index type for resources, default value is '_doc'
+- ES.ES_REFRESH: Elasticsearch force refresh flag, default value is 'true'
 - BUSAPI_URL: the bus api, default value is 'https://api.topcoder-dev.com/v5'
 - KAFKA_ERROR_TOPIC: Kafka error topic, default value is 'common.error.reporting',
 - KAFKA_MESSAGE_ORIGINATOR: the Kafka message originator, default value is 'resources-api'
@@ -75,7 +81,11 @@ Configuration for testing is at `config/test.js`, only add such new configuratio
 - Run lint `npm run lint`
 - Run lint fix `npm run lint:fix`
 - Create tables `npm run create-tables`
+- Drop tables `npm run drop-tables`
+- Create tables for test environment `npm run create-tables:test`
+- Drop tables for test environment `npm run drop-tables:test`
 - Clear and init db `npm run init-db`
+- Initialize ElasticSearch `npm run init-es`
 - Start app `npm start`
 - App is running at `http://localhost:3000`
 - Start mock server `npm run mock-challenge-api`
@@ -87,7 +97,7 @@ To install foreman follow this [link](https://theforeman.org/manuals/1.24/#3.Ins
 
 To know how to use foreman follow this [link](https://theforeman.org/manuals/1.24/#2.Quickstart)
 
-  
+
 ### DynamoDB Setup
 
 We can use DynamoDB setup on Docker for testing purpose. Just run `docker-compose up` in `local` folder.
@@ -99,6 +109,18 @@ You can also use your own AWS DynamoDB service for testing purpose.
 1. Make sure DynamoDB are running as per instructions above.
 2. Make sure you have configured all config parameters. Refer [Configuration](#configuration)
 3. Run `npm run create-tables` to create tables.
+
+### ElasticSearch Setup
+
+We can use ElasticSearch on Docker for testing purpose. Just run `docker-compose up` in `local` folder.
+
+You can also use your own remote ElasticSearch service for testing purpose.
+
+### Create ElasticSearch Index
+
+1. Makre sure ElasticSearch are running as per instructions above.
+2. Make sure you have configured all config parameters. Refer [Configuration](#configuration)
+3. Run `npm run init-es force` to create index.
 
 ### Mock Challenge V5 API
 
@@ -132,6 +154,8 @@ The following test parameters can be set in config file or in env variables:
 
 - Start Local DynamoDB.
 - Create DynamoDB tables.
+- Start Local ElasticSearch.
+- Create ElasticSearch index.
 - Various config parameters should be properly set.
 
 ### Running unit tests
@@ -160,3 +184,7 @@ npm run e2e
 ## Verification
 
 Refer to the verification document `Verification.md`
+
+## Postman PoC test
+
+Refer to the PoC test document [**PoC-test.md**](PoC-test.md)

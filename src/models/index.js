@@ -16,7 +16,7 @@ const awsConfigs = config.DYNAMODB.IS_LOCAL_DB ? {
 dynamoose.AWS.config.update(awsConfigs)
 
 if (config.DYNAMODB.IS_LOCAL_DB) {
-  dynamoose.local(config.DYNAMODB.DYNAMODB_URL)
+  dynamoose.local(config.DYNAMODB.URL)
 }
 
 dynamoose.setDefaults({

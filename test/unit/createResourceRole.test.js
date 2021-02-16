@@ -5,6 +5,7 @@
 const _ = require('lodash')
 const should = require('should')
 const service = require('../../src/services/ResourceRoleService')
+const helper = require('../../src/common/helper')
 const { requestBody } = require('../common/testData')
 const { assertValidationError, assertError, assertResourceRole } = require('../common/testHelper')
 
@@ -12,25 +13,27 @@ const resourceRoles = requestBody.resourceRoles
 
 module.exports = describe('Create resource role', () => {
   it('create active full-access resource role', async () => {
-    const entity = resourceRoles.createBody('co-pilot', true, true, false)
+    const entity = resourceRoles.createBody('co-pilot', true, true, true, false)
     const ret = await service.createResourceRole(entity)
     await assertResourceRole(ret.id, entity)
   })
 
   it('create inactive full-access resource role', async () => {
-    const entity = resourceRoles.createBody('Observer', true, false, false)
+    const entity = resourceRoles.createBody('Observer', true, false, false, false)
     const ret = await service.createResourceRole(entity)
     await assertResourceRole(ret.id, entity)
+    const resourceRole = await helper.getById('ResourceRole', ret.id)
+    await helper.update(resourceRole, { legacyId: 1 })
   })
 
   it('create active not full-access resource role', async () => {
-    const entity = resourceRoles.createBody('submitter', false, true, true)
+    const entity = resourceRoles.createBody('submitter', false, true, true, true)
     const ret = await service.createResourceRole(entity)
     await assertResourceRole(ret.id, entity)
   })
 
   it('create reviewer resource role', async () => {
-    const entity = resourceRoles.createBody('reviewer', false, true, false)
+    const entity = resourceRoles.createBody('reviewer', false, true, true, false)
     const ret = await service.createResourceRole(entity)
     await assertResourceRole(ret.id, entity)
   })
@@ -77,7 +80,7 @@ module.exports = describe('Create resource role', () => {
   }
 
   it(`failure - create duplicate resource role`, async () => {
-    const entity = resourceRoles.createBody('SUBMITTER', false, true, true)
+    const entity = resourceRoles.createBody('SUBMITTER', false, true, true, true)
     try {
       await service.createResourceRole(entity)
       throw new Error('should not throw error here')

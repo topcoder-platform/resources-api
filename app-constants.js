@@ -9,6 +9,11 @@ const UserRoles = {
   User: 'Topcoder User'
 }
 
+const ChallengeStatuses = {
+  Completed: 'Completed'
+}
+
 module.exports = {
-  UserRoles
+  UserRoles,
+  ChallengeStatuses
 }

@@ -59,6 +59,29 @@ jobs:
       APPNAME: "resources-api"  
     steps: *builddeploy_steps
 
+  "Run-Newman-Test":
+    docker:
+      - image: circleci/node:12
+      - image: tray/dynamodb-local
+        command: "-inMemory -port 7777"
+      - image: elasticsearch:6.8.13
+        environment:
+          discovery.type: "single-node"
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: 'newman test'
+          command: |
+            npm i
+            cd local
+            cd ..
+            npm run create-tables:test
+            cd mock
+            (npm run mock-challenge-api&)
+            (NODE_ENV=test npm start&)
+            npm run test:newman    
+
 workflows:
   version: 2
   build:
@@ -78,3 +101,14 @@ workflows:
           filters:
             branches:
               only: master
+
+      - "Run-Newman-Test":
+          context : org-global
+          requires:
+            - build-dev
+            - build-prod          
+          filters:
+            branches:
+              only:
+                - automated-postman-testing
+                - develop

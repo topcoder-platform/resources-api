@@ -31,7 +31,11 @@ const initES = async () => {
     const body = { mappings: {} }
     body.mappings[config.get('ES.ES_TYPE')] = {
       properties: {
-        id: { type: 'keyword' }
+        id: { type: 'keyword' },
+        memberHandle: {
+          type: 'text',
+          fielddata: true
+        }
       }
     }
 

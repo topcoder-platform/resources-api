@@ -11,6 +11,8 @@ const { token } = require('../common/testData')
 const resourceRoleUrl = `http://localhost:${config.PORT}/${config.API_VERSION}/resource-roles`
 
 module.exports = describe('Get resource roles endpoint', () => {
+  let inactiveId
+
   it('get all resource roles', async () => {
     const res = await getRequest(resourceRoleUrl, token.admin)
     should.equal(res.status, 200)
@@ -39,6 +41,20 @@ module.exports = describe('Get resource roles endpoint', () => {
     should.equal(records.length, 1)
     should.equal(records[0].isActive, false)
     await assertResourceRole(records[0].id, records[0])
+    inactiveId = records[0].id
+  })
+
+  it('search resource roles with filter', async () => {
+    const res = await getRequest(`${resourceRoleUrl}?name=Observer&id=${inactiveId}&legacyId=1&selfObtainable=false&fullReadAccess=true&fullWriteAccess=false`, token.admin)
+    should.equal(res.status, 200)
+    const records = res.body
+    should.equal(records.length, 1)
+    should.equal(records[0].id, inactiveId)
+    should.equal(records[0].name, 'Observer')
+    should.equal(records[0].fullReadAccess, true)
+    should.equal(records[0].fullWriteAccess, false)
+    should.equal(records[0].selfObtainable, false)
+    should.equal(records[0].legacyId, 1)
   })
 
   it('test invalid parameters, invalid boolean path parameter isActive ', async () => {
@@ -48,46 +64,6 @@ module.exports = describe('Get resource roles endpoint', () => {
     } catch (err) {
       should.equal(err.status, 400)
       should.equal(_.get(err, 'response.body.message'), `"isActive" must be a boolean`)
-    }
-  })
-
-  it(`test without token, expected 401`, async () => {
-    try {
-      await getRequest(resourceRoleUrl)
-      throw new Error('should not throw error here')
-    } catch (err) {
-      should.equal(err.status, 401)
-      should.equal(_.get(err, 'response.body.message'), 'No token provided.')
-    }
-  })
-
-  it(`test with invalid token(invalid), expected 401`, async () => {
-    try {
-      await getRequest(resourceRoleUrl, 'invalid')
-      throw new Error('should not throw error here')
-    } catch (err) {
-      should.equal(err.status, 401)
-      should.equal(_.get(err, 'response.body.message'), 'Invalid Token.')
-    }
-  })
-
-  it(`test with invalid token(expired), expected 401`, async () => {
-    try {
-      await getRequest(resourceRoleUrl, token.expired)
-      throw new Error('should not throw error here')
-    } catch (err) {
-      should.equal(err.status, 401)
-      should.equal(_.get(err, 'response.body.message'), 'Failed to authenticate token.')
-    }
-  })
-
-  it(`test with invalid M2M token, expected 403`, async () => {
-    try {
-      await getRequest(resourceRoleUrl, token.m2mModify)
-      throw new Error('should not throw error here')
-    } catch (err) {
-      should.equal(err.status, 403)
-      should.equal(_.get(err, 'response.body.message'), 'You are not allowed to perform this action!')
     }
   })
 })

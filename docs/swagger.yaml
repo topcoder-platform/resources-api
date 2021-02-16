@@ -66,10 +66,28 @@ paths:
           format: UUID
           in: query
           required: true
+        - name: memberId
+          type: integer
+          description: The member id
+          in: query
+        - name: memberHandle
+          type: string
+          description: The member handle
+          in: query
         - name: roleId
           type: string
           description: role id to filter on
           format: UUID
+          in: query
+          required: false
+        - name: sortBy
+          type: string
+          description: Sort the results by the field.
+          in: query
+          required: false
+        - name: sortOrder
+          type: string
+          description: Order the results by the asc/desc.
           in: query
           required: false
       responses:

@@ -58,6 +58,10 @@ describe('Topcoder - Challenge Resource API Unit Test', () => {
     for (const d of dependencies) {
       await d.delete()
     }
+    const staties = await helper.scan('MemberStats')
+    for (const s of staties) {
+      await s.delete()
+    }
   }
 
   before(async () => {
@@ -81,6 +85,20 @@ describe('Topcoder - Challenge Resource API Unit Test', () => {
     testHelper.initLogs(errorLogs)
 
     await initDB()
+    await testHelper.initES()
+
+    await helper.create('MemberStats', {
+      userId: '16096823',
+      handle: 'hohosky',
+      handleLower: 'hohosky',
+      maxRating: { rating: 2000 }
+    })
+
+    await helper.create('MemberStats', {
+      userId: '251280',
+      handle: 'denis',
+      handleLower: 'denis'
+    })
   })
 
   after(async () => {
@@ -93,6 +111,7 @@ describe('Topcoder - Challenge Resource API Unit Test', () => {
     logger.debug = debug
 
     await initDB()
+    await testHelper.initES()
   })
 
   describe('ResourceRoleService Unit Test', () => {
@@ -109,6 +128,18 @@ describe('Topcoder - Challenge Resource API Unit Test', () => {
   })
 
   describe('ResourceService Unit Test', () => {
+    before(async () => {
+      await helper.create('ResourceRole', {
+        id: config.SUBMITTER_RESOURCE_ROLE_ID,
+        name: 'dummy_submitter',
+        fullReadAccess: false,
+        fullWriteAccess: true,
+        isActive: true,
+        selfObtainable: true,
+        nameLower: 'dummy_submitter'
+      })
+    })
+    require('./edgeCasesForResourceService.test')
     require('./createResource.test')
     require('./getResources.test')
     require('./listChallengesByMember.test')

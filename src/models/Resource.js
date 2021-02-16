@@ -61,8 +61,7 @@ const schema = new Schema({
   }
 },
 {
-  // throughput: { read: config.DYNAMODB.AWS_READ_UNITS, write: config.DYNAMODB.AWS_WRITE_UNITS }
-  throughput: 'ON_DEMAND'
+  throughput: config.DYNAMODB.IS_LOCAL_DB ? { read: config.DYNAMODB.AWS_READ_UNITS, write: config.DYNAMODB.AWS_WRITE_UNITS } : 'ON_DEMAND'
 })
 
 module.exports = schema

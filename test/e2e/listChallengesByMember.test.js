@@ -62,44 +62,16 @@ module.exports = describe('Create resource endpoint', () => {
     should.equal(res.body.length, 0)
   })
 
-  it('failure - get challenges by non existed user', async () => {
-    try {
-      await getRequest(`${resourceUrl}/111111111/challenges`, token.m2m)
-      throw new Error('should not throw error here')
-    } catch (err) {
-      should.equal(err.status, 400)
-      should.equal(_.get(err, 'response.body.message'), `User with id: 111111111 doesn't exist`)
-    }
+  it('get challenges by non existed user', async () => {
+    const res = await getRequest(`${resourceUrl}/111111111/challenges`, token.m2m)
+    should.equal(res.status, 200)
+    should.equal(res.body.length, 0)
   })
 
-  it(`failure - get challenges for user with invalid filter, role doesn't exist`, async () => {
-    try {
-      await getRequest(`${resourceUrl}/151743/challenges?resourceRoleId=${challengeId1}`, token.m2m)
-      throw new Error('should not throw error here')
-    } catch (err) {
-      should.equal(err.status, 400)
-      should.equal(_.get(err, 'response.body.message'), `No resource role found with id: ${challengeId1}.`)
-    }
-  })
-
-  it(`test invalid parameters, memberId should be number`, async () => {
-    try {
-      await getRequest(`${resourceUrl}/invalid/challenges`, token.m2m)
-      throw new Error('should not throw error here')
-    } catch (err) {
-      should.equal(err.status, 400)
-      should.equal(_.get(err, 'response.body.message'), `"memberId" must be a number`)
-    }
-  })
-
-  it(`test invalid parameters, memberId should be a positive number`, async () => {
-    try {
-      await getRequest(`${resourceUrl}/-1/challenges`, token.m2m)
-      throw new Error('should not throw error here')
-    } catch (err) {
-      should.equal(err.status, 400)
-      should.equal(_.get(err, 'response.body.message'), `"memberId" must be a positive number`)
-    }
+  it(`get challenges for user with non existed role`, async () => {
+    const res = await getRequest(`${resourceUrl}/151743/challenges?resourceRoleId=${challengeId1}`, token.m2m)
+    should.equal(res.status, 200)
+    should.equal(res.body.length, 0)
   })
 
   it(`test invalid parameters, resourceRoleId should be UUID`, async () => {
