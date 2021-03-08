@@ -520,3 +520,5 @@ module.exports = {
   deleteResource,
   listChallengesByMember
 }
+
+logger.buildService(module.exports)

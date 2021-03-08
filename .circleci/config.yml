@@ -133,4 +133,5 @@ workflows:
           filters:
             branches:
               only:
+                - develop
                 - dev-circleci

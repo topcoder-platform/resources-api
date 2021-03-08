@@ -77,6 +77,94 @@ const requests = [
   },
   {
     folder: 'delete dependency with m2m'
+  },
+  {
+    folder: 'create resource role with all kinds of invalid request body',
+    iterationData: require('./testData/resource-role/create-resource-role-with-invalid-data.json')
+  },
+  {
+    folder: 'update resource role with all kinds of invalid request body',
+    iterationData: require('./testData/resource-role/update-resource-role-with-invalid-data.json')
+  },
+  {
+    folder: 'get all resource roles'
+  },
+  {
+    folder: 'get matched resource roles'
+  },
+  {
+    folder: 'get resource roles with all kinds of invalid parameter',
+    iterationData: require('./testData/resource-role/get-resource-role-with-invalid-data.json')
+  },
+  {
+    folder: 'create dependency with all kinds of invalid request body',
+    iterationData: require('./testData/resource-role-phase-dependency/create-dependency-with-invalid-data.json')
+  },
+  {
+    folder: 'update dependency with all kinds of invalid request body',
+    iterationData: require('./testData/resource-role-phase-dependency/update-dependency-with-invalid-data.json')
+  },
+  {
+    folder: 'get dependencies with all kinds of invalid parameter',
+    iterationData: require('./testData/resource-role-phase-dependency/get-dependencies-with-invalid-data.json')
+  },
+  {
+    folder: 'create resource by admin',
+    iterationData: require('./testData/resource/create-resource-by-admin.json')
+  },
+  {
+    folder: 'create resource using m2m token',
+    iterationData: require('./testData/resource/create-resource-by-m2m.json')
+  },
+  {
+    folder: 'create resource with all kinds of invalid token',
+    iterationData: require('./testData/resource/create-resource-with-invalid-tokens.json')
+  },
+  {
+    folder: 'create resource with all kinds of invalid request body',
+    iterationData: require('./testData/resource/create-resource-with-invalid-data.json')
+  },
+  {
+    folder: 'get resources by required parameter only',
+    iterationData: require('./testData/resource/get-resources-with-required-parameter.json')
+  },
+  {
+    folder: 'get resources with all parameters',
+    iterationData: require('./testData/resource/get-resources-with-all-parameters.json')
+  },
+  {
+    folder: 'get resources with all kinds of invalid parameter',
+    iterationData: require('./testData/resource/get-resources-with-invalid-data.json')
+  },
+  {
+    folder: 'get challenges by member with different users',
+    iterationData: require('./testData/resource/get-resources-by-member-with-different-users.json')
+  },
+  {
+    folder: 'get challenges by member with resource role',
+    iterationData: require('./testData/resource/get-resources-by-member-with-resource-role.json')
+  },
+  {
+    folder: 'get challenges by member with all kinds of invalid token',
+    iterationData: require('./testData/resource/get-resources-by-member-with-invalid-tokens.json')
+  },
+  {
+    folder: 'get challenges by member with all kinds of invalid parameter',
+    iterationData: require('./testData/resource/get-resources-by-member-with-invalid-parameter.json')
+  },
+  {
+    folder: 'delete resource with all kinds of invalid token',
+    iterationData: require('./testData/resource/delete-resource-with-invalid-tokens.json')
+  },
+  {
+    folder: 'delete resource with all kinds of invalid parameter',
+    iterationData: require('./testData/resource/delete-resource-with-invalid-parameter.json')
+  },
+  {
+    folder: 'delete resource with admin'
+  },
+  {
+    folder: 'delete resource with m2m'
   }
 ]
 

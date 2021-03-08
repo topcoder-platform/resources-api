@@ -1,0 +1,79 @@
+[
+  {
+    "name": "",
+    "legacyId": 1,
+    "fullReadAccess": true,
+    "fullWriteAccess": false,
+    "isActive": true,
+    "selfObtainable": false,
+    "invalid": "",
+    "httpCode": 400,
+    "message": "\"name\" is not allowed to be empty"
+  },
+  {
+    "name": "test-copilot",
+    "legacyId": "",
+    "fullReadAccess": true,
+    "fullWriteAccess": false,
+    "isActive": true,
+    "selfObtainable": false,
+    "invalid": "",
+    "httpCode": 400,
+    "message": "\"legacyId\" must be a number"
+  },
+  {
+    "name": "test-copilot",
+    "legacyId": 1,
+    "fullReadAccess": 123,
+    "fullWriteAccess": false,
+    "isActive": true,
+    "selfObtainable": false,
+    "invalid": "",
+    "httpCode": 400,
+    "message": "\"fullReadAccess\" must be a boolean"
+  },
+  {
+    "name": "test-copilot",
+    "legacyId": 1,
+    "fullReadAccess": true,
+    "fullWriteAccess": 123,
+    "isActive": true,
+    "selfObtainable": false,
+    "invalid": "",
+    "httpCode": 400,
+    "message": "\"fullWriteAccess\" must be a boolean"
+  },
+  {
+    "name": "test-copilot",
+    "legacyId": 1,
+    "fullReadAccess": true,
+    "fullWriteAccess": false,
+    "isActive": 123,
+    "selfObtainable": false,
+    "invalid": "",
+    "httpCode": 400,
+    "message": "\"isActive\" must be a boolean"
+  },
+  {
+    "name": "test-copilot",
+    "legacyId": 1,
+    "fullReadAccess": true,
+    "fullWriteAccess": false,
+    "isActive": true,
+    "selfObtainable": 123,
+    "invalid": "",
+    "httpCode": 400,
+    "message": "\"selfObtainable\" must be a boolean"
+  },
+  {
+    "name": "test-copilot",
+    "legacyId": 1,
+    "fullReadAccess": true,
+    "fullWriteAccess": false,
+    "isActive": true,
+    "selfObtainable": false,
+    "invalid": "invalid",
+    "httpCode": 400,
+    "message": "\"invalid\" is not allowed"
+  }
+]

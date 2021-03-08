@@ -168,14 +168,32 @@ To run unit tests and generate coverage report.
 npm run test
 ```
 
-### Running integration tests
+### Running E2E tests with Postman
 
-#### You need to `stop` the app server and mock API server before running e2e tests.
+#### `Start` the app server and mock API server before running e2e tests. You may need to set the env variables by calling `source env.sh` before calling `npm start`.
 
-To run integration tests and generate coverage report.
+- Make sure the db and es are started
+```bash
+  $ cd resources-api
+
+    # NOTE:
+    # if tables and data already exist, please run first
+
+    # $ npm run drop-tables
+
+    # to drop data and tables
+
+    # Then re-initialize the es server and the database.
+
+  $ npm run create-tables
+  $ npm run init-es force
+  $ npm run init-db
+```
+
+To run postman e2e tests.
 
 ```bash
-npm run e2e
+npm run test:newman
 ```
 
 ## Running tests in CI
@@ -183,8 +201,4 @@ npm run e2e
 
 ## Verification
 
-Refer to the verification document `Verification.md`
-
-## Postman PoC test
-
-Refer to the PoC test document [**PoC-test.md**](PoC-test.md)
+Refer to the verification document `Verification.md`.

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f9009c39-962f-4d40-a266-d3b1633d5c98",
+		"_postman_id": "c24b7751-3c89-4248-9d7c-6d2499985af2",
 		"name": "resource-api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -177,6 +177,61 @@
 								"body": {
 									"mode": "raw",
 									"raw": "{\n\t\"name\": \"failure-token\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": false,\n\t\"isActive\": true,\n    \"selfObtainable\": false\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resource-roles",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resource-roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create resource role with all kinds of invalid request body",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const iterationData = pm.iterationData",
+											"const httpCode = iterationData.get('httpCode')",
+											"pm.test(`Status code is ${httpCode}`, function () {",
+											"    pm.response.to.have.status(httpCode);",
+											"    const response = pm.response.json()",
+											"    pm.expect(response.message).to.eq(iterationData.get('message'))",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"{{name}}\",\n\t\"fullReadAccess\": {{fullReadAccess}},\n    \"fullWriteAccess\": {{fullWriteAccess}},\n\t\"{{required_field_1}}\": {{isActive}},\n\t\"{{required_field_2}}\": {{selfObtainable}}\n}"
 								},
 								"url": {
 									"raw": "{{URL}}/resource-roles",
@@ -403,7 +458,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{m2m_all_token}}"
+										"value": "Bearer {{admin_token}}"
 									}
 								],
 								"body": {
@@ -411,13 +466,276 @@
 									"raw": "{\n\t\"name\": \"failure-test\",\n\t\"fullReadAccess\": true,\n    \"fullWriteAccess\": false,\n\t\"isActive\": true,\n\t\"selfObtainable\": false\n}"
 								},
 								"url": {
-									"raw": "{{URL}}/resource-roles/test",
+									"raw": "{{URL}}/resource-roles/fe6d0a58-ce7d-4521-8501-b8132b1c0311",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
 										"resource-roles",
-										"test"
+										"fe6d0a58-ce7d-4521-8501-b8132b1c0311"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update resource role with all kinds of invalid request body",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const iterationData = pm.iterationData",
+											"const httpCode = iterationData.get('httpCode')",
+											"pm.test(`Status code is ${httpCode}`, function () {",
+											"    pm.response.to.have.status(httpCode);",
+											"    const response = pm.response.json()",
+											"    pm.expect(response.message).to.eq(iterationData.get('message'))",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"{{name}}\",\n\t\"fullReadAccess\": {{fullReadAccess}},\n    \"fullWriteAccess\": {{fullWriteAccess}},\n\t\"{{required_field_1}}\": {{isActive}},\n\t\"{{required_field_2}}\": {{selfObtainable}}\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resource-roles/{{COPILOT_RESOURCE_ROLE_ID}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resource-roles",
+										"{{COPILOT_RESOURCE_ROLE_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "get resource role",
+					"item": [
+						{
+							"name": "get all resource roles",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/resource-roles",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resource-roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get matched resource roles",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/resource-roles/?name=Reviewer&isActive=true&legacyId=1&selfObtainable=false&fullReadAccess=true&fullWriteAccess=false",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resource-roles",
+										""
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "Reviewer"
+										},
+										{
+											"key": "isActive",
+											"value": "true"
+										},
+										{
+											"key": "legacyId",
+											"value": "1"
+										},
+										{
+											"key": "selfObtainable",
+											"value": "false"
+										},
+										{
+											"key": "fullReadAccess",
+											"value": "true"
+										},
+										{
+											"key": "fullWriteAccess",
+											"value": "false"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get resource roles with all kinds of invalid parameter",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const iterationData = pm.iterationData",
+											"const httpCode = iterationData.get('httpCode')",
+											"pm.test(`Status code is ${httpCode}`, function () {",
+											"    pm.response.to.have.status(httpCode);",
+											"    const response = pm.response.json()",
+											"    pm.expect(response.message).to.eq(iterationData.get('message'))",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/resource-roles/?name={{name}}&isActive={{isActive}}&legacyId={{legacyId}}&selfObtainable={{selfObtainable}}&fullReadAccess={{fullReadAccess}}&fullWriteAccess={{fullWriteAccess}}&{{invalid}}={{invalid}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resource-roles",
+										""
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{name}}"
+										},
+										{
+											"key": "isActive",
+											"value": "{{isActive}}"
+										},
+										{
+											"key": "legacyId",
+											"value": "{{legacyId}}"
+										},
+										{
+											"key": "selfObtainable",
+											"value": "{{selfObtainable}}"
+										},
+										{
+											"key": "fullReadAccess",
+											"value": "{{fullReadAccess}}"
+										},
+										{
+											"key": "fullWriteAccess",
+											"value": "{{fullWriteAccess}}"
+										},
+										{
+											"key": "{{invalid}}",
+											"value": "{{invalid}}"
+										}
 									]
 								}
 							},
@@ -648,7 +966,63 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"phaseId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
+									"raw": "{\n\t\"phaseId\": \"fe6d0a58-ce7d-4521-8501-b8132b1c0391\",\n\t\"resourceRoleId\": \"fe6d0a58-ce7d-4521-8501-b8132b1c0391\",\n\t\"phaseState\": false\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resource-roles/Phase-dependencies",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resource-roles",
+										"Phase-dependencies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create dependency with all kinds of invalid request body",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const iterationData = pm.iterationData",
+											"const httpCode = iterationData.get('httpCode')",
+											"pm.test(`Status code is ${httpCode}`, function () {",
+											"    pm.response.to.have.status(httpCode);",
+											"    const response = pm.response.json()",
+											"    pm.expect(response.message).to.eq(iterationData.get('message'))",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"{{required_field_1}}\": \"{{phaseId}}\",\n\t\"{{required_field_2}}\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"{{required_field_3}}\": {{phaseState}}\n}"
 								},
 								"url": {
 									"raw": "{{URL}}/resource-roles/Phase-dependencies",
@@ -750,7 +1124,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies?phaseId={{PHASE_ID}}&resourceRoleId={{SUBMITTER_RESOURCE_ROLE_ID}}&phaseState=false",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies?phaseId={{PHASE_ID}}&resourceRoleId={{COPILOT_RESOURCE_ROLE_ID}}&phaseState=false",
 									"host": [
 										"{{URL}}"
 									],
@@ -765,7 +1139,7 @@
 										},
 										{
 											"key": "resourceRoleId",
-											"value": "{{SUBMITTER_RESOURCE_ROLE_ID}}"
+											"value": "{{COPILOT_RESOURCE_ROLE_ID}}"
 										},
 										{
 											"key": "phaseState",
@@ -822,6 +1196,71 @@
 									"path": [
 										"resource-roles",
 										"Phase-dependencies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get dependencies with all kinds of invalid parameter",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const iterationData = pm.iterationData",
+											"const httpCode = iterationData.get('httpCode')",
+											"pm.test(`Status code is ${httpCode}`, function () {",
+											"    pm.response.to.have.status(httpCode);",
+											"    const response = pm.response.json()",
+											"    pm.expect(response.message).to.eq(iterationData.get('message'))",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/resource-roles/Phase-dependencies?phaseId={{phaseId}}&resourceRoleId={{COPILOT_RESOURCE_ROLE_ID}}&phaseState={{phaseState}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resource-roles",
+										"Phase-dependencies"
+									],
+									"query": [
+										{
+											"key": "phaseId",
+											"value": "{{phaseId}}"
+										},
+										{
+											"key": "resourceRoleId",
+											"value": "{{COPILOT_RESOURCE_ROLE_ID}}"
+										},
+										{
+											"key": "phaseState",
+											"value": "{{phaseState}}"
+										}
 									]
 								}
 							},
@@ -1059,6 +1498,62 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "update dependency with all kinds of invalid request body",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const iterationData = pm.iterationData",
+											"const httpCode = iterationData.get('httpCode')",
+											"pm.test(`Status code is ${httpCode}`, function () {",
+											"    pm.response.to.have.status(httpCode);",
+											"    const response = pm.response.json()",
+											"    pm.expect(response.message).to.eq(iterationData.get('message'))",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"{{required_field_1}}\": \"{{phaseId}}\",\n\t\"{{required_field_2}}\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"{{required_field_3}}\": {{phaseState}}\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_1}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resource-roles",
+										"Phase-dependencies",
+										"{{DEPENDENCY_ID_1}}"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -1220,6 +1715,955 @@
 										"resource-roles",
 										"Phase-dependencies",
 										"{{DEPENDENCY_ID_2}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Resources",
+			"item": [
+				{
+					"name": "create resource",
+					"item": [
+						{
+							"name": "create resource by admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const iterationData = pm.iterationData",
+											"const httpCode = iterationData.get('httpCode')",
+											"pm.test(`Status code is ${httpCode}`, function () {",
+											"    pm.response.to.have.status(httpCode);",
+											"    if(httpCode === 200){",
+											"        const response = pm.response.json()",
+											"        pm.expect(response.memberHandle).to.eq(iterationData.get('memberHandle'))",
+											"        pm.expect(response.challengeId).to.eq(pm.environment.get('CHALLENGE_ID'))",
+											"        pm.expect(response.roleId).to.eq(pm.environment.get('COPILOT_RESOURCE_ROLE_ID'))",
+											"        pm.expect(response.id).to.be.a(\"string\");",
+											"        pm.expect(response.created).to.be.a(\"string\");",
+											"        pm.expect(response.createdBy).to.be.a(\"string\");",
+											"        pm.expect(response.memberId).to.be.a(\"string\");",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"{{memberHandle}}\",\n\t\"roleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create resource using m2m token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const iterationData = pm.iterationData",
+											"const httpCode = iterationData.get('httpCode')",
+											"pm.test(`Status code is ${httpCode}`, function () {",
+											"    pm.response.to.have.status(httpCode);",
+											"    if(httpCode === 200){",
+											"        const response = pm.response.json()",
+											"        pm.expect(response.memberHandle).to.eq(iterationData.get('memberHandle'))",
+											"        pm.expect(response.challengeId).to.eq(pm.environment.get('CHALLENGE_ID'))",
+											"        pm.expect(response.roleId).to.eq(pm.environment.get('COPILOT_RESOURCE_ROLE_ID'))",
+											"        pm.expect(response.id).to.be.a(\"string\");",
+											"        pm.expect(response.created).to.be.a(\"string\");",
+											"        pm.expect(response.createdBy).to.be.a(\"string\");",
+											"        pm.expect(response.memberId).to.be.a(\"string\");",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_all_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"{{memberHandle}}\",\n\t\"roleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create resource with all kinds of invalid token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const iterationData = pm.iterationData",
+											"const httpCode = iterationData.get('httpCode')",
+											"pm.test(`Status code is ${httpCode}`, function () {",
+											"    pm.response.to.have.status(httpCode);",
+											"    const response = pm.response.json()",
+											"    pm.expect(response.message).to.eq(iterationData.get('message'))",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{jwtToken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"heffan\",\n\t\"roleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create resource with all kinds of invalid request body",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const iterationData = pm.iterationData",
+											"const httpCode = iterationData.get('httpCode')",
+											"pm.test(`Status code is ${httpCode}`, function () {",
+											"    pm.response.to.have.status(httpCode);",
+											"    const response = pm.response.json()",
+											"    pm.expect(response.message).to.includes(iterationData.get('message'))",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"{{required_field_1}}\": \"{{CHALLENGE_ID}}\",\n\t\"{{required_field_2}}\": \"{{memberHandle}}\",\n\t\"{{required_field_3}}\": \"{{COPILOT_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "get resources",
+					"item": [
+						{
+							"name": "get resources by required parameter only",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"A list of resources should be returned\", () => {",
+											"  const responseJson = pm.response.json();",
+											"  pm.expect(responseJson.length > 0);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/resources?{{required_field_1}}={{CHALLENGE_ID}}&{{required_field_2}}={{memberId}}&{{required_field_3}}={{memberHandle}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
+									],
+									"query": [
+										{
+											"key": "{{required_field_1}}",
+											"value": "{{CHALLENGE_ID}}"
+										},
+										{
+											"key": "{{required_field_2}}",
+											"value": "{{memberId}}"
+										},
+										{
+											"key": "{{required_field_3}}",
+											"value": "{{memberHandle}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get resources with all parameters",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/resources?challengeId={{CHALLENGE_ID}}&page={{page}}&perPage={{perPage}}&memberId={{memberId}}&memberHandle={{memberHandle}}&roleId={{COPILOT_RESOURCE_ROLE_ID}}&sortBy={{sortBy}}&sortOrder={{sortOrder}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
+									],
+									"query": [
+										{
+											"key": "challengeId",
+											"value": "{{CHALLENGE_ID}}"
+										},
+										{
+											"key": "page",
+											"value": "{{page}}"
+										},
+										{
+											"key": "perPage",
+											"value": "{{perPage}}"
+										},
+										{
+											"key": "memberId",
+											"value": "{{memberId}}"
+										},
+										{
+											"key": "memberHandle",
+											"value": "{{memberHandle}}"
+										},
+										{
+											"key": "roleId",
+											"value": "{{COPILOT_RESOURCE_ROLE_ID}}"
+										},
+										{
+											"key": "sortBy",
+											"value": "{{sortBy}}"
+										},
+										{
+											"key": "sortOrder",
+											"value": "{{sortOrder}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get resources with all kinds of invalid parameter",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const iterationData = pm.iterationData",
+											"const httpCode = iterationData.get('httpCode')",
+											"pm.test(`Status code is ${httpCode}`, function () {",
+											"    pm.response.to.have.status(httpCode);",
+											"    const response = pm.response.json()",
+											"    pm.expect(response.message).to.eq(iterationData.get('message'))",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/resources?{{required_field_1}}={{CHALLENGE_ID}}&page={{page}}&perPage={{perPage}}&{{required_field_2}}={{memberId}}&{{required_field_3}}={{memberHandle}}&roleId={{COPILOT_RESOURCE_ROLE_ID}}&sortBy={{sortBy}}&sortOrder={{sortOrder}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
+									],
+									"query": [
+										{
+											"key": "{{required_field_1}}",
+											"value": "{{CHALLENGE_ID}}"
+										},
+										{
+											"key": "page",
+											"value": "{{page}}"
+										},
+										{
+											"key": "perPage",
+											"value": "{{perPage}}"
+										},
+										{
+											"key": "{{required_field_2}}",
+											"value": "{{memberId}}"
+										},
+										{
+											"key": "{{required_field_3}}",
+											"value": "{{memberHandle}}"
+										},
+										{
+											"key": "roleId",
+											"value": "{{COPILOT_RESOURCE_ROLE_ID}}"
+										},
+										{
+											"key": "sortBy",
+											"value": "{{sortBy}}"
+										},
+										{
+											"key": "sortOrder",
+											"value": "{{sortOrder}}"
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "list challenge by member",
+					"item": [
+						{
+							"name": "get challenges by member with different users",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    const iterationData = pm.iterationData",
+											"    const memberId = iterationData.get('memberId')",
+											"    const response = pm.response.json()",
+											"    if (memberId == 'not_exist_user') {",
+											"        // result should be empty",
+											"        pm.expect(response.length).to.eq(0)",
+											"    } else {",
+											"        // result should not be empty",
+											"        pm.expect(response.length).to.gt(0)",
+											"    }",
+											"    ",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{jwtToken}}",
+										"type": "text"
+									},
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/resources/{{memberId}}/challenges",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources",
+										"{{memberId}}",
+										"challenges"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get challenges by member with resource role",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    const iterationData = pm.iterationData",
+											"    const memberId = iterationData.get('memberId')",
+											"    const response = pm.response.json()",
+											"    if (memberId == 'not_exist_user') {",
+											"        // result should be empty",
+											"        pm.expect(response.length).to.eq(0)",
+											"    } else {",
+											"        // result should be a list",
+											"        pm.expect(response.length).to.gte(0)",
+											"    }",
+											"    ",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									},
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									},
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/resources/{{memberId}}/challenges?resourceRoleId={{COPILOT_RESOURCE_ROLE_ID}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources",
+										"{{memberId}}",
+										"challenges"
+									],
+									"query": [
+										{
+											"key": "resourceRoleId",
+											"value": "{{COPILOT_RESOURCE_ROLE_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get challenges by member with all kinds of invalid token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const iterationData = pm.iterationData",
+											"const httpCode = iterationData.get('httpCode')",
+											"pm.test(`Status code is ${httpCode}`, function () {",
+											"    pm.response.to.have.status(httpCode);",
+											"    const response = pm.response.json()",
+											"    pm.expect(response.message).to.eq(iterationData.get('message'))",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{jwtToken}}"
+									},
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									},
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/resources/{{memberId}}/challenges",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources",
+										"{{memberId}}",
+										"challenges"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get challenges by member with all kinds of invalid parameter",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const iterationData = pm.iterationData",
+											"const httpCode = iterationData.get('httpCode')",
+											"pm.test(`Status code is ${httpCode}`, function () {",
+											"    pm.response.to.have.status(httpCode);",
+											"    const response = pm.response.json()",
+											"    pm.expect(response.message).to.eq(iterationData.get('message'))",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									},
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									},
+									{
+										"key": "",
+										"type": "text",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/resources/{{memberId}}/challenges?resourceRoleId={{COPILOT_RESOURCE_ROLE_ID}}&{{invalid}}={{invalid}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources",
+										"{{memberId}}",
+										"challenges"
+									],
+									"query": [
+										{
+											"key": "resourceRoleId",
+											"value": "{{COPILOT_RESOURCE_ROLE_ID}}"
+										},
+										{
+											"key": "{{invalid}}",
+											"value": "{{invalid}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "delete resource",
+					"item": [
+						{
+							"name": "delete resource with all kinds of invalid token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const iterationData = pm.iterationData",
+											"const httpCode = iterationData.get('httpCode')",
+											"pm.test(`Status code is ${httpCode}`, function () {",
+											"    pm.response.to.have.status(httpCode);",
+											"    const response = pm.response.json()",
+											"    pm.expect(response.message).to.eq(iterationData.get('message'))",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{jwtToken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"denis\",\n\t\"roleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete resource with all kinds of invalid parameter",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const iterationData = pm.iterationData",
+											"const httpCode = iterationData.get('httpCode')",
+											"pm.test(`Status code is ${httpCode}`, function () {",
+											"    pm.response.to.have.status(httpCode);",
+											"    const response = pm.response.json()",
+											"    pm.expect(response.message).to.eq(iterationData.get('message'))",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"{{required_field_1}}\": \"{{CHALLENGE_ID}}\",\n\t\"{{required_field_2}}\": \"{{memberHandle}}\",\n\t\"{{required_field_3}}\": \"{{COPILOT_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete resource with admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"TonyJ\",\n\t\"roleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete resource with m2m",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{m2m_all_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"challengeId\": \"{{CHALLENGE_ID}}\",\n\t\"memberHandle\": \"ghostar\",\n\t\"roleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\"\n}"
+								},
+								"url": {
+									"raw": "{{URL}}/resources",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"resources"
 									]
 								}
 							},

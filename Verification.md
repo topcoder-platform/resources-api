@@ -37,41 +37,61 @@ All files                               |    88.69 |     83.7 |    90.43 |    88
   ResourceRoleService.js                |    96.55 |       90 |      100 |    95.35 |             60,96
   ResourceService.js                    |      100 |      100 |      100 |      100 |
 
-## E2E test Coverage
+## E2E testing with Postman
 
-  170 passing (1m)
+You should be able to find the tests result from the command window of running `npm run test:newman` for each test case.
 
-File                                       |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s
--------------------------------------------|----------|----------|----------|----------|-------------------
-All files                                  |     95.8 |    89.63 |    99.17 |    95.57 |
- resources-api                             |    96.26 |    85.96 |      100 |    96.12 |
-  app-bootstrap.js                         |      100 |      100 |      100 |      100 |
-  app-constants.js                         |      100 |      100 |      100 |      100 |
-  app-routes.js                            |    97.62 |    96.15 |      100 |    97.62 |                25
-  app.js                                   |    94.23 |    77.42 |      100 |    94.23 |          45,75,91
- resources-api/config                      |      100 |    98.78 |      100 |      100 |
-  default.js                               |      100 |    98.78 |      100 |      100 |                35
-  test.js                                  |      100 |      100 |      100 |      100 |
- resources-api/src                         |      100 |      100 |      100 |      100 |
-  routes.js                                |      100 |      100 |      100 |      100 |
- resources-api/src/common                  |    91.19 |       75 |    98.11 |    90.95 |
-  errors.js                                |      100 |       50 |      100 |      100 |                23
-  helper.js                                |    90.13 |    78.57 |    97.37 |    89.73 |... 69,364,374,390
-  logger.js                                |    92.31 |       65 |      100 |    92.31 |   31,53,58,82,116
- resources-api/src/controllers             |      100 |      100 |      100 |      100 |
-  HealthCheckController.js                 |      100 |      100 |      100 |      100 |
-  ResourceController.js                    |      100 |      100 |      100 |      100 |
-  ResourceRoleController.js                |      100 |      100 |      100 |      100 |
-  ResourceRolePhaseDependencyController.js |      100 |      100 |      100 |      100 |
- resources-api/src/models                  |      100 |       50 |      100 |      100 |
-  MemberProfile.js                         |      100 |      100 |      100 |      100 |
-  MemberStats.js                           |      100 |      100 |      100 |      100 |
-  Resource.js                              |      100 |      100 |      100 |      100 |
-  ResourceRole.js                          |      100 |      100 |      100 |      100 |
-  ResourceRolePhaseDependency.js           |      100 |      100 |      100 |      100 |
-  index.js                                 |      100 |       50 |      100 |      100 |              8,18
- resources-api/src/services                |    98.24 |    96.45 |      100 |    98.06 |
-  HealthCheckService.js                    |      100 |      100 |      100 |      100 |
-  ResourceRolePhaseDependencyService.js    |    94.83 |     87.5 |      100 |    94.74 |        77,113,136
-  ResourceRoleService.js                   |    96.55 |       90 |      100 |    95.35 |             60,96
-  ResourceService.js                       |      100 |      100 |      100 |      100 |
+### Postman mock server
+E2E tests use nock to mock `BUSAPI_URL`, where postman mock server could be used to replace nock.
+Please refer to: https://drive.google.com/file/d/1GXMzyqpzwix-LDBwieiRFfpJlJxrTIgI/view?usp=sharing
+
+Below is a sample output result of finding resources by member.
+
+```
+resource-api
+
+Iteration 1/4
+
+❏ Resources / list challenge by member
+↳ get challenges by member with resource role
+  GET http://localhost:3000/v5/resources/16096823/challenges?resourceRoleId=c943cb74-37bb-409a-994e-1cd28fbbb7b5 [200 OK, 702B, 11ms]
+  ✓  Status code is 200
+
+Iteration 2/4
+
+↳ get challenges by member with resource role
+  GET http://localhost:3000/v5/resources/16096823/challenges?resourceRoleId=c943cb74-37bb-409a-994e-1cd28fbbb7b5 [200 OK, 702B, 17ms]
+  ✓  Status code is 200
+
+Iteration 3/4
+
+↳ get challenges by member with resource role
+  GET http://localhost:3000/v5/resources/16096823/challenges?resourceRoleId=c943cb74-37bb-409a-994e-1cd28fbbb7b5 [200 OK, 702B, 21ms]
+  ✓  Status code is 200
+
+Iteration 4/4
+
+↳ get challenges by member with resource role
+  GET http://localhost:3000/v5/resources/not_exist_user/challenges?resourceRoleId=c943cb74-37bb-409a-994e-1cd28fbbb7b5 [200 OK, 397B, 24ms]
+  ✓  Status code is 200
+
+┌─────────────────────────┬──────────────────┬──────────────────┐
+│                         │         executed │           failed │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│              iterations │                4 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│                requests │                4 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│            test-scripts │                4 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│      prerequest-scripts │                0 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│              assertions │                4 │                0 │
+├─────────────────────────┴──────────────────┴──────────────────┤
+│ total run duration: 207ms                                     │
+├───────────────────────────────────────────────────────────────┤
+│ total data received: 122B (approx)                            │
+├───────────────────────────────────────────────────────────────┤
+│ average response time: 18ms [min: 11ms, max: 24ms, s.d.: 4ms] │
+└───────────────────────────────────────────────────────────────┘
+```
