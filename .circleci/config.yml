@@ -79,6 +79,10 @@ jobs:
   "Run-Newman-Test":
     docker:
       - image: circleci/node:12
+        environment:
+          DEPLOY_ENV: "DEV"
+          LOGICAL_ENV: "dev"
+          APPNAME: "resources-api"        
       - image: tray/dynamodb-local
         command: "-inMemory -port 7777"
       - image: elasticsearch:6.8.13
@@ -87,9 +91,15 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - run: *install_dependency
+      - run: *install_deploysuite      
       - run:
           name: 'newman test'
           command: |
+            ./awsconfiguration.sh $DEPLOY_ENV
+            source awsenvconf
+            ./buildenv.sh -e $DEPLOY_ENV -b ${LOGICAL_ENV}-global-appvar,${LOGICAL_ENV}-${APPNAME}-qa-appvar
+            source buildenvvar
             npm i
             cd local
             cd ..
