@@ -197,7 +197,10 @@ const runner = (options) => new Promise((resolve, reject) => {
   ]
   for (const request of requests) {
     delete require.cache[require.resolve('./resource-api.postman_environment.json')]
-    options.environment = require('./resource-api.postman_environment.json')
+    options.environment = {
+      ...require('./resource-api.postman_environment.json'),
+      ...request.iterationData
+    }
     options.folder = request.folder
     options.iterationData = request.iterationData
     try {
