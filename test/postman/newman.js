@@ -189,18 +189,19 @@ const runner = (options) => new Promise((resolve, reject) => {
   const adminToken = await envHelper.getAdminToken()
   const copilotToken = await envHelper.getCopilotToken()
   const userToken = await envHelper.getUserToken()
-  options.envVar = [
+  const originalEnvVars = [
     { key: 'M2M_TOKEN', value: `Bearer ${m2mToken}` },
     { key: 'admin_token', value: `Bearer ${adminToken}` },
     { key: 'copilot_token', value: `Bearer ${copilotToken}` },
     { key: 'user_token', value: `Bearer ${userToken}` }
   ]
   for (const request of requests) {
+    options.envVar = [
+      ...originalEnvVars,
+      ..._.map(_.keys(request.iterationData || {}), key => ({ key, value: request.iterationData[key] }))
+    ]
     delete require.cache[require.resolve('./resource-api.postman_environment.json')]
-    options.environment = {
-      ...require('./resource-api.postman_environment.json'),
-      ...request.iterationData
-    }
+    options.environment = require('./resource-api.postman_environment.json')
     options.folder = request.folder
     options.iterationData = request.iterationData
     try {
