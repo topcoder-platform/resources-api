@@ -75,6 +75,15 @@ The following parameters can be set in config files or in env variables:
 Configuration for testing is at `config/test.js`, only add such new configurations different from `config/default.js`
 - WAIT_TIME: wait time used in test, default is 1500 or 1.5 second
 - MOCK_CHALLENGE_API_PORT: the mock server port, default is 4000.
+- AUTH_V2_URL: The auth v2 url
+- AUTH_V2_CLIENT_ID: The auth v2 client id
+- AUTH_V3_URL: The auth v3 url
+- ADMIN_CREDENTIALS_USERNAME: The user's username with admin role
+- ADMIN_CREDENTIALS_PASSWORD: The user's password with admin role
+- COPILOT_CREDENTIALS_USERNAME: The user's username with copilot role
+- COPILOT_CREDENTIALS_PASSWORD: The user's password with copilot role
+- USER_CREDENTIALS_USERNAME: The user's username with user role
+- USER_CREDENTIALS_PASSWORD: The user's password with user role
 
 ## Available commands
 - Install dependencies `npm install`
@@ -118,7 +127,7 @@ You can also use your own remote ElasticSearch service for testing purpose.
 
 ### Create ElasticSearch Index
 
-1. Makre sure ElasticSearch are running as per instructions above.
+1. Make sure ElasticSearch are running as per instructions above.
 2. Make sure you have configured all config parameters. Refer [Configuration](#configuration)
 3. Run `npm run init-es force` to create index.
 
@@ -148,6 +157,15 @@ The following test parameters can be set in config file or in env variables:
 
 - WAIT_TIME: wait time
 - MOCK_CHALLENGE_API_PORT: mock challenge api port
+- AUTH_V2_URL: The auth v2 url
+- AUTH_V2_CLIENT_ID: The auth v2 client id
+- AUTH_V3_URL: The auth v3 url
+- ADMIN_CREDENTIALS_USERNAME: The user's username with admin role
+- ADMIN_CREDENTIALS_PASSWORD: The user's password with admin role
+- COPILOT_CREDENTIALS_USERNAME: The user's username with copilot role
+- COPILOT_CREDENTIALS_PASSWORD: The user's password with copilot role
+- USER_CREDENTIALS_USERNAME: The user's username with user role
+- USER_CREDENTIALS_PASSWORD: The user's password with user role
 
 
 ### Prepare
@@ -170,7 +188,7 @@ npm run test
 
 ### Running E2E tests with Postman
 
-#### `Start` the app server and mock API server before running e2e tests. You may need to set the env variables by calling `source env.sh` before calling `npm start`.
+#### `Start` the app server and mock API server before running e2e tests. You may need to set the env variables by calling `source env.sh` before calling `NODE_ENV=test npm start`.
 
 - Make sure the db and es are started
 ```bash

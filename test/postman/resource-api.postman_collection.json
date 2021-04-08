@@ -116,7 +116,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{m2m_all_token}}"
+										"value": "Bearer {{M2M_TOKEN}}"
 									}
 								],
 								"body": {
@@ -352,7 +352,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{m2m_modify_token}}"
+										"value": "Bearer {{M2M_TOKEN}}"
 									}
 								],
 								"body": {
@@ -853,7 +853,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{m2m_all_token}}"
+										"value": "Bearer {{M2M_TOKEN}}"
 									}
 								],
 								"body": {
@@ -961,7 +961,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{m2m_all_token}}"
+										"value": "Bearer {{M2M_TOKEN}}"
 									}
 								],
 								"body": {
@@ -1120,7 +1120,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{m2m_read_token}}"
+										"value": "Bearer {{M2M_TOKEN}}"
 									}
 								],
 								"url": {
@@ -1370,7 +1370,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{m2m_modify_token}}"
+										"value": "Bearer {{M2M_TOKEN}}"
 									}
 								],
 								"body": {
@@ -1422,7 +1422,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{m2m_modify_token}}"
+										"value": "Bearer {{M2M_TOKEN}}"
 									}
 								],
 								"body": {
@@ -1699,7 +1699,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{m2m_modify_token}}"
+										"value": "Bearer {{M2M_TOKEN}}"
 									}
 								],
 								"body": {
@@ -1835,7 +1835,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{m2m_all_token}}"
+										"value": "Bearer {{M2M_TOKEN}}"
 									}
 								],
 								"body": {
@@ -2650,7 +2650,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{m2m_all_token}}"
+										"value": "Bearer {{M2M_TOKEN}}"
 									}
 								],
 								"body": {

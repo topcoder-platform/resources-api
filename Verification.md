@@ -41,10 +41,6 @@ All files                               |    88.69 |     83.7 |    90.43 |    88
 
 You should be able to find the tests result from the command window of running `npm run test:newman` for each test case.
 
-### Postman mock server
-E2E tests use nock to mock `BUSAPI_URL`, where postman mock server could be used to replace nock.
-Please refer to: https://drive.google.com/file/d/1GXMzyqpzwix-LDBwieiRFfpJlJxrTIgI/view?usp=sharing
-
 Below is a sample output result of finding resources by member.
 
 ```

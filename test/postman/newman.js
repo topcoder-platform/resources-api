@@ -1,5 +1,6 @@
 const newman = require('newman')
 const _ = require('lodash')
+const envHelper = require('./envHelper')
 
 const requests = [
   {
@@ -185,6 +186,16 @@ const runner = (options) => new Promise((resolve, reject) => {
 })
 
 ;(async () => {
+  const m2mToken = await envHelper.getM2MToken()
+  const adminToken = await envHelper.getAdminToken()
+  const copilotToken = await envHelper.getCopilotToken()
+  const userToken = await envHelper.getUserToken()
+  options.envVar = [
+    { key: 'M2M_TOKEN', value: m2mToken },
+    { key: 'admin_token', value: adminToken },
+    { key: 'copilot_token', value: copilotToken },
+    { key: 'user_token', value: userToken }
+  ]
   for (const request of requests) {
     delete require.cache[require.resolve('./resource-api.postman_environment.json')]
     options.environment = require('./resource-api.postman_environment.json')

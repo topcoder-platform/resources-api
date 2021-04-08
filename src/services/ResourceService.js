@@ -85,7 +85,7 @@ async function getResources (currentUser, challengeId, roleId, memberId, memberH
         hasFullAccess = false
       }
     }
-    if (memberId && memberId !== currentUser.useId) {
+    if (memberId && memberId !== currentUser.userId) {
       throw new errors.ForbiddenError('You are not allowed to perform this operation!')
     }
     if (memberHandle && memberHandle !== currentUser.handle) {
