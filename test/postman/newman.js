@@ -174,7 +174,6 @@ const options = {
   exportEnvironment: 'test/postman/resource-api.postman_environment.json',
   reporters: 'cli'
 }
-
 const runner = (options) => new Promise((resolve, reject) => {
   newman.run(options, function (err, results) {
     if (err) {
