@@ -11,7 +11,7 @@
     "message": "\"name\" is not allowed to be empty"
   },
   {
-    "name": "update-co-pilot",
+    "name": "POSTMANE2E-update-co-pilot",
     "fullReadAccess": true,
     "fullWriteAccess": false,
     "required_field_1": "isActive",
@@ -22,7 +22,7 @@
     "message": "\"selfObtainable\" is required"
   },
   {
-    "name": "update-co-pilot",
+    "name": "POSTMANE2E-update-co-pilot",
     "fullReadAccess": true,
     "fullWriteAccess": false,
     "required_field_1": "isActiveNotProvided",
@@ -33,7 +33,7 @@
     "message": "\"isActive\" is required"
   },
   {
-    "name": "update-co-pilot",
+    "name": "POSTMANE2E-update-co-pilot",
     "fullReadAccess": "123",
     "fullWriteAccess": false,
     "required_field_1": "isActive",
@@ -44,7 +44,7 @@
     "message": "\"fullReadAccess\" must be a boolean"
   },
   {
-    "name": "Observer",
+    "name": "POSTMANE2E-Observer",
     "fullReadAccess": true,
     "fullWriteAccess": "123",
     "required_field_1": "isActive",
@@ -55,7 +55,7 @@
     "message": "\"fullWriteAccess\" must be a boolean"
   },
   {
-    "name": "update-submitter",
+    "name": "POSTMANE2E-update-submitter",
     "fullReadAccess": true,
     "fullWriteAccess": true,
     "required_field_1": "isActive",
@@ -66,7 +66,7 @@
     "message": "\"isActive\" must be a boolean"
   },
   {
-    "name": "update-reviewer",
+    "name": "POSTMANE2E-update-reviewer",
     "fullReadAccess": false,
     "fullWriteAccess": false,
     "required_field_1": "isActive",

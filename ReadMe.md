@@ -73,7 +73,7 @@ The following parameters can be set in config files or in env variables:
 - RESOURCE_ROLE_UPDATE_TOPIC: the resource role update topic, default value is 'challenge.action.resource.role.update'
 
 Configuration for testing is at `config/test.js`, only add such new configurations different from `config/default.js`
-- WAIT_TIME: wait time used in test, default is 1500 or 1.5 second
+- WAIT_TIME: wait time used in test, default is 6000 or 6 seconds
 - MOCK_CHALLENGE_API_PORT: the mock server port, default is 4000.
 - AUTH_V2_URL: The auth v2 url
 - AUTH_V2_CLIENT_ID: The auth v2 client id
@@ -84,6 +84,8 @@ Configuration for testing is at `config/test.js`, only add such new configuratio
 - COPILOT_CREDENTIALS_PASSWORD: The user's password with copilot role
 - USER_CREDENTIALS_USERNAME: The user's username with user role
 - USER_CREDENTIALS_PASSWORD: The user's password with user role
+- POSTMAN_ROLE_NAME_PREFIX: the role name prefix for every `ResourceRole` record
+- MOCK_BUS_API_BY_NOCK: indicates whether Nock is used for mocking Bus API.
 
 ## Available commands
 - Install dependencies `npm install`
@@ -99,6 +101,8 @@ Configuration for testing is at `config/test.js`, only add such new configuratio
 - App is running at `http://localhost:3000`
 - Start mock server `npm run mock-challenge-api`
 - The mock server is running at `http://localhost:4000`
+- Run the Postman tests `npm run test:newman`
+- Clear the testing data by Postman tests: `npm run test:newman:clear`
 
 ## Local Deployment
 ### Foreman Setup
@@ -212,6 +216,12 @@ To run postman e2e tests.
 
 ```bash
 npm run test:newman
+```
+
+To clear the testing data from postman e2e tests.
+
+```bash
+npm run test:newman:clear
 ```
 
 ## Running tests in CI

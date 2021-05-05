@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "c24b7751-3c89-4248-9d7c-6d2499985af2",
+		"_postman_id": "751f9f67-b079-4916-be2e-58d19e423484",
 		"name": "resource-api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -821,6 +821,7 @@
 										"exec": [
 											"const iterationData = pm.iterationData",
 											"const httpCode = iterationData.get('httpCode')",
+											"const idLabel = iterationData.get('idLabel')",
 											"pm.test(`Status code is ${httpCode}`, function () {",
 											"    pm.response.to.have.status(httpCode);",
 											"    if(httpCode === 200){",
@@ -829,6 +830,7 @@
 											"        pm.expect(response.resourceRoleId).to.eq(pm.environment.get('COPILOT_RESOURCE_ROLE_ID'))",
 											"        pm.expect(response.phaseState).to.eq(iterationData.get('phaseState'))",
 											"        pm.environment.set(\"DEPENDENCY_ID_2\", pm.response.json().id);",
+											"        pm.environment.set(idLabel, pm.response.json().id);",
 											"    }",
 											"});"
 										],
@@ -914,7 +916,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{SUBMITTER_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
+									"raw": "{\n\t\"phaseId\": \"{{PHASE_ID}}\",\n\t\"resourceRoleId\": \"{{COPILOT_RESOURCE_ROLE_ID}}\",\n\t\"phaseState\": false\n}"
 								},
 								"url": {
 									"raw": "{{URL}}/resource-roles/Phase-dependencies",
@@ -1707,14 +1709,14 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_2}}",
+									"raw": "{{URL}}/resource-roles/Phase-dependencies/{{DEPENDENCY_ID_3}}",
 									"host": [
 										"{{URL}}"
 									],
 									"path": [
 										"resource-roles",
 										"Phase-dependencies",
-										"{{DEPENDENCY_ID_2}}"
+										"{{DEPENDENCY_ID_3}}"
 									]
 								}
 							},

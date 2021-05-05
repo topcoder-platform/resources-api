@@ -1,6 +1,8 @@
 const newman = require('newman')
 const _ = require('lodash')
 const envHelper = require('./envHelper')
+const nock = require('nock')
+const config = require('config')
 
 const requests = [
   {
@@ -184,17 +186,41 @@ const runner = (options) => new Promise((resolve, reject) => {
   })
 })
 
+/**
+ * Sleep for the given time
+ * @param ms the miliseconds
+ * @returns {Promise<unknown>}
+ */
+function sleep (ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+/**
+ * Clean the Nock.
+ */
+function cleanNock () {
+  if (config.MOCK_BUS_API_BY_NOCK) {
+    nock.cleanAll()
+  }
+}
+
 ;(async () => {
   const m2mToken = await envHelper.getM2MToken()
   const adminToken = await envHelper.getAdminToken()
   const copilotToken = await envHelper.getCopilotToken()
   const userToken = await envHelper.getUserToken()
   const originalEnvVars = [
-    { key: 'M2M_TOKEN', value: `Bearer ${m2mToken}` },
-    { key: 'admin_token', value: `Bearer ${adminToken}` },
-    { key: 'copilot_token', value: `Bearer ${copilotToken}` },
-    { key: 'user_token', value: `Bearer ${userToken}` }
+    { key: 'M2M_TOKEN', value: `${m2mToken}` },
+    { key: 'admin_token', value: `${adminToken}` },
+    { key: 'copilot_token', value: `${copilotToken}` },
+    { key: 'user_token', value: `${userToken}` }
   ]
+  if (config.MOCK_BUS_API_BY_NOCK) {
+    nock(config.BUSAPI_URL)
+      .persist()
+      .post('/bus/events')
+      .reply(204)
+  }
   for (const request of requests) {
     options.envVar = [
       ...originalEnvVars,
@@ -207,16 +233,20 @@ const runner = (options) => new Promise((resolve, reject) => {
     try {
       const results = await runner(options)
       if (_.get(results, 'run.failures.length', 0) > 0) {
+        cleanNock()
         process.exit(-1)
       }
     } catch (err) {
       console.log(err)
     }
+    await sleep(config.WAIT_TIME)
   }
-})().then(() => {
+})().then(async () => {
+  cleanNock()
   console.log('newman test completed!')
   process.exit(0)
-}).catch((err) => {
+}).catch(async (err) => {
+  cleanNock()
   console.log(err)
   process.exit(1)
 })
