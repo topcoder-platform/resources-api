@@ -35,6 +35,7 @@
     "invalid": "invalid",
     "fullReadAccess": true,
     "fullWriteAccess": false,
+    "selfObtainable": false,
     "isActive": true,
     "httpCode": 400
   },
@@ -42,6 +43,8 @@
     "name": "POSTMANE2E-failure-test",
     "fullReadAccess": true,
     "fullWriteAccess": false,
+    "selfObtainable": false,
+    "isActive": false,
     "httpCode": 400
   },
   {
