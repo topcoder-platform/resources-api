@@ -91,3 +91,7 @@ Iteration 4/4
 │ average response time: 18ms [min: 11ms, max: 24ms, s.d.: 4ms] │
 └───────────────────────────────────────────────────────────────┘
 ```
+
+Then you can run `npm run test:newman:clear` to delete all testing data by above postman tests.  
+If 'socket hang up' appears while running the `npm run test:newman`. You can increase the `WAIT_TIME` from the `default/test.js`.
+ Then run `npm run test:newman:clear` before calling `npm run test:newman` again.

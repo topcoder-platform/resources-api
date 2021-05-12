@@ -6,7 +6,7 @@ module.exports = {
   TERMS_API_URL: 'http://localhost:4000/v5/terms',
   BUSAPI_URL: 'http://localhost:4000/v5',
   CHALLENGE_PHASES_API_URL: 'http://localhost:4000/v5/challenge-phases',
-  WAIT_TIME: 1500,
+  WAIT_TIME: 6000,
   MOCK_CHALLENGE_API_PORT: 4000,
   AUTH_V2_URL: process.env.AUTH_V2_URL || 'https://topcoder-dev.auth0.com/oauth/ro',
   AUTH_V2_CLIENT_ID: process.env.AUTH_V2_CLIENT_ID || '',
@@ -16,5 +16,7 @@ module.exports = {
   COPILOT_CREDENTIALS_USERNAME: process.env.COPILOT_CREDENTIALS_USERNAME || '',
   COPILOT_CREDENTIALS_PASSWORD: process.env.COPILOT_CREDENTIALS_PASSWORD || '',
   USER_CREDENTIALS_USERNAME: process.env.USER_CREDENTIALS_USERNAME || '',
-  USER_CREDENTIALS_PASSWORD: process.env.USER_CREDENTIALS_PASSWORD || ''
+  USER_CREDENTIALS_PASSWORD: process.env.USER_CREDENTIALS_PASSWORD || '',
+  POSTMAN_ROLE_NAME_PREFIX: process.env.POSTMAN_ROLE_NAME_PREFIX || 'POSTMANE2E-',
+  MOCK_BUS_API_BY_NOCK: process.env.MOCK_BUS_API_BY_NOCK ? process.env.MOCK_BUS_API_BY_NOCK === 'true' : true
 }
