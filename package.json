@@ -18,7 +18,7 @@
     "mock-challenge-api": "NODE_ENV=test node mock/mock-challenge-api",
     "test": "nyc --reporter=html --reporter=text mocha test/unit/test.js --require test/common/prepare.js --timeout 60000 --exit",
     "test:newman": "NODE_ENV=test node test/postman/newman.js",
-    "test:newman:clear": "NODE_ENV=test node test/postman/clearTestData.js"
+    "test:newman:clear": "node test/postman/clearTestData.js"
   },
   "author": "TCSCODER",
   "license": "none",
