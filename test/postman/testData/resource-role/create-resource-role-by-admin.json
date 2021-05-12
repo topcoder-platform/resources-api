@@ -36,7 +36,7 @@
     "fullReadAccess": true,
     "fullWriteAccess": false,
     "selfObtainable": false,
-    "isActive": true,
+    "isActive": 5,
     "httpCode": 400
   },
   {
@@ -44,7 +44,7 @@
     "fullReadAccess": true,
     "fullWriteAccess": false,
     "selfObtainable": false,
-    "isActive": false,
+    "isActive": 5,
     "httpCode": 400
   },
   {
