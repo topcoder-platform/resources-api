@@ -109,6 +109,7 @@ jobs:
             (NODE_ENV=test npm start&)
             npm run test:newman:clear
             npm run test:newman
+            npm run test:newman:clear
 
 workflows:
   version: 2
