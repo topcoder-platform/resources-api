@@ -30,6 +30,15 @@ module.exports = {
       scopes: [DELETE, ALL]
     }
   },
+  '/resources/internal/jobs/clean': {
+    post: {
+      controller: 'CleanUpController',
+      method: 'cleanUpTestData',
+      auth: 'jwt',
+      access: [constants.UserRoles.Admin],
+      scopes: [ALL]
+    }
+  },
   '/resources/health': {
     get: {
       controller: 'HealthCheckController',
