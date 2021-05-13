@@ -101,9 +101,6 @@ jobs:
             ./buildenv.sh -e $DEPLOY_ENV -b ${LOGICAL_ENV}-global-appvar,${LOGICAL_ENV}-${APPNAME}-qa-appvar
             source buildenvvar
             npm i
-            cd local
-            cd ..
-            npm run create-tables:test
             cd mock
             (npm run mock-challenge-api&)
             (NODE_ENV=test npm start&)
