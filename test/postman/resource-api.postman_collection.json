@@ -1892,7 +1892,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Invalid token {{jwtToken}}"
+										"value": "{{jwtToken}}"
 									}
 								],
 								"body": {
