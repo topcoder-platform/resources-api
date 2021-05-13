@@ -58,6 +58,7 @@ module.exports = (app) => {
             } else {
               // User
               req.authUser.userId = String(req.authUser.userId)
+              console.log(req.authUser)
               if (!req.authUser.roles || !helper.checkIfExists(def.access, req.authUser.roles)) {
                 next(new errors.ForbiddenError('You are not allowed to perform this action!'))
               } else {

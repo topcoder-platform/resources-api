@@ -34,7 +34,7 @@ clear the test data from postman test completed!
 info: Done!
 ```
 ## Strategy
-1. Setup the `POSTMAN_ROLE_NAME_PREFIX` from the test environment. This prefix should be a name that will never be used 
+1. Setup the `AUTOMATED_TESTING_NAME_PREFIX` from the test environment. This prefix should be a name that will never be used 
 set as part of the role name. e.g. 'POSTMANE2E-'. In this case, the created `ResourceRole` will have a name like 'POSTMANE2E-submitter'.
 
 2. Choose either one solution for mocking the Bus API. We can not ignore this, becuase in production environment, it is 
@@ -45,7 +45,7 @@ b. You can use use Postman's mock server. You can refer to https://drive.google.
    for details. You need to update the environment variable `BUSAPI_URL` to your Postman mock server.
   
 3. Steps of clearing the test data from Postman tests.
-   * Find all `ResourceRole` record whose names are starting with `POSTMAN_ROLE_NAME_PREFIX`.
+   * Find all `ResourceRole` record whose names are starting with `AUTOMATED_TESTING_NAME_PREFIX`.
    * For each `ResourceRole` record, find all `ResourceRolePhaseDependency` records whose `resourceRoleId` are the same 
      as the `id` of `RecourceRole`. Delete those `ResourceRolePhaseDependency` records.
    * For each `ResourceRole` record, find all `Resource` records whose `roleId` are the same

@@ -72,7 +72,7 @@ const deleteFromDBById = async (modelName, id) => {
 const cleanUpTestData = async () => {
   logger.info('clear the test data from postman test!')
   let roles = await helper.scanAll('ResourceRole')
-  roles = _.filter(roles, r => (r.name.startsWith(config.POSTMAN_ROLE_NAME_PREFIX)))
+  roles = _.filter(roles, r => (r.name.startsWith(config.AUTOMATED_TESTING_NAME_PREFIX)))
   for (const role of roles) {
     let roleId = role.id
     let rolePhaseDeps = await helper.scanAll('ResourceRolePhaseDependency')

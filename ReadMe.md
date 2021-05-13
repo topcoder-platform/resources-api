@@ -84,7 +84,7 @@ Configuration for testing is at `config/test.js`, only add such new configuratio
 - COPILOT_CREDENTIALS_PASSWORD: The user's password with copilot role
 - USER_CREDENTIALS_USERNAME: The user's username with user role
 - USER_CREDENTIALS_PASSWORD: The user's password with user role
-- POSTMAN_ROLE_NAME_PREFIX: the role name prefix for every `ResourceRole` record
+- AUTOMATED_TESTING_NAME_PREFIX: the role name prefix for every `ResourceRole` record
 - MOCK_BUS_API_BY_NOCK: indicates whether Nock is used for mocking Bus API.
 
 ## Available commands
