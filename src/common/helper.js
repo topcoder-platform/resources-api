@@ -331,7 +331,7 @@ async function postRequest (url, data) {
   const m2mToken = await m2m.getMachineToken(config.AUTH0_CLIENT_ID, config.AUTH0_CLIENT_SECRET)
 
   return request
-    .get(url)
+    .post(url)
     .set('Authorization', `Bearer ${m2mToken}`)
     .set('Content-Type', 'application/json')
     .set('Accept', 'application/json')
