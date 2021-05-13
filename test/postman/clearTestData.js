@@ -16,7 +16,7 @@ const clearTestData = async () => {
 }
 
 clearTestData().then(() => {
-  logger.info('Done!')
+  logger.info('Completed!')
   process.exit()
 }).catch((e) => {
   logger.logFullError(e)
