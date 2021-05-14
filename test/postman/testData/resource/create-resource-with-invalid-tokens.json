@@ -20,6 +20,7 @@
     "message": "Only M2M, admin or user with full access role can perform this action"
   },
   {
+    "jwtToken": "",
     "httpCode": 401,
     "message": "No token provided."
   }
