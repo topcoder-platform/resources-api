@@ -6,7 +6,7 @@
     "memberHandle": "mess",
     "CHALLENGE_ID": "11111111-ce7d-4521-8501-b8132b1c0391",
     "httpCode": 404,
-    "message": "Challenge with id: 11111111-ce7d-4521-8501-b8132b1c0391 doesn't exist."
+    "message": "Challenge of id 11111111-ce7d-4521-8501-b8132b1c0391 is not found."
   },
   {
     "required_field_1": "challengeId",
