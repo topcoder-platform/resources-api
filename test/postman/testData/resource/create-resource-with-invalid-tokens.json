@@ -10,11 +10,6 @@
     "message": "Failed to authenticate token."
   },
   {
-    "jwtToken": "Bearer {{copilot_token}}",
-    "httpCode": 403,
-    "message": "Only M2M, admin or user with full access role can perform this action"
-  },
-  {
     "jwtToken": "Bearer {{user_token}}",
     "httpCode": 403,
     "message": "Only M2M, admin or user with full access role can perform this action"
