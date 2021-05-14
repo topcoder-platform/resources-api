@@ -1,5 +1,4 @@
 # Automated testing using Postman + Newman
-
 ## Configurations
 
 - All configurations are set in [/config/test.js](../../config/test.js).
