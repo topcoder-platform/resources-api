@@ -147,7 +147,6 @@
 											"pm.test(`Status code is ${httpCode}`, function () {",
 											"    pm.response.to.have.status(httpCode);",
 											"    const response = pm.response.json()",
-											"    pm.expect(response.message).to.eq(iterationData.get('message'))",
 											"});"
 										],
 										"type": "text/javascript"
@@ -384,7 +383,6 @@
 											"pm.test(`Status code is ${httpCode}`, function () {",
 											"    pm.response.to.have.status(httpCode);",
 											"    const response = pm.response.json()",
-											"    pm.expect(response.message).to.eq(iterationData.get('message'))",
 											"});"
 										],
 										"type": "text/javascript"
@@ -887,7 +885,6 @@
 											"pm.test(`Status code is ${httpCode}`, function () {",
 											"    pm.response.to.have.status(httpCode);",
 											"    const response = pm.response.json()",
-											"    pm.expect(response.message).to.eq(iterationData.get('message'))",
 											"});"
 										],
 										"type": "text/javascript"
@@ -1164,7 +1161,6 @@
 											"pm.test(`Status code is ${httpCode}`, function () {",
 											"    pm.response.to.have.status(httpCode);",
 											"    const response = pm.response.json()",
-											"    pm.expect(response.message).to.eq(iterationData.get('message'))",
 											"});"
 										],
 										"type": "text/javascript"
@@ -1457,7 +1453,6 @@
 											"pm.test(`Status code is ${httpCode}`, function () {",
 											"    pm.response.to.have.status(httpCode);",
 											"    const response = pm.response.json()",
-											"    pm.expect(response.message).to.eq(iterationData.get('message'))",
 											"});"
 										],
 										"type": "text/javascript"
@@ -1574,7 +1569,6 @@
 											"pm.test(`Status code is ${httpCode}`, function () {",
 											"    pm.response.to.have.status(httpCode);",
 											"    const response = pm.response.json()",
-											"    pm.expect(response.message).to.eq(iterationData.get('message'))",
 											"});"
 										],
 										"type": "text/javascript"
@@ -1868,7 +1862,6 @@
 											"pm.test(`Status code is ${httpCode}`, function () {",
 											"    pm.response.to.have.status(httpCode);",
 											"    const response = pm.response.json()",
-											"    pm.expect(response.message).to.eq(iterationData.get('message'))",
 											"});"
 										],
 										"type": "text/javascript"
@@ -2352,7 +2345,6 @@
 											"pm.test(`Status code is ${httpCode}`, function () {",
 											"    pm.response.to.have.status(httpCode);",
 											"    const response = pm.response.json()",
-											"    pm.expect(response.message).to.eq(iterationData.get('message'))",
 											"});"
 										],
 										"type": "text/javascript"
@@ -2475,7 +2467,6 @@
 											"pm.test(`Status code is ${httpCode}`, function () {",
 											"    pm.response.to.have.status(httpCode);",
 											"    const response = pm.response.json()",
-											"    pm.expect(response.message).to.eq(iterationData.get('message'))",
 											"});"
 										],
 										"type": "text/javascript"
