@@ -7055,37 +7055,6 @@ ${__setProperty(refresh_token, ${refresh_token})};</stringProp>
             </hashTree>
           </hashTree>
         </hashTree>
-        <SmtpSampler guiclass="SmtpSamplerGui" testclass="SmtpSampler" testname="SMTP Sampler" enabled="false">
-          <stringProp name="SMTPSampler.server">smtp.gmail.com</stringProp>
-          <stringProp name="SMTPSampler.serverPort">587</stringProp>
-          <stringProp name="SMTPSampler.mailFrom">codejamqe@gmail.com </stringProp>
-          <stringProp name="SMTPSampler.replyTo"></stringProp>
-          <stringProp name="SMTPSampler.receiverTo">nuwan4us@gmail.com</stringProp>
-          <stringProp name="SMTPSampler.receiverCC"></stringProp>
-          <stringProp name="SMTPSampler.receiverBCC"></stringProp>
-          <stringProp name="SMTPSampler.subject">Topcoder Challenge API Performance Testing Report</stringProp>
-          <stringProp name="SMTPSampler.suppressSubject">false</stringProp>
-          <stringProp name="SMTPSampler.include_timestamp">true</stringProp>
-          <stringProp name="SMTPSampler.message">Performance Testing Report for Challenge API - Topcoder</stringProp>
-          <stringProp name="SMTPSampler.plainBody">false</stringProp>
-          <stringProp name="SMTPSampler.attachFile">report.csv</stringProp>
-          <stringProp name="SMTPSampler.useSSL">false</stringProp>
-          <stringProp name="SMTPSampler.useStartTLS">true</stringProp>
-          <stringProp name="SMTPSampler.trustAllCerts">false</stringProp>
-          <stringProp name="SMTPSampler.enforceStartTLS">false</stringProp>
-          <stringProp name="SMTPSampler.useLocalTrustStore">false</stringProp>
-          <stringProp name="SMTPSampler.trustStoreToUse"></stringProp>
-          <stringProp name="SMTPSampler.tlsProtocols"></stringProp>
-          <boolProp name="SMTPSampler.use_eml">false</boolProp>
-          <stringProp name="SMTPSampler.emlMessageToSend"></stringProp>
-          <stringProp name="SMTPSampler.useAuth">true</stringProp>
-          <stringProp name="SMTPSampler.password">123456789@abc</stringProp>
-          <stringProp name="SMTPSampler.username">codejamqe</stringProp>
-          <stringProp name="SMTPSampler.messageSizeStatistics">false</stringProp>
-          <stringProp name="SMTPSampler.enableDebug">false</stringProp>
-          <collectionProp name="SMTPSampler.headerFields"/>
-        </SmtpSampler>
-        <hashTree/>
       </hashTree>
       <BackendListener guiclass="BackendListenerGui" testclass="BackendListener" testname="InfluxDB Backend Listener" enabled="false">
         <elementProp name="arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" enabled="true">
