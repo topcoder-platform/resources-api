@@ -1,8 +1,7 @@
-const newman = require('newman')
-const _ = require('lodash')
-const envHelper = require('./envHelper')
-const nock = require('nock')
 const config = require('config')
+const apiTestLib = require('tc-api-testing-lib')
+const helper = require('../../src/common/helper')
+const logger = require('../../src/common/logger')
 
 const requests = [
   {
@@ -171,82 +170,27 @@ const requests = [
   }
 ]
 
-const options = {
-  collection: require('./resource-api.postman_collection.json'),
-  exportEnvironment: 'test/postman/resource-api.postman_environment.json',
-  reporters: 'cli'
-}
-const runner = (options) => new Promise((resolve, reject) => {
-  newman.run(options, function (err, results) {
-    if (err) {
-      reject(err)
-      return
-    }
-    resolve(results)
-  })
-})
-
 /**
- * Sleep for the given time
- * @param ms the miliseconds
- * @returns {Promise<unknown>}
+ * Clear the test data.
+ * @return {Promise<void>}
  */
-function sleep (ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
+async function clearTestData () {
+  logger.info('Clear the Postman test data.')
+  await helper.postRequest(`${config.API_BASE_URL}/${config.API_VERSION}/resources/internal/jobs/clean`)
+  logger.info('Finished clear the Postman test data.')
 }
 
 /**
- * Clean the Nock.
+ * Run the postman tests.
  */
-function cleanNock () {
-  if (config.MOCK_BUS_API_BY_NOCK) {
-    nock.cleanAll()
-  }
-}
-
-;(async () => {
-  const m2mToken = await envHelper.getM2MToken()
-  const adminToken = await envHelper.getAdminToken()
-  const copilotToken = await envHelper.getCopilotToken()
-  const userToken = await envHelper.getUserToken()
-  const originalEnvVars = [
-    { key: 'M2M_TOKEN', value: `${m2mToken}` },
-    { key: 'admin_token', value: `${adminToken}` },
-    { key: 'copilot_token', value: `${copilotToken}` },
-    { key: 'user_token', value: `${userToken}` }
-  ]
-  if (config.MOCK_BUS_API_BY_NOCK) {
-    nock(config.BUSAPI_URL)
-      .persist()
-      .post('/bus/events')
-      .reply(204)
-  }
-  for (const request of requests) {
-    options.envVar = [
-      ...originalEnvVars,
-      ..._.map(_.keys(request.iterationData || {}), key => ({ key, value: request.iterationData[key] }))
-    ]
-    delete require.cache[require.resolve('./resource-api.postman_environment.json')]
-    options.environment = require('./resource-api.postman_environment.json')
-    options.folder = request.folder
-    options.iterationData = request.iterationData
-    try {
-      const results = await runner(options)
-      if (_.get(results, 'run.failures.length', 0) > 0) {
-        cleanNock()
-        process.exit(-1)
-      }
-    } catch (err) {
-      console.log(err)
-    }
-    await sleep(config.WAIT_TIME)
-  }
-})().then(async () => {
-  cleanNock()
-  console.log('newman test completed!')
-  process.exit(0)
+apiTestLib.runTests(requests, require.resolve('./resource-api.postman_collection.json'),
+  require.resolve('./resource-api.postman_environment.json')).then(async () => {
+  logger.info('newman test completed!')
+  await clearTestData()
 }).catch(async (err) => {
-  cleanNock()
-  console.log(err)
-  process.exit(1)
+  logger.logFullError(err)
+  // Only calling the clean up function when it is not validation error.
+  if (err.name !== 'ValidationError') {
+    await clearTestData()
+  }
 })

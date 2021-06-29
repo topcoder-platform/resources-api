@@ -71,6 +71,7 @@ The following parameters can be set in config files or in env variables:
 - RESOURCE_DELETE_TOPIC: the resource delete Kafka topic, default value is 'challenge.action.resource.delete',
 - RESOURCE_ROLE_CREATE_TOPIC: the resource role create topic, default value is 'challenge.action.resource.role.create',
 - RESOURCE_ROLE_UPDATE_TOPIC: the resource role update topic, default value is 'challenge.action.resource.role.update'
+- AUTOMATED_TESTING_NAME_PREFIX: the role name prefix for every `ResourceRole` record
 
 Configuration for testing is at `config/test.js`, only add such new configurations different from `config/default.js`
 - WAIT_TIME: wait time used in test, default is 6000 or 6 seconds
@@ -84,8 +85,8 @@ Configuration for testing is at `config/test.js`, only add such new configuratio
 - COPILOT_CREDENTIALS_PASSWORD: The user's password with copilot role
 - USER_CREDENTIALS_USERNAME: The user's username with user role
 - USER_CREDENTIALS_PASSWORD: The user's password with user role
-- AUTOMATED_TESTING_NAME_PREFIX: the role name prefix for every `ResourceRole` record
-- MOCK_BUS_API_BY_NOCK: indicates whether Nock is used for mocking Bus API.
+- AUTOMATED_TESTING_REPORTERS_FORMAT: indicates reporters format. It is an array of the formats. e.g. `['html']` produces html format. `['cli', 'json', 'junit', 'html']` is the full format.   
+*For the details of the supported format, please refer to https://www.npmjs.com/package/newman#reporters*.
 
 ## Available commands
 - Install dependencies `npm install`

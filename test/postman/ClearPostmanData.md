@@ -37,11 +37,7 @@ info: Done!
 1. Setup the `AUTOMATED_TESTING_NAME_PREFIX` from the test environment. This prefix should be a name that will never be used 
 set as part of the role name. e.g. 'POSTMANE2E-'. In this case, the created `ResourceRole` will have a name like 'POSTMANE2E-submitter'.
 
-2. Choose either one solution for mocking the Bus API. We can not ignore this, becuase in production environment, it is 
-not allowed to send the Kafka messge to the Bus API.
-a. Set `MOCK_BUS_API_BY_NOCK` to `true` from the test environment. In this way, Nock will return the response if any events
-    is posted to the Bus API.
-b. You can use use Postman's mock server. You can refer to https://drive.google.com/file/d/1GXMzyqpzwix-LDBwieiRFfpJlJxrTIgI/view?usp=sharing
+2. You can use use Postman's mock server for the bus api. You can refer to https://drive.google.com/file/d/1GXMzyqpzwix-LDBwieiRFfpJlJxrTIgI/view?usp=sharing
    for details. You need to update the environment variable `BUSAPI_URL` to your Postman mock server.
   
 3. Steps of clearing the test data from Postman tests.
