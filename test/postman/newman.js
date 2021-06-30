@@ -189,6 +189,7 @@ apiTestLib.runTests(requests, require.resolve('./resource-api.postman_collection
   await clearTestData()
 }).catch(async (err) => {
   logger.logFullError(err)
+
   // Only calling the clean up function when it is not validation error.
   if (err.name !== 'ValidationError') {
     await clearTestData()
