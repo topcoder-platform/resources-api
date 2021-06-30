@@ -107,6 +107,8 @@ jobs:
             npm run test:newman:clear
             npm run test:newman
             npm run test:newman:clear
+      - store_artifacts:
+          path: /newman
 
 workflows:
   version: 2
