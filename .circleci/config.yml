@@ -113,7 +113,7 @@ jobs:
       - store_artifacts:
           path: ./newman
 
- "Performance-Testing":
+  "Performance-Testing":
     docker:
       # specify the version you desire here
       - image: circleci/openjdk:8-jdk
@@ -150,6 +150,7 @@ jobs:
 
       - store_artifacts:
           path: target/jmeter/reports
+
 
 workflows:
   version: 2
