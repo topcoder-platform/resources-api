@@ -110,8 +110,10 @@ jobs:
             npm run test:newman:clear
             npm run test:newman
             npm run test:newman:clear
+      - store_artifacts:
+          path: ./newman
 
-  "Performance-Testing":
+ "Performance-Testing":
     docker:
       # specify the version you desire here
       - image: circleci/openjdk:8-jdk
@@ -200,5 +202,5 @@ workflows:
             branches:
               only:
                 - develop
-                - performance
                 - feature/performance
+                - performance
