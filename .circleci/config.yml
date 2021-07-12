@@ -151,7 +151,6 @@ jobs:
       - store_artifacts:
           path: target/jmeter/reports
 
-
 workflows:
   version: 2
   build:
