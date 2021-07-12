@@ -78,7 +78,7 @@
 							<testFilesIncluded>
 								<jMeterTestFile>${jmeterScript}</jMeterTestFile>
 							</testFilesIncluded>
-							<testFilesDirectory>/test/jmeter/</testFilesDirectory>
+							<testFilesDirectory>\test\jmeter\</testFilesDirectory>
                         </configuration>
                         <executions>
                             <execution>
