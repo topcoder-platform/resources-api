@@ -210,6 +210,7 @@
                                 <serverList>${serverList}</serverList>
                                 <startAndStopServersForEachTest>true</startAndStopServersForEachTest>
                             </remoteConfig>
+							<testFilesDirectory>/test/jmeter/</testFilesDirectory>
 	                        </configuration>
                         <executions>
                             <execution>
@@ -221,9 +222,6 @@
                                 <phase>verify</phase>
                             </execution>
                         </executions>
-						<configuration>
-                        <testFilesDirectory>/test/jmeter/</testFilesDirectory>
-                    </configuration>
                     </plugin>
                 </plugins>
             </build>
