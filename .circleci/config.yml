@@ -200,4 +200,4 @@ workflows:
             branches:
               only:
                 - develop
-                - feature/performance
+                - performance
