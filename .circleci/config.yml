@@ -201,3 +201,4 @@ workflows:
               only:
                 - develop
                 - performance
+                - feature/performance
