@@ -1,0 +1,55 @@
+[
+  {
+    "name": "POSTMANE2E-co-pilot-m2m",
+    "fullReadAccess": true,
+    "fullWriteAccess": false,
+    "isActive": true,
+    "selfObtainable": false,
+    "httpCode": 200
+  },
+  {
+    "name": "POSTMANE2E-Observer-m2m",
+    "fullReadAccess": true,
+    "fullWriteAccess": true,
+    "isActive": false,
+    "selfObtainable": false,
+    "httpCode": 200
+  },
+  {
+    "name": "POSTMANE2E-submitter-m2m",
+    "fullReadAccess": true,
+    "fullWriteAccess": true,
+    "isActive": true,
+    "selfObtainable": true,
+    "httpCode": 200
+  },
+  {
+    "name": "POSTMANE2E-reviewer-m2m",
+    "fullReadAccess": false,
+    "fullWriteAccess": false,
+    "isActive": true,
+    "selfObtainable": false,
+    "httpCode": 200
+  },
+  {
+    "invalid": "invalid-m2m",
+    "fullReadAccess": true,
+    "fullWriteAccess": false,
+    "isActive": true,
+    "httpCode": 400
+  },
+  {
+    "name": "POSTMANE2E-failure-test-m2m",
+    "fullReadAccess": true,
+    "fullWriteAccess": false,
+    "httpCode": 400
+  },
+  {
+    "name": "POSTMANE2E-submitter-m2m",
+    "fullReadAccess": true,
+    "fullWriteAccess": true,
+    "isActive": true,
+    "selfObtainable": true,
+    "httpCode": 409
+  }
+]

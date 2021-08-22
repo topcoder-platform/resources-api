@@ -1,0 +1,18 @@
+[
+  {
+    "jwtToken": "Bearer {{user_token}}",
+    "memberId": "16096823"
+  },
+  {
+    "jwtToken": "Bearer {{copilot_token}}",
+    "memberId": "16096823"
+  },
+  {
+    "jwtToken": "Bearer {{admin_token}}",
+    "memberId": "16096823"
+  },
+  {
+    "jwtToken": "Bearer {{M2M_TOKEN}}",
+    "memberId": "not_exist_user"
+  }
+]
