@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-   performance-orb: topcoder-platform/performance-orb@1.0.0
+   performance-orb: maxceem/topcoder-performance-orb@1.0.0
 parameters:
   run_automatedtesting:
     default: false
