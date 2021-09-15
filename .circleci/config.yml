@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+   performance-orb: topcoder-platform/performance-orb@1.0.0
 parameters:
   run_automatedtesting:
     default: false
@@ -6,6 +8,12 @@ parameters:
   run_basedeployment:
     default: true
     type: boolean
+
+  run_performancetesting:
+    default: true
+    type: boolean
+
+
 defaults: &defaults
     docker:
       - image: circleci/python:2.7-stretch-browsers
@@ -146,3 +154,18 @@ workflows:
               only:
                 - develop
                 - dev-circleci
+  Performance Testing:
+   when: << pipeline.parameters.run_performancetesting >>
+   jobs:
+      # Performance Test is executed on "feature/performance" "develop" and "performance" branches only.
+      - Hold [Performance-Testing]:
+          type: approval
+      - performance-orb/Performance-Testing:
+          context : org-global
+          requires:
+            - Hold [Performance-Testing]
+          filters:
+            branches:
+              only:
+                - develop
+                - performance
