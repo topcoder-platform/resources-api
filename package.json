@@ -32,7 +32,7 @@
     "tc-api-testing-lib": "topcoder-platform/api-automated-testing.git"
   },
   "dependencies": {
-    "aws-sdk": "^2.466.0",
+    "aws-sdk": "^2.1000.0",
     "bluebird": "^3.5.1",
     "body-parser": "^1.15.1",
     "config": "^3.0.1",
