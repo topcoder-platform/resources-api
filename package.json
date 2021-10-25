@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.466.0",
-    "bluebird": "^3.5.1",
+    "bluebird": "^3.7.2",
     "body-parser": "^1.15.1",
     "config": "^3.0.1",
     "cors": "^2.7.1",
