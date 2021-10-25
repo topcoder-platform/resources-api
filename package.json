@@ -37,7 +37,7 @@
     "body-parser": "^1.15.1",
     "config": "^3.0.1",
     "cors": "^2.7.1",
-    "dynamoose": "^1.7.2",
+    "dynamoose": "^1.11.1",
     "elasticsearch": "^16.1.1",
     "express": "^4.16.4",
     "express-interceptor": "^1.2.0",
