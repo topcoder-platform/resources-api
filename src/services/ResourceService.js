@@ -255,7 +255,7 @@ async function init (currentUser, challengeId, resource, isCreated) {
   if (!currentUser.isMachine && !helper.hasAdminRole(currentUser)) {
     // Check if user has agreed to the challenge terms
     resources = await helper.query('Resource', { challengeId })
-    if (!resourceRole.selfObtainable || _.toString(memberId) !== _.toString(currentUser.userId)) {
+    if (!(resourceRole.selfObtainable && _.get(challenge, 'legacy.selfService')) || _.toString(memberId) !== _.toString(currentUser.userId)) {
       // if user is not creating/deleting a self obtainable resource for itself
       // we need to perform check access first
       await checkAccess(currentUser, resources)
