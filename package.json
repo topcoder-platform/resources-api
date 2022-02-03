@@ -17,19 +17,19 @@
     "view-data": "node src/scripts/view-data.js",
     "mock-challenge-api": "NODE_ENV=test node mock/mock-challenge-api",
     "test": "nyc --reporter=html --reporter=text mocha test/unit/test.js --require test/common/prepare.js --timeout 60000 --exit",
-    "e2e": "nyc --reporter=html --reporter=text mocha test/e2e/test.js --require test/common/prepare.js --timeout 60000 --exit",
-    "test:newman": "node test/postman/newman.js"
+    "test:newman": "NODE_ENV=test node test/postman/newman.js",
+    "test:newman:clear": "node test/postman/clearTestData.js"
   },
   "author": "TCSCODER",
   "license": "none",
   "devDependencies": {
-    "should": "^13.2.3",
     "mocha": "^5.2.0",
     "mocha-prepare": "^0.1.0",
-    "newman": "^5.2.2",
+    "nock": "^10.0.6",
     "nyc": "^14.0.0",
+    "should": "^13.2.3",
     "standard": "^12.0.1",
-    "nock": "^10.0.6"
+    "tc-api-testing-lib": "topcoder-platform/api-automated-testing.git"
   },
   "dependencies": {
     "aws-sdk": "^2.466.0",
@@ -50,7 +50,7 @@
     "superagent": "^4.1.0",
     "swagger-ui-express": "^4.1.3",
     "tc-bus-api-wrapper": "topcoder-platform/tc-bus-api-wrapper.git",
-    "tc-core-library-js": "appirio-tech/tc-core-library-js.git#v2.6.4",
+    "tc-core-library-js": "appirio-tech/tc-core-library-js.git#v2.6.6",
     "uuid": "^8.3.0",
     "winston": "^3.2.1",
     "xss": "^1.0.7",

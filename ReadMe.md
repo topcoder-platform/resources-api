@@ -71,10 +71,22 @@ The following parameters can be set in config files or in env variables:
 - RESOURCE_DELETE_TOPIC: the resource delete Kafka topic, default value is 'challenge.action.resource.delete',
 - RESOURCE_ROLE_CREATE_TOPIC: the resource role create topic, default value is 'challenge.action.resource.role.create',
 - RESOURCE_ROLE_UPDATE_TOPIC: the resource role update topic, default value is 'challenge.action.resource.role.update'
+- AUTOMATED_TESTING_NAME_PREFIX: the role name prefix for every `ResourceRole` record
 
 Configuration for testing is at `config/test.js`, only add such new configurations different from `config/default.js`
-- WAIT_TIME: wait time used in test, default is 1500 or 1.5 second
+- WAIT_TIME: wait time used in test, default is 6000 or 6 seconds
 - MOCK_CHALLENGE_API_PORT: the mock server port, default is 4000.
+- AUTH_V2_URL: The auth v2 url
+- AUTH_V2_CLIENT_ID: The auth v2 client id
+- AUTH_V3_URL: The auth v3 url
+- ADMIN_CREDENTIALS_USERNAME: The user's username with admin role
+- ADMIN_CREDENTIALS_PASSWORD: The user's password with admin role
+- COPILOT_CREDENTIALS_USERNAME: The user's username with copilot role
+- COPILOT_CREDENTIALS_PASSWORD: The user's password with copilot role
+- USER_CREDENTIALS_USERNAME: The user's username with user role
+- USER_CREDENTIALS_PASSWORD: The user's password with user role
+- AUTOMATED_TESTING_REPORTERS_FORMAT: indicates reporters format. It is an array of the formats. e.g. `['html']` produces html format. `['cli', 'json', 'junit', 'html']` is the full format.   
+*For the details of the supported format, please refer to https://www.npmjs.com/package/newman#reporters*.
 
 ## Available commands
 - Install dependencies `npm install`
@@ -90,6 +102,8 @@ Configuration for testing is at `config/test.js`, only add such new configuratio
 - App is running at `http://localhost:3000`
 - Start mock server `npm run mock-challenge-api`
 - The mock server is running at `http://localhost:4000`
+- Run the Postman tests `npm run test:newman`
+- Clear the testing data by Postman tests: `npm run test:newman:clear`
 
 ## Local Deployment
 ### Foreman Setup
@@ -118,7 +132,7 @@ You can also use your own remote ElasticSearch service for testing purpose.
 
 ### Create ElasticSearch Index
 
-1. Makre sure ElasticSearch are running as per instructions above.
+1. Make sure ElasticSearch are running as per instructions above.
 2. Make sure you have configured all config parameters. Refer [Configuration](#configuration)
 3. Run `npm run init-es force` to create index.
 
@@ -148,6 +162,15 @@ The following test parameters can be set in config file or in env variables:
 
 - WAIT_TIME: wait time
 - MOCK_CHALLENGE_API_PORT: mock challenge api port
+- AUTH_V2_URL: The auth v2 url
+- AUTH_V2_CLIENT_ID: The auth v2 client id
+- AUTH_V3_URL: The auth v3 url
+- ADMIN_CREDENTIALS_USERNAME: The user's username with admin role
+- ADMIN_CREDENTIALS_PASSWORD: The user's password with admin role
+- COPILOT_CREDENTIALS_USERNAME: The user's username with copilot role
+- COPILOT_CREDENTIALS_PASSWORD: The user's password with copilot role
+- USER_CREDENTIALS_USERNAME: The user's username with user role
+- USER_CREDENTIALS_PASSWORD: The user's password with user role
 
 
 ### Prepare
@@ -168,23 +191,44 @@ To run unit tests and generate coverage report.
 npm run test
 ```
 
-### Running integration tests
+### Running E2E tests with Postman
 
-#### You need to `stop` the app server and mock API server before running e2e tests.
+#### `Start` the app server and mock API server before running e2e tests. You may need to set the env variables by calling `source env.sh` before calling `NODE_ENV=test npm start`.
 
-To run integration tests and generate coverage report.
+- Make sure the db and es are started
+```bash
+  $ cd resources-api
+
+    # NOTE:
+    # if tables and data already exist, please run first
+
+    # $ npm run drop-tables
+
+    # to drop data and tables
+
+    # Then re-initialize the es server and the database.
+
+  $ npm run create-tables
+  $ npm run init-es force
+  $ npm run init-db
+```
+
+To run postman e2e tests.
 
 ```bash
-npm run e2e
+npm run test:newman
+```
+
+To clear the testing data from postman e2e tests.
+
+```bash
+npm run test:newman:clear
 ```
 
 ## Running tests in CI
+
 - TBD
 
 ## Verification
 
-Refer to the verification document `Verification.md`
-
-## Postman PoC test
-
-Refer to the PoC test document [**PoC-test.md**](PoC-test.md)
+Refer to the verification document `Verification.md`.

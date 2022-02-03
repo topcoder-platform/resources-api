@@ -322,6 +322,23 @@ async function getRequest (url, query) {
 }
 
 /**
+ * Uses superagent to proxy post request
+ * @param {String} url the url
+ * @param {Object} data the query parameters, optional
+ * @returns {Object} the response
+ */
+async function postRequest (url, data) {
+  const m2mToken = await m2m.getMachineToken(config.AUTH0_CLIENT_ID, config.AUTH0_CLIENT_SECRET)
+
+  return request
+    .post(url)
+    .set('Authorization', `Bearer ${m2mToken}`)
+    .set('Content-Type', 'application/json')
+    .set('Accept', 'application/json')
+    .send(data)
+}
+
+/**
  * Get link for a given page.
  * @param {Object} req the HTTP request
  * @param {Number} page the page number
@@ -465,5 +482,6 @@ module.exports = {
   setResHeaders,
   getAllPages,
   getESClient,
-  checkAgreedTerms
+  checkAgreedTerms,
+  postRequest
 }

@@ -1,0 +1,104 @@
+[
+  {
+    "required_field_1": "challengeId",
+    "required_field_2": "memberHandle",
+    "required_field_3": "roleId",
+    "memberHandle": "heffan",
+    "CHALLENGE_ID": "",
+    "httpCode": 400,
+    "message": "\"challengeId\" is not allowed to be empty"
+  },
+  {
+    "required_field_1": "challengeId_not_provided",
+    "required_field_2": "memberHandle",
+    "required_field_3": "roleId",
+    "memberHandle": "heffan",
+    "httpCode": 400,
+    "message": "\"challengeId\" is required"
+  },
+  {
+    "required_field_1": "challengeId",
+    "required_field_2": "memberHandle",
+    "required_field_3": "roleId",
+    "memberHandle": "heffan",
+    "CHALLENGE_ID": "123",
+    "httpCode": 400,
+    "message": "\"challengeId\" must be a valid GUID"
+  },
+  {
+    "required_field_1": "challengeId",
+    "required_field_2": "memberHandle",
+    "required_field_3": "roleId",
+    "memberHandle": "heffan",
+    "CHALLENGE_ID": "11111111-ce7d-4521-8501-b8132b1c0391",
+    "httpCode": 404,
+    "message": "Challenge of id 11111111-ce7d-4521-8501-b8132b1c0391 is not found."
+  },
+  {
+    "required_field_1": "challengeId",
+    "required_field_2": "memberHandle",
+    "required_field_3": "roleId",
+    "memberHandle": "",
+    "httpCode": 400,
+    "message": "\"memberHandle\" is not allowed to be empty"
+  },
+  {
+    "required_field_1": "challengeId",
+    "required_field_2": "memberHandle_not_provided",
+    "required_field_3": "roleId",
+    "memberHandle": "heffan",
+    "httpCode": 400,
+    "message": "\"memberHandle\" is required"
+  },
+  {
+    "required_field_1": "challengeId",
+    "required_field_2": "memberHandle",
+    "required_field_3": "roleId",
+    "memberHandle": "some_not_exist_handle",
+    "httpCode": 400,
+    "message": "User with handle: some_not_exist_handle doesn't exist"
+  },
+  {
+    "required_field_1": "challengeId",
+    "required_field_2": "memberHandle",
+    "required_field_3": "roleId",
+    "memberHandle": "heffan",
+    "COPILOT_RESOURCE_ROLE_ID": "",
+    "httpCode": 400,
+    "message": "\"roleId\" is not allowed to be empty"
+  },
+  {
+    "required_field_1": "challengeId",
+    "required_field_2": "memberHandle",
+    "required_field_3": "roleId_not_provided",
+    "memberHandle": "heffan",
+    "httpCode": 400,
+    "message": "\"roleId\" is required"
+  },
+  {
+    "required_field_1": "challengeId",
+    "required_field_2": "memberHandle",
+    "required_field_3": "roleId",
+    "memberHandle": "heffan",
+    "COPILOT_RESOURCE_ROLE_ID": "123",
+    "httpCode": 400,
+    "message": "\"roleId\" must be a valid GUID"
+  },
+  {
+    "required_field_1": "challengeId",
+    "required_field_2": "memberHandle",
+    "required_field_3": "roleId",
+    "memberHandle": "heffan",
+    "COPILOT_RESOURCE_ROLE_ID": "11111111-ce7d-4521-8501-b8132b1c0771",
+    "httpCode": 400,
+    "message": "No resource role found with id: 11111111-ce7d-4521-8501-b8132b1c0771."
+  },
+  {
+    "required_field_1": "challengeId",
+    "required_field_2": "memberHandle",
+    "required_field_3": "roleId",
+    "memberHandle": "ghostar",
+    "httpCode": 409,
+    "message": "User ghostar already has resource with roleId:"
+  }
+]

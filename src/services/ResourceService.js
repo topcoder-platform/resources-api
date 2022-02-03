@@ -85,7 +85,7 @@ async function getResources (currentUser, challengeId, roleId, memberId, memberH
         hasFullAccess = false
       }
     }
-    if (memberId && memberId !== currentUser.useId) {
+    if (memberId && _.toString(memberId) !== _.toString(currentUser.userId)) {
       throw new errors.ForbiddenError('You are not allowed to perform this operation!')
     }
     if (memberHandle && memberHandle !== currentUser.handle) {
@@ -255,10 +255,12 @@ async function init (currentUser, challengeId, resource, isCreated) {
   if (!currentUser.isMachine && !helper.hasAdminRole(currentUser)) {
     // Check if user has agreed to the challenge terms
     resources = await helper.query('Resource', { challengeId })
-    if (!resourceRole.selfObtainable || _.toString(memberId) !== _.toString(currentUser.userId)) {
-      // if user is not creating/deleting a self obtainable resource for itself
-      // we need to perform check access first
-      await checkAccess(currentUser, resources)
+    if (!_.get(challenge, 'legacy.selfService')) {
+      if (!resourceRole.selfObtainable || _.toString(memberId) !== _.toString(currentUser.userId)) {
+        // if user is not creating/deleting a self obtainable resource for itself
+        // we need to perform check access first
+        await checkAccess(currentUser, resources)
+      }
     }
   } else {
     // fetch resources for specified challenge and member
@@ -520,3 +522,5 @@ module.exports = {
   deleteResource,
   listChallengesByMember
 }
+
+logger.buildService(module.exports)

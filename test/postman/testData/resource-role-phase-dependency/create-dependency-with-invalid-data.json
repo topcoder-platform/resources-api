@@ -1,0 +1,59 @@
+[
+  {
+    "required_field_1": "phaseId",
+    "required_field_2": "resourceRoleId",
+    "required_field_3": "phaseState",
+    "phaseId": "",
+    "COPILOT_RESOURCE_ROLE_ID": "",
+    "phaseState": true,
+    "httpCode": 400,
+    "message": "\"phaseId\" is not allowed to be empty"
+  },
+  {
+    "required_field_1": "phaseId",
+    "required_field_2": "resourceRoleId",
+    "required_field_3": "phaseState",
+    "phaseId": "not_guid",
+    "phaseState": true,
+    "httpCode": 400,
+    "message": "\"phaseId\" must be a valid GUID"
+  },
+  {
+    "required_field_1": "phaseIdNotProvided",
+    "required_field_2": "resourceRoleId",
+    "required_field_3": "phaseState",
+    "phaseId": "aa5a3f78-79e0-4bf7-93ff-b11e8f5b398b",
+    "phaseState": true,
+    "httpCode": 400,
+    "message": "\"phaseId\" is required"
+  },
+  {
+    "required_field_1": "phaseId",
+    "required_field_2": "resourceRoleId",
+    "required_field_3": "phaseStateNotProvided",
+    "phaseId": "aa5a3f78-79e0-4bf7-93ff-b11e8f5b398b",
+    "phaseState": true,
+    "httpCode": 400,
+    "message": "\"phaseState\" is required"
+  },
+  {
+    "required_field_1": "phaseId",
+    "required_field_2": "resourceRoleId",
+    "required_field_3": "phaseState",
+    "phaseId": "aa5a3f78-79e0-4bf7-93ff-b11e8f5b398b",
+    "COPILOT_RESOURCE_ROLE_ID": "not a guid",
+    "phaseState": true,
+    "httpCode": 400,
+    "message": "\"resourceRoleId\" must be a valid GUID"
+  },
+  {
+    "required_field_1": "phaseId",
+    "required_field_2": "resourceRoleId",
+    "required_field_3": "phaseState",
+    "phaseId": "aa5a3f78-79e0-4bf7-93ff-b11e8f5b398b",
+    "COPILOT_RESOURCE_ROLE_ID": "",
+    "phaseState": true,
+    "httpCode": 400,
+    "message": "\"resourceRoleId\" is not allowed to be empty"
+  }
+]

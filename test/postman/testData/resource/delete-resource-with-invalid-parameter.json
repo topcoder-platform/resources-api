@@ -1,0 +1,70 @@
+[
+  {
+    "required_field_1": "challengeId",
+    "required_field_2": "memberHandle",
+    "required_field_3": "roleId",
+    "memberHandle": "mess",
+    "CHALLENGE_ID": "11111111-ce7d-4521-8501-b8132b1c0391",
+    "httpCode": 404,
+    "message": "Challenge of id 11111111-ce7d-4521-8501-b8132b1c0391 is not found."
+  },
+  {
+    "required_field_1": "challengeId",
+    "required_field_2": "memberHandle",
+    "required_field_3": "roleId",
+    "memberHandle": "mess",
+    "COPILOT_RESOURCE_ROLE_ID": "11111111-ce7d-4521-8501-b8132b1c0391",
+    "httpCode": 400,
+    "message": "No resource role found with id: 11111111-ce7d-4521-8501-b8132b1c0391."
+  },
+  {
+    "required_field_1": "challengeId_not_provided",
+    "required_field_2": "memberHandle",
+    "required_field_3": "roleId",
+    "memberHandle": "mess",
+    "httpCode": 400,
+    "message": "\"challengeId\" is required"
+  },
+  {
+    "required_field_1": "challengeId",
+    "required_field_2": "memberHandle_not_provided",
+    "required_field_3": "roleId",
+    "memberHandle": "mess",
+    "httpCode": 400,
+    "message": "\"memberHandle\" is required"
+  },
+  {
+    "required_field_1": "challengeId",
+    "required_field_2": "memberHandle",
+    "required_field_3": "roleId_not_provided",
+    "memberHandle": "mess",
+    "httpCode": 400,
+    "message": "\"roleId\" is required"
+  },
+  {
+    "required_field_1": "challengeId",
+    "required_field_2": "memberHandle",
+    "required_field_3": "roleId",
+    "CHALLENGE_ID": "",
+    "memberHandle": "mess",
+    "httpCode": 400,
+    "message": "\"challengeId\" is not allowed to be empty"
+  },
+  {
+    "required_field_1": "challengeId",
+    "required_field_2": "memberHandle",
+    "required_field_3": "roleId",
+    "memberHandle": "",
+    "httpCode": 400,
+    "message": "\"memberHandle\" is not allowed to be empty"
+  },
+  {
+    "required_field_1": "challengeId",
+    "required_field_2": "memberHandle",
+    "required_field_3": "roleId",
+    "COPILOT_RESOURCE_ROLE_ID": "",
+    "memberHandle": "mess",
+    "httpCode": 400,
+    "message": "\"roleId\" is not allowed to be empty"
+  }
+]

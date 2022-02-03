@@ -1,0 +1,19 @@
+[
+  {
+    "COPILOT_RESOURCE_ROLE_ID": "",
+    "invalid": "",
+    "httpCode": 400,
+    "message": "\"resourceRoleId\" is not allowed to be empty"
+  },
+  {
+    "COPILOT_RESOURCE_ROLE_ID": "11111",
+    "invalid": "",
+    "httpCode": 400,
+    "message": "\"resourceRoleId\" must be a valid GUID"
+  },
+  {
+    "invalid": "invalid",
+    "httpCode": 400,
+    "message": "\"invalid\" is not allowed"
+  }
+]
