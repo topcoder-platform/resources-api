@@ -243,6 +243,13 @@ async function init (currentUser, challengeId, resource, isCreated) {
   const handle = resource.memberHandle
   const memberId = await helper.getMemberIdByHandle(resource.memberHandle)
 
+  // check if the resource is reviewer role and has already made a submission in the challenge
+  const submissionsRes = await helper.getRequest(`${config.SUBMISSIONS_API_URL}`, { challengeId: challengeId, perPage: 100 })
+  const submissions = submissionsRes.body
+  if ((_.find(submissions, s => s.memberId === memberId) && resource.roleId === config.REVIEWER_RESOURCE_ROLE_ID)) {
+    throw new errors.ConflictError(`The member has already submitted to the challenge and cannot have a Reviewer role`)
+  }
+
   // ensure resource role existed
   const resourceRole = await getResourceRole(resource.roleId, isCreated)
 
