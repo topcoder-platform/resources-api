@@ -45,6 +45,21 @@ module.exports = (app) => {
           }
         })
 
+        if (def.forbiddenCountries) {
+          actions.push(async (req, res, next) => {
+            if (req.authUser.isMachine) {
+              next()
+            } else {
+              req.authUser.userId = String(req.authUser.userId)
+              const user = await helper.getMemberById(req.authUser.userId)
+              if (!user || _.intersection([user.homeCountryCode, user.competitionCountryCode], def.forbiddenCountries).length > 0) {
+                throw new errors.ForbiddenError('Access denied')
+              }
+              next()
+            }
+          })
+        }
+
         if (!def.allowAnonymous) {
           actions.push((req, res, next) => {
             if (req.authUser.isMachine) {

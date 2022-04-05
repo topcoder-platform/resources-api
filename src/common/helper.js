@@ -157,6 +157,16 @@ async function getMemberInfoById (id) {
 }
 
 /**
+ * Get Member by memberId from the API
+ * @param {String} id The user ID
+ * @returns {Promise<void>}
+ */
+async function getMemberById (id) {
+  const res = await getRequest(`${config.MEMBER_API_URL}?userId=${id}`)
+  return _.get(res, 'data[0]')
+}
+
+/**
  * Get Data by model id
  * @param {String} handle The member handle
  * @returns {Promise<void>}
@@ -483,5 +493,6 @@ module.exports = {
   getAllPages,
   getESClient,
   checkAgreedTerms,
-  postRequest
+  postRequest,
+  getMemberById
 }
