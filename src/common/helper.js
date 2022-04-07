@@ -163,8 +163,7 @@ async function getMemberInfoById (id) {
  */
 async function getMemberById (id) {
   const res = await getRequest(`${config.MEMBER_API_URL}`, { userId: id })
-  console.log(res.data)
-  return _.get(res, 'data[0]')
+  return _.get(res, 'body[0]')
 }
 
 /**
