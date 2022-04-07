@@ -58,7 +58,8 @@ module.exports = (app) => {
                 }
                 next()
               } catch (e) {
-                throw new errors.ForbiddenError('Access denied')
+                  throw new errors.ForbiddenError('failed to check')
+                  // next()
               }
             }
           })
