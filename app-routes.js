@@ -51,8 +51,7 @@ module.exports = (app) => {
               next()
             } else {
               try {
-                req.authUser.userId = String(req.authUser.userId)
-                const user = await helper.getMemberById(req.authUser.userId)
+                const user = await helper.getMemberById(_.toInteger(req.authUser.userId))
                 if (!user || _.intersection([user.homeCountryCode, user.competitionCountryCode], def.forbiddenCountries).length > 0) {
                   throw new errors.ForbiddenError('Access denied')
                 }
