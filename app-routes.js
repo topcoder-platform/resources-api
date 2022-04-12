@@ -45,20 +45,15 @@ module.exports = (app) => {
           }
         })
 
-        if (def.forbiddenCountries) {
-          actions.push(async (req, res, next) => {
-            if (req.authUser.isMachine) {
-              next()
+        if (def.blockByIp) {
+          actions.push((req, res, next) => {
+            req.authUser.blockIP = _.find(req.authUser, (value, key) => {
+              return (key.indexOf('blockIP') !== -1)
+            })
+            if (req.authUser.blockIP) {
+              throw new errors.ForbiddenError('Access denied')
             } else {
-              try {
-                const user = await helper.getMemberById(_.toInteger(req.authUser.userId))
-                if (!user || _.intersection([user.homeCountryCode, user.competitionCountryCode], def.forbiddenCountries).length > 0) {
-                  throw new errors.ForbiddenError('Access denied')
-                }
-                next()
-              } catch (e) {
-                next()
-              }
+              next()
             }
           })
         }

@@ -4,9 +4,7 @@
 
 const constants = require('../app-constants')
 const {
-  SCOPES: { READ, CREATE, DELETE, UPDATE, ALL },
-  FORBIDDEN_COUNTRIES,
-  FORBIDDEN_COUNTRIES_ALPHA_3
+  SCOPES: { READ, CREATE, DELETE, UPDATE, ALL }
 } = require('config')
 
 module.exports = {
@@ -25,7 +23,7 @@ module.exports = {
       auth: 'jwt',
       access: [constants.UserRoles.Admin, constants.UserRoles.Copilot, constants.UserRoles.Manager, constants.UserRoles.User],
       scopes: [CREATE, ALL],
-      forbiddenCountries: [...FORBIDDEN_COUNTRIES, ...FORBIDDEN_COUNTRIES_ALPHA_3]
+      blockByIp: true
     },
     delete: {
       controller: 'ResourceController',
