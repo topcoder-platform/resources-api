@@ -455,6 +455,13 @@ async function listChallengesByMember (memberId, criteria) {
 
   if (perPage * page <= config.MAX_ELASTIC_SEARCH_RECORDS_SIZE) {
     docs = await searchES(mustQuery, perPage, page)
+  } else {
+    throw new errors.BadRequestError(`
+      ES pagination params:
+      page ${page},
+      perPage: ${perPage}
+      exceeds the max search window:${config.MAX_ELASTIC_SEARCH_RECORDS_SIZE}`
+    )
   }
 
   // Extract data from hits
