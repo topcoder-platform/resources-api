@@ -453,7 +453,7 @@ async function listChallengesByMember (memberId, criteria) {
     }
   }
 
-  if (perPage * page < config.MAX_ELASTIC_SEARCH_RECORDS_SIZE) {
+  if (perPage * page <= config.MAX_ELASTIC_SEARCH_RECORDS_SIZE) {
     docs = await searchES(mustQuery, perPage, page)
   }
 
