@@ -446,7 +446,16 @@ async function listChallengesByMember (memberId, criteria) {
     }
   })
 
-  const docs = await searchES(mustQuery, perPage, page)
+  let docs = {
+    hits: {
+      total: 0,
+      hits: []
+    }
+  }
+
+  if (perPage * page < config.MAX_ELASTIC_SEARCH_RECORDS_SIZE) {
+    docs = await searchES(mustQuery, perPage, page)
+  }
 
   // Extract data from hits
   let result = _.map(docs.hits.hits, item => item._source)
