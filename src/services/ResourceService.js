@@ -537,6 +537,7 @@ async function searchES (mustQuery, perPage, page, sortCriteria) {
   let docs
   try {
     docs = await esClient.search(esQuery)
+    logger.info(`Raw results: ${JSON.stringify(docs)}`);
   } catch (e) {
     // Catch error when the ES is fresh and has no data
     logger.info(`Query Error from ES ${JSON.stringify(e)}`)
@@ -558,23 +559,45 @@ async function searchES (mustQuery, perPage, page, sortCriteria) {
  * @returns {Object} doc from ES
  */
 async function searchESWithSearchAfter (mustQuery, perPage, page, previousId) {
-  let esQuery = {
-    index: config.get('ES.ES_INDEX'),
-    type: config.get('ES.ES_TYPE'),
-    size: perPage,
-    search_after: [perPage * (page - 1)],
-    body: {
-      query: {
-        bool: {
-          must: mustQuery
-        }
-      },
-      search_after: previousId ? [] : [`${previousId}`],
-      sort: [{
-        id: {
-          order: 'asc'
-        }
-      }]
+  let esQuery
+  if (previousId) {
+    esQuery = {
+      index: config.get('ES.ES_INDEX'),
+      type: config.get('ES.ES_TYPE'),
+      size: perPage,
+      search_after: [perPage * (page - 1)],
+      body: {
+        query: {
+          bool: {
+            must: mustQuery
+          }
+        },
+        search_after: [`${previousId}`],
+        sort: [{
+          id: {
+            order: 'asc'
+          }
+        }]
+      }
+    }
+  } else {
+    esQuery = {
+      index: config.get('ES.ES_INDEX'),
+      type: config.get('ES.ES_TYPE'),
+      size: perPage,
+      search_after: [perPage * (page - 1)],
+      body: {
+        query: {
+          bool: {
+            must: mustQuery
+          }
+        },
+        sort: [{
+          id: {
+            order: 'asc'
+          }
+        }]
+      }
     }
   }
   logger.debug(`ES Query ${JSON.stringify(esQuery)}`)
