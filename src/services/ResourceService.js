@@ -542,7 +542,6 @@ async function searchES (mustQuery, perPage, page, sortCriteria) {
   return docs
 }
 
-
 /**
  * Execute ES query
  * @param {Object} mustQuery the query that will be sent to ES
@@ -550,7 +549,7 @@ async function searchES (mustQuery, perPage, page, sortCriteria) {
  * @param {Number} page the current page
  * @returns {Object} doc from ES
  */
- async function searchESWithSearchAfter (mustQuery, perPage, page, sortCriteria) {
+async function searchESWithSearchAfter (mustQuery, perPage, page, sortCriteria) {
   let esQuery
   if (sortCriteria) {
     esQuery = {
@@ -558,7 +557,6 @@ async function searchES (mustQuery, perPage, page, sortCriteria) {
       type: config.get('ES.ES_TYPE'),
       size: perPage,
       search_after: [perPage * (page - 1)],
-      // from: perPage * (page - 1), // Es Index starts from 0
       body: {
         query: {
           bool: {
@@ -574,7 +572,6 @@ async function searchES (mustQuery, perPage, page, sortCriteria) {
       type: config.get('ES.ES_TYPE'),
       size: perPage,
       search_after: [perPage * (page - 1)],
-      // from: perPage * (page - 1), // Es Index starts from 0
       body: {
         query: {
           bool: {
