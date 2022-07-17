@@ -466,10 +466,10 @@ async function listChallengesByMember (memberId, criteria) {
 
   logger.info(`must query ${JSON.stringify(mustQuery)}`)
 
-  const previousId = criteria.previousId || ''
+  const lastChallengeId = criteria.lastChallengeId || ''
 
-  logger.info(`previousId  ${previousId}`)
-  docs = await searchESWithSearchAfter(mustQuery, perPage, page, previousId)
+  logger.info(`lastChallengeId  ${lastChallengeId}`)
+  docs = await searchESWithSearchAfter(mustQuery, perPage, page, lastChallengeId)
 
   logger.info(`Searching Result ${JSON.stringify(docs)}`)
 
@@ -488,7 +488,7 @@ listChallengesByMember.schema = {
   memberId: Joi.string().required(),
   criteria: Joi.object().keys({
     resourceRoleId: Joi.string().uuid(),
-    previousId: Joi.string().uuid(),
+    lastChallengeId: Joi.string().uuid(),
     page: Joi.page().default(1),
     perPage: Joi.perPage().default(config.DEFAULT_PAGE_SIZE)
   }).required()
@@ -559,21 +559,21 @@ async function searchES (mustQuery, perPage, page, sortCriteria) {
  * @param {Number} page the current page
  * @returns {Object} doc from ES
  */
-async function searchESWithSearchAfter (mustQuery, perPage, page, previousId) {
+async function searchESWithSearchAfter (mustQuery, perPage, page, lastChallengeId) {
   let esQuery
-  if (previousId) {
+  if (lastChallengeId) {
     esQuery = {
       index: config.get('ES.ES_INDEX'),
       type: config.get('ES.ES_TYPE'),
       size: perPage,
-      search_after: [`${previousId}`],
+      search_after: [`${lastChallengeId}`],
       body: {
         query: {
           bool: {
             must: mustQuery
           }
         },
-        search_after: [`${previousId}`],
+        search_after: [`${lastChallengeId}`],
         sort: [{
           created: {
             order: 'asc'
