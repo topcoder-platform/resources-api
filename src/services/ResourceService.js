@@ -453,16 +453,17 @@ async function listChallengesByMember (memberId, criteria) {
     }
   }
 
-  if (perPage * page <= config.MAX_ELASTIC_SEARCH_RECORDS_SIZE) {
-    docs = await searchES(mustQuery, perPage, page)
-  } else {
-    throw new errors.BadRequestError(`
-      ES pagination params:
-      page ${page},
-      perPage: ${perPage}
-      exceeds the max search window:${config.MAX_ELASTIC_SEARCH_RECORDS_SIZE}`
-    )
-  }
+  // if (perPage * page <= config.MAX_ELASTIC_SEARCH_RECORDS_SIZE) {
+  //   docs = await searchES(mustQuery, perPage, page)
+  // } else {
+  //   throw new errors.BadRequestError(`
+  //     ES pagination params:
+  //     page ${page},
+  //     perPage: ${perPage}
+  //     exceeds the max search window:${config.MAX_ELASTIC_SEARCH_RECORDS_SIZE}`
+  //   )
+  // }
+  docs = await searchESWithSearchAfter(mustQuery, perPage, page)
 
   // Extract data from hits
   let result = _.map(docs.hits.hits, item => item._source)
@@ -514,6 +515,66 @@ async function searchES (mustQuery, perPage, page, sortCriteria) {
       type: config.get('ES.ES_TYPE'),
       size: perPage,
       from: perPage * (page - 1), // Es Index starts from 0
+      body: {
+        query: {
+          bool: {
+            must: mustQuery
+          }
+        }
+      }
+    }
+  }
+  logger.debug(`ES Query ${JSON.stringify(esQuery)}`)
+  const esClient = await helper.getESClient()
+  let docs
+  try {
+    docs = await esClient.search(esQuery)
+  } catch (e) {
+    // Catch error when the ES is fresh and has no data
+    logger.info(`Query Error from ES ${JSON.stringify(e)}`)
+    docs = {
+      hits: {
+        total: 0,
+        hits: []
+      }
+    }
+  }
+  return docs
+}
+
+
+/**
+ * Execute ES query
+ * @param {Object} mustQuery the query that will be sent to ES
+ * @param {Number} perPage number of search result per page
+ * @param {Number} page the current page
+ * @returns {Object} doc from ES
+ */
+ async function searchESWithSearchAfter (mustQuery, perPage, page, sortCriteria) {
+  let esQuery
+  if (sortCriteria) {
+    esQuery = {
+      index: config.get('ES.ES_INDEX'),
+      type: config.get('ES.ES_TYPE'),
+      size: perPage,
+      search_after: [perPage * (page - 1)],
+      // from: perPage * (page - 1), // Es Index starts from 0
+      body: {
+        query: {
+          bool: {
+            must: mustQuery
+          }
+        },
+        sort: sortCriteria
+      }
+    }
+  } else {
+    esQuery = {
+      index: config.get('ES.ES_INDEX'),
+      type: config.get('ES.ES_TYPE'),
+      size: perPage,
+      search_after: [perPage * (page - 1)],
+      // from: perPage * (page - 1), // Es Index starts from 0
       body: {
         query: {
           bool: {
