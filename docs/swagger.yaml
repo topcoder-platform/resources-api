@@ -184,6 +184,9 @@ paths:
           in: query
           required: false
           description: the resource role id filter
+        - name: lastDate
+          type: string
+          description: the last date for a page records, used as the flag for getting the next page based on this criteria.
       responses:
         '200':
           description: OK - the request was successful
