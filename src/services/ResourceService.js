@@ -475,7 +475,13 @@ async function listChallengesByMember (memberId, criteria) {
 
   // Extract data from hits
   let result = _.map(docs.hits.hits, item => item._source)
-  const newLastDate = docs.hits.hits.sort && docs.hits.hits.sort[0]
+  let newLastDate = null
+  if (result.length > 0) {
+    const endSortDate = docs.hits.hits[result.length - 1].sort
+    if (endSortDate && endSortDate.length) {
+      newLastDate = endSortDate[0]
+    }
+  }
   const arr = _.uniq(_.map(result, 'challengeId'))
   return {
     data: arr,
