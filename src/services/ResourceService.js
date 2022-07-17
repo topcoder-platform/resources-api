@@ -574,7 +574,7 @@ async function searchESWithSearchAfter (mustQuery, perPage, page, previousId) {
         },
         search_after: [`${previousId}`],
         sort: [{
-          id: {
+          created: {
             order: 'asc'
           }
         }]
@@ -592,7 +592,7 @@ async function searchESWithSearchAfter (mustQuery, perPage, page, previousId) {
           }
         },
         sort: [{
-          id: {
+          created: {
             order: 'asc'
           }
         }]
