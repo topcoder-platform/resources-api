@@ -24,7 +24,7 @@ app.use('/v5/resources/docs', swaggerUi.serve, swaggerUi.setup(resourcesAPISwagg
 
 app.use(cors({
   // Allow browsers access pagination data in headers
-  exposedHeaders: ['X-Page', 'X-Per-Page', 'X-Total', 'X-Total-Pages', 'X-Prev-Page', 'X-Next-Page']
+  exposedHeaders: ['X-Page', 'X-Per-Page', 'X-Total', 'X-Total-Pages', 'X-Prev-Page', 'X-Next-Page', 'X-Last-Date']
 }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))

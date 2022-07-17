@@ -379,7 +379,7 @@ function setResHeaders (req, res, result) {
     res.set('X-Next-Page', parseInt(result.page, 10) + 1)
   }
   if (result.lastDate) {
-    res.set('X-LAST-Date', result.lastDate)
+    res.set('X-Last-Date', result.lastDate)
   }
   res.set('X-Page', parseInt(result.page, 10))
   res.set('X-Per-Page', result.perPage)
