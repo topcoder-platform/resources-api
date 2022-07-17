@@ -463,7 +463,17 @@ async function listChallengesByMember (memberId, criteria) {
   //     exceeds the max search window:${config.MAX_ELASTIC_SEARCH_RECORDS_SIZE}`
   //   )
   // }
-  docs = await searchESWithSearchAfter(mustQuery, perPage, page)
+
+
+  logger.info(`must query ${mustQuery}`);
+
+  const previousId = criteria.previousId || ''
+
+  logger.info(`previousId  ${previousId}`);
+  docs = await searchESWithSearchAfter(mustQuery, perPage, page, previousId)
+
+  logger.info(`Searching Result ${JSON.stringify(docs)}`);
+
 
   // Extract data from hits
   let result = _.map(docs.hits.hits, item => item._source)
@@ -549,36 +559,24 @@ async function searchES (mustQuery, perPage, page, sortCriteria) {
  * @param {Number} page the current page
  * @returns {Object} doc from ES
  */
-async function searchESWithSearchAfter (mustQuery, perPage, page, sortCriteria) {
-  let esQuery
-  if (sortCriteria) {
-    esQuery = {
-      index: config.get('ES.ES_INDEX'),
-      type: config.get('ES.ES_TYPE'),
-      size: perPage,
-      search_after: [perPage * (page - 1)],
-      body: {
-        query: {
-          bool: {
-            must: mustQuery
-          }
-        },
-        sort: sortCriteria
-      }
-    }
-  } else {
-    esQuery = {
-      index: config.get('ES.ES_INDEX'),
-      type: config.get('ES.ES_TYPE'),
-      size: perPage,
-      search_after: [perPage * (page - 1)],
-      body: {
-        query: {
-          bool: {
-            must: mustQuery
-          }
+async function searchESWithSearchAfter (mustQuery, perPage, page, previousId) {
+  let esQuery = {
+    index: config.get('ES.ES_INDEX'),
+    type: config.get('ES.ES_TYPE'),
+    size: perPage,
+    search_after: [perPage * (page - 1)],
+    body: {
+      query: {
+        bool: {
+          must: mustQuery
         }
-      }
+      },
+      search_after: previousId ? [] : [`${previousId}`],
+      sort: [{
+        "id": {
+          "order": "asc"
+        }
+      }]
     }
   }
   logger.debug(`ES Query ${JSON.stringify(esQuery)}`)
