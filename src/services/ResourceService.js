@@ -464,7 +464,7 @@ async function listChallengesByMember (memberId, criteria) {
   //   )
   // }
 
-  logger.info(`must query ${mustQuery}`)
+  logger.info(`must query ${JSON.stringify(mustQuery)}`)
 
   const previousId = criteria.previousId || ''
 
@@ -565,7 +565,7 @@ async function searchESWithSearchAfter (mustQuery, perPage, page, previousId) {
       index: config.get('ES.ES_INDEX'),
       type: config.get('ES.ES_TYPE'),
       size: perPage,
-      search_after: [perPage * (page - 1)],
+      search_after: [`${previousId}`],
       body: {
         query: {
           bool: {
@@ -585,7 +585,6 @@ async function searchESWithSearchAfter (mustQuery, perPage, page, previousId) {
       index: config.get('ES.ES_INDEX'),
       type: config.get('ES.ES_TYPE'),
       size: perPage,
-      search_after: [perPage * (page - 1)],
       body: {
         query: {
           bool: {
