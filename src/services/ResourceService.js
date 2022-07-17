@@ -488,6 +488,7 @@ listChallengesByMember.schema = {
   memberId: Joi.string().required(),
   criteria: Joi.object().keys({
     resourceRoleId: Joi.string().uuid(),
+    previousId: Joi.string().uuid(),
     page: Joi.page().default(1),
     perPage: Joi.perPage().default(config.DEFAULT_PAGE_SIZE)
   }).required()
