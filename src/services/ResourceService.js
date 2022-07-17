@@ -575,7 +575,7 @@ async function searchESWithSearchAfter (mustQuery, perPage, page, lastChallengeI
         },
         search_after: [`${lastChallengeId}`],
         sort: [{
-          id: {
+          challengeId: {
             order: 'asc'
           }
         }]
@@ -593,7 +593,7 @@ async function searchESWithSearchAfter (mustQuery, perPage, page, lastChallengeI
           }
         },
         sort: [{
-          id: {
+          challengeId: {
             order: 'asc'
           }
         }]
