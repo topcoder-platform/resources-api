@@ -537,7 +537,7 @@ async function searchES (mustQuery, perPage, page, sortCriteria) {
   let docs
   try {
     docs = await esClient.search(esQuery)
-    logger.info(`Raw results: ${JSON.stringify(docs)}`);
+    logger.info(`Raw results: ${JSON.stringify(docs)}`)
   } catch (e) {
     // Catch error when the ES is fresh and has no data
     logger.info(`Query Error from ES ${JSON.stringify(e)}`)
