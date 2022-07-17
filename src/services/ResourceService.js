@@ -466,19 +466,21 @@ async function listChallengesByMember (memberId, criteria) {
 
   logger.info(`must query ${JSON.stringify(mustQuery)}`)
 
-  const lastChallengeId = criteria.lastChallengeId || ''
+  const lastDate = criteria.lastDate || ''
 
-  logger.info(`lastChallengeId  ${lastChallengeId}`)
-  docs = await searchESWithSearchAfter(mustQuery, perPage, page, lastChallengeId)
+  logger.info(`lastDate  ${lastDate}`)
+  docs = await searchESWithSearchAfter(mustQuery, perPage, page, lastDate)
 
   logger.info(`Searching Result ${JSON.stringify(docs)}`)
 
   // Extract data from hits
   let result = _.map(docs.hits.hits, item => item._source)
+  const newLastDate = docs.hits.hits.sort && docs.hits.hits.sort[0]
   const arr = _.uniq(_.map(result, 'challengeId'))
   return {
     data: arr,
     total: docs.hits.total,
+    lastDate: newLastDate,
     page,
     perPage
   }
@@ -488,7 +490,7 @@ listChallengesByMember.schema = {
   memberId: Joi.string().required(),
   criteria: Joi.object().keys({
     resourceRoleId: Joi.string().uuid(),
-    lastChallengeId: Joi.string().uuid(),
+    lastDate: Joi.string(),
     page: Joi.page().default(1),
     perPage: Joi.perPage().default(config.DEFAULT_PAGE_SIZE)
   }).required()
@@ -559,23 +561,22 @@ async function searchES (mustQuery, perPage, page, sortCriteria) {
  * @param {Number} page the current page
  * @returns {Object} doc from ES
  */
-async function searchESWithSearchAfter (mustQuery, perPage, page, lastChallengeId) {
+async function searchESWithSearchAfter (mustQuery, perPage, page, lastDate) {
   let esQuery
-  if (lastChallengeId) {
+  if (lastDate) {
     esQuery = {
       index: config.get('ES.ES_INDEX'),
       type: config.get('ES.ES_TYPE'),
       size: perPage,
-      search_after: [`${lastChallengeId}`],
       body: {
         query: {
           bool: {
             must: mustQuery
           }
         },
-        search_after: [`${lastChallengeId}`],
+        search_after: [Number(lastDate)],
         sort: [{
-          challengeId: {
+          created: {
             order: 'asc'
           }
         }]
@@ -593,7 +594,7 @@ async function searchESWithSearchAfter (mustQuery, perPage, page, lastChallengeI
           }
         },
         sort: [{
-          challengeId: {
+          created: {
             order: 'asc'
           }
         }]
