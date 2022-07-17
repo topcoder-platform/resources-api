@@ -464,16 +464,14 @@ async function listChallengesByMember (memberId, criteria) {
   //   )
   // }
 
-
-  logger.info(`must query ${mustQuery}`);
+  logger.info(`must query ${mustQuery}`)
 
   const previousId = criteria.previousId || ''
 
-  logger.info(`previousId  ${previousId}`);
+  logger.info(`previousId  ${previousId}`)
   docs = await searchESWithSearchAfter(mustQuery, perPage, page, previousId)
 
-  logger.info(`Searching Result ${JSON.stringify(docs)}`);
-
+  logger.info(`Searching Result ${JSON.stringify(docs)}`)
 
   // Extract data from hits
   let result = _.map(docs.hits.hits, item => item._source)
@@ -573,8 +571,8 @@ async function searchESWithSearchAfter (mustQuery, perPage, page, previousId) {
       },
       search_after: previousId ? [] : [`${previousId}`],
       sort: [{
-        "id": {
-          "order": "asc"
+        id: {
+          order: 'asc'
         }
       }]
     }
