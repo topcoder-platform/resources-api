@@ -453,27 +453,10 @@ async function listChallengesByMember (memberId, criteria) {
     }
   }
 
-  // if (perPage * page <= config.MAX_ELASTIC_SEARCH_RECORDS_SIZE) {
-  //   docs = await searchES(mustQuery, perPage, page)
-  // } else {
-  //   throw new errors.BadRequestError(`
-  //     ES pagination params:
-  //     page ${page},
-  //     perPage: ${perPage}
-  //     exceeds the max search window:${config.MAX_ELASTIC_SEARCH_RECORDS_SIZE}`
-  //   )
-  // }
-
-  logger.info(`must query ${JSON.stringify(mustQuery)}`)
-
   const lastDate = criteria.lastDate || ''
-
-  logger.info(`lastDate  ${lastDate}`)
   docs = await searchESWithSearchAfter(mustQuery, perPage, page, lastDate)
 
-  logger.info(`Searching Result ${JSON.stringify(docs)}`)
-
-  // Extract data from hits
+  // Extract data from hits and the sort options
   let result = _.map(docs.hits.hits, item => item._source)
   let newLastDate = null
   if (result.length > 0) {
