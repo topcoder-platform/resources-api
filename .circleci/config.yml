@@ -122,7 +122,6 @@ workflows:
             branches:
               only:
                 - develop
-                - fix-listmemberchallenges
 
       # Production builds are exectuted only on tagged commits to the testing
       # master branch.
