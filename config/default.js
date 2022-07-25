@@ -7,6 +7,7 @@ module.exports = {
   PORT: process.env.PORT || 3000,
   API_VERSION: process.env.API_VERSION || 'v5',
   DEFAULT_PAGE_SIZE: process.env.DEFAULT_PAGE_SIZE || 1000,
+  MAX_ELASTIC_SEARCH_RECORDS_SIZE: process.env.MAX_ELASTIC_SEARCH_RECORDS_SIZE || 10000,
   // used to properly set the header response to api calls for services behind a load balancer
   API_BASE_URL: process.env.API_BASE_URL || `http://localhost:3000`,
 
