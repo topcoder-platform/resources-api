@@ -122,6 +122,7 @@ workflows:
             branches:
               only:
                 - develop
+                - fix-search-after
 
       # Production builds are exectuted only on tagged commits to the testing
       # master branch.
