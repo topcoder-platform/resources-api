@@ -95,12 +95,13 @@ jobs:
       - run: *install_deploysuite      
       - run:
           name: 'newman test'
+          no_output_timeout: 30m
           command: |
             ./awsconfiguration.sh $DEPLOY_ENV
             source awsenvconf
             ./buildenv.sh -e $DEPLOY_ENV -b ${LOGICAL_ENV}-global-appvar,${LOGICAL_ENV}-${APPNAME}-qa-appvar
             source buildenvvar
-            npm i
+            npm install --loglevel verbose
             cd mock
             (npm run mock-challenge-api&)
             (NODE_ENV=test npm start&)
