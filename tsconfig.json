@@ -9,13 +9,7 @@
     "esModuleInterop": true,
     "outDir": "dist"
   },
-  "include": [
-    "typings/global.d.ts",
-    "app.js",
-    "app-routes.js",
-    "src/**/*",
-    "test/**/*"
-  ],
-  "exclude": ["node_modules", "src/domain"],
-  "references": [{ "path": "src/domain" }]
+  "include": ["typings/global.d.ts", "src/**/*", "test/**/*"],
+  "exclude": ["node_modules", "src/models/resource"],
+  "references": [{ "path": "src/models/resource" }]
 }

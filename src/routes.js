@@ -2,113 +2,133 @@
  * Contains all routes
  */
 
-const constants = require('../app-constants')
+const constants = require("./app-constants");
 const {
-  SCOPES: { READ, CREATE, DELETE, UPDATE, ALL }
-} = require('config')
+  SCOPES: { READ, CREATE, DELETE, UPDATE, ALL },
+} = require("config");
 
 module.exports = {
-  '/resources': {
+  "/resources": {
     get: {
-      controller: 'ResourceController',
-      method: 'getResources',
+      controller: "ResourceController",
+      method: "getResources",
       allowAnonymous: true,
-      auth: 'jwt',
-      access: [constants.UserRoles.Admin, constants.UserRoles.Copilot, constants.UserRoles.Manager, constants.UserRoles.User],
-      scopes: [READ, ALL]
+      auth: "jwt",
+      access: [
+        constants.UserRoles.Admin,
+        constants.UserRoles.Copilot,
+        constants.UserRoles.Manager,
+        constants.UserRoles.User,
+      ],
+      scopes: [READ, ALL],
     },
     post: {
-      controller: 'ResourceController',
-      method: 'createResource',
-      auth: 'jwt',
-      access: [constants.UserRoles.Admin, constants.UserRoles.Copilot, constants.UserRoles.Manager, constants.UserRoles.User],
+      controller: "ResourceController",
+      method: "createResource",
+      auth: "jwt",
+      access: [
+        constants.UserRoles.Admin,
+        constants.UserRoles.Copilot,
+        constants.UserRoles.Manager,
+        constants.UserRoles.User,
+      ],
       scopes: [CREATE, ALL],
-      blockByIp: true
+      blockByIp: true,
     },
     delete: {
-      controller: 'ResourceController',
-      method: 'deleteResource',
-      auth: 'jwt',
-      access: [constants.UserRoles.Admin, constants.UserRoles.Copilot, constants.UserRoles.Manager, constants.UserRoles.User],
-      scopes: [DELETE, ALL]
-    }
+      controller: "ResourceController",
+      method: "deleteResource",
+      auth: "jwt",
+      access: [
+        constants.UserRoles.Admin,
+        constants.UserRoles.Copilot,
+        constants.UserRoles.Manager,
+        constants.UserRoles.User,
+      ],
+      scopes: [DELETE, ALL],
+    },
   },
-  '/resources/internal/jobs/clean': {
+  "/resources/internal/jobs/clean": {
     post: {
-      controller: 'CleanUpController',
-      method: 'cleanUpTestData',
-      auth: 'jwt',
+      controller: "CleanUpController",
+      method: "cleanUpTestData",
+      auth: "jwt",
       access: [constants.UserRoles.Admin],
-      scopes: [ALL]
-    }
+      scopes: [ALL],
+    },
   },
-  '/resources/health': {
+  "/resources/health": {
     get: {
-      controller: 'HealthCheckController',
-      method: 'check'
-    }
+      controller: "HealthCheckController",
+      method: "check",
+    },
   },
-  '/resources/:memberId/challenges': {
+  "/resources/:memberId/challenges": {
     get: {
-      controller: 'ResourceController',
-      method: 'listChallengesByMember',
-      auth: 'jwt',
-      access: [constants.UserRoles.Admin, constants.UserRoles.Copilot, constants.UserRoles.Manager, constants.UserRoles.User],
-      scopes: [READ, ALL]
-    }
+      controller: "ResourceController",
+      method: "listChallengesByMember",
+      auth: "jwt",
+      access: [
+        constants.UserRoles.Admin,
+        constants.UserRoles.Copilot,
+        constants.UserRoles.Manager,
+        constants.UserRoles.User,
+      ],
+      scopes: [READ, ALL],
+    },
   },
-  '/resource-roles': {
+  "/resource-roles": {
     get: {
-      controller: 'ResourceRoleController',
-      method: 'getResourceRoles'
+      controller: "ResourceRoleController",
+      method: "getResourceRoles",
     },
     post: {
-      controller: 'ResourceRoleController',
-      method: 'createResourceRole',
-      auth: 'jwt',
+      controller: "ResourceRoleController",
+      method: "createResourceRole",
+      auth: "jwt",
       access: [constants.UserRoles.Admin],
-      scopes: [CREATE, ALL]
-    }
+      scopes: [CREATE, ALL],
+    },
   },
-  '/resource-roles/:resourceRoleId': {
+  "/resource-roles/:resourceRoleId": {
     put: {
-      controller: 'ResourceRoleController',
-      method: 'updateResourceRole',
-      auth: 'jwt',
+      controller: "ResourceRoleController",
+      method: "updateResourceRole",
+      auth: "jwt",
       access: [constants.UserRoles.Admin],
-      scopes: [UPDATE, ALL]
-    }
+      scopes: [UPDATE, ALL],
+    },
   },
-  '/resource-roles/phase-dependencies': {
+  "/resource-roles/phase-dependencies": {
     get: {
-      controller: 'ResourceRolePhaseDependencyController',
-      method: 'getDependencies',
-      auth: 'jwt',
+      controller: "ResourceRolePhaseDependencyController",
+      method: "getDependencies",
+      auth: "jwt",
       access: [constants.UserRoles.Admin],
-      scopes: [READ, ALL]
+      scopes: [READ, ALL],
     },
     post: {
-      controller: 'ResourceRolePhaseDependencyController',
-      method: 'createDependency',
-      auth: 'jwt',
+      controller: "ResourceRolePhaseDependencyController",
+      method: "createDependency",
+      auth: "jwt",
       access: [constants.UserRoles.Admin],
-      scopes: [CREATE, ALL]
-    }
+      scopes: [CREATE, ALL],
+    },
   },
-  '/resource-roles/phase-dependencies/:id': {
+  "/resource-roles/phase-dependencies/:id": {
     put: {
-      controller: 'ResourceRolePhaseDependencyController',
-      method: 'updateDependency',
-      auth: 'jwt',
+      controller: "ResourceRolePhaseDependencyController",
+      method: "updateDependency",
+      auth: "jwt",
       access: [constants.UserRoles.Admin],
-      scopes: [UPDATE, ALL]
+      scopes: [UPDATE, ALL],
     },
     delete: {
-      controller: 'ResourceRolePhaseDependencyController',
-      method: 'deleteDependency',
-      auth: 'jwt',
+      controller: "ResourceRolePhaseDependencyController",
+      method: "deleteDependency",
+      auth: "jwt",
       access: [constants.UserRoles.Admin],
-      scopes: [DELETE, ALL]
-    }
-  }
-}
+      scopes: [DELETE, ALL],
+    },
+  },
+};

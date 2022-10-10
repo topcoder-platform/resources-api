@@ -2,7 +2,7 @@
  * View table data.
  */
 
-require("../../app-bootstrap");
+require("../app-bootstrap");
 const _ = require("lodash");
 const models = require("../model/index");
 const logger = require("../common/logger");

@@ -2,7 +2,8 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "composite": true,
-    "outDir": "../../dist/src/domain/resource",
+    "allowJs": true,
+    "outDir": "../../../dist/src/models/resource",
     "noImplicitReturns": false
   },
   "include": ["**/*"],

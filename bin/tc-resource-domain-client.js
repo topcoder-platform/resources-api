@@ -5,7 +5,7 @@ const { execSync } = require("child_process");
 const rimraf = require("rimraf");
 
 const PROTO_DIR = process.env.RESOURCE_DOMAIN_PROTO_PATH;
-const MODEL_DIR = path.join(__dirname, "../src/domain/resource");
+const MODEL_DIR = path.join(__dirname, "../src/models/resource/");
 
 const PROTOC_PATH = "protoc";
 const PLUGIN_PATH = path.join(
@@ -13,12 +13,8 @@ const PLUGIN_PATH = path.join(
   "../node_modules/.bin/protoc-gen-ts_proto"
 );
 
-console.log("MODEL_DIR", MODEL_DIR);
-
 rimraf.sync(`${MODEL_DIR}/*`, {
-  glob: {
-    ignore: `${MODEL_DIR}/tsconfig.json`,
-  },
+  glob: { ignore: `${MODEL_DIR}/tsconfig.json` },
 });
 
 const protoConfig = [
