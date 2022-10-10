@@ -2,32 +2,49 @@
  * This file defines helper methods
  */
 
-const _ = require('lodash')
-const config = require('config')
-const querystring = require('querystring')
-const request = require('superagent')
-const constants = require('../../app-constants')
-const models = require('../models')
-const { MemberProfile, MemberStats } = require('../models')
-const errors = require('./errors')
-const logger = require('./logger')
-const m2mAuth = require('tc-core-library-js').auth.m2m
-const AWS = require('aws-sdk')
-const elasticsearch = require('elasticsearch')
-const m2m = m2mAuth(_.pick(config, ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME', 'AUTH0_PROXY_SERVER_URL']))
-const busApi = require('tc-bus-api-wrapper')
-const busApiClient = busApi(_.pick(config, ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME', 'AUTH0_CLIENT_ID',
-  'AUTH0_CLIENT_SECRET', 'BUSAPI_URL', 'KAFKA_ERROR_TOPIC', 'AUTH0_PROXY_SERVER_URL']))
+const _ = require("lodash");
+const config = require("config");
+const querystring = require("querystring");
+const request = require("superagent");
+const constants = require("../../app-constants");
+const models = require("../model/index");
+const { MemberProfile, MemberStats } = require("../model/index");
+const errors = require("./errors");
+const logger = require("./logger");
+const m2mAuth = require("tc-core-library-js").auth.m2m;
+const AWS = require("aws-sdk");
+const elasticsearch = require("elasticsearch");
+const m2m = m2mAuth(
+  _.pick(config, [
+    "AUTH0_URL",
+    "AUTH0_AUDIENCE",
+    "TOKEN_CACHE_TIME",
+    "AUTH0_PROXY_SERVER_URL",
+  ])
+);
+const busApi = require("tc-bus-api-wrapper");
+const busApiClient = busApi(
+  _.pick(config, [
+    "AUTH0_URL",
+    "AUTH0_AUDIENCE",
+    "TOKEN_CACHE_TIME",
+    "AUTH0_CLIENT_ID",
+    "AUTH0_CLIENT_SECRET",
+    "BUSAPI_URL",
+    "KAFKA_ERROR_TOPIC",
+    "AUTH0_PROXY_SERVER_URL",
+  ])
+);
 
 // Elasticsearch client
-let esClient
+let esClient;
 
 /**
  * Check the error is custom error.
  * @returns {Boolean} true if error is custom error, false otherwise
  */
-function isCustomError (err) {
-  return _.keys(errors).includes(err.name)
+function isCustomError(err) {
+  return _.keys(errors).includes(err.name);
 }
 
 /**
@@ -35,16 +52,16 @@ function isCustomError (err) {
  * @params {String} topic the topic name
  * @params {Object} payload the payload
  */
-async function postEvent (topic, payload) {
-  logger.info(`Publish event to Kafka topic ${topic}`)
+async function postEvent(topic, payload) {
+  logger.info(`Publish event to Kafka topic ${topic}`);
   const message = {
     topic,
     originator: config.KAFKA_MESSAGE_ORIGINATOR,
     timestamp: new Date().toISOString(),
-    'mime-type': 'application/json',
-    payload
-  }
-  await busApiClient.postEvent(message)
+    "mime-type": "application/json",
+    payload,
+  };
+  await busApiClient.postEvent(message);
 }
 
 /**
@@ -52,10 +69,10 @@ async function postEvent (topic, payload) {
  * @param {Function} fn the async function
  * @returns {Function} the wrapped function
  */
-function wrapExpress (fn) {
+function wrapExpress(fn) {
   return function (req, res, next) {
-    fn(req, res, next).catch(next)
-  }
+    fn(req, res, next).catch(next);
+  };
 }
 
 /**
@@ -63,33 +80,36 @@ function wrapExpress (fn) {
  * @param obj the object (controller exports)
  * @returns {Object|Array} the wrapped object
  */
-function autoWrapExpress (obj) {
+function autoWrapExpress(obj) {
   if (_.isArray(obj)) {
-    return obj.map(autoWrapExpress)
+    return obj.map(autoWrapExpress);
   }
   if (_.isFunction(obj)) {
-    if (obj.constructor.name === 'AsyncFunction') {
-      return wrapExpress(obj)
+    if (obj.constructor.name === "AsyncFunction") {
+      return wrapExpress(obj);
     }
-    return obj
+    return obj;
   }
   _.each(obj, (value, key) => {
-    obj[key] = autoWrapExpress(value)
-  })
-  return obj
+    obj[key] = autoWrapExpress(value);
+  });
+  return obj;
 }
 
 /**
  * Check if the user has admin role
  * @param {Object} authUser the user
  */
-function hasAdminRole (authUser) {
+function hasAdminRole(authUser) {
   for (let i = 0; i < authUser.roles.length; i++) {
-    if (authUser.roles[i].toLowerCase() === constants.UserRoles.Admin.toLowerCase()) {
-      return true
+    if (
+      authUser.roles[i].toLowerCase() ===
+      constants.UserRoles.Admin.toLowerCase()
+    ) {
+      return true;
     }
   }
-  return false
+  return false;
 }
 
 /**
@@ -98,30 +118,30 @@ function hasAdminRole (authUser) {
  * @param {Array} source the array in which to search for the term
  * @param {Array | String} term the term to search
  */
-function checkIfExists (source, term) {
-  let terms
+function checkIfExists(source, term) {
+  let terms;
 
   if (!_.isArray(source)) {
-    throw new Error('Source argument should be an array')
+    throw new Error("Source argument should be an array");
   }
 
-  source = source.map(s => s.toLowerCase())
+  source = source.map((s) => s.toLowerCase());
 
   if (_.isString(term)) {
-    terms = term.split(' ')
+    terms = term.split(" ");
   } else if (_.isArray(term)) {
-    terms = term.map(t => t.toLowerCase())
+    terms = term.map((t) => t.toLowerCase());
   } else {
-    throw new Error('Term argument should be either a string or an array')
+    throw new Error("Term argument should be either a string or an array");
   }
 
   for (let i = 0; i < terms.length; i++) {
     if (source.includes(terms[i])) {
-      return true
+      return true;
     }
   }
 
-  return false
+  return false;
 }
 
 /**
@@ -130,19 +150,26 @@ function checkIfExists (source, term) {
  * @param {String} id The id value
  * @returns {Promise<void>}
  */
-async function getById (modelName, id) {
+async function getById(modelName, id) {
   return new Promise((resolve, reject) => {
-    models[modelName].query('id').eq(id).exec((err, result) => {
-      if (err) {
-        return reject(err)
-      }
-      if (result.length > 0) {
-        return resolve(result[0])
-      } else {
-        return reject(new errors.NotFoundError(`${modelName} with id: ${id} doesn't exist`))
-      }
-    })
-  })
+    models[modelName]
+      .query("id")
+      .eq(id)
+      .exec((err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        if (result.length > 0) {
+          return resolve(result[0]);
+        } else {
+          return reject(
+            new errors.NotFoundError(
+              `${modelName} with id: ${id} doesn't exist`
+            )
+          );
+        }
+      });
+  });
 }
 
 /**
@@ -150,10 +177,13 @@ async function getById (modelName, id) {
  * @param {Number} id The id value
  * @returns {Promise<void>}
  */
-async function getMemberInfoById (id) {
+async function getMemberInfoById(id) {
   // logger.warn('getMemberInfoById')
-  const memberInfo = await MemberStats.query('userId').eq(id).exec().then(r => r[0])
-  return memberInfo
+  const memberInfo = await MemberStats.query("userId")
+    .eq(id)
+    .exec()
+    .then((r) => r[0]);
+  return memberInfo;
 }
 
 /**
@@ -161,13 +191,13 @@ async function getMemberInfoById (id) {
  * @param {String} id The user ID
  * @returns {Promise<void>}
  */
-async function getMemberById (id) {
+async function getMemberById(id) {
   try {
-    const res = await getRequest(`${config.MEMBER_API_URL}`, { userId: id })
-    return _.get(res, 'body[0]')
+    const res = await getRequest(`${config.MEMBER_API_URL}`, { userId: id });
+    return _.get(res, "body[0]");
   } catch (e) {
-    logger.debug(e.message)
-    logger.debug(e)
+    logger.debug(e.message);
+    logger.debug(e);
   }
 }
 
@@ -176,40 +206,49 @@ async function getMemberById (id) {
  * @param {String} handle The member handle
  * @returns {Promise<void>}
  */
-async function getMemberIdByHandle (handle) {
+async function getMemberIdByHandle(handle) {
   try {
     // logger.warn(`getMemberIdByHandle ${handle}`)
-    const profile = await MemberProfile.query('handleLower').eq(_.toLower(handle)).exec().then(r => r[0])
-    return profile.userId
+    const profile = await MemberProfile.query("handleLower")
+      .eq(_.toLower(handle))
+      .exec()
+      .then((r) => r[0]);
+    return profile.userId;
   } catch (e) {
     // fall back to v3 api...
-    logger.warn(`Get MemberID by Handle from Dynamo Failed, trying v3 Members API. Error: ${JSON.stringify(e)}`)
-    return getMemberIdByHandleFromV3Members(handle)
+    logger.warn(
+      `Get MemberID by Handle from Dynamo Failed, trying v3 Members API. Error: ${JSON.stringify(
+        e
+      )}`
+    );
+    return getMemberIdByHandleFromV3Members(handle);
   }
 }
 
-async function getMemberIdByHandleFromV3Members (handle) {
-  let memberId
+async function getMemberIdByHandleFromV3Members(handle) {
+  let memberId;
   try {
-    logger.warn(`getMemberIdByHandle ${handle} from v5`)
-    const res = await getRequest(`${config.MEMBER_API_URL}/${handle}`)
-    if (_.get(res, 'body.userId')) {
-      memberId = String(res.body.userId)
+    logger.warn(`getMemberIdByHandle ${handle} from v5`);
+    const res = await getRequest(`${config.MEMBER_API_URL}/${handle}`);
+    if (_.get(res, "body.userId")) {
+      memberId = String(res.body.userId);
     }
     // handle return from v3 API, handle and memberHandle are the same under case-insensitive condition
-    handle = _.get(res, 'body.handle')
+    handle = _.get(res, "body.handle");
   } catch (error) {
     // re-throw all error except 404 Not-Founded, BadRequestError should be thrown if 404 occurs
     if (error.status !== 404) {
-      throw error
+      throw error;
     }
   }
 
   if (_.isUndefined(memberId)) {
-    throw new errors.BadRequestError(`User with handle: ${handle} doesn't exist`)
+    throw new errors.BadRequestError(
+      `User with handle: ${handle} doesn't exist`
+    );
   }
 
-  return memberId
+  return memberId;
 }
 
 /**
@@ -218,17 +257,17 @@ async function getMemberIdByHandleFromV3Members (handle) {
  * @param {Object} data The create data object
  * @returns {Promise<void>}
  */
-async function create (modelName, data) {
+async function create(modelName, data) {
   return new Promise((resolve, reject) => {
-    const dbItem = new models[modelName](data)
+    const dbItem = new models[modelName](data);
     dbItem.save((err) => {
       if (err) {
-        return reject(err)
+        return reject(err);
       }
 
-      return resolve(dbItem)
-    })
-  })
+      return resolve(dbItem);
+    });
+  });
 }
 
 /**
@@ -237,19 +276,19 @@ async function create (modelName, data) {
  * @param {Object} data The updated data object
  * @returns {Promise<void>}
  */
-async function update (dbItem, data) {
+async function update(dbItem, data) {
   Object.keys(data).forEach((key) => {
-    dbItem[key] = data[key]
-  })
+    dbItem[key] = data[key];
+  });
   return new Promise((resolve, reject) => {
     dbItem.save((err) => {
       if (err) {
-        return reject(err)
+        return reject(err);
       }
 
-      return resolve(dbItem)
-    })
-  })
+      return resolve(dbItem);
+    });
+  });
 }
 
 /**
@@ -258,16 +297,19 @@ async function update (dbItem, data) {
  * @param {Object} scanParams The scan parameters object
  * @returns {Promise<void>}
  */
-async function scan (modelName, scanParams) {
+async function scan(modelName, scanParams) {
   return new Promise((resolve, reject) => {
-    models[modelName].scan(scanParams).all(0, 0).exec((err, result) => {
-      if (err) {
-        return reject(err)
-      }
+    models[modelName]
+      .scan(scanParams)
+      .all(0, 0)
+      .exec((err, result) => {
+        if (err) {
+          return reject(err);
+        }
 
-      return resolve(result.count === 0 ? [] : result)
-    })
-  })
+        return resolve(result.count === 0 ? [] : result);
+      });
+  });
 }
 
 /**
@@ -276,15 +318,18 @@ async function scan (modelName, scanParams) {
  * @param {Object} scanParams The scan parameters object
  * @returns {Array}
  */
-async function scanAll (modelName, scanParams) {
-  let results = await models[modelName].scan(scanParams).exec()
-  let lastKey = results.lastKey
+async function scanAll(modelName, scanParams) {
+  let results = await models[modelName].scan(scanParams).exec();
+  let lastKey = results.lastKey;
   while (!_.isUndefined(results.lastKey)) {
-    const newResult = await models[modelName].scan(scanParams).startAt(lastKey).exec()
-    results = [...results, ...newResult]
-    lastKey = newResult.lastKey
+    const newResult = await models[modelName]
+      .scan(scanParams)
+      .startAt(lastKey)
+      .exec();
+    results = [...results, ...newResult];
+    lastKey = newResult.lastKey;
   }
-  return results
+  return results;
 }
 
 /**
@@ -293,16 +338,19 @@ async function scanAll (modelName, scanParams) {
  * @param {Object} queryParams The query parameters object
  * @returns {Promise<void>}
  */
-async function query (modelName, queryParams) {
+async function query(modelName, queryParams) {
   return new Promise((resolve, reject) => {
-    models[modelName].query(queryParams).all(0, 0).exec((err, result) => {
-      if (err) {
-        return reject(err)
-      }
+    models[modelName]
+      .query(queryParams)
+      .all(0, 0)
+      .exec((err, result) => {
+        if (err) {
+          return reject(err);
+        }
 
-      return resolve(result.count === 0 ? [] : result)
-    })
-  })
+        return resolve(result.count === 0 ? [] : result);
+      });
+  });
 }
 
 /**
@@ -312,10 +360,10 @@ async function query (modelName, queryParams) {
  * @param {String} errorMessage the error message if duplication exist.
  * @returns {Boolean} true if duplication exist, false otherwise.
  */
-async function validateDuplicate (modelName, queryParams, errorMessage) {
-  const list = await query(modelName, queryParams)
+async function validateDuplicate(modelName, queryParams, errorMessage) {
+  const list = await query(modelName, queryParams);
   if (list.length > 0) {
-    throw new errors.ConflictError(errorMessage)
+    throw new errors.ConflictError(errorMessage);
   }
 }
 
@@ -325,15 +373,18 @@ async function validateDuplicate (modelName, queryParams, errorMessage) {
  * @param {Object} query the query parameters, optional
  * @returns {Object} the response
  */
-async function getRequest (url, query) {
-  const m2mToken = await m2m.getMachineToken(config.AUTH0_CLIENT_ID, config.AUTH0_CLIENT_SECRET)
+async function getRequest(url, query) {
+  const m2mToken = await m2m.getMachineToken(
+    config.AUTH0_CLIENT_ID,
+    config.AUTH0_CLIENT_SECRET
+  );
 
   return request
     .get(url)
-    .set('Authorization', `Bearer ${m2mToken}`)
-    .set('Content-Type', 'application/json')
-    .set('Accept', 'application/json')
-    .query(query || {})
+    .set("Authorization", `Bearer ${m2mToken}`)
+    .set("Content-Type", "application/json")
+    .set("Accept", "application/json")
+    .query(query || {});
 }
 
 /**
@@ -342,15 +393,18 @@ async function getRequest (url, query) {
  * @param {Object} data the query parameters, optional
  * @returns {Object} the response
  */
-async function postRequest (url, data) {
-  const m2mToken = await m2m.getMachineToken(config.AUTH0_CLIENT_ID, config.AUTH0_CLIENT_SECRET)
+async function postRequest(url, data) {
+  const m2mToken = await m2m.getMachineToken(
+    config.AUTH0_CLIENT_ID,
+    config.AUTH0_CLIENT_SECRET
+  );
 
   return request
     .post(url)
-    .set('Authorization', `Bearer ${m2mToken}`)
-    .set('Content-Type', 'application/json')
-    .set('Accept', 'application/json')
-    .send(data)
+    .set("Authorization", `Bearer ${m2mToken}`)
+    .set("Content-Type", "application/json")
+    .set("Accept", "application/json")
+    .send(data);
 }
 
 /**
@@ -359,9 +413,9 @@ async function postRequest (url, data) {
  * @param {Number} page the page number
  * @returns {String} link for the page
  */
-function getPageLink (req, page) {
-  const q = _.assignIn({}, req.query, { page })
-  return `${config.API_BASE_URL}${req.path}?${querystring.stringify(q)}`
+function getPageLink(req, page) {
+  const q = _.assignIn({}, req.query, { page });
+  return `${config.API_BASE_URL}${req.path}?${querystring.stringify(q)}`;
 }
 
 /**
@@ -370,28 +424,37 @@ function getPageLink (req, page) {
  * @param {Object} res the HTTP response
  * @param {Object} result the operation result
  */
-function setResHeaders (req, res, result) {
-  const totalPages = Math.ceil(result.total / result.perPage)
+function setResHeaders(req, res, result) {
+  const totalPages = Math.ceil(result.total / result.perPage);
   if (parseInt(result.page, 10) > 1) {
-    res.set('X-Prev-Page', parseInt(result.page, 10) - 1)
+    res.set("X-Prev-Page", parseInt(result.page, 10) - 1);
   }
   if (parseInt(result.page, 10) < totalPages) {
-    res.set('X-Next-Page', parseInt(result.page, 10) + 1)
+    res.set("X-Next-Page", parseInt(result.page, 10) + 1);
   }
-  res.set('X-Page', parseInt(result.page, 10))
-  res.set('X-Per-Page', result.perPage)
-  res.set('X-Total', result.total)
-  res.set('X-Total-Pages', totalPages)
+  res.set("X-Page", parseInt(result.page, 10));
+  res.set("X-Per-Page", result.perPage);
+  res.set("X-Total", result.total);
+  res.set("X-Total-Pages", totalPages);
   // set Link header
   if (totalPages > 0) {
-    let link = `<${getPageLink(req, 1)}>; rel="first", <${getPageLink(req, totalPages)}>; rel="last"`
+    let link = `<${getPageLink(req, 1)}>; rel="first", <${getPageLink(
+      req,
+      totalPages
+    )}>; rel="last"`;
     if (parseInt(result.page, 10) > 1) {
-      link += `, <${getPageLink(req, parseInt(result.page, 10) - 1)}>; rel="prev"`
+      link += `, <${getPageLink(
+        req,
+        parseInt(result.page, 10) - 1
+      )}>; rel="prev"`;
     }
     if (parseInt(result.page, 10) < totalPages) {
-      link += `, <${getPageLink(req, parseInt(result.page, 10) + 1)}>; rel="next"`
+      link += `, <${getPageLink(
+        req,
+        parseInt(result.page, 10) + 1
+      )}>; rel="next"`;
     }
-    res.set('Link', link)
+    res.set("Link", link);
   }
 }
 
@@ -401,56 +464,59 @@ function setResHeaders (req, res, result) {
  * @param {Object} query the query parameters, optional, it should not include page and perPage
  * @returns {Array} the result records
  */
-async function getAllPages (url, query) {
-  const perPage = 100
-  let page = 1
-  let result = []
+async function getAllPages(url, query) {
+  const perPage = 100;
+  let page = 1;
+  let result = [];
   for (;;) {
     // get current page data
-    const res = await getRequest(url, _.assignIn({ page, perPage }, query || {}))
+    const res = await getRequest(
+      url,
+      _.assignIn({ page, perPage }, query || {})
+    );
     if (!_.isArray(res.body) || res.body.length === 0) {
-      break
+      break;
     }
-    result = _.concat(result, res.body)
-    if (res.headers['x-total']) {
-      const total = Number(res.headers['x-total'])
+    result = _.concat(result, res.body);
+    if (res.headers["x-total"]) {
+      const total = Number(res.headers["x-total"]);
       if (page * perPage >= total) {
-        break
+        break;
       }
     }
     // increment page
-    page += 1
+    page += 1;
   }
-  return result
+  return result;
 }
 
 /**
  * Get ES Client
  * @return {Object} Elasticsearch Client Instance
  */
-function getESClient () {
+function getESClient() {
   if (esClient) {
-    return esClient
+    return esClient;
   }
-  const esHost = config.get('ES.HOST')
+  const esHost = config.get("ES.HOST");
   // AWS ES configuration is different from other providers
   if (/.*amazonaws.*/.test(esHost)) {
     esClient = elasticsearch.Client({
-      apiVersion: config.get('ES.API_VERSION'),
+      apiVersion: config.get("ES.API_VERSION"),
       hosts: esHost,
-      connectionClass: require('http-aws-es'), // eslint-disable-line global-require
+      connectionClass: require("http-aws-es"), // eslint-disable-line global-require
       amazonES: {
-        region: config.get('DYNAMODB.AWS_REGION'),
-        credentials: new AWS.EnvironmentCredentials('AWS')
-      }
-    })
+        region: config.get("DYNAMODB.AWS_REGION"),
+        credentials: new AWS.EnvironmentCredentials("AWS"),
+      },
+    });
   } else {
     esClient = new elasticsearch.Client({
-      apiVersion: config.get('ES.API_VERSION'),
-      hosts: esHost
-    })
+      apiVersion: config.get("ES.API_VERSION"),
+      hosts: esHost,
+    });
   }
-  return esClient
+  return esClient;
 }
 
 /**
@@ -458,22 +524,30 @@ function getESClient () {
  * @param {Number} userId the user ID
  * @param {Array<String>} terms an array of term UUIDs to check
  */
-async function checkAgreedTerms (userId, terms) {
-  const unAgreedTerms = []
-  const missingTerms = []
+async function checkAgreedTerms(userId, terms) {
+  const unAgreedTerms = [];
+  const missingTerms = [];
   for (const term of terms) {
-    const res = await getRequest(`${config.TERMS_API_URL}/${term.id}`, { userId })
-    if (!_.get(res, 'body.agreed', false)) {
-      unAgreedTerms.push(_.get(res, 'body.title', term))
+    const res = await getRequest(`${config.TERMS_API_URL}/${term.id}`, {
+      userId,
+    });
+    if (!_.get(res, "body.agreed", false)) {
+      unAgreedTerms.push(_.get(res, "body.title", term));
       missingTerms.push({
         termId: term.id,
-        roleId: term.roleId
-      })
+        roleId: term.roleId,
+      });
     }
   }
 
   if (unAgreedTerms.length > 0) {
-    throw new errors.ForbiddenError(`The user has not yet agreed to the following terms: [${unAgreedTerms.join(', ')}]`, null, { missingTerms })
+    throw new errors.ForbiddenError(
+      `The user has not yet agreed to the following terms: [${unAgreedTerms.join(
+        ", "
+      )}]`,
+      null,
+      { missingTerms }
+    );
   }
 }
 
@@ -499,5 +573,5 @@ module.exports = {
   getESClient,
   checkAgreedTerms,
   postRequest,
-  getMemberById
-}
+  getMemberById,
+};

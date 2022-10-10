@@ -2,27 +2,29 @@
  * Create table schemes in database
  */
 
-const models = require('../models')
-const { includes } = require('lodash')
-const logger = require('../common/logger')
+const models = require("../model/index");
+const { includes } = require("lodash");
+const logger = require("../common/logger");
 
-logger.info('Requesting to create tables...')
+logger.info("Requesting to create tables...");
 
-const promises = []
-const skipModels = ['DynamoDB', 'MemberProfile']
+const promises = [];
+const skipModels = ["DynamoDB", "MemberProfile"];
 
-Object.keys(models).forEach(modelName => {
+Object.keys(models).forEach((modelName) => {
   if (!includes(skipModels, modelName)) {
-    promises.push(models[modelName].$__.table.create())
+    promises.push(models[modelName].$__.table.create());
   }
-})
+});
 
 Promise.all(promises)
   .then(() => {
-    logger.info('All tables have been requested to be created. Creating processes is run asynchronously')
-    process.exit()
+    logger.info(
+      "All tables have been requested to be created. Creating processes is run asynchronously"
+    );
+    process.exit();
   })
   .catch((err) => {
-    logger.logFullError(err)
-    process.exit(1)
-  })
+    logger.logFullError(err);
+    process.exit(1);
+  });

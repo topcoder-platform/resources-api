@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "../../dist/src/domain/resource",
+    "noImplicitReturns": false
+  },
+  "include": ["**/*"],
+  "exclude": ["node_modules"]
+}
