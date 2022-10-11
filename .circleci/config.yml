@@ -7,8 +7,8 @@ parameters:
     default: true
     type: boolean
 defaults: &defaults
-    docker:
-      - image: circleci/python:2.7-stretch-browsers
+  docker:
+    - image: circleci/python:2.7-stretch-browsers
 install_dependency: &install_dependency
   name: Installation of build and deployment dependencies.
   command: |
@@ -31,32 +31,31 @@ save_cache_settings: &save_cache_settings
     - node_modules
 
 builddeploy_steps: &builddeploy_steps
-      - checkout
-      - setup_remote_docker
-      - run: *install_dependency
-      - run: *install_deploysuite
-      - restore_cache: *restore_cache_settings_for_build
-      - run: ./build.sh ${APPNAME}
-      - save_cache: *save_cache_settings
-      - deploy:
-          name: Running MasterScript.
-          command: |
-            ./awsconfiguration.sh $DEPLOY_ENV
-            source awsenvconf
-            ./buildenv.sh -e $DEPLOY_ENV -b ${LOGICAL_ENV}-${APPNAME}-deployvar
-            source buildenvvar
-            ./master_deploy.sh -d ECS -e $DEPLOY_ENV -t latest -s ${LOGICAL_ENV}-global-appvar,${LOGICAL_ENV}-${APPNAME}-appvar -i ${APPNAME}
-            #testing code changes
-            if [[ true ]]; then
-                ./buildenv.sh -e $DEPLOY_ENV -b ${LOGICAL_ENV}-qa-v1-appvar
-                source buildenvvar  
-                curl --request POST \
-                  --url https://circleci.com/api/v2/project/github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/pipeline \
-                  --header "Circle-Token: ${QA_USER_TOKEN}" \
-                  --header 'content-type: application/json' \
-                  --data '{"branch":"'"$CIRCLE_BRANCH"'","parameters":{"run_automatedtesting":true , "run_basedeployment": false}}'
-            fi  
-
+  - checkout
+  - setup_remote_docker
+  - run: *install_dependency
+  - run: *install_deploysuite
+  - restore_cache: *restore_cache_settings_for_build
+  - run: ./build.sh ${APPNAME}
+  - save_cache: *save_cache_settings
+  - deploy:
+      name: Running MasterScript.
+      command: |
+        ./awsconfiguration.sh $DEPLOY_ENV
+        source awsenvconf
+        ./buildenv.sh -e $DEPLOY_ENV -b ${LOGICAL_ENV}-${APPNAME}-deployvar
+        source buildenvvar
+        ./master_deploy.sh -d ECS -e $DEPLOY_ENV -t latest -s ${LOGICAL_ENV}-global-appvar,${LOGICAL_ENV}-${APPNAME}-appvar -i ${APPNAME}
+        #testing code changes
+        if [[ true ]]; then
+            ./buildenv.sh -e $DEPLOY_ENV -b ${LOGICAL_ENV}-qa-v1-appvar
+            source buildenvvar  
+            curl --request POST \
+              --url https://circleci.com/api/v2/project/github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/pipeline \
+              --header "Circle-Token: ${QA_USER_TOKEN}" \
+              --header 'content-type: application/json' \
+              --data '{"branch":"'"$CIRCLE_BRANCH"'","parameters":{"run_automatedtesting":true , "run_basedeployment": false}}'
+        fi
 
 jobs:
   # Build & Deploy against development backend
@@ -65,15 +64,15 @@ jobs:
     environment:
       DEPLOY_ENV: "DEV"
       LOGICAL_ENV: "dev"
-      APPNAME: "resources-api"    
+      APPNAME: "resources-api"
     steps: *builddeploy_steps
 
   "build-prod":
     <<: *defaults
     environment:
       DEPLOY_ENV: "PROD"
-      LOGICAL_ENV: "prod"    
-      APPNAME: "resources-api"  
+      LOGICAL_ENV: "prod"
+      APPNAME: "resources-api"
     steps: *builddeploy_steps
 
   "Run-Newman-Test":
@@ -82,7 +81,7 @@ jobs:
         environment:
           DEPLOY_ENV: "DEV"
           LOGICAL_ENV: "dev"
-          APPNAME: "resources-api"        
+          APPNAME: "resources-api"
       - image: tray/dynamodb-local
         command: "-inMemory -port 7777"
       - image: elasticsearch:6.8.13
@@ -92,9 +91,9 @@ jobs:
       - checkout
       - setup_remote_docker
       - run: *install_dependency
-      - run: *install_deploysuite      
+      - run: *install_deploysuite
       - run:
-          name: 'newman test'
+          name: "newman test"
           no_output_timeout: 30m
           command: |
             ./awsconfiguration.sh $DEPLOY_ENV
@@ -118,7 +117,7 @@ workflows:
     jobs:
       # Development builds are executed on "develop" branch only.
       - "build-dev":
-          context : org-global
+          context: org-global
           filters:
             branches:
               only:
@@ -127,7 +126,7 @@ workflows:
       # Production builds are exectuted only on tagged commits to the testing
       # master branch.
       - "build-prod":
-          context : org-global
+          context: org-global
           filters:
             branches:
               only: master
@@ -138,9 +137,9 @@ workflows:
       - Hold [Performance-Testing]:
           type: approval
       - "Run-Newman-Test":
-          context : org-global   
+          context: org-global
           requires:
-            - Hold [Performance-Testing]     
+            - Hold [Performance-Testing]
           filters:
             branches:
               only:

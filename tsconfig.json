@@ -3,13 +3,13 @@
     "lib": ["ES2021"],
     "module": "commonjs",
     "target": "ES2021",
-    "strict": true,
+    "strict": false,
     "allowJs": true,
     "moduleResolution": "Node16",
     "esModuleInterop": true,
     "outDir": "dist"
   },
-  "include": ["typings/global.d.ts", "src/**/*", "test/**/*"],
+  "include": ["typings/global.d.ts", "src/**/*"],
   "exclude": ["node_modules", "src/models/resource"],
   "references": [{ "path": "src/models/resource" }]
 }

@@ -5,14 +5,16 @@
 const _ = require("lodash");
 const config = require("config");
 const Joi = require("joi");
-const { v4: uuid } = require("uuid");
 const { validate: validateUUID } = require("uuid");
 const moment = require("moment");
 const helper = require("../common/helper");
 const logger = require("../common/logger");
 const errors = require("../common/errors");
 const ResourceRolePhaseDependencyService = require("./ResourceRolePhaseDependencyService");
-const constants = require("../app-constants");
+const constants = require("../../app-constants");
+const { resourceDomain } = require("../domain/resource/ResourceDomain");
+const { getResourceRoles } = require("./ResourceRoleService");
+const { default: domainHelper } = require("../common/domain-helper");
 
 const payloadFields = [
   "id",
@@ -264,7 +266,17 @@ getResources.schema = {
  */
 async function getResourceRole(roleId, isCreated) {
   try {
-    const resourceRole = await helper.getById("ResourceRole", roleId);
+    const resourceRoles = (
+      await getResourceRoles({
+        id: roleId,
+      })
+    ).data;
+
+    if (resourceRoles.length === 0) {
+      throw new errors.NotFoundError(`Resource Role ${roleId} not found`);
+    }
+
+    const resourceRole = resourceRoles[0];
     if (isCreated && !resourceRole.isActive) {
       throw new errors.BadRequestError(
         `Resource role with id: ${roleId} is inactive, please use an active one.`
@@ -356,7 +368,7 @@ async function init(currentUser, challengeId, resource, isCreated) {
     }
   }
 
-  // ensure resource role existed
+  // ensure resource role exists
   const resourceRole = await getResourceRole(resource.roleId, isCreated);
 
   // perform access validation
@@ -373,7 +385,13 @@ async function init(currentUser, challengeId, resource, isCreated) {
   }
   if (!currentUser.isMachine && !helper.hasAdminRole(currentUser)) {
     // Check if user has agreed to the challenge terms
-    resources = await helper.query("Resource", { challengeId });
+    // resources = await helper.query("Resource", { challengeId });
+    resources = (
+      await resourceDomain.scan({
+        scanCriteria: domainHelper.getScanCriteria({ challengeId }),
+      })
+    ).items;
+
     if (!_.get(challenge, "legacy.selfService")) {
       if (
         !resourceRole.selfObtainable ||
@@ -386,11 +404,17 @@ async function init(currentUser, challengeId, resource, isCreated) {
     }
   } else {
     // fetch resources for specified challenge and member
-    resources = await helper.query("Resource", {
-      hash: { challengeId: { eq: challengeId } },
-      range: { memberId: { eq: memberId } },
-    });
+    // resources = await helper.query("Resource", {
+    //   hash: { challengeId: { eq: challengeId } },
+    //   range: { memberId: { eq: memberId } },
+    // });
+    resources = (
+      await resourceDomain.scan({
+        scanCriteria: domainHelper.getScanCriteria({ challengeId, memberId }),
+      })
+    ).items;
   }
+
   // skip phase dependency checks for tasks
   if (_.get(challenge, "task.isTask", false)) {
     return { resources, memberId, handle };
@@ -476,35 +500,29 @@ async function createResource(currentUser, resource) {
       );
     }
 
-    const ret = await helper.create(
-      "Resource",
-      _.assign(
-        {
-          id: uuid(),
-          memberId,
-          created: moment().utc().format(),
-          createdBy: currentUser.handle || currentUser.sub,
-        },
-        resource
-      )
-    );
+    const ret = await resourceDomain.create({
+      memberId: String(memberId),
+      memberHandle: resource.memberHandle,
+      challengeId: resource.challengeId,
+      roleId: resource.roleId,
+    });
 
     // Create resources in ES
-    const esClient = await helper.getESClient();
-    await esClient.create({
-      index: config.ES.ES_INDEX,
-      type: config.ES.ES_TYPE,
-      id: ret.id,
-      body: _.pick(ret, payloadFields),
-      refresh: "true", // refresh ES so that it is visible for read operations instantly
-    });
+    // const esClient = await helper.getESClient();
+    // await esClient.create({
+    //   index: config.ES.ES_INDEX,
+    //   type: config.ES.ES_TYPE,
+    //   id: ret.id,
+    //   body: _.pick(ret, payloadFields),
+    //   refresh: "true", // refresh ES so that it is visible for read operations instantly
+    // });
 
     logger.debug(
       `Created resource: ${JSON.stringify(_.pick(ret, payloadFields))}`
     );
     await helper.postEvent(
-      config.RESOURCE_CREATE_TOPIC,
-      _.pick(ret, payloadFields)
+      config.RESOURCE_CREATE_TOPIC, // legacy processor will create resource in informix | payment to resource
+      _.pick(ret, payloadFields) // ES processor will index to ES // Sends Email
     );
 
     return ret;
@@ -546,6 +564,8 @@ async function deleteResource(currentUser, resource) {
       resource
     );
 
+    console.log("resources-list", resources);
+
     const ret = _.reduce(
       resources,
       (result, r) =>
@@ -555,6 +575,8 @@ async function deleteResource(currentUser, resource) {
           : result,
       undefined
     );
+
+    console.log("resource to delete", ret);
 
     if (!ret) {
       throw new errors.NotFoundError(
@@ -566,16 +588,26 @@ async function deleteResource(currentUser, resource) {
       );
     }
 
-    await ret.delete();
+    // await ret.delete();
+
+    await resourceDomain.delete({
+      key: "id",
+      value: {
+        value: {
+          $case: "stringValue",
+          stringValue: ret.id,
+        },
+      },
+    });
 
     // delete from ES
-    const esClient = await helper.getESClient();
-    await esClient.delete({
-      index: config.ES.ES_INDEX,
-      type: config.ES.ES_TYPE,
-      id: ret.id,
-      refresh: "true", // refresh ES so that it is effective for read operations instantly
-    });
+    // const esClient = await helper.getESClient();
+    // await esClient.delete({
+    //   index: config.ES.ES_INDEX,
+    //   type: config.ES.ES_TYPE,
+    //   id: ret.id,
+    //   refresh: "true", // refresh ES so that it is effective for read operations instantly
+    // });
 
     logger.debug(
       `Deleted resource, posting to Bus API: ${JSON.stringify(

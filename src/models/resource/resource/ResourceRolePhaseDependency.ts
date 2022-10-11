@@ -4,13 +4,13 @@ import _m0 from "protobufjs/minimal";
 export interface ResourceRolePhaseDependency {
   id: string;
   phaseId: string;
-  phaseState: string;
+  phaseState: boolean;
   resourceRoleId: string;
 }
 
 export interface CreateResourceRolePhaseDependencyInput {
   phaseId: string;
-  phaseState: string;
+  phaseState: boolean;
   resourceRoleId: string;
 }
 
@@ -19,7 +19,7 @@ export interface ResourceRolePhaseDependencyList {
 }
 
 function createBaseResourceRolePhaseDependency(): ResourceRolePhaseDependency {
-  return { id: "", phaseId: "", phaseState: "", resourceRoleId: "" };
+  return { id: "", phaseId: "", phaseState: false, resourceRoleId: "" };
 }
 
 export const ResourceRolePhaseDependency = {
@@ -30,8 +30,8 @@ export const ResourceRolePhaseDependency = {
     if (message.phaseId !== "") {
       writer.uint32(18).string(message.phaseId);
     }
-    if (message.phaseState !== "") {
-      writer.uint32(26).string(message.phaseState);
+    if (message.phaseState === true) {
+      writer.uint32(24).bool(message.phaseState);
     }
     if (message.resourceRoleId !== "") {
       writer.uint32(34).string(message.resourceRoleId);
@@ -53,7 +53,7 @@ export const ResourceRolePhaseDependency = {
           message.phaseId = reader.string();
           break;
         case 3:
-          message.phaseState = reader.string();
+          message.phaseState = reader.bool();
           break;
         case 4:
           message.resourceRoleId = reader.string();
@@ -70,7 +70,7 @@ export const ResourceRolePhaseDependency = {
     return {
       id: isSet(object.id) ? String(object.id) : "",
       phaseId: isSet(object.phaseId) ? String(object.phaseId) : "",
-      phaseState: isSet(object.phaseState) ? String(object.phaseState) : "",
+      phaseState: isSet(object.phaseState) ? Boolean(object.phaseState) : false,
       resourceRoleId: isSet(object.resourceRoleId) ? String(object.resourceRoleId) : "",
     };
   },
@@ -88,14 +88,14 @@ export const ResourceRolePhaseDependency = {
     const message = createBaseResourceRolePhaseDependency();
     message.id = object.id ?? "";
     message.phaseId = object.phaseId ?? "";
-    message.phaseState = object.phaseState ?? "";
+    message.phaseState = object.phaseState ?? false;
     message.resourceRoleId = object.resourceRoleId ?? "";
     return message;
   },
 };
 
 function createBaseCreateResourceRolePhaseDependencyInput(): CreateResourceRolePhaseDependencyInput {
-  return { phaseId: "", phaseState: "", resourceRoleId: "" };
+  return { phaseId: "", phaseState: false, resourceRoleId: "" };
 }
 
 export const CreateResourceRolePhaseDependencyInput = {
@@ -103,8 +103,8 @@ export const CreateResourceRolePhaseDependencyInput = {
     if (message.phaseId !== "") {
       writer.uint32(10).string(message.phaseId);
     }
-    if (message.phaseState !== "") {
-      writer.uint32(18).string(message.phaseState);
+    if (message.phaseState === true) {
+      writer.uint32(16).bool(message.phaseState);
     }
     if (message.resourceRoleId !== "") {
       writer.uint32(26).string(message.resourceRoleId);
@@ -123,7 +123,7 @@ export const CreateResourceRolePhaseDependencyInput = {
           message.phaseId = reader.string();
           break;
         case 2:
-          message.phaseState = reader.string();
+          message.phaseState = reader.bool();
           break;
         case 3:
           message.resourceRoleId = reader.string();
@@ -139,7 +139,7 @@ export const CreateResourceRolePhaseDependencyInput = {
   fromJSON(object: any): CreateResourceRolePhaseDependencyInput {
     return {
       phaseId: isSet(object.phaseId) ? String(object.phaseId) : "",
-      phaseState: isSet(object.phaseState) ? String(object.phaseState) : "",
+      phaseState: isSet(object.phaseState) ? Boolean(object.phaseState) : false,
       resourceRoleId: isSet(object.resourceRoleId) ? String(object.resourceRoleId) : "",
     };
   },
@@ -157,7 +157,7 @@ export const CreateResourceRolePhaseDependencyInput = {
   ): CreateResourceRolePhaseDependencyInput {
     const message = createBaseCreateResourceRolePhaseDependencyInput();
     message.phaseId = object.phaseId ?? "";
-    message.phaseState = object.phaseState ?? "";
+    message.phaseState = object.phaseState ?? false;
     message.resourceRoleId = object.resourceRoleId ?? "";
     return message;
   },

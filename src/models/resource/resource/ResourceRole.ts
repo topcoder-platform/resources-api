@@ -22,6 +22,20 @@ export interface CreateResourceRoleInput {
   selfObtainable: boolean;
 }
 
+export interface UpdateResourceRoleInput {
+  id: string;
+  payload?: UpdateResourceRoleInput_Payload;
+}
+
+export interface UpdateResourceRoleInput_Payload {
+  fullAccess: boolean;
+  fullReadAccess: boolean;
+  fullWriteAccess: boolean;
+  isActive: boolean;
+  name: string;
+  selfObtainable: boolean;
+}
+
 export interface ResourceRoleList {
   resourceRoles: ResourceRole[];
 }
@@ -248,6 +262,170 @@ export const CreateResourceRoleInput = {
 
   fromPartial<I extends Exact<DeepPartial<CreateResourceRoleInput>, I>>(object: I): CreateResourceRoleInput {
     const message = createBaseCreateResourceRoleInput();
+    message.fullAccess = object.fullAccess ?? false;
+    message.fullReadAccess = object.fullReadAccess ?? false;
+    message.fullWriteAccess = object.fullWriteAccess ?? false;
+    message.isActive = object.isActive ?? false;
+    message.name = object.name ?? "";
+    message.selfObtainable = object.selfObtainable ?? false;
+    return message;
+  },
+};
+
+function createBaseUpdateResourceRoleInput(): UpdateResourceRoleInput {
+  return { id: "", payload: undefined };
+}
+
+export const UpdateResourceRoleInput = {
+  encode(message: UpdateResourceRoleInput, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.payload !== undefined) {
+      UpdateResourceRoleInput_Payload.encode(message.payload, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): UpdateResourceRoleInput {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateResourceRoleInput();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.string();
+          break;
+        case 2:
+          message.payload = UpdateResourceRoleInput_Payload.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateResourceRoleInput {
+    return {
+      id: isSet(object.id) ? String(object.id) : "",
+      payload: isSet(object.payload) ? UpdateResourceRoleInput_Payload.fromJSON(object.payload) : undefined,
+    };
+  },
+
+  toJSON(message: UpdateResourceRoleInput): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    message.payload !== undefined &&
+      (obj.payload = message.payload ? UpdateResourceRoleInput_Payload.toJSON(message.payload) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UpdateResourceRoleInput>, I>>(object: I): UpdateResourceRoleInput {
+    const message = createBaseUpdateResourceRoleInput();
+    message.id = object.id ?? "";
+    message.payload = (object.payload !== undefined && object.payload !== null)
+      ? UpdateResourceRoleInput_Payload.fromPartial(object.payload)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseUpdateResourceRoleInput_Payload(): UpdateResourceRoleInput_Payload {
+  return {
+    fullAccess: false,
+    fullReadAccess: false,
+    fullWriteAccess: false,
+    isActive: false,
+    name: "",
+    selfObtainable: false,
+  };
+}
+
+export const UpdateResourceRoleInput_Payload = {
+  encode(message: UpdateResourceRoleInput_Payload, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.fullAccess === true) {
+      writer.uint32(8).bool(message.fullAccess);
+    }
+    if (message.fullReadAccess === true) {
+      writer.uint32(16).bool(message.fullReadAccess);
+    }
+    if (message.fullWriteAccess === true) {
+      writer.uint32(24).bool(message.fullWriteAccess);
+    }
+    if (message.isActive === true) {
+      writer.uint32(32).bool(message.isActive);
+    }
+    if (message.name !== "") {
+      writer.uint32(42).string(message.name);
+    }
+    if (message.selfObtainable === true) {
+      writer.uint32(48).bool(message.selfObtainable);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): UpdateResourceRoleInput_Payload {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateResourceRoleInput_Payload();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.fullAccess = reader.bool();
+          break;
+        case 2:
+          message.fullReadAccess = reader.bool();
+          break;
+        case 3:
+          message.fullWriteAccess = reader.bool();
+          break;
+        case 4:
+          message.isActive = reader.bool();
+          break;
+        case 5:
+          message.name = reader.string();
+          break;
+        case 6:
+          message.selfObtainable = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateResourceRoleInput_Payload {
+    return {
+      fullAccess: isSet(object.fullAccess) ? Boolean(object.fullAccess) : false,
+      fullReadAccess: isSet(object.fullReadAccess) ? Boolean(object.fullReadAccess) : false,
+      fullWriteAccess: isSet(object.fullWriteAccess) ? Boolean(object.fullWriteAccess) : false,
+      isActive: isSet(object.isActive) ? Boolean(object.isActive) : false,
+      name: isSet(object.name) ? String(object.name) : "",
+      selfObtainable: isSet(object.selfObtainable) ? Boolean(object.selfObtainable) : false,
+    };
+  },
+
+  toJSON(message: UpdateResourceRoleInput_Payload): unknown {
+    const obj: any = {};
+    message.fullAccess !== undefined && (obj.fullAccess = message.fullAccess);
+    message.fullReadAccess !== undefined && (obj.fullReadAccess = message.fullReadAccess);
+    message.fullWriteAccess !== undefined && (obj.fullWriteAccess = message.fullWriteAccess);
+    message.isActive !== undefined && (obj.isActive = message.isActive);
+    message.name !== undefined && (obj.name = message.name);
+    message.selfObtainable !== undefined && (obj.selfObtainable = message.selfObtainable);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UpdateResourceRoleInput_Payload>, I>>(
+    object: I,
+  ): UpdateResourceRoleInput_Payload {
+    const message = createBaseUpdateResourceRoleInput_Payload();
     message.fullAccess = object.fullAccess ?? false;
     message.fullReadAccess = object.fullReadAccess ?? false;
     message.fullWriteAccess = object.fullWriteAccess ?? false;

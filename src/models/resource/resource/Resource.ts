@@ -9,6 +9,7 @@ export interface Resource {
   createdBy: string;
   legacyId?: number | undefined;
   memberHandle: string;
+  memberId: string;
   roleId: string;
   updated?: number | undefined;
   updatedBy?: string | undefined;
@@ -17,6 +18,7 @@ export interface Resource {
 export interface CreateResourceInput {
   challengeId: string;
   memberHandle: string;
+  memberId: string;
   roleId: string;
 }
 
@@ -32,6 +34,7 @@ function createBaseResource(): Resource {
     createdBy: "",
     legacyId: undefined,
     memberHandle: "",
+    memberId: "",
     roleId: "",
     updated: undefined,
     updatedBy: undefined,
@@ -58,14 +61,17 @@ export const Resource = {
     if (message.memberHandle !== "") {
       writer.uint32(50).string(message.memberHandle);
     }
+    if (message.memberId !== "") {
+      writer.uint32(58).string(message.memberId);
+    }
     if (message.roleId !== "") {
-      writer.uint32(58).string(message.roleId);
+      writer.uint32(66).string(message.roleId);
     }
     if (message.updated !== undefined) {
-      writer.uint32(64).int64(message.updated);
+      writer.uint32(72).int64(message.updated);
     }
     if (message.updatedBy !== undefined) {
-      writer.uint32(74).string(message.updatedBy);
+      writer.uint32(82).string(message.updatedBy);
     }
     return writer;
   },
@@ -96,12 +102,15 @@ export const Resource = {
           message.memberHandle = reader.string();
           break;
         case 7:
-          message.roleId = reader.string();
+          message.memberId = reader.string();
           break;
         case 8:
-          message.updated = longToNumber(reader.int64() as Long);
+          message.roleId = reader.string();
           break;
         case 9:
+          message.updated = longToNumber(reader.int64() as Long);
+          break;
+        case 10:
           message.updatedBy = reader.string();
           break;
         default:
@@ -120,6 +129,7 @@ export const Resource = {
       createdBy: isSet(object.createdBy) ? String(object.createdBy) : "",
       legacyId: isSet(object.legacyId) ? Number(object.legacyId) : undefined,
       memberHandle: isSet(object.memberHandle) ? String(object.memberHandle) : "",
+      memberId: isSet(object.memberId) ? String(object.memberId) : "",
       roleId: isSet(object.roleId) ? String(object.roleId) : "",
       updated: isSet(object.updated) ? Number(object.updated) : undefined,
       updatedBy: isSet(object.updatedBy) ? String(object.updatedBy) : undefined,
@@ -134,6 +144,7 @@ export const Resource = {
     message.createdBy !== undefined && (obj.createdBy = message.createdBy);
     message.legacyId !== undefined && (obj.legacyId = Math.round(message.legacyId));
     message.memberHandle !== undefined && (obj.memberHandle = message.memberHandle);
+    message.memberId !== undefined && (obj.memberId = message.memberId);
     message.roleId !== undefined && (obj.roleId = message.roleId);
     message.updated !== undefined && (obj.updated = Math.round(message.updated));
     message.updatedBy !== undefined && (obj.updatedBy = message.updatedBy);
@@ -148,6 +159,7 @@ export const Resource = {
     message.createdBy = object.createdBy ?? "";
     message.legacyId = object.legacyId ?? undefined;
     message.memberHandle = object.memberHandle ?? "";
+    message.memberId = object.memberId ?? "";
     message.roleId = object.roleId ?? "";
     message.updated = object.updated ?? undefined;
     message.updatedBy = object.updatedBy ?? undefined;
@@ -156,7 +168,7 @@ export const Resource = {
 };
 
 function createBaseCreateResourceInput(): CreateResourceInput {
-  return { challengeId: "", memberHandle: "", roleId: "" };
+  return { challengeId: "", memberHandle: "", memberId: "", roleId: "" };
 }
 
 export const CreateResourceInput = {
@@ -165,10 +177,13 @@ export const CreateResourceInput = {
       writer.uint32(10).string(message.challengeId);
     }
     if (message.memberHandle !== "") {
-      writer.uint32(34).string(message.memberHandle);
+      writer.uint32(18).string(message.memberHandle);
+    }
+    if (message.memberId !== "") {
+      writer.uint32(26).string(message.memberId);
     }
     if (message.roleId !== "") {
-      writer.uint32(42).string(message.roleId);
+      writer.uint32(34).string(message.roleId);
     }
     return writer;
   },
@@ -183,10 +198,13 @@ export const CreateResourceInput = {
         case 1:
           message.challengeId = reader.string();
           break;
-        case 4:
+        case 2:
           message.memberHandle = reader.string();
           break;
-        case 5:
+        case 3:
+          message.memberId = reader.string();
+          break;
+        case 4:
           message.roleId = reader.string();
           break;
         default:
@@ -201,6 +219,7 @@ export const CreateResourceInput = {
     return {
       challengeId: isSet(object.challengeId) ? String(object.challengeId) : "",
       memberHandle: isSet(object.memberHandle) ? String(object.memberHandle) : "",
+      memberId: isSet(object.memberId) ? String(object.memberId) : "",
       roleId: isSet(object.roleId) ? String(object.roleId) : "",
     };
   },
@@ -209,6 +228,7 @@ export const CreateResourceInput = {
     const obj: any = {};
     message.challengeId !== undefined && (obj.challengeId = message.challengeId);
     message.memberHandle !== undefined && (obj.memberHandle = message.memberHandle);
+    message.memberId !== undefined && (obj.memberId = message.memberId);
     message.roleId !== undefined && (obj.roleId = message.roleId);
     return obj;
   },
@@ -217,6 +237,7 @@ export const CreateResourceInput = {
     const message = createBaseCreateResourceInput();
     message.challengeId = object.challengeId ?? "";
     message.memberHandle = object.memberHandle ?? "";
+    message.memberId = object.memberId ?? "";
     message.roleId = object.roleId ?? "";
     return message;
   },

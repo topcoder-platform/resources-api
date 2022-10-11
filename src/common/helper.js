@@ -6,7 +6,7 @@ const _ = require("lodash");
 const config = require("config");
 const querystring = require("querystring");
 const request = require("superagent");
-const constants = require("../app-constants");
+const constants = require("../../app-constants");
 const models = require("../model/index");
 const { MemberProfile, MemberStats } = require("../model/index");
 const errors = require("./errors");
@@ -187,69 +187,15 @@ async function getMemberInfoById(id) {
 }
 
 /**
- * Get Member by memberId from the API
- * @param {String} id The user ID
- * @returns {Promise<void>}
- */
-async function getMemberById(id) {
-  try {
-    const res = await getRequest(`${config.MEMBER_API_URL}`, { userId: id });
-    return _.get(res, "body[0]");
-  } catch (e) {
-    logger.debug(e.message);
-    logger.debug(e);
-  }
-}
-
-/**
  * Get Data by model id
  * @param {String} handle The member handle
  * @returns {Promise<void>}
  */
 async function getMemberIdByHandle(handle) {
-  try {
-    // logger.warn(`getMemberIdByHandle ${handle}`)
-    const profile = await MemberProfile.query("handleLower")
-      .eq(_.toLower(handle))
-      .exec()
-      .then((r) => r[0]);
-    return profile.userId;
-  } catch (e) {
-    // fall back to v3 api...
-    logger.warn(
-      `Get MemberID by Handle from Dynamo Failed, trying v3 Members API. Error: ${JSON.stringify(
-        e
-      )}`
-    );
-    return getMemberIdByHandleFromV3Members(handle);
-  }
+  const results = await getRequest(`${config.MEMBER_API_URL}/${handle}`, {})
+  return results.body.userId;
 }
 
-async function getMemberIdByHandleFromV3Members(handle) {
-  let memberId;
-  try {
-    logger.warn(`getMemberIdByHandle ${handle} from v5`);
-    const res = await getRequest(`${config.MEMBER_API_URL}/${handle}`);
-    if (_.get(res, "body.userId")) {
-      memberId = String(res.body.userId);
-    }
-    // handle return from v3 API, handle and memberHandle are the same under case-insensitive condition
-    handle = _.get(res, "body.handle");
-  } catch (error) {
-    // re-throw all error except 404 Not-Founded, BadRequestError should be thrown if 404 occurs
-    if (error.status !== 404) {
-      throw error;
-    }
-  }
-
-  if (_.isUndefined(memberId)) {
-    throw new errors.BadRequestError(
-      `User with handle: ${handle} doesn't exist`
-    );
-  }
-
-  return memberId;
-}
 
 /**
  * Create item in database
@@ -573,5 +519,4 @@ module.exports = {
   getESClient,
   checkAgreedTerms,
   postRequest,
-  getMemberById,
 };

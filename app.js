@@ -10,11 +10,12 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const HttpStatus = require("http-status-codes");
-const logger = require("./common/logger");
 const interceptor = require("express-interceptor");
 const YAML = require("yamljs");
 const swaggerUi = require("swagger-ui-express");
 const resourcesAPISwaggerDoc = YAML.load("./docs/swagger.yaml");
+
+const logger = require("./src/common/logger");
 
 // setup express app
 const app = express();

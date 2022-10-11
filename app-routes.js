@@ -5,10 +5,10 @@
 const _ = require("lodash");
 const config = require("config");
 const HttpStatus = require("http-status-codes");
-const helper = require("./common/helper");
-const errors = require("./common/errors");
+const helper = require("./src/common/helper");
+const errors = require("./src/common/errors");
 // const logger = require('./src/common/logger')
-const routes = require("./routes");
+const routes = require("./src/routes");
 const authenticator = require("tc-core-library-js").middleware.jwtAuthenticator;
 
 /**
@@ -68,7 +68,11 @@ module.exports = (app) => {
         if (!def.allowAnonymous) {
           actions.push((req, res, next) => {
             if (req.authUser.isMachine) {
-              // logger.warn(`Request Auth User ${req.authUser} calling ${controllerPath} ${method}`)
+              console.log(
+                `Request Auth User ${JSON.stringify(
+                  req.authUser
+                )} calling ${controllerPath} ${method}`
+              );
               // M2M
               if (
                 !req.authUser.scopes ||

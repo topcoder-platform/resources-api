@@ -2,7 +2,7 @@
  * Contains all routes
  */
 
-const constants = require("./app-constants");
+const constants = require("../app-constants");
 const {
   SCOPES: { READ, CREATE, DELETE, UPDATE, ALL },
 } = require("config");

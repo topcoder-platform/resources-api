@@ -12,7 +12,12 @@ import {
   UntypedServiceImplementation,
 } from "@grpc/grpc-js";
 import { LookupCriteria, ScanRequest, ScanResult } from "../common/Common";
-import { CreateResourceRoleInput, ResourceRole, ResourceRoleList } from "../resource/ResourceRole";
+import {
+  CreateResourceRoleInput,
+  ResourceRole,
+  ResourceRoleList,
+  UpdateResourceRoleInput,
+} from "../resource/ResourceRole";
 
 export type ResourceRoleService = typeof ResourceRoleService;
 export const ResourceRoleService = {
@@ -43,7 +48,15 @@ export const ResourceRoleService = {
     responseSerialize: (value: ResourceRole) => Buffer.from(ResourceRole.encode(value).finish()),
     responseDeserialize: (value: Buffer) => ResourceRole.decode(value),
   },
-  /** rpc Update(UpdateResourceRequest) returns (MutationResult); */
+  update: {
+    path: "/topcoder.domain.resource_role_service.ResourceRole/Update",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: UpdateResourceRoleInput) => Buffer.from(UpdateResourceRoleInput.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => UpdateResourceRoleInput.decode(value),
+    responseSerialize: (value: ResourceRoleList) => Buffer.from(ResourceRoleList.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => ResourceRoleList.decode(value),
+  },
   delete: {
     path: "/topcoder.domain.resource_role_service.ResourceRole/Delete",
     requestStream: false,
@@ -59,7 +72,7 @@ export interface ResourceRoleServer extends UntypedServiceImplementation {
   scan: handleUnaryCall<ScanRequest, ScanResult>;
   lookup: handleUnaryCall<LookupCriteria, ResourceRole>;
   create: handleUnaryCall<CreateResourceRoleInput, ResourceRole>;
-  /** rpc Update(UpdateResourceRequest) returns (MutationResult); */
+  update: handleUnaryCall<UpdateResourceRoleInput, ResourceRoleList>;
   delete: handleUnaryCall<LookupCriteria, ResourceRoleList>;
 }
 
@@ -106,7 +119,21 @@ export interface ResourceRoleClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: ResourceRole) => void,
   ): ClientUnaryCall;
-  /** rpc Update(UpdateResourceRequest) returns (MutationResult); */
+  update(
+    request: UpdateResourceRoleInput,
+    callback: (error: ServiceError | null, response: ResourceRoleList) => void,
+  ): ClientUnaryCall;
+  update(
+    request: UpdateResourceRoleInput,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: ResourceRoleList) => void,
+  ): ClientUnaryCall;
+  update(
+    request: UpdateResourceRoleInput,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: ResourceRoleList) => void,
+  ): ClientUnaryCall;
   delete(
     request: LookupCriteria,
     callback: (error: ServiceError | null, response: ResourceRoleList) => void,
