@@ -505,6 +505,7 @@ async function createResource(currentUser, resource) {
       memberHandle: resource.memberHandle,
       challengeId: resource.challengeId,
       roleId: resource.roleId,
+      paymentAmount: resource.paymentAmount,
     });
 
     // Create resources in ES
@@ -520,10 +521,11 @@ async function createResource(currentUser, resource) {
     logger.debug(
       `Created resource: ${JSON.stringify(_.pick(ret, payloadFields))}`
     );
-    await helper.postEvent(
-      config.RESOURCE_CREATE_TOPIC, // legacy processor will create resource in informix | payment to resource
-      _.pick(ret, payloadFields) // ES processor will index to ES // Sends Email
-    );
+
+    // await helper.postEvent(
+    //   config.RESOURCE_CREATE_TOPIC, // legacy processor will create resource in informix | payment to resource
+    //   _.pick(ret, payloadFields) // ES processor will index to ES // Sends Email
+    // );
 
     return ret;
   } catch (err) {
@@ -544,6 +546,7 @@ createResource.schema = {
       challengeId: Joi.id(),
       memberHandle: Joi.string().required(),
       roleId: Joi.id(),
+      paymentAmount: Joi.number(),
     })
     .required(),
 };

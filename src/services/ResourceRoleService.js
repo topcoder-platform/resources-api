@@ -3,14 +3,14 @@
  */
 
 const _ = require("lodash");
-const Joi = require("joi");
 const config = require("config");
+const Joi = require("joi");
+const { v4: uuid } = require("uuid");
 const helper = require("../common/helper");
 const logger = require("../common/logger");
-
 const { resourceRoleDomain } = require("../domain/resource/ResourceRoleDomain");
+const { Operator } = require("../models/resource/common/Common");
 const { default: domainHelper } = require("../common/domain-helper");
-
 const errors = require("../common/errors");
 
 const payloadFields = [
@@ -29,9 +29,17 @@ const payloadFields = [
  * @returns {Array} the search result
  */
 async function getResourceRoles(criteria) {
-  const { items } = await resourceRoleDomain.scan({
-    scanCriteria: domainHelper.getScanCriteria(criteria),
-  });
+  const scanCriteria = [];
+
+  for (const key in criteria) {
+    scanCriteria.push({
+      key,
+      operator: Operator.EQUAL,
+      value: criteria[key],
+    });
+  }
+
+  const { items } = await resourceRoleDomain.scan({ scanCriteria });
 
   return {
     data: items,
@@ -61,19 +69,32 @@ getResourceRoles.schema = {
  * @returns {Object} the created challenge setting
  */
 async function createResourceRole(resourceRole) {
-  const { items } = await resourceRoleDomain.scan({
-    scanCriteria: domainHelper.getScanCriteria({ name: resourceRole.name }),
-  });
+  try {
+    const resourcesMatchingName = await resourceRoleDomain.scan({
+      scanCriteria: domainHelper.getScanCriteria({
+        nameLower: resourceRole.name.toLowerCase(),
+      }),
+    });
 
-  if (items.length > 0) {
-    throw new errors.ConflictError(
-      `ResourceRole with name: ${resourceRole.name} already exist.`
-    );
+    if (resourcesMatchingName.items.length > 0) {
+      throw new errors.ConflictError(
+        `ResourceRole with name: ${resourceRole.name} already exist.`
+      );
+    }
+
+    const newResourceRole = await resourceRoleDomain.create(resourceRole);
+
+    await helper.postEvent(config.RESOURCE_ROLE_CREATE_TOPIC, ret);
+
+    return newResourceRole;
+  } catch (err) {
+    if (!helper.isCustomError(err)) {
+      await helper.postEvent(config.KAFKA_ERROR_TOPIC, {
+        error: _.pick(err, "name", "message", "stack"),
+      });
+    }
+    throw err;
   }
-
-  const newResourceRole = await resourceRoleDomain.create(resourceRole);
-  await helper.postEvent(config.RESOURCE_ROLE_CREATE_TOPIC, newResourceRole);
-  return newResourceRole;
 }
 
 createResourceRole.schema = {

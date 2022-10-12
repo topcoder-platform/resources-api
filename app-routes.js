@@ -68,11 +68,6 @@ module.exports = (app) => {
         if (!def.allowAnonymous) {
           actions.push((req, res, next) => {
             if (req.authUser.isMachine) {
-              console.log(
-                `Request Auth User ${JSON.stringify(
-                  req.authUser
-                )} calling ${controllerPath} ${method}`
-              );
               // M2M
               if (
                 !req.authUser.scopes ||
@@ -89,7 +84,6 @@ module.exports = (app) => {
             } else {
               // User
               req.authUser.userId = String(req.authUser.userId);
-              console.log(req.authUser);
               if (
                 !req.authUser.roles ||
                 !helper.checkIfExists(def.access, req.authUser.roles)

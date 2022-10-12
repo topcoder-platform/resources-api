@@ -20,6 +20,7 @@ export interface CreateResourceInput {
   memberHandle: string;
   memberId: string;
   roleId: string;
+  paymentAmount?: number | undefined;
 }
 
 export interface ResourceList {
@@ -168,7 +169,7 @@ export const Resource = {
 };
 
 function createBaseCreateResourceInput(): CreateResourceInput {
-  return { challengeId: "", memberHandle: "", memberId: "", roleId: "" };
+  return { challengeId: "", memberHandle: "", memberId: "", roleId: "", paymentAmount: undefined };
 }
 
 export const CreateResourceInput = {
@@ -184,6 +185,9 @@ export const CreateResourceInput = {
     }
     if (message.roleId !== "") {
       writer.uint32(34).string(message.roleId);
+    }
+    if (message.paymentAmount !== undefined) {
+      writer.uint32(41).double(message.paymentAmount);
     }
     return writer;
   },
@@ -207,6 +211,9 @@ export const CreateResourceInput = {
         case 4:
           message.roleId = reader.string();
           break;
+        case 5:
+          message.paymentAmount = reader.double();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -221,6 +228,7 @@ export const CreateResourceInput = {
       memberHandle: isSet(object.memberHandle) ? String(object.memberHandle) : "",
       memberId: isSet(object.memberId) ? String(object.memberId) : "",
       roleId: isSet(object.roleId) ? String(object.roleId) : "",
+      paymentAmount: isSet(object.paymentAmount) ? Number(object.paymentAmount) : undefined,
     };
   },
 
@@ -230,6 +238,7 @@ export const CreateResourceInput = {
     message.memberHandle !== undefined && (obj.memberHandle = message.memberHandle);
     message.memberId !== undefined && (obj.memberId = message.memberId);
     message.roleId !== undefined && (obj.roleId = message.roleId);
+    message.paymentAmount !== undefined && (obj.paymentAmount = message.paymentAmount);
     return obj;
   },
 
@@ -239,6 +248,7 @@ export const CreateResourceInput = {
     message.memberHandle = object.memberHandle ?? "";
     message.memberId = object.memberId ?? "";
     message.roleId = object.roleId ?? "";
+    message.paymentAmount = object.paymentAmount ?? undefined;
     return message;
   },
 };

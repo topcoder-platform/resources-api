@@ -192,10 +192,9 @@ async function getMemberInfoById(id) {
  * @returns {Promise<void>}
  */
 async function getMemberIdByHandle(handle) {
-  const results = await getRequest(`${config.MEMBER_API_URL}/${handle}`, {})
+  const results = await getRequest(`${config.MEMBER_API_URL}/${handle}`, {});
   return results.body.userId;
 }
-
 
 /**
  * Create item in database
@@ -486,15 +485,16 @@ async function checkAgreedTerms(userId, terms) {
     }
   }
 
-  if (unAgreedTerms.length > 0) {
-    throw new errors.ForbiddenError(
-      `The user has not yet agreed to the following terms: [${unAgreedTerms.join(
-        ", "
-      )}]`,
-      null,
-      { missingTerms }
-    );
-  }
+  // POC: Business Logic Check
+  // if (unAgreedTerms.length > 0) {
+  //   throw new errors.ForbiddenError(
+  //     `The user has not yet agreed to the following terms: [${unAgreedTerms.join(
+  //       ", "
+  //     )}]`,
+  //     null,
+  //     { missingTerms }
+  //   );
+  // }
 }
 
 module.exports = {
