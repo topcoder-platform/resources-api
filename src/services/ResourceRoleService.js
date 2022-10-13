@@ -29,17 +29,9 @@ const payloadFields = [
  * @returns {Array} the search result
  */
 async function getResourceRoles(criteria) {
-  const scanCriteria = [];
-
-  for (const key in criteria) {
-    scanCriteria.push({
-      key,
-      operator: Operator.EQUAL,
-      value: criteria[key],
-    });
-  }
-
-  const { items } = await resourceRoleDomain.scan({ scanCriteria });
+  const { items } = await resourceRoleDomain.scan({
+    scanCriteria: domainHelper.getScanCriteria(criteria),
+  });
 
   return {
     data: items,
