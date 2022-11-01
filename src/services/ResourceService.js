@@ -542,6 +542,7 @@ async function searchES (mustQuery, perPage, page, sortCriteria) {
 }
 
 module.exports = {
+  init,
   getResources,
   createResource,
   deleteResource,
