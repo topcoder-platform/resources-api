@@ -123,6 +123,7 @@ workflows:
             branches:
               only:
                 - develop
+                - feat/xray
 
       # Production builds are exectuted only on tagged commits to the testing
       # master branch.

@@ -548,4 +548,8 @@ module.exports = {
   listChallengesByMember
 }
 
-logger.buildService(module.exports)
+logger.buildService(module.exports, {
+  validators: { enabled: true },
+  logging: { enabled: true },
+  tracing: { enabled: true, annotations: [ 'id' ], metadata: [ 'createdBy', 'status' ] }
+})
