@@ -127,4 +127,3 @@ logger.buildService(module.exports, {
   logging: { enabled: true },
   tracing: { enabled: true, annotations: [ 'id' ], metadata: [ 'createdBy', 'status' ] }
 })
-
