@@ -1,0 +1,30 @@
+[
+  {
+    "required_field_1": "challengeId",
+    "required_field_2": "memberId",
+    "required_field_3": "memberHandle",
+    "memberId": 305384,
+    "memberHandle": "mess"
+  },
+  {
+    "required_field_1": "challengeId",
+    "required_field_2": "memberId_only_challengeId_provided",
+    "required_field_3": "memberHandle_only_challengeId_provided",
+    "memberId": 305384,
+    "memberHandle": "mess"
+  },
+  {
+    "required_field_1": "challengeId",
+    "required_field_2": "memberId",
+    "required_field_3": "memberHandle_is_not_provided",
+    "memberId": 305384,
+    "memberHandle": "mess"
+  },
+  {
+    "required_field_1": "challengeId",
+    "required_field_2": "memberId_is_not_provided",
+    "required_field_3": "memberHandle",
+    "memberId": 305384,
+    "memberHandle": "mess"
+  }
+]

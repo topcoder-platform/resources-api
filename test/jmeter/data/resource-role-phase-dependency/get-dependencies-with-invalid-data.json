@@ -1,0 +1,34 @@
+[
+  {
+    "phaseId": "",
+    "phaseState": true,
+    "httpCode": 400,
+    "message": "\"phaseId\" is not allowed to be empty"
+  },
+  {
+    "phaseId": "not_guid",
+    "phaseState": true,
+    "httpCode": 400,
+    "message": "\"phaseId\" must be a valid GUID"
+  },
+  {
+    "phaseId": "aa5a3f78-79e0-4bf7-93ff-b11e8f5b398b",
+    "phaseState": 123,
+    "httpCode": 400,
+    "message": "\"phaseState\" must be a boolean"
+  },
+  {
+    "phaseId": "aa5a3f78-79e0-4bf7-93ff-b11e8f5b398b",
+    "COPILOT_RESOURCE_ROLE_ID": "not a guid",
+    "phaseState": true,
+    "httpCode": 400,
+    "message": "\"resourceRoleId\" must be a valid GUID"
+  },
+  {
+    "phaseId": "aa5a3f78-79e0-4bf7-93ff-b11e8f5b398b",
+    "COPILOT_RESOURCE_ROLE_ID": "",
+    "phaseState": true,
+    "httpCode": 400,
+    "message": "\"resourceRoleId\" is not allowed to be empty"
+  }
+]
