@@ -70,6 +70,14 @@ jobs:
       APPNAME: "resources-api"    
     steps: *builddeploy_steps
 
+  "build-qa":
+    <<: *defaults
+    environment:
+      DEPLOY_ENV: "QA"
+      LOGICAL_ENV: "qa"
+      APPNAME: "resources-api"    
+    steps: *builddeploy_steps
+
   "build-prod":
     <<: *defaults
     environment:
@@ -125,6 +133,14 @@ workflows:
             branches:
               only:
                 - develop
+
+      # Development builds are executed on "develop" branch only.
+      - "build-qa":
+          context : org-global
+          filters:
+            branches:
+              only:
+                - qa
 
       # Production builds are exectuted only on tagged commits to the testing
       # master branch.
