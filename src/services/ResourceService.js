@@ -231,10 +231,6 @@ async function init (currentUser, challengeId, resource, isCreated) {
     throw new errors.BadRequestError('Cannot delete resources of a completed challenge!')
   }
 
-  if (_.get(challenge, 'status') !== constants.ChallengeStatuses.Active && isCreated && resource.roleId === config.SUBMITTER_RESOURCE_ROLE_ID) {
-    throw new errors.BadRequestError(`Cannot create submitter resource on challenge with status ${_.get(challenge, 'status')}`)
-  }
-
   // Prevent from creating more than 1 submitter resources on tasks
   if (_.get(challenge, 'task.isTask', false) && isCreated && resource.roleId === config.SUBMITTER_RESOURCE_ROLE_ID) {
     const existing = await getResources(currentUser, challengeId, config.SUBMITTER_RESOURCE_ROLE_ID, null, null, 1, 1)

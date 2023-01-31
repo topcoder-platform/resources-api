@@ -8,15 +8,13 @@ parameters:
     type: boolean
 defaults: &defaults
     docker:
-      - image: cimg/python:3.11.0-browsers
+      - image: circleci/python:2.7-stretch-browsers
 install_dependency: &install_dependency
   name: Installation of build and deployment dependencies.
   command: |
-    sudo apt update
     sudo apt install jq python3-pip
-    # sudo pip install docker-compose
     sudo pip3 install awscli --upgrade
-    sudo pip3 install docker-compose
+    # sudo pip install docker-compose
 install_deploysuite: &install_deploysuite
   name: Installation of install_deploysuite.
   command: |
@@ -25,10 +23,10 @@ install_deploysuite: &install_deploysuite
     cp ./../buildscript/buildenv.sh .
     cp ./../buildscript/awsconfiguration.sh .
 restore_cache_settings_for_build: &restore_cache_settings_for_build
-  key: docker-node-modules-{{ checksum "yarn.lock" }}
+  key: docker-node-modules-{{ checksum "package-lock.json" }}
 
 save_cache_settings: &save_cache_settings
-  key: docker-node-modules-{{ checksum "yarn.lock" }}
+  key: docker-node-modules-{{ checksum "package-lock.json" }}
   paths:
     - node_modules
 
@@ -97,13 +95,12 @@ jobs:
       - run: *install_deploysuite      
       - run:
           name: 'newman test'
-          no_output_timeout: 30m
           command: |
             ./awsconfiguration.sh $DEPLOY_ENV
             source awsenvconf
             ./buildenv.sh -e $DEPLOY_ENV -b ${LOGICAL_ENV}-global-appvar,${LOGICAL_ENV}-${APPNAME}-qa-appvar
             source buildenvvar
-            npm install --loglevel verbose
+            npm i
             cd mock
             (npm run mock-challenge-api&)
             (NODE_ENV=test npm start&)
