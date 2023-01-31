@@ -183,15 +183,17 @@ async function clearTestData () {
 /**
  * Run the postman tests.
  */
-apiTestLib.runTests(requests, require.resolve('./resource-api.postman_collection.json'),
-  require.resolve('./resource-api.postman_environment.json')).then(async () => {
-  logger.info('newman test completed!')
-  await clearTestData()
-}).catch(async (err) => {
-  logger.logFullError(err)
-
-  // Only calling the clean up function when it is not validation error.
-  if (err.name !== 'ValidationError') {
+clearTestData().then(() => {
+  apiTestLib.runTests(requests, require.resolve('./resource-api.postman_collection.json'),
+    require.resolve('./resource-api.postman_environment.json')).then(async () => {
+    logger.info('newman test completed!')
     await clearTestData()
-  }
+  }).catch(async (err) => {
+    logger.logFullError(err)
+
+    // Only calling the clean up function when it is not validation error.
+    if (err.name !== 'ValidationError') {
+      await clearTestData()
+    }
+  })
 })
