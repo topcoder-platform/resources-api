@@ -10,7 +10,8 @@ const UserRoles = {
 }
 
 const ChallengeStatuses = {
-  Completed: 'Completed'
+  Completed: 'Completed',
+  Active: 'Active'
 }
 
 module.exports = {
