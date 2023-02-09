@@ -13,7 +13,7 @@ const errors = require('./errors')
 const logger = require('./logger')
 const m2mAuth = require('tc-core-library-js').auth.m2m
 const AWS = require('aws-sdk')
-const elasticsearch = require('elasticsearch')
+const { Client: ESClient } = require('@opensearch-project/opensearch')
 const m2m = m2mAuth(_.pick(config, ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME', 'AUTH0_PROXY_SERVER_URL']))
 const busApi = require('tc-bus-api-wrapper')
 const busApiClient = busApi(_.pick(config, ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME', 'AUTH0_CLIENT_ID',
@@ -433,23 +433,12 @@ function getESClient () {
     return esClient
   }
   const esHost = config.get('ES.HOST')
-  // AWS ES configuration is different from other providers
-  if (/.*amazonaws.*/.test(esHost)) {
-    esClient = elasticsearch.Client({
-      apiVersion: config.get('ES.API_VERSION'),
-      hosts: esHost,
-      connectionClass: require('http-aws-es'), // eslint-disable-line global-require
-      amazonES: {
-        region: config.get('DYNAMODB.AWS_REGION'),
-        credentials: new AWS.EnvironmentCredentials('AWS')
-      }
-    })
-  } else {
-    esClient = new elasticsearch.Client({
-      apiVersion: config.get('ES.API_VERSION'),
-      hosts: esHost
-    })
-  }
+  esClient = new ESClient({
+    node: esHost,
+    ssl: {
+      rejectUnauthorized: false
+    }
+  })
   return esClient
 }
 
