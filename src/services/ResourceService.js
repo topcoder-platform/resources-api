@@ -527,7 +527,7 @@ async function searchES (mustQuery, perPage, page, sortCriteria) {
   const esClient = await helper.getESClient()
   let docs
   try {
-    docs = await esClient.search(esQuery)
+    docs = (await esClient.search(esQuery)).body
   } catch (e) {
     // Catch error when the ES is fresh and has no data
     logger.info(`Query Error from ES ${JSON.stringify(e)}`)

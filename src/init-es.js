@@ -22,21 +22,21 @@ const initES = async () => {
     }
   }
 
-  const exists = await client.indices.exists({ index: config.ES.ES_INDEX })
+  let { body: exists } = await client.indices.exists({ index: config.ES.ES_INDEX })
+
   if (exists) {
     logger.info(`The index ${config.ES.ES_INDEX} exists.`)
   } else {
     logger.info(`The index ${config.ES.ES_INDEX} will be created.`)
 
-    const body = { mappings: {} }
-    body.mappings[config.get('ES.ES_TYPE')] = {
+    const body = { mappings: {
       properties: {
         id: { type: 'keyword' },
         memberHandle: {
           type: 'text',
           fielddata: true
         }
-      }
+      } }
     }
 
     await client.indices.create({
