@@ -15,6 +15,10 @@ async function indexResource (indexName, resource) {
     console.log('Invalid index name')
     return
   }
+  if (resource == null) {
+    console.log('Invalid resource')
+    return
+  }
   console.log('Indexing resource', resource.id)
   try {
     await esClient.update({
@@ -47,6 +51,7 @@ async function migrateRecords () {
     let lastKey = results.lastKey
 
     for (const resource of results) {
+      console.log('resource', resource)
       await indexResource(resource)
     }
 
