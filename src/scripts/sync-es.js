@@ -52,7 +52,7 @@ async function migrateRecords () {
 
     for (const resource of results) {
       console.log('resource', resource)
-      await indexResource(resource)
+      await indexResource(getIndex(table), resource)
     }
 
     while (!_.isUndefined(results.lastKey)) {
