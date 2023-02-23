@@ -19,7 +19,6 @@ async function indexResource (indexName, resource) {
     console.log('Invalid resource')
     return
   }
-  console.log('Indexing resource', resource.id)
   try {
     await esClient.update({
       index: indexName,
@@ -45,19 +44,21 @@ function getIndex (table) {
  */
 async function migrateRecords () {
   const tablesToIndex = ['Resource']
+  let count = 0
   for (const table of tablesToIndex) {
     console.log('Indexing table', table)
     let results = await models['Resource'].scan().exec()
     let lastKey = results.lastKey
-
+    count = 0
     for (const resource of results) {
-      console.log('resource', resource)
+      console.log(count++, 'Indexing', table, resource.id)
       await indexResource(getIndex(table), resource)
     }
 
     while (!_.isUndefined(results.lastKey)) {
       const results = await models['Resource'].scan().startAt(lastKey).exec()
       for (const resource of results) {
+        console.log(count++, 'Indexing', table, resource.id)
         await indexResource(getIndex(table), resource)
       }
 
