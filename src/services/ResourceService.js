@@ -492,6 +492,7 @@ listChallengesByMember.schema = {
 }
 
 async function searchESWithScroll (mustQuery) {
+  console.log('searchESWithScroll')
   const scrollTimeout = '1m'
   const esQuery = {
     index: config.get('ES.ES_INDEX'),
@@ -508,16 +509,21 @@ async function searchESWithScroll (mustQuery) {
   }
 
   const esClient = await helper.getESClient()
+  console.log('searchESWithScroll: esClient.search')
   const searchResponse = await esClient.search(esQuery)
 
   // eslint-disable-next-line camelcase
   const { _scroll_id, hits } = searchResponse
   const totalHits = hits.total
   // eslint-disable-next-line camelcase
+  console.log(`_scroll_id: ${_scroll_id}`)
+  console.log(`totalHits: ${totalHits}`)
+  // eslint-disable-next-line camelcase
   let scrollId = _scroll_id
   let currentHits = hits.hits
 
   while (currentHits.length < totalHits) {
+    console.log(`currentHits.length: ${currentHits.length}`)
     const nextScrollResponse = await esClient.scroll({
       scroll: scrollTimeout,
       scroll_id: scrollId
