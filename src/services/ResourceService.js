@@ -520,18 +520,16 @@ async function searchESWithScroll (mustQuery) {
   console.log(`totalHits: ${totalHits}`)
   // eslint-disable-next-line camelcase
   let scrollId = _scroll_id
-  let currentHits = hits.hits
 
-  while (currentHits.length < totalHits) {
-    console.log(`currentHits.length: ${currentHits.length}`)
+  while (hits.hits.length < totalHits) {
+    console.log(`currentHits.length: ${hits.hits.length}`)
     const nextScrollResponse = await esClient.scroll({
       scroll: scrollTimeout,
       scroll_id: scrollId
     })
 
     scrollId = nextScrollResponse._scroll_id
-    currentHits = nextScrollResponse.hits.hits
-    hits.hits = [...hits.hits, ...currentHits]
+    hits.hits = [...hits.hits, ...nextScrollResponse.hits.hits]
   }
 
   await esClient.clearScroll({
