@@ -457,7 +457,9 @@ async function listChallengesByMember (memberId, criteria) {
     }
   }
 
-  if (perPage * page <= config.MAX_ELASTIC_SEARCH_RECORDS_SIZE) {
+  if (criteria.useScroll) {
+    docs = await searchESWithScroll(mustQuery)
+  } else if (perPage * page <= config.MAX_ELASTIC_SEARCH_RECORDS_SIZE) {
     docs = await searchES(mustQuery, perPage, page)
   } else {
     throw new errors.BadRequestError(`
@@ -484,8 +486,56 @@ listChallengesByMember.schema = {
   criteria: Joi.object().keys({
     resourceRoleId: Joi.string().uuid(),
     page: Joi.page().default(1),
-    perPage: Joi.perPage().default(config.DEFAULT_PAGE_SIZE)
+    perPage: Joi.perPage().default(config.DEFAULT_PAGE_SIZE),
+    useScroll: Joi.boolean().default(false)
   }).required()
+}
+
+async function searchESWithScroll (mustQuery) {
+  const scrollTimeout = '1m'
+  const esQuery = {
+    index: config.get('ES.ES_INDEX'),
+    type: config.get('ES.ES_TYPE'),
+    size: 10000,
+    body: {
+      query: {
+        bool: {
+          must: mustQuery
+        }
+      }
+    },
+    scroll: scrollTimeout
+  }
+
+  const esClient = await helper.getESClient()
+  const searchResponse = await esClient.search(esQuery)
+
+  // eslint-disable-next-line camelcase
+  const { _scroll_id, hits } = searchResponse
+  const totalHits = hits.total
+  // eslint-disable-next-line camelcase
+  let scrollId = _scroll_id
+  let currentHits = hits.hits
+
+  while (currentHits.length < totalHits) {
+    const nextScrollResponse = await esClient.scroll({
+      scroll: scrollTimeout,
+      scroll_id: scrollId
+    })
+
+    scrollId = nextScrollResponse._scroll_id
+    currentHits = nextScrollResponse.hits.hits
+    hits.hits = [...hits.hits, ...currentHits]
+  }
+
+  await esClient.clearScroll({
+    body: {
+      // eslint-disable-next-line camelcase
+      scroll_id: [_scroll_id]
+    }
+  })
+
+  return hits
 }
 
 /**
