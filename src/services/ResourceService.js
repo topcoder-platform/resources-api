@@ -539,7 +539,12 @@ async function searchESWithScroll (mustQuery) {
     }
   })
 
-  return hits
+  return {
+    hits: {
+      total: hits.total,
+      hits: hits.hits
+    }
+  }
 }
 
 /**
