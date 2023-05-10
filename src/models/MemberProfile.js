@@ -23,6 +23,9 @@ const schema = new Schema({
       name: 'handleLower-index',
       project: true
     }
+  },
+  email: {
+    type: String
   }
 },
 {
