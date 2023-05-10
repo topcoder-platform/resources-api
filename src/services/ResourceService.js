@@ -331,7 +331,7 @@ async function createResource (currentUser, resource) {
 
     // handle doesn't change in current version
     // Seems we don't need handle auto-correction(e.g. "THomaskranitsas"->"thomaskranitsas")
-    const { resources, memberId } = await init(currentUser, challengeId, resource, true)
+    const { resources, memberId, handle, email, challenge } = await init(currentUser, challengeId, resource, true)
 
     if (_.reduce(resources,
       (result, r) => _.toString(r.memberId) === _.toString(memberId) && r.roleId === resource.roleId ? true : result,
@@ -358,6 +358,25 @@ async function createResource (currentUser, resource) {
 
     logger.debug(`Created resource: ${JSON.stringify(_.pick(ret, payloadFields))}`)
     await helper.postEvent(config.RESOURCE_CREATE_TOPIC, _.pick(ret, payloadFields))
+    if (!_.get(challenge, 'task.isTask', false) && resource.roleId === config.SUBMITTER_RESOURCE_ROLE_ID) {
+      await helper.postEvent(config.EMAIL_NOTIFICATIN_TOPIC, {
+        from: config.REGISTRATION_EMAIL.EMAIL_FROM,
+        replyTo: config.REGISTRATION_EMAIL.EMAIL_FROM,
+        recipients: [email],
+        data: {
+          handle,
+          challengeName: challenge.name,
+          forum: _.get(challenge, 'discussions[0].url'),
+          submissionEndTime: _.get(_.find(challenge.phases, phase => phase.name === "Submission"), 'scheduledEndDate'),
+          submitUrl: _.replace(config.REGISTRATION_EMAIL.SUBMIT_URL, ':id', challengeId),
+          reviewAppUrl: config.REGISTRATION_EMAIL.REVIEW_APP_URL,
+          helpUrl: config.REGISTRATION_EMAIL.HELP_URL,
+          support: config.REGISTRATION_EMAIL.SUPPORT_EMAIL
+        },
+        sendgrid_template_id: config.REGISTRATION_EMAIL.SENDGRID_TEMPLATE_ID,
+        version: "v3"
+      })
+    }
 
     return ret
   } catch (err) {
