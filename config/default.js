@@ -70,12 +70,12 @@ module.exports = {
   RESOURCE_ROLE_UPDATE_TOPIC: process.env.RESOURCE_ROLE_UPDATE_TOPIC || 'challenge.action.resource.role.update',
   EMAIL_NOTIFICATIN_TOPIC: process.env.EMAIL_NOTIFICATIN_TOPIC || 'external.action.email',
   REGISTRATION_EMAIL: {
-    EMAIL_FROM: process.env.EMAIL_FROM || "no-reply@topcoder.com",
-    SENDGRID_TEMPLATE_ID: process.env.SENDGRID_TEMPLATE_ID || "d-b0593e8d64a84745905fb795523fde04",
-    SUBMIT_URL: process.env.SUBMIT_URL || "https://www.topcoder.com/challenges/:id/submit/",
-    REVIEW_APP_URL: process.env.REVIEW_APP_URL || "https://software.topcoder.com/review",
-    HELP_URL: process.env.HELP_URL || "https://help.topcoder.com",
-    SUPPORT_EMAIL: process.env.SUPPORT_EMAIL || "support@topcoder.com",
+    EMAIL_FROM: process.env.EMAIL_FROM || 'no-reply@topcoder.com',
+    SENDGRID_TEMPLATE_ID: process.env.SENDGRID_TEMPLATE_ID || '',
+    SUBMIT_URL: process.env.SUBMIT_URL || 'https://www.topcoder.com/challenges/:id/submit/',
+    REVIEW_APP_URL: process.env.REVIEW_APP_URL || 'https://software.topcoder.com/review',
+    HELP_URL: process.env.HELP_URL || 'https://help.topcoder.com',
+    SUPPORT_EMAIL: process.env.SUPPORT_EMAIL || 'support@topcoder.com'
   },
 
   AUTOMATED_TESTING_NAME_PREFIX: process.env.AUTOMATED_TESTING_NAME_PREFIX || 'POSTMANE2E-'

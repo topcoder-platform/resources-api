@@ -367,14 +367,14 @@ async function createResource (currentUser, resource) {
           handle,
           challengeName: challenge.name,
           forum: _.get(challenge, 'discussions[0].url'),
-          submissionEndTime: _.get(_.find(challenge.phases, phase => phase.name === "Submission"), 'scheduledEndDate'),
+          submissionEndTime: _.get(_.find(challenge.phases, phase => phase.name === 'Submission'), 'scheduledEndDate'),
           submitUrl: _.replace(config.REGISTRATION_EMAIL.SUBMIT_URL, ':id', challengeId),
           reviewAppUrl: config.REGISTRATION_EMAIL.REVIEW_APP_URL,
           helpUrl: config.REGISTRATION_EMAIL.HELP_URL,
           support: config.REGISTRATION_EMAIL.SUPPORT_EMAIL
         },
         sendgrid_template_id: config.REGISTRATION_EMAIL.SENDGRID_TEMPLATE_ID,
-        version: "v3"
+        version: 'v3'
       })
     }
 
