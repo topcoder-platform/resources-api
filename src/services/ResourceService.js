@@ -359,6 +359,11 @@ async function createResource (currentUser, resource) {
     logger.debug(`Created resource: ${JSON.stringify(_.pick(ret, payloadFields))}`)
     await helper.postEvent(config.RESOURCE_CREATE_TOPIC, _.pick(ret, payloadFields))
     if (!_.get(challenge, 'task.isTask', false) && resource.roleId === config.SUBMITTER_RESOURCE_ROLE_ID) {
+      const forumUrl = _.get(challenge, 'discussions[0].url')
+      let templateId = config.REGISTRATION_EMAIL.SENDGRID_TEMPLATE_ID
+      if (_.isUndefined(forumUrl)) {
+        templateId = config.REGISTRATION_EMAIL.SENDGRID_TEMPLATE_ID_NO_FORUM
+      }
       await helper.postEvent(config.EMAIL_NOTIFICATIN_TOPIC, {
         from: config.REGISTRATION_EMAIL.EMAIL_FROM,
         replyTo: config.REGISTRATION_EMAIL.EMAIL_FROM,
@@ -366,14 +371,14 @@ async function createResource (currentUser, resource) {
         data: {
           handle,
           challengeName: challenge.name,
-          forum: _.get(challenge, 'discussions[0].url'),
-          submissionEndTime: _.get(_.find(challenge.phases, phase => phase.name === 'Submission'), 'scheduledEndDate'),
+          forum: forumUrl,
+          submissionEndTime: new Date(_.get(_.find(challenge.phases, phase => phase.name === 'Submission'), 'scheduledEndDate')).toUTCString(),
           submitUrl: _.replace(config.REGISTRATION_EMAIL.SUBMIT_URL, ':id', challengeId),
-          reviewAppUrl: config.REGISTRATION_EMAIL.REVIEW_APP_URL,
+          reviewAppUrl: config.REGISTRATION_EMAIL.REVIEW_APP_URL + challenge.legacyId,
           helpUrl: config.REGISTRATION_EMAIL.HELP_URL,
           support: config.REGISTRATION_EMAIL.SUPPORT_EMAIL
         },
-        sendgrid_template_id: config.REGISTRATION_EMAIL.SENDGRID_TEMPLATE_ID,
+        sendgrid_template_id: templateId,
         version: 'v3'
       })
     }
