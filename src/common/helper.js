@@ -176,25 +176,29 @@ async function getMemberById (id) {
  * @param {String} handle The member handle
  * @returns {Promise<void>}
  */
-async function getMemberIdByHandle (handle) {
+async function getMemberDetailsByHandle (handle) {
   try {
     // logger.warn(`getMemberIdByHandle ${handle}`)
     const profile = await MemberProfile.query('handleLower').eq(_.toLower(handle)).exec().then(r => r[0])
-    return profile.userId
+    return { memberId: profile.userId, email: profile.email }
   } catch (e) {
     // fall back to v3 api...
-    logger.warn(`Get MemberID by Handle from Dynamo Failed, trying v3 Members API. Error: ${JSON.stringify(e)}`)
-    return getMemberIdByHandleFromV3Members(handle)
+    logger.warn(`Get Member by Handle from Dynamo Failed, trying v3 Members API. Error: ${JSON.stringify(e)}`)
+    return getMemberDetailsByHandleFromV3Members(handle)
   }
 }
 
-async function getMemberIdByHandleFromV3Members (handle) {
+async function getMemberDetailsByHandleFromV3Members (handle) {
   let memberId
+  let email
   try {
-    logger.warn(`getMemberIdByHandle ${handle} from v5`)
+    logger.warn(`getMemberByHandle ${handle} from v5`)
     const res = await getRequest(`${config.MEMBER_API_URL}/${handle}`)
     if (_.get(res, 'body.userId')) {
       memberId = String(res.body.userId)
+    }
+    if (_.get(res, 'body.email')) {
+      email = String(res.body.email)
     }
     // handle return from v3 API, handle and memberHandle are the same under case-insensitive condition
     handle = _.get(res, 'body.handle')
@@ -209,7 +213,7 @@ async function getMemberIdByHandleFromV3Members (handle) {
     throw new errors.BadRequestError(`User with handle: ${handle} doesn't exist`)
   }
 
-  return memberId
+  return { memberId, email }
 }
 
 /**
@@ -481,7 +485,7 @@ module.exports = {
   wrapExpress,
   autoWrapExpress,
   getMemberInfoById,
-  getMemberIdByHandle,
+  getMemberDetailsByHandle,
   checkIfExists,
   hasAdminRole,
   getById,

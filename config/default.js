@@ -68,6 +68,16 @@ module.exports = {
   RESOURCE_DELETE_TOPIC: process.env.RESOURCE_DELETE_TOPIC || 'challenge.action.resource.delete',
   RESOURCE_ROLE_CREATE_TOPIC: process.env.RESOURCE_ROLE_CREATE_TOPIC || 'challenge.action.resource.role.create',
   RESOURCE_ROLE_UPDATE_TOPIC: process.env.RESOURCE_ROLE_UPDATE_TOPIC || 'challenge.action.resource.role.update',
+  EMAIL_NOTIFICATIN_TOPIC: process.env.EMAIL_NOTIFICATIN_TOPIC || 'external.action.email',
+  REGISTRATION_EMAIL: {
+    EMAIL_FROM: process.env.EMAIL_FROM || 'no-reply@topcoder.com',
+    SENDGRID_TEMPLATE_ID: process.env.SENDGRID_TEMPLATE_ID || '',
+    SENDGRID_TEMPLATE_ID_NO_FORUM: process.env.SENDGRID_TEMPLATE_ID_NO_FORUM || '',
+    SUBMIT_URL: process.env.SUBMIT_URL || 'https://www.topcoder.com/challenges/:id/submit/',
+    REVIEW_APP_URL: process.env.REVIEW_APP_URL || 'https://software.topcoder.com/review/actions/ViewProjectDetails?pid=',
+    HELP_URL: process.env.HELP_URL || 'https://help.topcoder.com',
+    SUPPORT_EMAIL: process.env.SUPPORT_EMAIL || 'support@topcoder.com'
+  },
 
   AUTOMATED_TESTING_NAME_PREFIX: process.env.AUTOMATED_TESTING_NAME_PREFIX || 'POSTMANE2E-'
 }

@@ -245,7 +245,7 @@ async function init (currentUser, challengeId, resource, isCreated) {
 
   // get member information using v3 API
   const handle = resource.memberHandle
-  const memberId = await helper.getMemberIdByHandle(resource.memberHandle)
+  const { memberId, email } = await helper.getMemberDetailsByHandle(resource.memberHandle)
 
   // check if the resource is reviewer role and has already made a submission in the challenge
   if (resource.roleId === config.REVIEWER_RESOURCE_ROLE_ID || resource.roleId === config.ITERATIVE_REVIEWER_RESOURCE_ROLE_ID) {
@@ -284,11 +284,11 @@ async function init (currentUser, challengeId, resource, isCreated) {
   }
   // skip phase dependency checks for tasks
   if (_.get(challenge, 'task.isTask', false)) {
-    return { resources, memberId, handle }
+    return { resources, memberId, handle, email, challenge }
   }
   // bypass phase dependency checks if the caller is an m2m/admin
   if (currentUser.isMachine || helper.hasAdminRole(currentUser)) {
-    return { resources, memberId, handle }
+    return { resources, memberId, handle, email, challenge }
   }
   // check phases dependencies
   const dependencies = await ResourceRolePhaseDependencyService.getDependencies({ resourceRoleId: resource.roleId })
@@ -316,7 +316,7 @@ async function init (currentUser, challengeId, resource, isCreated) {
   })
 
   // return resources and the member id
-  return { resources, memberId, handle }
+  return { resources, memberId, handle, email, challenge }
 }
 
 /**
@@ -331,7 +331,7 @@ async function createResource (currentUser, resource) {
 
     // handle doesn't change in current version
     // Seems we don't need handle auto-correction(e.g. "THomaskranitsas"->"thomaskranitsas")
-    const { resources, memberId } = await init(currentUser, challengeId, resource, true)
+    const { resources, memberId, handle, email, challenge } = await init(currentUser, challengeId, resource, true)
 
     if (_.reduce(resources,
       (result, r) => _.toString(r.memberId) === _.toString(memberId) && r.roleId === resource.roleId ? true : result,
@@ -358,6 +358,30 @@ async function createResource (currentUser, resource) {
 
     logger.debug(`Created resource: ${JSON.stringify(_.pick(ret, payloadFields))}`)
     await helper.postEvent(config.RESOURCE_CREATE_TOPIC, _.pick(ret, payloadFields))
+    if (!_.get(challenge, 'task.isTask', false) && resource.roleId === config.SUBMITTER_RESOURCE_ROLE_ID) {
+      const forumUrl = _.get(challenge, 'discussions[0].url')
+      let templateId = config.REGISTRATION_EMAIL.SENDGRID_TEMPLATE_ID
+      if (_.isUndefined(forumUrl)) {
+        templateId = config.REGISTRATION_EMAIL.SENDGRID_TEMPLATE_ID_NO_FORUM
+      }
+      await helper.postEvent(config.EMAIL_NOTIFICATIN_TOPIC, {
+        from: config.REGISTRATION_EMAIL.EMAIL_FROM,
+        replyTo: config.REGISTRATION_EMAIL.EMAIL_FROM,
+        recipients: [email],
+        data: {
+          handle,
+          challengeName: challenge.name,
+          forum: forumUrl,
+          submissionEndTime: new Date(_.get(_.find(challenge.phases, phase => phase.name === 'Submission'), 'scheduledEndDate')).toUTCString(),
+          submitUrl: _.replace(config.REGISTRATION_EMAIL.SUBMIT_URL, ':id', challengeId),
+          reviewAppUrl: config.REGISTRATION_EMAIL.REVIEW_APP_URL + challenge.legacyId,
+          helpUrl: config.REGISTRATION_EMAIL.HELP_URL,
+          support: config.REGISTRATION_EMAIL.SUPPORT_EMAIL
+        },
+        sendgrid_template_id: templateId,
+        version: 'v3'
+      })
+    }
 
     return ret
   } catch (err) {
