@@ -72,8 +72,9 @@ module.exports = {
   REGISTRATION_EMAIL: {
     EMAIL_FROM: process.env.EMAIL_FROM || 'no-reply@topcoder.com',
     SENDGRID_TEMPLATE_ID: process.env.SENDGRID_TEMPLATE_ID || '',
+    SENDGRID_TEMPLATE_ID_NO_FORUM: process.env.SENDGRID_TEMPLATE_ID_NO_FORUM || '',
     SUBMIT_URL: process.env.SUBMIT_URL || 'https://www.topcoder.com/challenges/:id/submit/',
-    REVIEW_APP_URL: process.env.REVIEW_APP_URL || 'https://software.topcoder.com/review',
+    REVIEW_APP_URL: process.env.REVIEW_APP_URL || 'https://software.topcoder.com/review/actions/ViewProjectDetails?pid=',
     HELP_URL: process.env.HELP_URL || 'https://help.topcoder.com',
     SUPPORT_EMAIL: process.env.SUPPORT_EMAIL || 'support@topcoder.com'
   },
