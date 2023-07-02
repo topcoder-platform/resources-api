@@ -77,7 +77,10 @@ async function getResources (currentUser, challengeId, roleId, memberId, memberH
   // Check if the user has a resource with full access on the challenge
   if (currentUser && !currentUser.isMachine && !helper.hasAdminRole(currentUser)) {
     if (challengeId) {
-      const resources = await helper.query('Resource', { challengeId })
+      const resources = await helper.query('Resource', {
+        hash: { challengeId: { eq: challengeId } },
+        range: { memberId: { eq: currentUser.userId } }
+      })
       try {
         await checkAccess(currentUser, resources)
         hasFullAccess = true
@@ -623,11 +626,62 @@ async function searchES (mustQuery, perPage, page, sortCriteria) {
   return docs
 }
 
+/**
+ * Get resource count of a challenge.
+ * @param {String} challengeId the challenge id
+ * @param {String} roleId the role id to filter on
+ * @returns {Object} the search result
+ */
+async function getResourceCount (challengeId, roleId) {
+  logger.debug(`getResourceCount ${JSON.stringify([challengeId, roleId])}`)
+  const must = [{ term: { 'challengeId.keyword': challengeId } }]
+  if (roleId) {
+    must.push({ term: { 'roleId.keyword': roleId } })
+  }
+
+  const esQuery = {
+    index: config.get('ES.ES_INDEX'),
+    type: config.get('ES.ES_TYPE'),
+    size: 0,
+    body: {
+      query: {
+        bool: {
+          must
+        }
+      },
+      aggs: {
+        group_by_roleId: {
+          terms: {
+            field: 'roleId.keyword'
+          }
+        }
+      }
+    }
+  }
+
+  const esClient = await helper.getESClient()
+  let result
+  try {
+    result = await esClient.search(esQuery)
+  } catch (err) {
+    logger.error(`Get Resource Count Error ${JSON.stringify(err)}`)
+    throw err
+  }
+  const response = _.mapValues(_.keyBy(result, 'key'), (v) => v.doc_count)
+  return response
+}
+
+getResourceCount.schema = {
+  challengeId: Joi.id(),
+  roleId: Joi.optionalId()
+}
+
 module.exports = {
   getResources,
   createResource,
   deleteResource,
-  listChallengesByMember
+  listChallengesByMember,
+  getResourceCount
 }
 
 logger.buildService(module.exports)

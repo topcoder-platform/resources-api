@@ -107,7 +107,7 @@ workflows:
           branches:
             only:
             - develop
-            - feature/scroll-search
+            - fix/PLAT-3088
 
     # Production builds are exectuted only on tagged commits to the testing
     # master branch.

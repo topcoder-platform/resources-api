@@ -47,9 +47,20 @@ async function listChallengesByMember (req, res) {
   res.send(result.data)
 }
 
+/**
+ * Get resource count of a challenge
+ * @param {Object} req the request
+ * @param {Object} res the response
+ */
+async function getResourceCount (req, res) {
+  const result = await service.getResourceCount(req.query.challengeId, req.query.roleId)
+  res.send(result)
+}
+
 module.exports = {
   getResources,
   createResource,
   deleteResource,
-  listChallengesByMember
+  listChallengesByMember,
+  getResourceCount
 }
