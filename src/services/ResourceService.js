@@ -667,7 +667,7 @@ async function getResourceCount (challengeId, roleId) {
     logger.error(`Get Resource Count Error ${JSON.stringify(err)}`)
     throw err
   }
-  const response = _.mapValues(_.keyBy(result, 'key'), (v) => v.doc_count)
+  const response = _.mapValues(_.keyBy(result.aggregations.group_by_roleId.buckets, 'key'), (v) => v.doc_count)
   return response
 }
 
