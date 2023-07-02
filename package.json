@@ -57,7 +57,7 @@
     "yamljs": "^0.3.0"
   },
   "engines": {
-    "node": "10.x"
+    "node": "18.x"
   },
   "standard": {
     "env": [
