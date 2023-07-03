@@ -1,5 +1,5 @@
 # Use the base image with Node.js
-FROM node:latest
+FROM node:14.21.3
 
 # Copy the current directory into the Docker image
 COPY . /resources-api
@@ -8,10 +8,8 @@ COPY . /resources-api
 WORKDIR /resources-api
 
 # Install the dependencies from package.json
-RUN npm install
-RUN npm run lint
-RUN npm run lint:fix
-#RUN npm run build
-#RUN npm run test
+RUN yarn install
+RUN yarn lint
+RUN yarn lint:fix
 
-CMD npm start
+CMD node app.js
