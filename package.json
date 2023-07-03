@@ -57,7 +57,7 @@
     "yamljs": "^0.3.0"
   },
   "engines": {
-    "node": "10.x"
+    "node": "14.x"
   },
   "standard": {
     "env": [
@@ -71,5 +71,8 @@
       "test/unit/*.js",
       "test/e2e/*.js"
     ]
+  },
+  "volta": {
+    "node": "14.21.3"
   }
 }
