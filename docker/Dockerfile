@@ -1,5 +1,5 @@
 # Use the base image with Node.js
-FROM node:latest
+FROM node:18.16.0
 
 # Copy the current directory into the Docker image
 COPY . /resources-api
@@ -8,7 +8,7 @@ COPY . /resources-api
 WORKDIR /resources-api
 
 # Install the dependencies from package.json
-RUN npm install
+RUN npm install --legacy-peer-deps
 RUN npm run lint
 RUN npm run lint:fix
 #RUN npm run build

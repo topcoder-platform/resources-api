@@ -107,7 +107,6 @@ workflows:
           branches:
             only:
             - develop
-            - feature/scroll-search
 
     # Production builds are exectuted only on tagged commits to the testing
     # master branch.

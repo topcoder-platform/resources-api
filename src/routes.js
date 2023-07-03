@@ -33,6 +33,15 @@ module.exports = {
       scopes: [DELETE, ALL]
     }
   },
+  '/resources/count': {
+    get: {
+      controller: 'ResourceController',
+      method: 'getResourceCount',
+      auth: 'jwt',
+      access: [constants.UserRoles.Admin],
+      scopes: [READ, ALL]
+    }
+  },
   '/resources/internal/jobs/clean': {
     post: {
       controller: 'CleanUpController',
