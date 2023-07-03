@@ -107,7 +107,6 @@ workflows:
           branches:
             only:
             - develop
-            - fix/build
 
     # Production builds are exectuted only on tagged commits to the testing
     # master branch.
@@ -117,7 +116,6 @@ workflows:
           branches:
             only:
             - master
-            - fix/build
 
   testingflow:
     when: << pipeline.parameters.run_automatedtesting >>
