@@ -347,14 +347,21 @@ async function getRequest (url, query) {
  * @returns {Object} the response
  */
 async function postRequest (url, data) {
-  const m2mToken = await m2m.getMachineToken(config.AUTH0_CLIENT_ID, config.AUTH0_CLIENT_SECRET)
+  try {
+    const m2mToken = await m2m.getMachineToken(config.AUTH0_CLIENT_ID, config.AUTH0_CLIENT_SECRET)
 
-  return request
-    .post(url)
-    .set('Authorization', `Bearer ${m2mToken}`)
-    .set('Content-Type', 'application/json')
-    .set('Accept', 'application/json')
-    .send(data)
+    const res = await request
+      .post(url)
+      .set('Authorization', `Bearer ${m2mToken}`)
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json')
+      .send(data)
+
+    return res
+  } catch (err) {
+    console.error(err)
+    throw err
+  }
 }
 
 /**
@@ -483,10 +490,12 @@ async function checkAgreedTerms (userId, terms) {
 
 async function advanceChallengePhase (challengeId, phase, operation) {
   try {
+    console.log('Advance Phase', challengeId, phase, operation)
     const response = await postRequest(`${config.CHALLENGE_API_URL}/${challengeId}/advance-phase`, {
       phase,
       operation
     })
+    console.log('Advance Phase Response', response.body)
     return response.body
   } catch (err) {
     logger.warn(`Error while advancing phase for challenge ${challengeId}. ${JSON.stringify(err)}`)
