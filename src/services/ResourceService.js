@@ -318,8 +318,15 @@ async function init (currentUser, challengeId, resource, isCreated) {
     }
   })
 
+  let closeRegistration = false
+  const registrationPhase = _.find(challenge.phases, (p) => p.name === 'Registration')
+  if (registrationPhase) {
+    const isPastScheduledEndDate = moment().utc() > moment(registrationPhase.scheduledEndDate).utc()
+    closeRegistration = registrationPhase.isOpen && isPastScheduledEndDate && resource.roleId === config.SUBMITTER_RESOURCE_ROLE_ID
+  }
+
   // return resources and the member id
-  return { resources, memberId, handle, email, challenge }
+  return { resources, memberId, handle, email, challenge, closeRegistration }
 }
 
 /**
@@ -332,9 +339,7 @@ async function createResource (currentUser, resource) {
   try {
     const challengeId = resource.challengeId
 
-    // handle doesn't change in current version
-    // Seems we don't need handle auto-correction(e.g. "THomaskranitsas"->"thomaskranitsas")
-    const { resources, memberId, handle, email, challenge } = await init(currentUser, challengeId, resource, true)
+    const { resources, memberId, handle, email, challenge, closeRegistration } = await init(currentUser, challengeId, resource, true)
 
     if (_.reduce(resources,
       (result, r) => _.toString(r.memberId) === _.toString(memberId) && r.roleId === resource.roleId ? true : result,
@@ -384,6 +389,12 @@ async function createResource (currentUser, resource) {
         sendgrid_template_id: templateId,
         version: 'v3'
       })
+    }
+
+    if (closeRegistration) {
+      logger.info(`Closing registration phase for challenge ${challengeId}`)
+      const response = await helper.advanceChallengePhase(challengeId, 'Registration', 'close')
+      logger.info(`Closed registration phase for challenge ${challengeId} with response ${JSON.stringify(response)}`)
     }
 
     return ret

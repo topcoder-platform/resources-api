@@ -481,6 +481,23 @@ async function checkAgreedTerms (userId, terms) {
   }
 }
 
+async function advanceChallengePhase (challengeId, phase, operation) {
+  const token = await m2m.getMachineToken(config.AUTH0_CLIENT_ID, config.AUTH0_CLIENT_SECRET)
+
+  try {
+    const response = await request.post(`${config.CHALLENGEAPI_V5_URL}/${challengeId}/advance-phase`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('Content-Type', 'application/json')
+      .send({
+        phase,
+        operation
+      })
+    return response.body
+  } catch (err) {
+    logger.warn(`Error while advancing phase for challenge ${challengeId}. ${JSON.stringify(err)}`)
+  }
+}
+
 module.exports = {
   wrapExpress,
   autoWrapExpress,
@@ -503,5 +520,6 @@ module.exports = {
   getESClient,
   checkAgreedTerms,
   postRequest,
-  getMemberById
+  getMemberById,
+  advanceChallengePhase
 }
