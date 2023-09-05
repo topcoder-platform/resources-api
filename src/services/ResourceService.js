@@ -320,7 +320,7 @@ async function init (currentUser, challengeId, resource, isCreated) {
 
   let closeRegistration = false
   const registrationPhase = _.find(challenge.phases, (p) => p.name === 'Registration')
-  if (registrationPhase) {
+  if (registrationPhase && challenge.legacy != null && challenge.legacy.subTrack === 'FIRST_2_FINISH') {
     const isPastScheduledEndDate = moment().utc() > moment(registrationPhase.scheduledEndDate).utc()
     closeRegistration = registrationPhase.isOpen && isPastScheduledEndDate && resource.roleId === config.SUBMITTER_RESOURCE_ROLE_ID
   }

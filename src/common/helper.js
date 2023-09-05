@@ -488,17 +488,35 @@ async function checkAgreedTerms (userId, terms) {
   }
 }
 
-async function advanceChallengePhase (challengeId, phase, operation) {
+async function advanceChallengePhase (challengeId, phase, operation, numAttempts = 1) {
+  if (!challengeId || !phase || !operation) {
+    throw new Error('Invalid arguments')
+  }
+
   try {
-    console.log('Advance Phase', challengeId, phase, operation)
+    console.log('Initiating advance phase:', challengeId, phase, operation)
+
     const response = await postRequest(`${config.CHALLENGE_API_URL}/${challengeId}/advance-phase`, {
       phase,
       operation
     })
-    console.log('Advance Phase Response', response.body)
+
+    if (response.status !== 200) {
+      throw new Error(`Received non-200 status code: ${response.status}`)
+    }
+
+    console.log('Successfully advanced phase with response:', response.body)
     return response.body
   } catch (err) {
     logger.warn(`Error while advancing phase for challenge ${challengeId}. ${JSON.stringify(err)}`)
+
+    if (numAttempts <= 3) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(advanceChallengePhase(challengeId, phase, operation, ++numAttempts))
+        }, 5000)
+      })
+    }
   }
 }
 
