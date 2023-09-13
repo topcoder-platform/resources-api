@@ -264,6 +264,7 @@ async function init (currentUser, challengeId, resource, isCreated) {
 
   // perform access validation
   let resources
+  let currentUserResources
   // Verify the member has agreed to the challenge terms
   if (isCreated) {
     await helper.checkAgreedTerms(memberId, _.filter(_.get(challenge, 'terms', []), t => t.roleId === resourceRole.id))
@@ -271,11 +272,12 @@ async function init (currentUser, challengeId, resource, isCreated) {
   if (!currentUser.isMachine && !helper.hasAdminRole(currentUser)) {
     // Check if user has agreed to the challenge terms
     resources = await helper.query('Resource', { challengeId })
+    currentUserResources = resources.filter((r) => r.memberId === memberId);
     if (!_.get(challenge, 'legacy.selfService')) {
       if (!resourceRole.selfObtainable || _.toString(memberId) !== _.toString(currentUser.userId)) {
         // if user is not creating/deleting a self obtainable resource for itself
         // we need to perform check access first
-        await checkAccess(currentUser, resources)
+        await checkAccess(currentUser, currentUserResources)
       }
     }
   } else {
@@ -326,7 +328,7 @@ async function init (currentUser, challengeId, resource, isCreated) {
   }
 
   // return resources and the member id
-  return { resources, memberId, handle, email, challenge, closeRegistration }
+  return { resources, currentUserResources, memberId, handle, email, challenge, closeRegistration }
 }
 
 /**
@@ -339,7 +341,7 @@ async function createResource (currentUser, resource) {
   try {
     const challengeId = resource.challengeId
 
-    const { resources, memberId, handle, email, challenge, closeRegistration } = await init(currentUser, challengeId, resource, true)
+    const { resources, currentUserResources, memberId, handle, email, challenge, closeRegistration } = await init(currentUser, challengeId, resource, true)
 
     // Retrieve the registration phase constraint - Max Number of Registrants
     const registrationPhase = challenge.phases.find((phase) => phase.name === 'Registration');
@@ -348,7 +350,7 @@ async function createResource (currentUser, resource) {
     )
 
     // Determine the number of current submitters
-    const currentSubmitters = _.filter(resources, (r) => r.roleId === config.SUBMITTER_RESOURCE_ROLE_ID).length;
+    const currentSubmitters = _.filter(currentUserResources, (r) => r.roleId === config.SUBMITTER_RESOURCE_ROLE_ID).length;
 
     // Compare the number of submitters with the registration phase constraint
     if (maxRegistrantsConstraint && currentSubmitters >= maxRegistrantsConstraint.value) {
