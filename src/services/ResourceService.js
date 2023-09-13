@@ -341,6 +341,22 @@ async function createResource (currentUser, resource) {
 
     const { resources, memberId, handle, email, challenge, closeRegistration } = await init(currentUser, challengeId, resource, true)
 
+    // Retrieve the registration phase constraint - Max Number of Registrants
+    const registrationPhase = challenge.phases.find((phase) => phase.name === 'Registration');
+    const maxRegistrantsConstraint = registrationPhase?.constraints.find(
+      (constraint) => constraint.name === 'Number of Max Registrants'
+    )
+
+    // Determine the number of current submitters
+    const currentSubmitters = _.filter(resources, (r) => r.roleId === config.SUBMITTER_RESOURCE_ROLE_ID).length;
+
+    // Compare the number of submitters with the registration phase constraint
+    if (maxRegistrantsConstraint && currentSubmitters >= maxRegistrantsConstraint.value) {
+      throw new errors.ConflictError(
+        `Registration phase constraint exceeded. Maximum registrants allowed: ${maxRegistrantsConstraint.value}`
+      );
+    }
+
     if (_.reduce(resources,
       (result, r) => _.toString(r.memberId) === _.toString(memberId) && r.roleId === resource.roleId ? true : result,
       false)) {
