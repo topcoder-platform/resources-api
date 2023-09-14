@@ -263,8 +263,8 @@ async function init (currentUser, challengeId, resource, isCreated) {
   // get member information using v3 API
   const handle = resource.memberHandle
   const { memberId, email } = await helper.getMemberDetailsByHandle(handle)
-  const userResources = allResources.filter((r) => r.memberId === memberId)
-  const currentUserResources = allResources.filter((r) => r.memberId === currentUser.userId)
+  const userResources = allResources.filter((r) => _.toString(r.memberId) === _.toString(memberId))
+  const currentUserResources = allResources.filter((r) => _.toString(r.memberId) === _.toString(currentUser.userId))
   const isResourceExist = !_.isUndefined(_.find(userResources, r => r.roleId === resource.roleId))
   if (isCreated && isResourceExist) {
     throw new errors.ConflictError(`User ${resource.memberHandle} already has resource with roleId: ${resource.roleId} in challenge: ${challengeId}`)
