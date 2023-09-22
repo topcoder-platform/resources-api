@@ -237,19 +237,21 @@ async function init (currentUser, challengeId, resource, isCreated) {
 
   const allResources = await helper.query('Resource', { challengeId })
 
-  // Retrieve the registration phase constraint - Max Number of Registrants
   const registrationPhase = challenge.phases.find((phase) => phase.name === 'Registration')
   const currentSubmitters = _.filter(allResources, (r) => r.roleId === config.SUBMITTER_RESOURCE_ROLE_ID)
-
+  
+  // Retrieve the registration phase constraint - Allowed Registrants
   if (isCreated && registrationPhase) {
-    const maxRegistrantsConstraint = registrationPhase.constraints && registrationPhase.constraints.find(
-      (constraint) => constraint.name === 'Number of Max Registrants'
+    const allowedRegistrantsConstraint = registrationPhase.constraints && registrationPhase.constraints.find(
+      (constraint) => constraint.name === 'Allowed Registrants'
     )
-    // Compare the number of submitters with the registration phase constraint
-    if (maxRegistrantsConstraint && currentSubmitters.length >= _.toNumber(maxRegistrantsConstraint.value)) {
-      throw new errors.ConflictError(
-        `Registration phase constraint exceeded. Maximum registrants allowed: ${maxRegistrantsConstraint.value}`
-      )
+    //enforce the allowed Registrants constraint
+    if (
+      allowedRegistrantsConstraint &&
+      Array.isArray(allowedRegistrantsConstraint.allowedRegistrants) &&
+      !allowedRegistrantsConstraint.allowedRegistrants.includes(resource.memberHandle)
+    ) {
+      throw new errors.ConflictError(`User ${resource.memberHandle} is not allowed to register.`);
     }
   }
 
