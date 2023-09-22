@@ -240,11 +240,9 @@ async function init (currentUser, challengeId, resource, isCreated) {
   const registrationPhase = challenge.phases.find((phase) => phase.name === 'Registration')
   const currentSubmitters = _.filter(allResources, (r) => r.roleId === config.SUBMITTER_RESOURCE_ROLE_ID)
   
-  // Retrieve the registration phase constraint - Allowed Registrants
-  if (isCreated && registrationPhase) {
-    const allowedRegistrantsConstraint = registrationPhase.constraints && registrationPhase.constraints.find(
-      (constraint) => constraint.name === 'Allowed Registrants'
-    )
+  // Retrieve the constraint - Allowed Registrants
+  if (isCreated) {
+    const allowedRegistrantsConstraint = challenge.constraints && challenge.constraints['allowedRegistrants'];
     //enforce the allowed Registrants constraint
     if (
       allowedRegistrantsConstraint &&
