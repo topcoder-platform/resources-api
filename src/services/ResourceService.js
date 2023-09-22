@@ -239,17 +239,22 @@ async function init (currentUser, challengeId, resource, isCreated) {
 
   const registrationPhase = challenge.phases.find((phase) => phase.name === 'Registration')
   const currentSubmitters = _.filter(allResources, (r) => r.roleId === config.SUBMITTER_RESOURCE_ROLE_ID)
-  
+  const handle = resource.memberHandle
   // Retrieve the constraint - Allowed Registrants
   if (isCreated) {
-    const allowedRegistrantsConstraint = challenge.constraints && challenge.constraints['allowedRegistrants'];
-    //enforce the allowed Registrants constraint
+    const allowedRegistrants = _.get(challenge, 'constraints.allowedRegistrants')
+    // enforce the allowed Registrants constraint
     if (
-      allowedRegistrantsConstraint &&
-      Array.isArray(allowedRegistrantsConstraint.allowedRegistrants) &&
-      !allowedRegistrantsConstraint.allowedRegistrants.includes(resource.memberHandle)
+      _.isArray(allowedRegistrants) &&
+      !_.isEmpty(allowedRegistrants) &&
+      !_.some(
+        allowedRegistrants,
+        (allowed) => _.toLower(allowed) === _.toLower(handle)
+      )
     ) {
-      throw new errors.ConflictError(`User ${resource.memberHandle} is not allowed to register.`);
+      throw new errors.ConflictError(
+        `User ${resource.memberHandle} is not allowed to register.`
+      )
     }
   }
 
@@ -261,7 +266,6 @@ async function init (currentUser, challengeId, resource, isCreated) {
   }
 
   // get member information using v3 API
-  const handle = resource.memberHandle
   const { memberId, email } = await helper.getMemberDetailsByHandle(handle)
   const userResources = allResources.filter((r) => _.toString(r.memberId) === _.toString(memberId))
   const currentUserResources = allResources.filter((r) => _.toString(r.memberId) === _.toString(currentUser.userId))
