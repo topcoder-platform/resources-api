@@ -241,7 +241,7 @@ async function init (currentUser, challengeId, resource, isCreated) {
   const currentSubmitters = _.filter(allResources, (r) => r.roleId === config.SUBMITTER_RESOURCE_ROLE_ID)
   const handle = resource.memberHandle
   // Retrieve the constraint - Allowed Registrants
-  if (isCreated) {
+  if (isCreated && resource.roleId === config.SUBMITTER_RESOURCE_ROLE_ID) {
     const allowedRegistrants = _.get(challenge, 'constraints.allowedRegistrants')
     // enforce the allowed Registrants constraint
     if (
