@@ -18,20 +18,17 @@ const payloadFields = ['id', 'challengeId', 'memberId', 'memberHandle', 'roleId'
 
 /**
  * Check whether the user can access resources
- * @param {Object} currentUser the current user
- * @param {Array} the resources of specified challenge id
+ * @param {Array} resources resources of current user for specified challenge id
  */
-async function checkAccess (currentUser, resources) {
+async function checkAccess (currentUserResources) {
   const list = await helper.scan('ResourceRole')
-  const fullAccessRoles = new Set()
+  const fullAccessRoles = []
   _.each(list, e => {
     if (e.isActive && e.fullReadAccess && e.fullWriteAccess) {
-      fullAccessRoles.add(e.id)
+      fullAccessRoles.push(e.id)
     }
   })
-  if (!_.reduce(resources,
-    (result, r) => _.toString(r.memberId) === _.toString(currentUser.userId) && fullAccessRoles.has(r.roleId) ? true : result,
-    false)) {
+  if (_.isEmpty(_.intersectionWith(currentUserResources, fullAccessRoles, (a, b) => a.roleId === b))) {
     throw new errors.ForbiddenError(`Only M2M, admin or user with full access role can perform this action`)
   }
 }
@@ -82,7 +79,7 @@ async function getResources (currentUser, challengeId, roleId, memberId, memberH
         range: { memberId: { eq: currentUser.userId } }
       })
       try {
-        await checkAccess(currentUser, resources)
+        await checkAccess(resources)
         hasFullAccess = true
       } catch (e) {
         hasFullAccess = false
@@ -238,20 +235,51 @@ async function init (currentUser, challengeId, resource, isCreated) {
     throw new errors.BadRequestError(`Cannot create submitter resource on challenge with status ${_.get(challenge, 'status')}`)
   }
 
+  const allResources = await helper.query('Resource', { challengeId })
+
+  const registrationPhase = challenge.phases.find((phase) => phase.name === 'Registration')
+  const currentSubmitters = _.filter(allResources, (r) => r.roleId === config.SUBMITTER_RESOURCE_ROLE_ID)
+  const handle = resource.memberHandle
+  // Retrieve the constraint - Allowed Registrants
+  if (isCreated && resource.roleId === config.SUBMITTER_RESOURCE_ROLE_ID) {
+    const allowedRegistrants = _.get(challenge, 'constraints.allowedRegistrants')
+    // enforce the allowed Registrants constraint
+    if (
+      _.isArray(allowedRegistrants) &&
+      !_.isEmpty(allowedRegistrants) &&
+      !_.some(
+        allowedRegistrants,
+        (allowed) => _.toLower(allowed) === _.toLower(handle)
+      )
+    ) {
+      throw new errors.ConflictError(
+        `User ${resource.memberHandle} is not allowed to register.`
+      )
+    }
+  }
+
   // Prevent from creating more than 1 submitter resources on tasks
   if (_.get(challenge, 'task.isTask', false) && isCreated && resource.roleId === config.SUBMITTER_RESOURCE_ROLE_ID) {
-    const existing = await getResources(currentUser, challengeId, config.SUBMITTER_RESOURCE_ROLE_ID, null, null, 1, 1)
-    if (_.find(existing.data, r => r.roleId === config.SUBMITTER_RESOURCE_ROLE_ID)) {
+    if (currentSubmitters.length > 0) {
       throw new errors.ConflictError(`The Task is already assigned`)
     }
   }
 
   // get member information using v3 API
-  const handle = resource.memberHandle
-  const { memberId, email } = await helper.getMemberDetailsByHandle(resource.memberHandle)
+  const { memberId, email } = await helper.getMemberDetailsByHandle(handle)
+  const userResources = allResources.filter((r) => _.toString(r.memberId) === _.toString(memberId))
+  const currentUserResources = allResources.filter((r) => _.toString(r.memberId) === _.toString(currentUser.userId))
+  const isResourceExist = !_.isUndefined(_.find(userResources, r => r.roleId === resource.roleId))
+  if (isCreated && isResourceExist) {
+    throw new errors.ConflictError(`User ${resource.memberHandle} already has resource with roleId: ${resource.roleId} in challenge: ${challengeId}`)
+  }
+
+  if (!isCreated && !isResourceExist) {
+    throw new errors.NotFoundError(`User ${handle} doesn't have resource with roleId: ${resource.roleId} in challenge ${challengeId}`)
+  }
 
   // check if the resource is reviewer role and has already made a submission in the challenge
-  if (resource.roleId === config.REVIEWER_RESOURCE_ROLE_ID || resource.roleId === config.ITERATIVE_REVIEWER_RESOURCE_ROLE_ID) {
+  if (isCreated && (resource.roleId === config.REVIEWER_RESOURCE_ROLE_ID || resource.roleId === config.ITERATIVE_REVIEWER_RESOURCE_ROLE_ID)) {
     const submissionsRes = await helper.getRequest(`${config.SUBMISSIONS_API_URL}`, { challengeId: challengeId, perPage: 100, memberId: memberId })
     const submissions = submissionsRes.body
     if (submissions.length !== 0) {
@@ -262,36 +290,35 @@ async function init (currentUser, challengeId, resource, isCreated) {
   // ensure resource role existed
   const resourceRole = await getResourceRole(resource.roleId, isCreated)
 
-  // perform access validation
-  let resources
   // Verify the member has agreed to the challenge terms
   if (isCreated) {
     await helper.checkAgreedTerms(memberId, _.filter(_.get(challenge, 'terms', []), t => t.roleId === resourceRole.id))
   }
   if (!currentUser.isMachine && !helper.hasAdminRole(currentUser)) {
     // Check if user has agreed to the challenge terms
-    resources = await helper.query('Resource', { challengeId })
     if (!_.get(challenge, 'legacy.selfService')) {
       if (!resourceRole.selfObtainable || _.toString(memberId) !== _.toString(currentUser.userId)) {
         // if user is not creating/deleting a self obtainable resource for itself
         // we need to perform check access first
-        await checkAccess(currentUser, resources)
+        await checkAccess(currentUserResources)
       }
     }
-  } else {
-    // fetch resources for specified challenge and member
-    resources = await helper.query('Resource', {
-      hash: { challengeId: { eq: challengeId } },
-      range: { memberId: { eq: memberId } }
-    })
   }
+
+  let closeRegistration = false
+  if (isCreated && registrationPhase && challenge.legacy != null && challenge.legacy.subTrack === 'FIRST_2_FINISH') {
+    const isPastScheduledEndDate = moment().utc() > moment(registrationPhase.scheduledEndDate).utc()
+    closeRegistration = registrationPhase.isOpen && isPastScheduledEndDate && resource.roleId === config.SUBMITTER_RESOURCE_ROLE_ID
+  }
+
   // skip phase dependency checks for tasks
   if (_.get(challenge, 'task.isTask', false)) {
-    return { resources, memberId, handle, email, challenge }
+    return { allResources, userResources, memberId, handle, email, challenge, closeRegistration }
   }
+
   // bypass phase dependency checks if the caller is an m2m/admin
   if (currentUser.isMachine || helper.hasAdminRole(currentUser)) {
-    return { resources, memberId, handle, email, challenge }
+    return { allResources, userResources, memberId, handle, email, challenge, closeRegistration }
   }
   // check phases dependencies
   const dependencies = await ResourceRolePhaseDependencyService.getDependencies({ resourceRoleId: resource.roleId })
@@ -318,15 +345,8 @@ async function init (currentUser, challengeId, resource, isCreated) {
     }
   })
 
-  let closeRegistration = false
-  const registrationPhase = _.find(challenge.phases, (p) => p.name === 'Registration')
-  if (registrationPhase && challenge.legacy != null && challenge.legacy.subTrack === 'FIRST_2_FINISH') {
-    const isPastScheduledEndDate = moment().utc() > moment(registrationPhase.scheduledEndDate).utc()
-    closeRegistration = registrationPhase.isOpen && isPastScheduledEndDate && resource.roleId === config.SUBMITTER_RESOURCE_ROLE_ID
-  }
-
   // return resources and the member id
-  return { resources, memberId, handle, email, challenge, closeRegistration }
+  return { allResources, userResources, memberId, handle, email, challenge, closeRegistration }
 }
 
 /**
@@ -339,13 +359,7 @@ async function createResource (currentUser, resource) {
   try {
     const challengeId = resource.challengeId
 
-    const { resources, memberId, handle, email, challenge, closeRegistration } = await init(currentUser, challengeId, resource, true)
-
-    if (_.reduce(resources,
-      (result, r) => _.toString(r.memberId) === _.toString(memberId) && r.roleId === resource.roleId ? true : result,
-      false)) {
-      throw new errors.ConflictError(`User ${resource.memberHandle} already has resource with roleId: ${resource.roleId} in challenge: ${challengeId}`)
-    }
+    const { memberId, handle, email, challenge, closeRegistration } = await init(currentUser, challengeId, resource, true)
 
     const ret = await helper.create('Resource', _.assign({
       id: uuid(),
@@ -426,14 +440,14 @@ async function deleteResource (currentUser, resource) {
   try {
     const challengeId = resource.challengeId
 
-    const { resources, memberId, handle } = await init(currentUser, challengeId, resource)
+    const { allResources, memberId, handle } = await init(currentUser, challengeId, resource)
 
-    const ret = _.reduce(resources,
+    const ret = _.reduce(allResources,
       (result, r) => _.toString(r.memberId) === _.toString(memberId) && r.roleId === resource.roleId ? r : result,
       undefined)
 
     if (!ret) {
-      throw new errors.NotFoundError(`User ${handle || resource.memberHandle} doesn't have resource with roleId: ${resource.roleId} in challenge ${challengeId}`)
+      throw new errors.NotFoundError(`User ${handle} doesn't have resource with roleId: ${resource.roleId} in challenge ${challengeId}`)
     }
 
     await ret.delete()
