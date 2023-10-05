@@ -240,7 +240,7 @@ async function init (currentUser, challengeId, resource, isCreated) {
   const registrationPhase = challenge.phases.find((phase) => phase.name === 'Registration')
   const currentSubmitters = _.filter(allResources, (r) => r.roleId === config.SUBMITTER_RESOURCE_ROLE_ID)
   const handle = resource.memberHandle
-  const userResources = allResources.filter((r) => _.toLower(r.handle) === _.toLower(handle))
+  const userResources = allResources.filter((r) => _.toLower(r.memberHandle) === _.toLower(handle))
   // Retrieve the constraint - Allowed Registrants
   if (isCreated && resource.roleId === config.SUBMITTER_RESOURCE_ROLE_ID) {
     const allowedRegistrants = _.get(challenge, 'constraints.allowedRegistrants')
