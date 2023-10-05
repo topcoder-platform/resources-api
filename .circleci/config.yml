@@ -107,7 +107,7 @@ workflows:
           branches:
             only:
             - develop
-            - PLAT-3383
+            - PLAT-3501
 
     # Production builds are exectuted only on tagged commits to the testing
     # master branch.

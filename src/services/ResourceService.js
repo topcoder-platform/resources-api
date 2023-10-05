@@ -60,8 +60,8 @@ async function getResources (currentUser, challengeId, roleId, memberId, memberH
   }
   if (challengeId) {
     try {
-    // Verify that the challenge exists
-      await helper.getRequest(`${config.CHALLENGE_API_URL}/${challengeId}`)
+      // Verify that the challenge exists
+      await helper.getRequest(`${config.CHALLENGE_API_URL}/${challengeId}`, { checkIfExists: 'true' })
     } catch (e) {
       throw new errors.NotFoundError(`Challenge ID ${challengeId} not found`)
     }
@@ -240,6 +240,7 @@ async function init (currentUser, challengeId, resource, isCreated) {
   const registrationPhase = challenge.phases.find((phase) => phase.name === 'Registration')
   const currentSubmitters = _.filter(allResources, (r) => r.roleId === config.SUBMITTER_RESOURCE_ROLE_ID)
   const handle = resource.memberHandle
+  const userResources = allResources.filter((r) => _.toLower(r.memberHandle) === _.toLower(handle))
   // Retrieve the constraint - Allowed Registrants
   if (isCreated && resource.roleId === config.SUBMITTER_RESOURCE_ROLE_ID) {
     const allowedRegistrants = _.get(challenge, 'constraints.allowedRegistrants')
@@ -256,6 +257,12 @@ async function init (currentUser, challengeId, resource, isCreated) {
         `User ${resource.memberHandle} is not allowed to register.`
       )
     }
+    if (!_.get(challenge, 'task.isTask', false) && (_.toLower(challenge.createdBy) === _.toLower(handle) ||
+      _.some(userResources, r => r.roleId === config.REVIEWER_RESOURCE_ROLE_ID || r.roleId === config.ITERATIVE_REVIEWER_RESOURCE_ROLE_ID))) {
+      throw new errors.BadRequestError(
+        `User ${resource.memberHandle} is not allowed to register.`
+      )
+    }
   }
 
   // Prevent from creating more than 1 submitter resources on tasks
@@ -265,9 +272,6 @@ async function init (currentUser, challengeId, resource, isCreated) {
     }
   }
 
-  // get member information using v3 API
-  const { memberId, email } = await helper.getMemberDetailsByHandle(handle)
-  const userResources = allResources.filter((r) => _.toString(r.memberId) === _.toString(memberId))
   const currentUserResources = allResources.filter((r) => _.toString(r.memberId) === _.toString(currentUser.userId))
   const isResourceExist = !_.isUndefined(_.find(userResources, r => r.roleId === resource.roleId))
   if (isCreated && isResourceExist) {
@@ -278,6 +282,7 @@ async function init (currentUser, challengeId, resource, isCreated) {
     throw new errors.NotFoundError(`User ${handle} doesn't have resource with roleId: ${resource.roleId} in challenge ${challengeId}`)
   }
 
+  const { memberId, email } = await helper.getMemberDetailsByHandle(handle)
   // check if the resource is reviewer role and has already made a submission in the challenge
   if (isCreated && (resource.roleId === config.REVIEWER_RESOURCE_ROLE_ID || resource.roleId === config.ITERATIVE_REVIEWER_RESOURCE_ROLE_ID)) {
     const submissionsRes = await helper.getRequest(`${config.SUBMISSIONS_API_URL}`, { challengeId: challengeId, perPage: 100, memberId: memberId })
