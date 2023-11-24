@@ -520,7 +520,39 @@ async function advanceChallengePhase (challengeId, phase, operation, numAttempts
   }
 }
 
+const harmonyClient = new AWS.Lambda({ apiVersion: 'latest' })
+/**
+ * Send event to Harmony.
+ * @param {String} eventType The event type
+ * @param {String} payloadType The payload type
+ * @param {Object} payload The event payload
+ * @returns {Promise}
+ */
+async function sendHarmonyEvent (eventType, payloadType, payload) {
+  const event = {
+    publisher: config.KAFKA_MESSAGE_ORIGINATOR,
+    timestamp: new Date().getTime(),
+    eventType,
+    payloadType,
+    payload
+  }
+  return new Promise((resolve, reject) => {
+    harmonyClient.invoke({
+      FunctionName: config.HARMONY_LAMBDA_FUNCTION,
+      InvocationType: 'Event',
+      Payload: JSON.stringify(event)
+    }, (err, data) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(data)
+      }
+    })
+  })
+}
+
 module.exports = {
+  sendHarmonyEvent,
   wrapExpress,
   autoWrapExpress,
   getMemberInfoById,

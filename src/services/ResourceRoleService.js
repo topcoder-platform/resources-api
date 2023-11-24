@@ -60,6 +60,7 @@ async function createResourceRole (resourceRole) {
     const entity = await helper.create('ResourceRole', _.assign({ id: uuid(), nameLower }, resourceRole))
     const ret = _.pick(entity, payloadFields)
     await helper.postEvent(config.RESOURCE_ROLE_CREATE_TOPIC, ret)
+    await helper.sendHarmonyEvent('CREATE', 'ResourceRole', {...ret, nameLower});
     return ret
   } catch (err) {
     if (!helper.isCustomError(err)) {
@@ -96,6 +97,7 @@ async function updateResourceRole (resourceRoleId, data) {
     const entity = await helper.update(resourceRole, data)
     const ret = _.pick(entity, payloadFields)
     await helper.postEvent(config.RESOURCE_ROLE_UPDATE_TOPIC, ret)
+    await helper.sendHarmonyEvent('UPDATE', 'ResourceRole', {...ret, nameLower});
     return ret
   } catch (err) {
     if (!helper.isCustomError(err)) {

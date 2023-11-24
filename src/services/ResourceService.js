@@ -373,18 +373,20 @@ async function createResource (currentUser, resource) {
       createdBy: currentUser.handle || currentUser.sub
     }, resource))
 
+    const eventPayload = _.pick(ret, payloadFields)
     // Create resources in ES
     const esClient = await helper.getESClient()
     await esClient.create({
       index: config.ES.ES_INDEX,
       type: config.ES.ES_TYPE,
       id: ret.id,
-      body: _.pick(ret, payloadFields),
+      body: eventPayload,
       refresh: 'true' // refresh ES so that it is visible for read operations instantly
     })
+    await helper.sendHarmonyEvent('UPDATE', 'Resource', eventPayload)
 
-    logger.debug(`Created resource: ${JSON.stringify(_.pick(ret, payloadFields))}`)
-    await helper.postEvent(config.RESOURCE_CREATE_TOPIC, _.pick(ret, payloadFields))
+    logger.debug(`Created resource: ${JSON.stringify(eventPayload)}`)
+    await helper.postEvent(config.RESOURCE_CREATE_TOPIC, eventPayload)
     if (!_.get(challenge, 'task.isTask', false) && resource.roleId === config.SUBMITTER_RESOURCE_ROLE_ID) {
       const forumUrl = _.get(challenge, 'discussions[0].url')
       let templateId = config.REGISTRATION_EMAIL.SENDGRID_TEMPLATE_ID
@@ -468,6 +470,7 @@ async function deleteResource (currentUser, resource) {
 
     logger.debug(`Deleted resource, posting to Bus API: ${JSON.stringify(_.pick(ret, payloadFields))}`)
     await helper.postEvent(config.RESOURCE_DELETE_TOPIC, _.pick(ret, payloadFields))
+    await helper.sendHarmonyEvent('DELETE', 'Resource', { id: ret.id, roleId: ret.roleId, challengeId })
     return ret
   } catch (err) {
     logger.error(`Delete Resource Error ${JSON.stringify(err)}`)
