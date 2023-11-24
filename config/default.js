@@ -79,5 +79,7 @@ module.exports = {
     SUPPORT_EMAIL: process.env.SUPPORT_EMAIL || 'support@topcoder.com'
   },
 
+  HARMONY_LAMBDA_FUNCTION: process.env.HARMONY_LAMBDA_FUNCTION || 'arn:aws:lambda:us-east-1:811668436784:function:harmony-api-dev-processMessage',
+
   AUTOMATED_TESTING_NAME_PREFIX: process.env.AUTOMATED_TESTING_NAME_PREFIX || 'POSTMANE2E-'
 }

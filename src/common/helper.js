@@ -536,19 +536,12 @@ async function sendHarmonyEvent (eventType, payloadType, payload) {
     payloadType,
     payload
   }
-  return new Promise((resolve, reject) => {
-    harmonyClient.invoke({
-      FunctionName: config.HARMONY_LAMBDA_FUNCTION,
-      InvocationType: 'Event',
-      Payload: JSON.stringify(event)
-    }, (err, data) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve(data)
-      }
-    })
-  })
+
+  await harmonyClient.invoke({
+    FunctionName: config.HARMONY_LAMBDA_FUNCTION,
+    InvocationType: 'Event',
+    Payload: JSON.stringify(event)
+  }).promise()
 }
 
 module.exports = {
