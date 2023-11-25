@@ -520,7 +520,7 @@ async function advanceChallengePhase (challengeId, phase, operation, numAttempts
   }
 }
 
-const harmonyClient = new AWS.Lambda({ apiVersion: 'latest' })
+const harmonyClient = new AWS.Lambda({ apiVersion: 'latest', maxRetries: 2 })
 /**
  * Send event to Harmony.
  * @param {String} eventType The event type
@@ -537,11 +537,21 @@ async function sendHarmonyEvent (eventType, payloadType, payload) {
     payload
   }
 
-  await harmonyClient.invoke({
+  const result = await harmonyClient.invoke({
     FunctionName: config.HARMONY_LAMBDA_FUNCTION,
-    InvocationType: 'Event',
-    Payload: JSON.stringify(event)
+    InvocationType: 'RequestResponse',
+    Payload: JSON.stringify(event),
+    LogType: 'None'
   }).promise()
+
+  if (result.FunctionError) {
+    console.error(
+      'Failed to send Harmony event',
+      result.FunctionError,
+      _.toString(result.Payload)
+    )
+    throw new Error(result.FunctionError)
+  }
 }
 
 module.exports = {
