@@ -389,7 +389,7 @@ async function createResource (currentUser, resource) {
       body: eventPayload,
       refresh: 'true' // refresh ES so that it is visible for read operations instantly
     })
-    await helper.sendHarmonyEvent('UPDATE', 'Resource', eventPayload)
+    await helper.sendHarmonyEvent('CREATE', 'Resource', eventPayload)
 
     logger.debug(`Created resource: ${JSON.stringify(eventPayload)}`)
     await helper.postEvent(config.RESOURCE_CREATE_TOPIC, eventPayload)
