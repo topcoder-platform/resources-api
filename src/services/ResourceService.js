@@ -389,7 +389,7 @@ async function createResource (currentUser, resource) {
       body: eventPayload,
       refresh: 'true' // refresh ES so that it is visible for read operations instantly
     })
-    await helper.sendHarmonyEvent('CREATE', 'Resource', eventPayload)
+    await helper.sendHarmonyEvent('CREATE', 'Resource', eventPayload, _.get(challenge, 'billing.billingAccountId'))
 
     logger.debug(`Created resource: ${JSON.stringify(eventPayload)}`)
     await helper.postEvent(config.RESOURCE_CREATE_TOPIC, eventPayload)
@@ -453,7 +453,7 @@ async function deleteResource (currentUser, resource) {
   try {
     const challengeId = resource.challengeId
 
-    const { allResources, memberId, handle } = await init(currentUser, challengeId, resource)
+    const { allResources, memberId, handle, challenge } = await init(currentUser, challengeId, resource)
 
     const ret = _.reduce(allResources,
       (result, r) => _.toString(r.memberId) === _.toString(memberId) && r.roleId === resource.roleId ? r : result,
@@ -476,7 +476,7 @@ async function deleteResource (currentUser, resource) {
 
     logger.debug(`Deleted resource, posting to Bus API: ${JSON.stringify(_.pick(ret, payloadFields))}`)
     await helper.postEvent(config.RESOURCE_DELETE_TOPIC, _.pick(ret, payloadFields))
-    await helper.sendHarmonyEvent('DELETE', 'Resource', { id: ret.id, roleId: ret.roleId, challengeId })
+    await helper.sendHarmonyEvent('DELETE', 'Resource', { id: ret.id, roleId: ret.roleId, challengeId }, _.get(challenge, 'billing.billingAccountId'))
     return ret
   } catch (err) {
     logger.error(`Delete Resource Error ${JSON.stringify(err)}`)

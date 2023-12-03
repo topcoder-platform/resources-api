@@ -526,15 +526,17 @@ const harmonyClient = new AWS.Lambda({ apiVersion: 'latest', maxRetries: 2 })
  * @param {String} eventType The event type
  * @param {String} payloadType The payload type
  * @param {Object} payload The event payload
+ * @param {Number} billingAccountId The billing account id
  * @returns {Promise}
  */
-async function sendHarmonyEvent (eventType, payloadType, payload) {
+async function sendHarmonyEvent (eventType, payloadType, payload, billingAccountId) {
   const event = {
     publisher: config.KAFKA_MESSAGE_ORIGINATOR,
     timestamp: new Date().getTime(),
     eventType,
     payloadType,
-    payload
+    payload,
+    billingAccountId
   }
 
   const result = await harmonyClient.invoke({
