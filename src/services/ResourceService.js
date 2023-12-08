@@ -365,7 +365,7 @@ async function createResource (currentUser, resource) {
     const challengeId = resource.challengeId
     const { memberId, handle, email, challenge, closeRegistration } = await init(currentUser, challengeId, resource, true)
 
-    const timelineTemplateId = _.get(challenge, 'timelineTemplateId', null);
+    const timelineTemplateId = _.get(challenge, 'timelineTemplateId', null)
 
     const ret = await helper.create('Resource', _.assign({
       id: uuid(),
