@@ -392,8 +392,10 @@ async function createResource (currentUser, resource) {
       if (_.isUndefined(forumUrl)) {
         templateId = config.REGISTRATION_EMAIL.SENDGRID_TEMPLATE_ID_NO_FORUM
       }
-
+      console.log('challenge template id', timelineTemplateId)
+      console.log('config template id', config.get('TOPCROWD_CHALLENGE_TEMPLATE_ID'))
       if (config.get('TOPCROWD_CHALLENGE_TEMPLATE_ID') !== timelineTemplateId) {
+        console.log('sending email')
         await helper.postEvent(config.EMAIL_NOTIFICATIN_TOPIC, {
           from: config.REGISTRATION_EMAIL.EMAIL_FROM,
           replyTo: config.REGISTRATION_EMAIL.EMAIL_FROM,
