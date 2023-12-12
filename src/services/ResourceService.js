@@ -15,7 +15,6 @@ const ResourceRolePhaseDependencyService = require('./ResourceRolePhaseDependenc
 const constants = require('../../app-constants')
 
 const payloadFields = ['id', 'challengeId', 'memberId', 'memberHandle', 'roleId', 'created', 'createdBy', 'updated', 'updatedBy', 'legacyId']
-const PURE_V5_CHALLENGE_TEMPLATE_IDS = config.get('PURE_V5_CHALLENGE_TEMPLATE_IDS')
 
 /**
  * Check whether the user can access resources
@@ -267,12 +266,7 @@ async function init (currentUser, challengeId, resource, isCreated) {
   }
 
   // Prevent from creating more than 1 submitter resources on tasks
-  const isTask = _.get(challenge, 'task.isTask', false)
-
-  // TODO: remove this check after all challenges are migrated to v5 and the flag task.isTask is removed in favor of using challenge.templateId
-  const isPureV5Challenge = PURE_V5_CHALLENGE_TEMPLATE_IDS.indexOf(_.get(challenge, 'timelineTemplateId', null)) === -1
-
-  if (!isPureV5Challenge && isTask && isCreated && resource.roleId === config.SUBMITTER_RESOURCE_ROLE_ID) {
+  if (_.get(challenge, 'task.isTask', false) && isCreated && resource.roleId === config.SUBMITTER_RESOURCE_ROLE_ID) {
     if (currentSubmitters.length > 0) {
       throw new errors.ConflictError(`The Task is already assigned`)
     }
