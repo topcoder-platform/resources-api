@@ -14,8 +14,6 @@ module.exports = {
   AUTH_SECRET: process.env.AUTH_SECRET || 'mysecret',
   VALID_ISSUERS: process.env.VALID_ISSUERS || '["https://api.topcoder-dev.com", "https://api.topcoder.com", "https://topcoder-dev.auth0.com/"]',
 
-  PURE_V5_CHALLENGE_TEMPLATE_IDS: ['517e76b0-8824-4e72-9b48-a1ebde1793a8'],
-
   SUBMITTER_RESOURCE_ROLE_ID: process.env.SUBMITTER_RESOURCE_ROLE_ID || '732339e7-8e30-49d7-9198-cccf9451e221',
   REVIEWER_RESOURCE_ROLE_ID: process.env.REVIEWER_RESOURCE_ROLE_ID || '318b9c07-079a-42d9-a81f-b96be1dc1099',
   ITERATIVE_REVIEWER_RESOURCE_ROLE_ID: process.env.ITERATIVE_REVIEWER_RESOURCE_ROLE_ID || 'f6df7212-b9d6-4193-bfb1-b383586fce63',
