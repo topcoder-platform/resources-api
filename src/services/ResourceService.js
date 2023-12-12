@@ -220,7 +220,7 @@ async function getResourceRole (roleId, isCreated) {
  * @param {String} challengeId the challenge id
  * @param {Object} resource the resource to be created
  * @param {Boolean} isCreated the flag indicate it is create operation.
- * @returns {Object} the resource entities and member information.
+ * @returns {Promise<Object>} the resource entities and member information.
  */
 async function init (currentUser, challengeId, resource, isCreated) {
   // Verify that the challenge exists
@@ -363,8 +363,9 @@ async function init (currentUser, challengeId, resource, isCreated) {
 async function createResource (currentUser, resource) {
   try {
     const challengeId = resource.challengeId
-
     const { memberId, handle, email, challenge, closeRegistration } = await init(currentUser, challengeId, resource, true)
+
+    const timelineTemplateId = _.get(challenge, 'timelineTemplateId', null)
 
     const ret = await helper.create('Resource', _.assign({
       id: uuid(),
@@ -391,23 +392,28 @@ async function createResource (currentUser, resource) {
       if (_.isUndefined(forumUrl)) {
         templateId = config.REGISTRATION_EMAIL.SENDGRID_TEMPLATE_ID_NO_FORUM
       }
-      await helper.postEvent(config.EMAIL_NOTIFICATIN_TOPIC, {
-        from: config.REGISTRATION_EMAIL.EMAIL_FROM,
-        replyTo: config.REGISTRATION_EMAIL.EMAIL_FROM,
-        recipients: [email],
-        data: {
-          handle,
-          challengeName: challenge.name,
-          forum: forumUrl,
-          submissionEndTime: new Date(_.get(_.find(challenge.phases, phase => phase.name === 'Submission'), 'scheduledEndDate')).toUTCString(),
-          submitUrl: _.replace(config.REGISTRATION_EMAIL.SUBMIT_URL, ':id', challengeId),
-          reviewAppUrl: config.REGISTRATION_EMAIL.REVIEW_APP_URL + challenge.legacyId,
-          helpUrl: config.REGISTRATION_EMAIL.HELP_URL,
-          support: config.REGISTRATION_EMAIL.SUPPORT_EMAIL
-        },
-        sendgrid_template_id: templateId,
-        version: 'v3'
-      })
+      console.log('challenge template id', timelineTemplateId)
+      console.log('config template id', config.get('TOPCROWD_CHALLENGE_TEMPLATE_ID'))
+      if (config.get('TOPCROWD_CHALLENGE_TEMPLATE_ID') !== timelineTemplateId) {
+        console.log('sending email')
+        await helper.postEvent(config.EMAIL_NOTIFICATIN_TOPIC, {
+          from: config.REGISTRATION_EMAIL.EMAIL_FROM,
+          replyTo: config.REGISTRATION_EMAIL.EMAIL_FROM,
+          recipients: [email],
+          data: {
+            handle,
+            challengeName: challenge.name,
+            forum: forumUrl,
+            submissionEndTime: new Date(_.get(_.find(challenge.phases, phase => phase.name === 'Submission'), 'scheduledEndDate')).toUTCString(),
+            submitUrl: _.replace(config.REGISTRATION_EMAIL.SUBMIT_URL, ':id', challengeId),
+            reviewAppUrl: config.REGISTRATION_EMAIL.REVIEW_APP_URL + challenge.legacyId,
+            helpUrl: config.REGISTRATION_EMAIL.HELP_URL,
+            support: config.REGISTRATION_EMAIL.SUPPORT_EMAIL
+          },
+          sendgrid_template_id: templateId,
+          version: 'v3'
+        })
+      }
     }
 
     if (closeRegistration) {
