@@ -9,16 +9,15 @@ const helper = require('../common/helper')
 const logger = require('../common/logger')
 
 /**
- * Delete the Resource from the ES by the given id
+ * Delete the Resource from the OS by the given id
  * @param id the resource id
  * @returns {Promise<void>}
  */
-const deleteFromESById = async (id) => {
+const deleteFromOSById = async (id) => {
   // delete from ES
-  const esClient = await helper.getESClient()
-  await esClient.delete({
-    index: config.ES.ES_INDEX,
-    type: config.ES.ES_TYPE,
+  const osClient = await helper.getOSClient()
+  await osClient.delete({
+    index: config.OS.OS_INDEX,
     id: id,
     refresh: 'true' // refresh ES so that it is effective for read operations instantly
   })
@@ -86,7 +85,7 @@ const cleanUpTestData = async () => {
     for (const res of resources) {
       logger.info('Resource to be deleted', res.id)
       await deleteFromDBById('Resource', res.id)
-      await deleteFromESById(res.id)
+      await deleteFromOSById(res.id)
     }
     logger.info('ResourceRole to be deleted', roleId)
     await deleteFromDBById('ResourceRole', roleId)

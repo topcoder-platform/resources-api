@@ -59,11 +59,9 @@ The following parameters can be set in config files or in env variables:
 - DYNAMODB.AWS_WRITE_UNITS: The DynamoDB table write unit configuration, default is 2
 - DYNAMODB.TIMEOUT: The timeout setting used in health check
 - SCOPES: The M2M scopes, refer `config/default.js` for more information
-- ES.HOST: Elasticsearch host, default value is 'localhost:9200'
-- ES.API_VERSION: Elasticsearch API version, default value is '6.8'
-- ES.ES_INDEX: Elasticsearch index name for resources, default value is 'resources'
-- ES.ES_TYPE: Elasticsearch index type for resources, default value is '_doc'
-- ES.ES_REFRESH: Elasticsearch force refresh flag, default value is 'true'
+- OS.HOST: Opensearch host, default value is 'localhost:9200'
+- OS.OS_INDEX: Opensearch index name for resources, default value is 'resources'
+- OS.OS_REFRESH: Opensearch force refresh flag, default value is 'true'
 - BUSAPI_URL: the bus api, default value is 'https://api.topcoder-dev.com/v5'
 - KAFKA_ERROR_TOPIC: Kafka error topic, default value is 'common.error.reporting',
 - KAFKA_MESSAGE_ORIGINATOR: the Kafka message originator, default value is 'resources-api'

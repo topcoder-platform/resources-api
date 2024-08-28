@@ -170,13 +170,12 @@ async function clearDependencies () {
 }
 
 /**
- * Clear the ES documents.
+ * Clear the OS documents.
  */
 async function initES () {
-  const client = helper.getESClient()
+  const client = helper.getOSClient()
   await client.deleteByQuery({
-    index: config.ES.ES_INDEX,
-    type: config.ES.ES_TYPE,
+    index: config.OS.OS_INDEX,
     body: {
       query: {
         match_all: {}
