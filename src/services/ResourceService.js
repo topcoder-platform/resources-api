@@ -141,6 +141,7 @@ async function getResources (currentUser, challengeId, roleId, memberId, memberH
   const sortCriteria = [{ [sortBy]: { 'order': sortOrder } }]
   const docs = await searchOS(mustQuery, perPage, page, sortCriteria)
 
+  docs = docs.body
   // Extract data from hits
   const allResources = _.map(docs.hits.hits, item => item._source)
   const resources = _.map(allResources, item => ({ ...item, memberId: (_.toString(item.memberId)) }))
@@ -530,6 +531,7 @@ async function listChallengesByMember (memberId, criteria) {
       exceeds the max search window:${config.MAX_ELASTIC_SEARCH_RECORDS_SIZE}`
     )
   }
+  docs = docs.body
 
   // Extract data from hits
   let result = _.map(docs.hits.hits, item => item._source)
