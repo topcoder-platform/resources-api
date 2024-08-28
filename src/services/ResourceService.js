@@ -694,6 +694,7 @@ async function getResourceCount (challengeId, roleId) {
   let result
   try {
     result = await osClient.search(osQuery)
+    result = result.body
   } catch (err) {
     logger.error(`Get Resource Count Error ${JSON.stringify(err)}`)
     throw err
