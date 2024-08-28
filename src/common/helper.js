@@ -447,7 +447,7 @@ function getOSClient () {
   // AWS ES configuration is different from other providers
   if (/.*amazonaws.*/.test(osHost)) {
     osClient = new opensearch.Client({
-      hosts: osHost,
+      node: osHost,
       amazonES: {
         region: config.get('DYNAMODB.AWS_REGION'),
         credentials: new AWS.EnvironmentCredentials('AWS')
