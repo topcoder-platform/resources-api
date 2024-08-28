@@ -139,7 +139,7 @@ async function getResources (currentUser, challengeId, roleId, memberId, memberH
   })
 
   const sortCriteria = [{ [sortBy]: { 'order': sortOrder } }]
-  const docs = await searchES(mustQuery, perPage, page, sortCriteria)
+  const docs = await searchOS(mustQuery, perPage, page, sortCriteria)
 
   // Extract data from hits
   const allResources = _.map(docs.hits.hits, item => item._source)
