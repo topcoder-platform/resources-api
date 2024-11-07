@@ -570,10 +570,8 @@ async function searchOSWithScroll (mustQuery) {
 
   const osClient = await helper.getOSClient()
   let searchResponse = await osClient.search(osQuery)
-  logger.debug(`OS Results: ${JSON.stringify(searchResponse)}`)
-  searchResponse = searchResponse.body
   // eslint-disable-next-line camelcase
-  const { _scroll_id, hits } = searchResponse
+  const { _scroll_id, hits } = searchResponse.body
   const totalHits = hits.total
 
   // eslint-disable-next-line camelcase
