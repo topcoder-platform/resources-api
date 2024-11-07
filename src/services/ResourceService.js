@@ -644,7 +644,7 @@ async function searchOS (mustQuery, perPage, page, sortCriteria) {
   const osClient = await helper.getOSClient()
   let docs
   try {
-    docs = await osClient.search(osQuery).body
+    docs = await osClient.search(osQuery)
   } catch (e) {
     // Catch error when the ES is fresh and has no data
     logger.info(`Query Error from ES ${JSON.stringify(e)}`)
