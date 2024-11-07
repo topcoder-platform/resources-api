@@ -569,7 +569,7 @@ async function searchOSWithScroll (mustQuery) {
   }
 
   const osClient = await helper.getOSClient()
-  const searchResponse = await osClient.search(osQuery)
+  const searchResponse = await osClient.search(osQuery).body
 
   // eslint-disable-next-line camelcase
   const { _scroll_id, hits } = searchResponse
@@ -644,7 +644,7 @@ async function searchOS (mustQuery, perPage, page, sortCriteria) {
   const osClient = await helper.getOSClient()
   let docs
   try {
-    docs = await osClient.search(osQuery)
+    docs = await osClient.search(osQuery).body
   } catch (e) {
     // Catch error when the ES is fresh and has no data
     logger.info(`Query Error from ES ${JSON.stringify(e)}`)
@@ -693,8 +693,7 @@ async function getResourceCount (challengeId, roleId) {
   const osClient = await helper.getOSClient()
   let result
   try {
-    result = await osClient.search(osQuery)
-    result = result.body
+    result = await osClient.search(osQuery).body
   } catch (err) {
     logger.error(`Get Resource Count Error ${JSON.stringify(err)}`)
     throw err
