@@ -532,7 +532,7 @@ async function listChallengesByMember (memberId, criteria) {
     )
   }
   logger.debug(`Docs from OS: ${JSON.stringify(docs)}`)
-  
+
   // Extract data from hits
   let result = _.map(docs.hits.hits, item => item._source)
   const arr = _.uniq(_.map(result, 'challengeId'))
