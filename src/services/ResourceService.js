@@ -522,7 +522,7 @@ async function listChallengesByMember (memberId, criteria) {
   if (criteria.useScroll) {
     docs = await searchOSWithScroll(mustQuery)
   } else if (perPage * page <= config.MAX_ELASTIC_SEARCH_RECORDS_SIZE) {
-    docs = await searchOS(mustQuery, perPage, page)
+    docs = await searchOS(mustQuery, perPage, page).body
   } else {
     throw new errors.BadRequestError(`
       OS pagination params:
@@ -531,7 +531,8 @@ async function listChallengesByMember (memberId, criteria) {
       exceeds the max search window:${config.MAX_ELASTIC_SEARCH_RECORDS_SIZE}`
     )
   }
-  docs = docs.body
+  logger.debug(`Docs from OS: ${JSON.stringify(docs)}`)
+  
   // Extract data from hits
   let result = _.map(docs.hits.hits, item => item._source)
   const arr = _.uniq(_.map(result, 'challengeId'))
