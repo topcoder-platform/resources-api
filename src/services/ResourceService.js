@@ -139,7 +139,8 @@ async function getResources (currentUser, challengeId, roleId, memberId, memberH
   })
 
   const sortCriteria = [{ [sortBy]: { 'order': sortOrder } }]
-  const docs = await searchES(mustQuery, perPage, page, sortCriteria)
+  let docs = await searchOS(mustQuery, perPage, page, sortCriteria)
+  docs = docs.body
 
   // Extract data from hits
   const allResources = _.map(docs.hits.hits, item => item._source)
@@ -374,11 +375,10 @@ async function createResource (currentUser, resource) {
       createdBy: currentUser.handle || currentUser.sub
     }, resource))
 
-    // Create resources in ES
-    const esClient = await helper.getESClient()
-    await esClient.create({
-      index: config.ES.ES_INDEX,
-      type: config.ES.ES_TYPE,
+    // Create resources in OS
+    const osClient = await helper.getOSClient()
+    await osClient.index({
+      index: config.OS.OS_INDEX,
       id: ret.id,
       body: _.pick(ret, payloadFields),
       refresh: 'true' // refresh ES so that it is visible for read operations instantly
@@ -463,13 +463,12 @@ async function deleteResource (currentUser, resource) {
 
     await ret.delete()
 
-    // delete from ES
-    const esClient = await helper.getESClient()
-    await esClient.delete({
-      index: config.ES.ES_INDEX,
-      type: config.ES.ES_TYPE,
+    // delete from OS
+    const osClient = await helper.getOSClient()
+    await osClient.delete({
+      index: config.OS.OS_INDEX,
       id: ret.id,
-      refresh: 'true' // refresh ES so that it is effective for read operations instantly
+      refresh: 'true' // refresh OS so that it is effective for read operations instantly
     })
 
     logger.debug(`Deleted resource, posting to Bus API: ${JSON.stringify(_.pick(ret, payloadFields))}`)
@@ -521,17 +520,18 @@ async function listChallengesByMember (memberId, criteria) {
   }
 
   if (criteria.useScroll) {
-    docs = await searchESWithScroll(mustQuery)
+    docs = await searchOSWithScroll(mustQuery)
   } else if (perPage * page <= config.MAX_ELASTIC_SEARCH_RECORDS_SIZE) {
-    docs = await searchES(mustQuery, perPage, page)
+    docs = await searchOS(mustQuery, perPage, page).body
   } else {
     throw new errors.BadRequestError(`
-      ES pagination params:
+      OS pagination params:
       page ${page},
       perPage: ${perPage}
       exceeds the max search window:${config.MAX_ELASTIC_SEARCH_RECORDS_SIZE}`
     )
   }
+  logger.debug(`Docs from OS: ${JSON.stringify(docs)}`)
 
   // Extract data from hits
   let result = _.map(docs.hits.hits, item => item._source)
@@ -554,11 +554,10 @@ listChallengesByMember.schema = {
   }).required()
 }
 
-async function searchESWithScroll (mustQuery) {
+async function searchOSWithScroll (mustQuery) {
   const scrollTimeout = '1m'
-  const esQuery = {
-    index: config.get('ES.ES_INDEX'),
-    type: config.get('ES.ES_TYPE'),
+  const osQuery = {
+    index: config.get('OS.OS_INDEX'),
     size: 10000,
     body: {
       query: {
@@ -570,18 +569,17 @@ async function searchESWithScroll (mustQuery) {
     scroll: scrollTimeout
   }
 
-  const esClient = await helper.getESClient()
-  const searchResponse = await esClient.search(esQuery)
-
+  const osClient = await helper.getOSClient()
+  let searchResponse = await osClient.search(osQuery)
   // eslint-disable-next-line camelcase
-  const { _scroll_id, hits } = searchResponse
+  const { _scroll_id, hits } = searchResponse.body
   const totalHits = hits.total
 
   // eslint-disable-next-line camelcase
   let scrollId = _scroll_id
 
   while (hits.hits.length < totalHits) {
-    const nextScrollResponse = await esClient.scroll({
+    const nextScrollResponse = await osClient.scroll({
       scroll: scrollTimeout,
       scroll_id: scrollId
     })
@@ -590,7 +588,7 @@ async function searchESWithScroll (mustQuery) {
     hits.hits = [...hits.hits, ...nextScrollResponse.hits.hits]
   }
 
-  await esClient.clearScroll({
+  await osClient.clearScroll({
     body: {
       // eslint-disable-next-line camelcase
       scroll_id: [_scroll_id]
@@ -606,18 +604,17 @@ async function searchESWithScroll (mustQuery) {
 }
 
 /**
- * Execute ES query
+ * Execute OS query
  * @param {Object} mustQuery the query that will be sent to ES
  * @param {Number} perPage number of search result per page
  * @param {Number} page the current page
- * @returns {Object} doc from ES
+ * @returns {Object} doc from OS
  */
-async function searchES (mustQuery, perPage, page, sortCriteria) {
-  let esQuery
+async function searchOS (mustQuery, perPage, page, sortCriteria) {
+  let osQuery
   if (sortCriteria) {
-    esQuery = {
-      index: config.get('ES.ES_INDEX'),
-      type: config.get('ES.ES_TYPE'),
+    osQuery = {
+      index: config.get('OS.OS_INDEX'),
       size: perPage,
       from: perPage * (page - 1), // Es Index starts from 0
       body: {
@@ -630,9 +627,8 @@ async function searchES (mustQuery, perPage, page, sortCriteria) {
       }
     }
   } else {
-    esQuery = {
-      index: config.get('ES.ES_INDEX'),
-      type: config.get('ES.ES_TYPE'),
+    osQuery = {
+      index: config.get('OS.OS_INDEX'),
       size: perPage,
       from: perPage * (page - 1), // Es Index starts from 0
       body: {
@@ -644,11 +640,11 @@ async function searchES (mustQuery, perPage, page, sortCriteria) {
       }
     }
   }
-  logger.debug(`ES Query ${JSON.stringify(esQuery)}`)
-  const esClient = await helper.getESClient()
+  logger.debug(`OS Query ${JSON.stringify(osQuery)}`)
+  const osClient = await helper.getOSClient()
   let docs
   try {
-    docs = await esClient.search(esQuery)
+    docs = await osClient.search(osQuery)
   } catch (e) {
     // Catch error when the ES is fresh and has no data
     logger.info(`Query Error from ES ${JSON.stringify(e)}`)
@@ -675,9 +671,8 @@ async function getResourceCount (challengeId, roleId) {
     must.push({ term: { 'roleId.keyword': roleId } })
   }
 
-  const esQuery = {
-    index: config.get('ES.ES_INDEX'),
-    type: config.get('ES.ES_TYPE'),
+  const osQuery = {
+    index: config.get('OS.OS_INDEX'),
     size: 0,
     body: {
       query: {
@@ -695,10 +690,11 @@ async function getResourceCount (challengeId, roleId) {
     }
   }
 
-  const esClient = await helper.getESClient()
+  const osClient = await helper.getOSClient()
   let result
   try {
-    result = await esClient.search(esQuery)
+    result = await osClient.search(osQuery)
+    result = result.body
   } catch (err) {
     logger.error(`Get Resource Count Error ${JSON.stringify(err)}`)
     throw err

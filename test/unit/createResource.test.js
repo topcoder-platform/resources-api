@@ -126,9 +126,8 @@ module.exports = describe('Create resource', () => {
   describe('create resource - other cases', async () => {
     it('create resource - task already assign', async () => {
       const resourceId = uuid()
-      await helper.getESClient().create({
-        index: config.ES.ES_INDEX,
-        type: config.ES.ES_TYPE,
+      await helper.getOSClient().create({
+        index: config.OS.OS_INDEX,
         id: resourceId,
         body: {
           id: resourceId,
@@ -147,9 +146,8 @@ module.exports = describe('Create resource', () => {
         should.equal(err.name, 'ConflictError')
         assertError(err, 'The Task is already assigned')
       } finally {
-        await helper.getESClient().delete({
-          index: config.ES.ES_INDEX,
-          type: config.ES.ES_TYPE,
+        await helper.getOSClient().delete({
+          index: config.OS.OS_INDEX,
           id: resourceId,
           refresh: 'true'
         })

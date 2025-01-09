@@ -13,14 +13,14 @@ const errors = require('./errors')
 const logger = require('./logger')
 const m2mAuth = require('tc-core-library-js').auth.m2m
 const AWS = require('aws-sdk')
-const elasticsearch = require('elasticsearch')
+const opensearch = require('@opensearch-project/opensearch')
 const m2m = m2mAuth(_.pick(config, ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME', 'AUTH0_PROXY_SERVER_URL']))
 const busApi = require('tc-bus-api-wrapper')
 const busApiClient = busApi(_.pick(config, ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME', 'AUTH0_CLIENT_ID',
   'AUTH0_CLIENT_SECRET', 'BUSAPI_URL', 'KAFKA_ERROR_TOPIC', 'AUTH0_PROXY_SERVER_URL']))
 
-// Elasticsearch client
-let esClient
+// Opensearch client
+let osClient
 
 /**
  * Check the error is custom error.
@@ -436,32 +436,29 @@ async function getAllPages (url, query) {
 }
 
 /**
- * Get ES Client
- * @return {Object} Elasticsearch Client Instance
+ * Get OS Client
+ * @return {Object} Opensearch Client Instance
  */
-function getESClient () {
-  if (esClient) {
-    return esClient
+function getOSClient () {
+  if (osClient) {
+    return osClient
   }
-  const esHost = config.get('ES.HOST')
+  const osHost = config.get('OS.HOST')
   // AWS ES configuration is different from other providers
-  if (/.*amazonaws.*/.test(esHost)) {
-    esClient = elasticsearch.Client({
-      apiVersion: config.get('ES.API_VERSION'),
-      hosts: esHost,
-      connectionClass: require('http-aws-es'), // eslint-disable-line global-require
+  if (/.*amazonaws.*/.test(osHost)) {
+    osClient = new opensearch.Client({
+      node: osHost,
       amazonES: {
         region: config.get('DYNAMODB.AWS_REGION'),
         credentials: new AWS.EnvironmentCredentials('AWS')
       }
     })
   } else {
-    esClient = new elasticsearch.Client({
-      apiVersion: config.get('ES.API_VERSION'),
-      hosts: esHost
+    osClient = new opensearch.Client({
+      node: osHost
     })
   }
-  return esClient
+  return osClient
 }
 
 /**
@@ -539,7 +536,7 @@ module.exports = {
   isCustomError,
   setResHeaders,
   getAllPages,
-  getESClient,
+  getOSClient,
   checkAgreedTerms,
   postRequest,
   getMemberById,
