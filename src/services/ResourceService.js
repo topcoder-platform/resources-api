@@ -172,7 +172,7 @@ async function getResources (currentUser, challengeId, roleId, memberId, memberH
 
   return {
     data: completeResources,
-    total: docs.hits.total,
+    total: docs.hits.total.value,
     page,
     perPage
   }
@@ -538,7 +538,7 @@ async function listChallengesByMember (memberId, criteria) {
   const arr = _.uniq(_.map(result, 'challengeId'))
   return {
     data: arr,
-    total: docs.hits.total,
+    total: docs.hits.total.value,
     page,
     perPage
   }
