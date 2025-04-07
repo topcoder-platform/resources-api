@@ -22,7 +22,7 @@ async function getResourceRoles (req, res) {
  * @param {Object} res the response
  */
 async function createResourceRole (req, res) {
-  const result = await service.createResourceRole(req.body)
+  const result = await service.createResourceRole(req.authUser, req.body)
   res.send(result)
 }
 
@@ -32,7 +32,7 @@ async function createResourceRole (req, res) {
  * @param {Object} res the response
  */
 async function updateResourceRole (req, res) {
-  const result = await service.updateResourceRole(req.params.resourceRoleId, req.body)
+  const result = await service.updateResourceRole(req.authUser, req.params.resourceRoleId, req.body)
   res.send(result)
 }
 

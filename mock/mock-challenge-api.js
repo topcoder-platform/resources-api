@@ -27,28 +27,34 @@ const mockChallengeApi = http.createServer((req, res) => {
       return
     }
 
-    if (req.method === 'GET' && req.url.match(/^\/v5\/challenges\/[a-zA-Z0-9-]+$/)) {
+    if (req.method === 'GET' && req.url.match(/^\/v5\/challenges\/[a-zA-Z0-9-]+(\?[a-zA-Z=]+)?$/)) {
       const list = req.url.split('/')
-      const challengeId = list[3]
+      let challengeId = list[3]
+      // remove parameters after '?'
+      if (challengeId.indexOf('?') >= 0) {
+        challengeId = challengeId.substring(0, challengeId.indexOf('?'))
+      }
       if (/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(challengeId)) {
         if (challengeId.startsWith('11111111')) {
           return send(res, 404, { message: `Challenge with id: ${challengeId} doesn't exist.` })
         } else {
           return send(res, 200, {
             id: challengeId,
+            status: 'Active',
             task: {
               isTask: challengeId === 'fe6d0a58-ce7d-4521-8501-b8132b1c0392'
             },
-            terms: challengeId === 'fe6d0a58-ce7d-4521-8501-b8132b1c0392' ? [{
-              id: 'ae6d0a58-ce7d-4521-8501-b8132b1c0391',
-              roleId: 'aa5a3f78-79e0-4bf7-93ff-b11e8f5b398b'
-            }] : [{
-              id: 'ae6d0a58-ce7d-4521-8501-b8132b1c0392',
-              roleId: config.SUBMITTER_RESOURCE_ROLE_ID
-            }, {
-              id: 'ae6d0a58-ce7d-4521-8501-b8132b1c0393',
-              roleId: config.SUBMITTER_RESOURCE_ROLE_ID
-            }],
+            terms: (challengeId === 'fe6d0a58-ce7d-4521-8501-b8132b1c0392' ||
+                challengeId === 'fe6d0a58-ce7d-4521-8501-b8132b1c0393') ? [{
+                id: 'ae6d0a58-ce7d-4521-8501-b8132b1c0391',
+                roleId: 'aa5a3f78-79e0-4bf7-93ff-b11e8f5b398b'
+              }] : [{
+                id: 'ae6d0a58-ce7d-4521-8501-b8132b1c0392',
+                roleId: config.SUBMITTER_RESOURCE_ROLE_ID
+              }, {
+                id: 'ae6d0a58-ce7d-4521-8501-b8132b1c0393',
+                roleId: config.SUBMITTER_RESOURCE_ROLE_ID
+              }],
             phases: [{
               phaseId: 'aa5a3f78-79e0-4bf7-93ff-b11e8f5b398b',
               isOpen: true
@@ -88,6 +94,22 @@ const mockChallengeApi = http.createServer((req, res) => {
       ])
     } else if (req.method === 'POST' && req.url.match(/^\/v5\/bus\/events$/)) {
       return send(res, 200, {})
+    } else if (req.method === 'GET' && req.url.match(/^\/v5\/members\/[a-zA-Z0-9-_]+$/)) {
+      const list1 = req.url.split('/')
+      const handle = list1[3]
+      const userIds = {
+        'ghostar': 151743,
+        'lars2520': 287131,
+        'denis': 251280,
+        'hohosky': 16096823
+      }
+      // return 404 for user '123abcx'
+      if (handle === '123abcx') {
+        return send(res, 404, {})
+      } else if (Object.keys(userIds).includes(handle.toLowerCase())) {
+        return send(res, 200, { userId: userIds[handle.toLowerCase()], email: '' })
+      }
+      return send(res, 200, { userId: 123456, email: 'test@topcoder.com' })
     } else {
       // 404 for other routes
       res.statusCode = 404

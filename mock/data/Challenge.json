@@ -1,0 +1,229 @@
+[
+  {
+    "id": "11111111-2222-3333-4444-555555555555",
+    "name": "Completed Challenge",
+    "status": "Completed"
+  },
+  {
+    "id": "11111111-2222-3333-4444-555555555556",
+    "name": "Active Challenge - Registration is Open",
+    "status": "Active",
+    "phases": [
+      {
+        "phaseId": "a93544bc-c165-4af4-b55e-18f3593b457a",
+        "name": "Registration",
+        "isOpen": true,
+        "scheduledStartDate": "2025-01-01T00:00:00",
+        "scheduledEndDate": "2026-01-01T00:00:00"
+      }, {
+        "phaseId": "6950164f-3c5e-4bdc-abc8-22aaf5a1bd49",
+        "name": "Submission",
+        "isOpen": true,
+        "scheduledStartDate": "2025-01-01T00:00:00",
+        "scheduledEndDate": "2026-01-01T00:00:00"
+      }, {
+        "phaseId": "aa5a3f78-79e0-4bf7-93ff-b11e8f5b398b",
+        "name": "Review",
+        "isOpen": false,
+        "scheduledStartDate": "2026-01-01T00:00:00",
+        "scheduledEndDate": "2026-01-02T00:00:00"
+      }, {
+        "phaseId": "1c24cfb3-5b0a-4dbd-b6bd-4b0dff5349c6",
+        "name": "Appeals",
+        "isOpen": false,
+        "scheduledStartDate": "2026-01-02T00:00:00",
+        "scheduledEndDate": "2026-01-03T00:00:00"
+      }, {
+        "phaseId": "797a6af7-cd3f-4436-9fca-9679f773bee9",
+        "name": "Appeals Response",
+        "isOpen": false,
+        "scheduledStartDate": "2026-01-03T00:00:00",
+        "scheduledEndDate": "2026-01-04T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": "11111111-2222-3333-4444-555555555557",
+    "name": "Active Challenge - Registration is Closed, Submission is Open",
+    "status": "Active",
+    "phases": [
+      {
+        "phaseId": "a93544bc-c165-4af4-b55e-18f3593b457a",
+        "name": "Registration",
+        "isOpen": false,
+        "scheduledStartDate": "2025-01-01T00:00:00",
+        "scheduledEndDate": "2025-03-01T00:00:00"
+      }, {
+        "phaseId": "6950164f-3c5e-4bdc-abc8-22aaf5a1bd49",
+        "name": "Submission",
+        "isOpen": true,
+        "scheduledStartDate": "2025-01-01T00:00:00",
+        "scheduledEndDate": "2026-01-01T00:00:00"
+      }, {
+        "phaseId": "aa5a3f78-79e0-4bf7-93ff-b11e8f5b398b",
+        "name": "Review",
+        "isOpen": false,
+        "scheduledStartDate": "2026-01-01T00:00:00",
+        "scheduledEndDate": "2026-01-02T00:00:00"
+      }, {
+        "phaseId": "1c24cfb3-5b0a-4dbd-b6bd-4b0dff5349c6",
+        "name": "Appeals",
+        "isOpen": false,
+        "scheduledStartDate": "2026-01-02T00:00:00",
+        "scheduledEndDate": "2026-01-03T00:00:00"
+      }, {
+        "phaseId": "797a6af7-cd3f-4436-9fca-9679f773bee9",
+        "name": "Appeals Response",
+        "isOpen": false,
+        "scheduledStartDate": "2026-01-03T00:00:00",
+        "scheduledEndDate": "2026-01-04T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": "11111111-2222-3333-4444-555555555558",
+    "name": "Active Challenge - Submission is Closed, Review phase is Open",
+    "status": "Active",
+    "phases": [
+      {
+        "phaseId": "a93544bc-c165-4af4-b55e-18f3593b457a",
+        "name": "Registration",
+        "scheduledStartDate": "2025-01-01T00:00:00",
+        "scheduledEndDate": "2025-03-01T00:00:00"
+      }, {
+        "phaseId": "6950164f-3c5e-4bdc-abc8-22aaf5a1bd49",
+        "name": "Submission",
+        "scheduledStartDate": "2025-01-01T00:00:00",
+        "scheduledEndDate": "2025-03-01T00:00:00"
+      }, {
+        "phaseId": "aa5a3f78-79e0-4bf7-93ff-b11e8f5b398b",
+        "name": "Review",
+        "scheduledStartDate": "2025-03-01T00:00:00",
+        "scheduledEndDate": "2026-01-02T00:00:00"
+      }, {
+        "phaseId": "1c24cfb3-5b0a-4dbd-b6bd-4b0dff5349c6",
+        "name": "Appeals",
+        "scheduledStartDate": "2026-01-02T00:00:00",
+        "scheduledEndDate": "2026-01-03T00:00:00"
+      }, {
+        "phaseId": "797a6af7-cd3f-4436-9fca-9679f773bee9",
+        "name": "Appeals Response",
+        "scheduledStartDate": "2026-01-03T00:00:00",
+        "scheduledEndDate": "2026-01-04T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": "11111111-2222-3333-4444-555555555559",
+    "name": "Active Task - Registration is Open",
+    "status": "Active",
+    "task": {
+      "isTask": true
+    },
+    "phases": [
+      {
+        "phaseId": "a93544bc-c165-4af4-b55e-18f3593b457a",
+        "name": "Registration",
+        "isOpen": true,
+        "scheduledStartDate": "2025-01-01T00:00:00",
+        "scheduledEndDate": "2026-01-01T00:00:00"
+      }, {
+        "phaseId": "6950164f-3c5e-4bdc-abc8-22aaf5a1bd49",
+        "name": "Submission",
+        "isOpen": true,
+        "scheduledStartDate": "2025-01-01T00:00:00",
+        "scheduledEndDate": "2026-01-01T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": "11111111-2222-3333-4444-55555555555a",
+    "name": "Cancelled Challenge - Registration is Closed",
+    "status": "Cancelled",
+    "phases": [
+      {
+        "phaseId": "a93544bc-c165-4af4-b55e-18f3593b457a",
+        "name": "Registration",
+        "isOpen": false,
+        "scheduledStartDate": "2025-01-01T00:00:00",
+        "scheduledEndDate": "2025-02-01T00:00:00"
+      }, {
+        "phaseId": "6950164f-3c5e-4bdc-abc8-22aaf5a1bd49",
+        "name": "Submission",
+        "isOpen": false,
+        "scheduledStartDate": "2025-01-01T00:00:00",
+        "scheduledEndDate": "2025-02-01T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": "11111111-2222-3333-4444-55555555555b",
+    "name": "Active Challenge - Set allowedRegistrants - Registration is Open",
+    "status": "Active",
+    "constraints": {
+      "allowedRegistrants": ["lazybaer"]
+    },
+    "phases": [
+      {
+        "phaseId": "a93544bc-c165-4af4-b55e-18f3593b457a",
+        "name": "Registration",
+        "isOpen": true,
+        "scheduledStartDate": "2025-01-01T00:00:00",
+        "scheduledEndDate": "2026-01-01T00:00:00"
+      }, {
+        "phaseId": "6950164f-3c5e-4bdc-abc8-22aaf5a1bd49",
+        "name": "Submission",
+        "isOpen": true,
+        "scheduledStartDate": "2025-01-01T00:00:00",
+        "scheduledEndDate": "2026-01-01T00:00:00"
+      }, {
+        "phaseId": "aa5a3f78-79e0-4bf7-93ff-b11e8f5b398b",
+        "name": "Review",
+        "isOpen": false,
+        "scheduledStartDate": "2026-01-01T00:00:00",
+        "scheduledEndDate": "2026-01-02T00:00:00"
+      }, {
+        "phaseId": "1c24cfb3-5b0a-4dbd-b6bd-4b0dff5349c6",
+        "name": "Appeals",
+        "isOpen": false,
+        "scheduledStartDate": "2026-01-02T00:00:00",
+        "scheduledEndDate": "2026-01-03T00:00:00"
+      }, {
+        "phaseId": "797a6af7-cd3f-4436-9fca-9679f773bee9",
+        "name": "Appeals Response",
+        "isOpen": false,
+        "scheduledStartDate": "2026-01-03T00:00:00",
+        "scheduledEndDate": "2026-01-04T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": "11111111-2222-3333-4444-55555555555c",
+    "name": "Active Challenge - FIRST_2_FINISH - Registration is Open",
+    "status": "Active",
+    "legacy": {
+      "subTrack": "FIRST_2_FINISH"
+    },
+    "phases": [
+      {
+        "phaseId": "a93544bc-c165-4af4-b55e-18f3593b457a",
+        "name": "Registration",
+        "isOpen": true,
+        "scheduledStartDate": "2025-01-01T00:00:00",
+        "scheduledEndDate": "2026-01-01T00:00:00"
+      }, {
+        "phaseId": "6950164f-3c5e-4bdc-abc8-22aaf5a1bd49",
+        "name": "Submission",
+        "isOpen": true,
+        "scheduledStartDate": "2025-01-01T00:00:00",
+        "scheduledEndDate": "2026-01-01T00:00:00"
+      }, {
+        "phaseId": "003a4b14-de5d-43fc-9e35-835dbeb6af1f",
+        "name": "Iterative Review",
+        "isOpen": false,
+        "scheduledStartDate": "2026-01-01T00:00:00",
+        "scheduledEndDate": "2026-01-02T00:00:00"
+      }
+    ]
+  }
+]

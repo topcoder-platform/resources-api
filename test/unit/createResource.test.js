@@ -6,9 +6,9 @@ const _ = require('lodash')
 const config = require('config')
 const should = require('should')
 const { v4: uuid } = require('uuid')
-const helper = require('../../src/common/helper')
 const service = require('../../src/services/ResourceService')
 const ResourceRolePhaseDependencyService = require('../../src/services/ResourceRolePhaseDependencyService')
+const prisma = require('../../src/common/prisma').getClient()
 const ResourceRoleService = require('../../src/services/ResourceRoleService')
 const { requestBody, user } = require('../common/testData')
 const { assertValidationError, assertError, assertResource, getRoleIds, clearDependencies } = require('../common/testHelper')
@@ -38,28 +38,32 @@ module.exports = describe('Create resource', () => {
     reviewerRoleId = ret.reviewerRoleId
 
     const records = await ResourceRolePhaseDependencyService.getDependencies({ resourceRoleId: copilotRoleId })
-    dependency = records[0]
+    dependency = records.data[0]
   })
 
   describe('create resource - wrong phase cases', async () => {
     before(async () => {
-      await ResourceRoleService.updateResourceRole(copilotRoleId, {
+      await ResourceRoleService.updateResourceRole(user.admin, copilotRoleId, {
         name: 'co-pilot',
         isActive: true,
+        fullReadAccess: true,
+        fullWriteAccess: true,
         selfObtainable: true
       })
     })
 
     after(async () => {
-      await ResourceRoleService.updateResourceRole(copilotRoleId, {
+      await ResourceRoleService.updateResourceRole(user.admin, copilotRoleId, {
         name: 'co-pilot',
         isActive: true,
+        fullReadAccess: true,
+        fullWriteAccess: true,
         selfObtainable: false
       })
     })
 
     it('create resource - wrong phase state 1', async () => {
-      await ResourceRolePhaseDependencyService.updateDependency(dependency.id, {
+      await ResourceRolePhaseDependencyService.updateDependency(user.admin, dependency.id, {
         phaseId: dependency.phaseId,
         resourceRoleId: dependency.resourceRoleId,
         phaseState: false
@@ -75,7 +79,7 @@ module.exports = describe('Create resource', () => {
     })
 
     it('create resource - wrong phase state 2', async () => {
-      await ResourceRolePhaseDependencyService.updateDependency(dependency.id, {
+      await ResourceRolePhaseDependencyService.updateDependency(user.admin, dependency.id, {
         phaseId: phaseId1,
         resourceRoleId: dependency.resourceRoleId,
         phaseState: true
@@ -91,7 +95,7 @@ module.exports = describe('Create resource', () => {
     })
 
     it('create resource - wrong phase state 3', async () => {
-      await ResourceRolePhaseDependencyService.updateDependency(dependency.id, {
+      await ResourceRolePhaseDependencyService.updateDependency(user.admin, dependency.id, {
         phaseId: phaseId2,
         resourceRoleId: dependency.resourceRoleId,
         phaseState: true
@@ -107,7 +111,7 @@ module.exports = describe('Create resource', () => {
     })
 
     it('create resource - wrong phase state 4', async () => {
-      await ResourceRolePhaseDependencyService.updateDependency(dependency.id, {
+      await ResourceRolePhaseDependencyService.updateDependency(user.admin, dependency.id, {
         phaseId: phaseId3,
         resourceRoleId: dependency.resourceRoleId,
         phaseState: true
@@ -126,17 +130,15 @@ module.exports = describe('Create resource', () => {
   describe('create resource - other cases', async () => {
     it('create resource - task already assign', async () => {
       const resourceId = uuid()
-      await helper.getOSClient().create({
-        index: config.OS.OS_INDEX,
-        id: resourceId,
-        body: {
+      await prisma.resource.create({
+        data: {
           id: resourceId,
           challengeId: challengeId2,
-          memberId: 16096823,
+          memberId: '16096823',
           memberHandle: 'hohosky',
-          roleId: config.SUBMITTER_RESOURCE_ROLE_ID
-        },
-        refresh: 'true'
+          roleId: config.SUBMITTER_RESOURCE_ROLE_ID,
+          createdBy: 'testdata'
+        }
       })
       try {
         const entity = resources.createBody('hohosky', config.SUBMITTER_RESOURCE_ROLE_ID, challengeId2)
@@ -146,16 +148,14 @@ module.exports = describe('Create resource', () => {
         should.equal(err.name, 'ConflictError')
         assertError(err, 'The Task is already assigned')
       } finally {
-        await helper.getOSClient().delete({
-          index: config.OS.OS_INDEX,
-          id: resourceId,
-          refresh: 'true'
+        await prisma.resource.deleteMany({
+          where: { id: resourceId }
         })
       }
     })
 
     it('create resource by admin', async () => {
-      await ResourceRolePhaseDependencyService.updateDependency(dependency.id, {
+      await ResourceRolePhaseDependencyService.updateDependency(user.admin, dependency.id, {
         phaseId: dependency.phaseId,
         resourceRoleId: dependency.resourceRoleId,
         phaseState: true
@@ -179,7 +179,7 @@ module.exports = describe('Create resource', () => {
     })
 
     it('failure - create duplicate resource 2', async () => {
-      await ResourceRolePhaseDependencyService.updateDependency(dependency.id, {
+      await ResourceRolePhaseDependencyService.updateDependency(user.admin, dependency.id, {
         phaseId: phaseId4,
         resourceRoleId: dependency.resourceRoleId,
         phaseState: true
@@ -208,14 +208,14 @@ module.exports = describe('Create resource', () => {
 
     it('create resource by user', async () => {
       const entity = resources.createBody('denis', submitterRoleId, challengeId1)
-      const ret = await service.createResource(user.hohosky, entity)
+      const ret = await service.createResource(user.denis, entity)
       should.equal(ret.roleId, entity.roleId)
       should.equal(ret.memberHandle.toLowerCase(), entity.memberHandle.toLowerCase())
       await assertResource(ret.id, ret)
     })
 
     it('failure - create self obtainable resource for other user by normal user forbidden', async () => {
-      const entity = resources.createBody('lars2520', config.SUBMITTER_RESOURCE_ROLE_ID, challengeId2)
+      const entity = resources.createBody('lars2520', config.SUBMITTER_RESOURCE_ROLE_ID, challengeId3)
       try {
         await service.createResource(user.denis, entity)
         throw new Error('should not throw error here')

@@ -11,17 +11,17 @@ const moment = require('moment')
 const helper = require('../common/helper')
 const logger = require('../common/logger')
 const errors = require('../common/errors')
-const ResourceRolePhaseDependencyService = require('./ResourceRolePhaseDependencyService')
 const constants = require('../../app-constants')
+const prisma = require('../common/prisma').getClient()
 
-const payloadFields = ['id', 'challengeId', 'memberId', 'memberHandle', 'roleId', 'created', 'createdBy', 'updated', 'updatedBy', 'legacyId']
+const payloadFields = ['id', 'challengeId', 'memberId', 'memberHandle', 'roleId', 'created', 'createdBy', 'updated', 'updatedBy']
 
 /**
  * Check whether the user can access resources
  * @param {Array} resources resources of current user for specified challenge id
  */
 async function checkAccess (currentUserResources) {
-  const list = await helper.scan('ResourceRole')
+  const list = await prisma.resourceRole.findMany({})
   const fullAccessRoles = []
   _.each(list, e => {
     if (e.isActive && e.fullReadAccess && e.fullWriteAccess) {
@@ -50,6 +50,10 @@ async function getResources (currentUser, challengeId, roleId, memberId, memberH
   page = page || 1
   perPage = perPage || config.DEFAULT_PAGE_SIZE
   sortBy = sortBy || 'created'
+  // convert sortBy to prisma model
+  if (sortBy === 'created') {
+    sortBy = 'createdAt'
+  }
   sortOrder = sortOrder || 'asc'
   logger.debug(`getResources ${JSON.stringify([currentUser, challengeId, roleId, memberId, memberHandle, page, perPage, sortBy, sortOrder])}`)
   if (!challengeId && !memberId && !memberHandle) {
@@ -67,16 +71,20 @@ async function getResources (currentUser, challengeId, roleId, memberId, memberH
     }
   }
 
-  const boolQuery = []
-  const mustQuery = []
+  const prismaFilter = { where: { AND: [] } }
+
   let hasFullAccess
 
   // Check if the user has a resource with full access on the challenge
   if (currentUser && !currentUser.isMachine && !helper.hasAdminRole(currentUser)) {
     if (challengeId) {
-      const resources = await helper.query('Resource', {
-        hash: { challengeId: { eq: challengeId } },
-        range: { memberId: { eq: currentUser.userId } }
+      const resources = await prisma.resource.findMany({
+        where: {
+          AND: [
+            { challengeId },
+            { memberId: _.toString(currentUser.userId) }
+          ]
+        }
       })
       try {
         await checkAccess(resources)
@@ -94,74 +102,62 @@ async function getResources (currentUser, challengeId, roleId, memberId, memberH
   }
 
   if (challengeId) {
-    boolQuery.push({ match_phrase: { challengeId } })
+    prismaFilter.where.AND.push({ challengeId })
   } else if (!currentUser) {
     throw new errors.ForbiddenError('You are not allowed to perform this operation!')
   }
 
   if (!currentUser) {
     // if the user is not logged in, only return resources with submitter role ID
-    boolQuery.push({ match_phrase: { roleId: config.SUBMITTER_RESOURCE_ROLE_ID } })
+    prismaFilter.where.AND.push({ roleId: config.SUBMITTER_RESOURCE_ROLE_ID })
   } else if (!currentUser.isMachine && !helper.hasAdminRole(currentUser) && !hasFullAccess) {
     // if not admin, and not machine, only return submitters + all my roles
-    boolQuery.push({
-      bool: {
-        should: [
-          { match_phrase: { memberId: currentUser.userId } },
-          {
-            bool: {
-              must: [
-                { match_phrase: { roleId: config.SUBMITTER_RESOURCE_ROLE_ID } }
-              ],
-              must_not: [
-                { match_phrase: { memberId: currentUser.userId } }
-              ]
-            }
-          }
-        ]
-      }
+    prismaFilter.where.AND.push({
+      OR: [
+        { memberId: _.toString(currentUser.userId) },
+        { AND: [
+          { roleId: config.SUBMITTER_RESOURCE_ROLE_ID },
+          { memberId: { not: _.toString(currentUser.userId) } }
+        ] }
+      ]
     })
   } else {
     if (roleId) {
-      boolQuery.push({ match_phrase: { roleId } })
+      prismaFilter.where.AND.push({ roleId })
     }
     if (memberId) {
-      boolQuery.push({ match_phrase: { memberId } })
+      prismaFilter.where.AND.push({ memberId })
     } else if (memberHandle) {
-      boolQuery.push({ match_phrase: { memberHandle } })
+      prismaFilter.where.AND.push({ memberHandle })
     }
   }
 
-  mustQuery.push({
-    bool: {
-      filter: boolQuery
-    }
+  const orderBy = [{ [sortBy]: sortOrder }]
+  const total = await prisma.resource.count(prismaFilter)
+  const prismaQuery = {
+    ...prismaFilter,
+    orderBy,
+    skip: (page - 1) * perPage,
+    take: perPage
+  }
+  let resources = await prisma.resource.findMany(prismaQuery)
+  resources = _.map(resources, item => {
+    const ret = _.omit(item, 'updatedBy', 'updatedAt', 'createdAt')
+    ret.created = item.createdAt
+    return ret
   })
 
-  const sortCriteria = [{ [sortBy]: { 'order': sortOrder } }]
-  let docs = await searchOS(mustQuery, perPage, page, sortCriteria)
-  docs = docs.body
+  const memberIds = _.uniq(_.map(resources, r => _.toNumber(r.memberId)))
 
-  // Extract data from hits
-  const allResources = _.map(docs.hits.hits, item => item._source)
-  const resources = _.map(allResources, item => ({ ...item, memberId: (_.toString(item.memberId)) }))
-
-  const memberIds = _.uniq(_.map(resources, r => r.memberId))
-
-  let memberObjects = []
-  for (let i = 0; i < memberIds.length; i += 1) {
-    const id = memberIds[i]
-    memberObjects.push(await helper.getMemberInfoById(id))
-  }
-
-  memberObjects = _.compact(memberObjects)
+  let memberObjects = await helper.getMemberInfoByIdList(memberIds)
+  logger.info(`Retrieved member objects: ${JSON.stringify(memberObjects)}`)
   const completeResources = []
   for (const resource of resources) {
     const memberInfo = _.find(memberObjects, (o) => _.toNumber(o.userId) === _.toNumber(resource.memberId))
     if (memberInfo) {
       const completeResource = {
         ...resource,
-        rating: (memberInfo && memberInfo.maxRating) ? memberInfo.maxRating.rating : 0,
+        rating: memberInfo.maxRating,
         memberHandle: memberInfo.handle
       }
       completeResources.push(completeResource)
@@ -172,7 +168,7 @@ async function getResources (currentUser, challengeId, roleId, memberId, memberH
 
   return {
     data: completeResources,
-    total: docs.hits.total.value,
+    total,
     page,
     perPage
   }
@@ -236,7 +232,7 @@ async function init (currentUser, challengeId, resource, isCreated) {
     throw new errors.BadRequestError(`Cannot create submitter resource on challenge with status ${_.get(challenge, 'status')}`)
   }
 
-  const allResources = await helper.query('Resource', { challengeId })
+  const allResources = await prisma.resource.findMany({ where: { challengeId } })
 
   const registrationPhase = challenge.phases.find((phase) => phase.name === 'Registration')
   const currentSubmitters = _.filter(allResources, (r) => r.roleId === config.SUBMITTER_RESOURCE_ROLE_ID)
@@ -327,7 +323,9 @@ async function init (currentUser, challengeId, resource, isCreated) {
     return { allResources, userResources, memberId, handle, email, challenge, closeRegistration }
   }
   // check phases dependencies
-  const dependencies = await ResourceRolePhaseDependencyService.getDependencies({ resourceRoleId: resource.roleId })
+  const dependencies = await prisma.resourceRolePhaseDependency.findMany({
+    where: { resourceRoleId: resource.roleId }
+  })
   _.forEach(dependencies, (dependency) => {
     const phase = _.find(challenge.phases, (p) => p.phaseId === dependency.phaseId)
     if (phase) {
@@ -343,6 +341,7 @@ async function init (currentUser, challengeId, resource, isCreated) {
       if (_.isNil(isOpen)) {
         isOpen = false
       }
+      logger.info(`phase status: ${isOpen}`)
       if (!_.isEqual(isOpen, dependency.phaseState)) {
         throw new errors.BadRequestError(`Phase ${dependency.phaseId} should ${
           dependency.phaseState ? 'be open' : 'not be open'
@@ -368,24 +367,21 @@ async function createResource (currentUser, resource) {
 
     const timelineTemplateId = _.get(challenge, 'timelineTemplateId', null)
 
-    const ret = await helper.create('Resource', _.assign({
+    const prismaData = _.assign({
       id: uuid(),
-      memberId,
-      created: moment().utc().format(),
-      createdBy: currentUser.handle || currentUser.sub
-    }, resource))
-
-    // Create resources in OS
-    const osClient = await helper.getOSClient()
-    await osClient.index({
-      index: config.OS.OS_INDEX,
-      id: ret.id,
-      body: _.pick(ret, payloadFields),
-      refresh: 'true' // refresh ES so that it is visible for read operations instantly
+      memberId: _.toString(memberId),
+      createdBy: helper.getUserHandleOrSub(currentUser),
+      createdAt: moment().utc().format()
+    }, resource)
+    const createdResource = await prisma.resource.create({
+      data: prismaData
     })
+    let ret = _.pick(createdResource, payloadFields)
+    ret.created = createdResource.createdAt
+    ret.updated = createdResource.updatedAt
 
-    logger.debug(`Created resource: ${JSON.stringify(_.pick(ret, payloadFields))}`)
-    await helper.postEvent(config.RESOURCE_CREATE_TOPIC, _.pick(ret, payloadFields))
+    logger.debug(`Created resource: ${JSON.stringify(ret)}`)
+    await helper.postEvent(config.RESOURCE_CREATE_TOPIC, ret)
     if (!_.get(challenge, 'task.isTask', false) && resource.roleId === config.SUBMITTER_RESOURCE_ROLE_ID) {
       const forumUrl = _.get(challenge, 'discussions[0].url')
       let templateId = config.REGISTRATION_EMAIL.SENDGRID_TEMPLATE_ID
@@ -453,26 +449,22 @@ async function deleteResource (currentUser, resource) {
 
     const { allResources, memberId, handle } = await init(currentUser, challengeId, resource)
 
-    const ret = _.reduce(allResources,
+    let ret = _.reduce(allResources,
       (result, r) => _.toString(r.memberId) === _.toString(memberId) && r.roleId === resource.roleId ? r : result,
       undefined)
 
     if (!ret) {
       throw new errors.NotFoundError(`User ${handle} doesn't have resource with roleId: ${resource.roleId} in challenge ${challengeId}`)
     }
+    ret = {
+      ..._.pick(ret, payloadFields),
+      created: ret.createdAt,
+      updated: ret.updatedAt
+    }
+    await prisma.resource.deleteMany({ where: { id: ret.id } })
 
-    await ret.delete()
-
-    // delete from OS
-    const osClient = await helper.getOSClient()
-    await osClient.delete({
-      index: config.OS.OS_INDEX,
-      id: ret.id,
-      refresh: 'true' // refresh OS so that it is effective for read operations instantly
-    })
-
-    logger.debug(`Deleted resource, posting to Bus API: ${JSON.stringify(_.pick(ret, payloadFields))}`)
-    await helper.postEvent(config.RESOURCE_DELETE_TOPIC, _.pick(ret, payloadFields))
+    logger.debug(`Deleted resource, posting to Bus API: ${JSON.stringify(ret)}`)
+    await helper.postEvent(config.RESOURCE_DELETE_TOPIC, ret)
     return ret
   } catch (err) {
     logger.error(`Delete Resource Error ${JSON.stringify(err)}`)
@@ -499,46 +491,39 @@ deleteResource.schema = {
  * @returns {Array} an array of challenge ids represents challenges that given member has access to.
  */
 async function listChallengesByMember (memberId, criteria) {
-  const boolQuery = []
-  const mustQuery = []
   const perPage = criteria.perPage || config.DEFAULT_PAGE_SIZE
   const page = criteria.page || 1
-  boolQuery.push({ match_phrase: { memberId } })
-  if (criteria.resourceRoleId) boolQuery.push({ match_phrase: { roleId: criteria.resourceRoleId } })
 
-  mustQuery.push({
-    bool: {
-      filter: boolQuery
-    }
-  })
-
-  let docs = {
-    hits: {
-      total: 0,
-      hits: []
-    }
+  // Only select challengeId
+  const selectClause = { select: { challengeId: true } }
+  // Build where clause
+  const prismaFilter = { where: { AND: [] } }
+  prismaFilter.where.AND.push({ memberId: _.toString(memberId) })
+  if (criteria.resourceRoleId) {
+    prismaFilter.where.AND.push({ roleId: criteria.resourceRoleId })
   }
+  // TODO: total count is total resource count, not distinct challengeId count
+  const total = await prisma.resource.count(prismaFilter)
 
+  let records = []
   if (criteria.useScroll) {
-    docs = await searchOSWithScroll(mustQuery)
-  } else if (perPage * page <= config.MAX_ELASTIC_SEARCH_RECORDS_SIZE) {
-    docs = await searchOS(mustQuery, perPage, page).body
+    records = await prisma.resource.findMany({
+      ...selectClause,
+      ...prismaFilter
+    })
   } else {
-    throw new errors.BadRequestError(`
-      OS pagination params:
-      page ${page},
-      perPage: ${perPage}
-      exceeds the max search window:${config.MAX_ELASTIC_SEARCH_RECORDS_SIZE}`
-    )
+    records = await prisma.resource.findMany({
+      ...selectClause,
+      ...prismaFilter,
+      skip: (page - 1) * perPage,
+      take: perPage
+    })
   }
-  logger.debug(`Docs from OS: ${JSON.stringify(docs)}`)
-
-  // Extract data from hits
-  let result = _.map(docs.hits.hits, item => item._source)
-  const arr = _.uniq(_.map(result, 'challengeId'))
+  // convert to challengeId array and remove duplicated
+  const arr = _.uniq(_.map(records, 'challengeId'))
   return {
     data: arr,
-    total: docs.hits.total.value,
+    total,
     page,
     perPage
   }
@@ -554,110 +539,6 @@ listChallengesByMember.schema = {
   }).required()
 }
 
-async function searchOSWithScroll (mustQuery) {
-  const scrollTimeout = '1m'
-  const osQuery = {
-    index: config.get('OS.OS_INDEX'),
-    size: 10000,
-    body: {
-      query: {
-        bool: {
-          must: mustQuery
-        }
-      }
-    },
-    scroll: scrollTimeout
-  }
-
-  const osClient = await helper.getOSClient()
-  let searchResponse = await osClient.search(osQuery)
-  // eslint-disable-next-line camelcase
-  const { _scroll_id, hits } = searchResponse.body
-  const totalHits = hits.total
-
-  // eslint-disable-next-line camelcase
-  let scrollId = _scroll_id
-
-  while (hits.hits.length < totalHits) {
-    const nextScrollResponse = await osClient.scroll({
-      scroll: scrollTimeout,
-      scroll_id: scrollId
-    })
-
-    scrollId = nextScrollResponse._scroll_id
-    hits.hits = [...hits.hits, ...nextScrollResponse.hits.hits]
-  }
-
-  await osClient.clearScroll({
-    body: {
-      // eslint-disable-next-line camelcase
-      scroll_id: [_scroll_id]
-    }
-  })
-
-  return {
-    hits: {
-      total: hits.total,
-      hits: hits.hits
-    }
-  }
-}
-
-/**
- * Execute OS query
- * @param {Object} mustQuery the query that will be sent to ES
- * @param {Number} perPage number of search result per page
- * @param {Number} page the current page
- * @returns {Object} doc from OS
- */
-async function searchOS (mustQuery, perPage, page, sortCriteria) {
-  let osQuery
-  if (sortCriteria) {
-    osQuery = {
-      index: config.get('OS.OS_INDEX'),
-      size: perPage,
-      from: perPage * (page - 1), // Es Index starts from 0
-      body: {
-        query: {
-          bool: {
-            must: mustQuery
-          }
-        },
-        sort: sortCriteria
-      }
-    }
-  } else {
-    osQuery = {
-      index: config.get('OS.OS_INDEX'),
-      size: perPage,
-      from: perPage * (page - 1), // Es Index starts from 0
-      body: {
-        query: {
-          bool: {
-            must: mustQuery
-          }
-        }
-      }
-    }
-  }
-  logger.debug(`OS Query ${JSON.stringify(osQuery)}`)
-  const osClient = await helper.getOSClient()
-  let docs
-  try {
-    docs = await osClient.search(osQuery)
-  } catch (e) {
-    // Catch error when the ES is fresh and has no data
-    logger.info(`Query Error from ES ${JSON.stringify(e)}`)
-    docs = {
-      hits: {
-        total: 0,
-        hits: []
-      }
-    }
-  }
-  return docs
-}
-
 /**
  * Get resource count of a challenge.
  * @param {String} challengeId the challenge id
@@ -666,41 +547,22 @@ async function searchOS (mustQuery, perPage, page, sortCriteria) {
  */
 async function getResourceCount (challengeId, roleId) {
   logger.debug(`getResourceCount ${JSON.stringify([challengeId, roleId])}`)
-  const must = [{ term: { 'challengeId.keyword': challengeId } }]
+  const whereClause = { where: { AND: [] } }
+  whereClause.where.AND.push({ challengeId })
   if (roleId) {
-    must.push({ term: { 'roleId.keyword': roleId } })
+    whereClause.where.AND.push({ roleId })
   }
-
-  const osQuery = {
-    index: config.get('OS.OS_INDEX'),
-    size: 0,
-    body: {
-      query: {
-        bool: {
-          must
-        }
-      },
-      aggs: {
-        group_by_roleId: {
-          terms: {
-            field: 'roleId.keyword'
-          }
-        }
-      }
-    }
-  }
-
-  const osClient = await helper.getOSClient()
-  let result
-  try {
-    result = await osClient.search(osQuery)
-    result = result.body
-  } catch (err) {
-    logger.error(`Get Resource Count Error ${JSON.stringify(err)}`)
-    throw err
-  }
-  const response = _.mapValues(_.keyBy(result.aggregations.group_by_roleId.buckets, 'key'), (v) => v.doc_count)
-  return response
+  // select roleId, count(id) from resource where challengeId = ? group by roleId
+  const groupByRes = await prisma.resource.groupBy({
+    ...whereClause,
+    by: ['roleId'],
+    _count: { id: true }
+  })
+  const ret = {}
+  _.forEach(groupByRes, g => {
+    ret[g.roleId] = g._count.id
+  })
+  return ret
 }
 
 getResourceCount.schema = {

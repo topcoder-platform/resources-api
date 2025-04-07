@@ -1,8 +1,8 @@
 #!/bin/sh
 
-export AUTH0_CLIENT_ID=
+export AUTH0_CLIENT_ID=jGIf2pd3f44B1jqvOai30BIKTZanYBfU
 
-export AUTH0_CLIENT_SECRET=
+export AUTH0_CLIENT_SECRET=ldzqVaVEbqhwjM5KtZ79sG8djZpAVK8Z7qieVcC3vRjI4NirgcinKSBpPwk6mYYP
 
 export AUTH0_AUDIENCE=
 
@@ -24,6 +24,6 @@ export USER_CREDENTIALS_USERNAME=
 
 export USER_CREDENTIALS_PASSWORD=
 
-export IS_LOCAL_DB=
-
 export AUTH_SECRET=
+
+export DATABASE_URL=

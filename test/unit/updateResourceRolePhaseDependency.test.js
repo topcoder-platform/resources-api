@@ -5,7 +5,7 @@
 const _ = require('lodash')
 const should = require('should')
 const service = require('../../src/services/ResourceRolePhaseDependencyService')
-const { requestBody } = require('../common/testData')
+const { requestBody, user } = require('../common/testData')
 const { assertValidationError, assertError, assertResourceRolePhaseDependency, getRoleIds } = require('../common/testHelper')
 
 const dependencies = requestBody.resourceRolePhaseDependencies
@@ -21,25 +21,25 @@ module.exports = describe('Update resource role phase dependency', () => {
     reviewerRoleId = ret.reviewerRoleId
     const submitterRoleId = ret.submitterRoleId
     const records = await service.getDependencies({ resourceRoleId: submitterRoleId })
-    dependency = records[0]
+    dependency = records.data[0]
   })
 
   it('update dependency', async () => {
     const entity = dependencies.createBody(dependency.phaseId, reviewerRoleId, true)
-    const ret = await service.updateDependency(dependency.id, entity)
+    const ret = await service.updateDependency(user.admin, dependency.id, entity)
     await assertResourceRolePhaseDependency(ret.id, entity)
   })
 
   it('update dependency again', async () => {
     const entity = dependencies.createBody(dependency.phaseId, dependency.resourceRoleId, true)
-    const ret = await service.updateDependency(dependency.id, entity)
+    const ret = await service.updateDependency(user.admin, dependency.id, entity)
     await assertResourceRolePhaseDependency(ret.id, entity)
   })
 
   it('update dependency - phaseId not found', async () => {
     try {
       const entity = dependencies.createBody(dependency.resourceRoleId, dependency.resourceRoleId, false)
-      await service.updateDependency(dependency.id, entity)
+      await service.updateDependency(user.admin, dependency.id, entity)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.name, 'NotFoundError')
@@ -50,7 +50,7 @@ module.exports = describe('Update resource role phase dependency', () => {
   it('update dependency - resourceRoleId not found', async () => {
     try {
       const entity = dependencies.createBody(dependencies.testBody.phaseId, dependencies.testBody.phaseId, true)
-      await service.updateDependency(dependency.id, entity)
+      await service.updateDependency(user.admin, dependency.id, entity)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.name, 'NotFoundError')
@@ -61,7 +61,7 @@ module.exports = describe('Update resource role phase dependency', () => {
   it(`update dependency - conflict`, async () => {
     const entity = dependencies.createBody(dependency.phaseId, copilotRoleId, true)
     try {
-      await service.updateDependency(dependency.id, entity)
+      await service.updateDependency(user.admin, dependency.id, entity)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.name, 'ConflictError')
@@ -76,7 +76,7 @@ module.exports = describe('Update resource role phase dependency', () => {
       let entity = _.cloneDeep(testBody)
       _.set(entity, stringField, 123)
       try {
-        await service.updateDependency(dependency.id, entity)
+        await service.updateDependency(user.admin, dependency.id, entity)
         throw new Error('should not throw error here')
       } catch (err) {
         assertValidationError(err, `"${stringField}" must be a string`)
@@ -89,7 +89,7 @@ module.exports = describe('Update resource role phase dependency', () => {
       let entity = _.cloneDeep(testBody)
       _.set(entity, booleanField, 123)
       try {
-        await service.updateDependency(dependency.id, entity)
+        await service.updateDependency(user.admin, dependency.id, entity)
         throw new Error('should not throw error here')
       } catch (err) {
         assertValidationError(err, `"${booleanField}" must be a boolean`)
@@ -102,7 +102,7 @@ module.exports = describe('Update resource role phase dependency', () => {
       let entity = _.cloneDeep(testBody)
       entity = _.omit(entity, requiredField)
       try {
-        await service.updateDependency(dependency.id, entity)
+        await service.updateDependency(user.admin, dependency.id, entity)
         throw new Error('should not throw error here')
       } catch (err) {
         assertValidationError(err, `"${requiredField}" is required`)

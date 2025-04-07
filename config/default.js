@@ -7,7 +7,6 @@ module.exports = {
   PORT: process.env.PORT || 3000,
   API_VERSION: process.env.API_VERSION || 'v5',
   DEFAULT_PAGE_SIZE: process.env.DEFAULT_PAGE_SIZE || 1000,
-  MAX_ELASTIC_SEARCH_RECORDS_SIZE: process.env.MAX_ELASTIC_SEARCH_RECORDS_SIZE || 10000,
   // used to properly set the header response to api calls for services behind a load balancer
   API_BASE_URL: process.env.API_BASE_URL || `http://localhost:3000`,
 
@@ -31,25 +30,6 @@ module.exports = {
   CHALLENGE_API_URL: process.env.CHALLENGE_API_URL || 'http://localhost:4000/v5/challenges',
   CHALLENGE_PHASES_API_URL: process.env.CHALLENGE_PHASES_API_URL || 'https://api.topcoder-dev.com/v5/challenge-phases',
   SUBMISSIONS_API_URL: process.env.SUBMISSIONS_API_URL || 'https://api.topcoder-dev.com/v5/submissions',
-
-  DYNAMODB: {
-    AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
-    AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
-    AWS_REGION: process.env.AWS_REGION || 'us-east-1',
-    IS_LOCAL_DB: process.env.IS_LOCAL_DB ? process.env.IS_LOCAL_DB === 'true' : true,
-    DYNAMODB_URL: process.env.DYNAMODB_URL || 'http://localhost:7777',
-    URL: process.env.DYNAMODB_URL || 'http://localhost:7777',
-    AWS_READ_UNITS: process.env.AWS_READ_UNITS || 4,
-    AWS_WRITE_UNITS: process.env.AWS_WRITE_UNITS || 2,
-    TIMEOUT: process.env.DYNAMODB_TIMEOUT || 10000
-  },
-
-  OS: {
-    // above AWS_REGION is used if we use AWS OS
-    HOST: process.env.OS_HOST || 'localhost:9200',
-    OS_INDEX: process.env.OS_INDEX || 'resources',
-    OS_REFRESH: process.env.OS_REFRESH || 'true'
-  },
 
   SCOPES: {
     READ: process.env.SCOPE_READ || 'read:resources',

@@ -6,8 +6,10 @@ const _ = require('lodash')
 const config = require('config')
 const Joi = require('joi')
 const { v4: uuid } = require('uuid')
+const moment = require('moment')
 const helper = require('../common/helper')
 const logger = require('../common/logger')
+const prisma = require('../common/prisma').getClient()
 
 const payloadFields = ['id', 'name', 'legacyId', 'fullReadAccess', 'fullWriteAccess', 'isActive', 'selfObtainable']
 
@@ -17,14 +19,29 @@ const payloadFields = ['id', 'name', 'legacyId', 'fullReadAccess', 'fullWriteAcc
  * @returns {Array} the search result
  */
 async function getResourceRoles (criteria) {
-  let records = await helper.scanAll('ResourceRole')
-  if (criteria.name) records = _.filter(records, e => (criteria.name === e.name))
-  if (criteria.id) records = _.filter(records, e => (criteria.id === e.id))
-  if (criteria.legacyId) records = _.filter(records, e => (_.toNumber(criteria.legacyId) === _.toNumber(e.legacyId)))
-  if (!_.isUndefined(criteria.isActive)) records = _.filter(records, e => (_.toString(e.isActive) === _.toString(criteria.isActive)))
-  if (!_.isUndefined(criteria.selfObtainable)) records = _.filter(records, e => (e.selfObtainable === criteria.selfObtainable))
-  if (!_.isUndefined(criteria.fullReadAccess)) records = _.filter(records, e => (e.fullReadAccess === criteria.fullReadAccess))
-  if (!_.isUndefined(criteria.fullWriteAccess)) records = _.filter(records, e => (e.fullWriteAccess === criteria.fullWriteAccess))
+  const prismaFilter = { where: { AND: [] } }
+  if (criteria.name) {
+    prismaFilter.where.AND.push({ name: criteria.name })
+  }
+  if (criteria.id) {
+    prismaFilter.where.AND.push({ id: criteria.id })
+  }
+  if (criteria.legacyId) {
+    prismaFilter.where.AND.push({ legacyId: _.toNumber(criteria.legacyId) })
+  }
+  if (!_.isUndefined(criteria.isActive)) {
+    prismaFilter.where.AND.push({ isActive: criteria.isActive })
+  }
+  if (!_.isUndefined(criteria.selfObtainable)) {
+    prismaFilter.where.AND.push({ selfObtainable: criteria.selfObtainable })
+  }
+  if (!_.isUndefined(criteria.fullReadAccess)) {
+    prismaFilter.where.AND.push({ fullReadAccess: criteria.fullReadAccess })
+  }
+  if (!_.isUndefined(criteria.fullWriteAccess)) {
+    prismaFilter.where.AND.push({ fullWriteAccess: criteria.fullWriteAccess })
+  }
+  let records = await prisma.resourceRole.findMany(prismaFilter)
 
   const result = _.map(records, e => _.pick(e, payloadFields))
   return {
@@ -49,15 +66,21 @@ getResourceRoles.schema = {
 
 /**
  * Create resource role.
+ * @param {Object} authUser request auth user
  * @param {Object} setting the challenge setting to created
  * @returns {Object} the created challenge setting
  */
-async function createResourceRole (resourceRole) {
+async function createResourceRole (authUser, resourceRole) {
   try {
     const nameLower = resourceRole.name.toLowerCase()
     await helper.validateDuplicate('ResourceRole', { nameLower },
       `ResourceRole with name: ${resourceRole.name} already exist.`)
-    const entity = await helper.create('ResourceRole', _.assign({ id: uuid(), nameLower }, resourceRole))
+    const entity = await prisma.resourceRole.create({
+      data: _.assign({ id: uuid(),
+        nameLower,
+        createdAt: moment().utc().format(),
+        createdBy: helper.getUserHandleOrSub(authUser) }, resourceRole)
+    })
     const ret = _.pick(entity, payloadFields)
     await helper.postEvent(config.RESOURCE_ROLE_CREATE_TOPIC, ret)
     return ret
@@ -70,10 +93,11 @@ async function createResourceRole (resourceRole) {
 }
 
 createResourceRole.schema = {
+  authUser: Joi.any(),
   resourceRole: Joi.object().keys({
     name: Joi.string().required(),
-    fullReadAccess: Joi.boolean(),
-    fullWriteAccess: Joi.boolean(),
+    fullReadAccess: Joi.boolean().required(),
+    fullWriteAccess: Joi.boolean().required(),
     isActive: Joi.boolean().required(),
     selfObtainable: Joi.boolean().required()
   }).required()
@@ -81,11 +105,12 @@ createResourceRole.schema = {
 
 /**
  * Update resource role.
+ * @param {Object} authUser request auth user
  * @param {String} resourceRoleId the resource role id
  * @param {Object} data the resource role data to be updated
  * @returns {Object} the updated resource role
  */
-async function updateResourceRole (resourceRoleId, data) {
+async function updateResourceRole (authUser, resourceRoleId, data) {
   try {
     const resourceRole = await helper.getById('ResourceRole', resourceRoleId)
     data.nameLower = data.name.toLowerCase()
@@ -93,7 +118,7 @@ async function updateResourceRole (resourceRoleId, data) {
       await helper.validateDuplicate('ResourceRole', { nameLower: data.nameLower },
         `ResourceRole with name: ${data.name} already exist.`)
     }
-    const entity = await helper.update(resourceRole, data)
+    const entity = await helper.update(authUser, 'ResourceRole', resourceRole, data)
     const ret = _.pick(entity, payloadFields)
     await helper.postEvent(config.RESOURCE_ROLE_UPDATE_TOPIC, ret)
     return ret
@@ -106,11 +131,12 @@ async function updateResourceRole (resourceRoleId, data) {
 }
 
 updateResourceRole.schema = {
+  authUser: Joi.any(),
   resourceRoleId: Joi.id(),
   data: Joi.object().keys({
     name: Joi.string().required(),
-    fullReadAccess: Joi.boolean(),
-    fullWriteAccess: Joi.boolean(),
+    fullReadAccess: Joi.boolean().required(),
+    fullWriteAccess: Joi.boolean().required(),
     isActive: Joi.boolean().required(),
     selfObtainable: Joi.boolean().required()
   }).required()

@@ -13,7 +13,7 @@ module.exports = describe('Delete resource role phase dependency', () => {
     const ret = await getRoleIds()
     const submitterRoleId = ret.submitterRoleId
     const records = await service.getDependencies({ resourceRoleId: submitterRoleId })
-    dependency = records[0]
+    dependency = records.data[0]
   })
 
   it('delete dependency', async () => {

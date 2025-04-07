@@ -1,8 +1,38 @@
 [
   {
-    "id": "cfe12b3f-2a12-4639-9d8b-ec86726f76ba",
-    "phaseId": "a93544bc-c165-4af4-b55e-18f3593b457a",
-    "resourceRoleId": "732339e7-8e30-49d7-9198-cccf9451e221",
-    "phaseState": true
+      "phaseId": "aa5a3f78-79e0-4bf7-93ff-b11e8f5b398b",
+      "phaseState": false,
+      "id": "588a77fc-e678-46e1-90c5-66bb299fd545",
+      "resourceRoleId": "ac953811-8268-403a-ac06-fd88a100c9c7"
+  },
+  {
+      "phaseId": "a93544bc-c165-4af4-b55e-18f3593b457a",
+      "phaseState": true,
+      "id": "cfe12b3f-2a12-4639-9d8b-ec86726f76ba",
+      "resourceRoleId": "732339e7-8e30-49d7-9198-cccf9451e221"
+  },
+  {
+      "phaseId": "aa5a3f78-79e0-4bf7-93ff-b11e8f5b398b",
+      "phaseState": false,
+      "id": "123d7dc3-5423-49ff-851d-7e995e370bb5",
+      "resourceRoleId": "92276e89-08cb-4071-a59b-ffc8f10b0ec4"
+  },
+  {
+      "phaseId": "003a4b14-de5d-43fc-9e35-835dbeb6af1f",
+      "phaseState": false,
+      "id": "1cde05e8-3d6f-4aca-a364-876cb4dd4f3f",
+      "resourceRoleId": "7c7809f9-8c5d-40fb-bae1-0e11e6f4c15d"
+  },
+  {
+      "phaseId": "aa5a3f78-79e0-4bf7-93ff-b11e8f5b398b",
+      "phaseState": true,
+      "id": "dff61a68-80a6-4ce7-80f7-3a9bafdaf6f5",
+      "resourceRoleId": "d663fc84-5c37-43d1-a537-793feffb7667"
+  },
+  {
+      "phaseId": "aa5a3f78-79e0-4bf7-93ff-b11e8f5b398b",
+      "phaseState": false,
+      "id": "a9acaf7a-b084-45f3-9478-fb83cb25c21a",
+      "resourceRoleId": "a37cdf25-c7ff-4e55-a80f-79aed6cfccaa"
   }
 ]

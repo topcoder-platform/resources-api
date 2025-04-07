@@ -2,19 +2,17 @@
  * View table data.
  */
 
-require('../../app-bootstrap')
 const _ = require('lodash')
-const models = require('../models')
 const logger = require('../common/logger')
-const helper = require('../common/helper')
+const prisma = require('../common/prisma').getClient()
 
 const viewData = async (modelName) => {
-  const fieldNames = _.keys(models[modelName].$__.table.schema.attributes)
-  const records = await helper.scan(modelName)
-  console.log(_.map(records, e => _.pick(e, fieldNames)))
+  const prismaModel = _.camelCase(modelName)
+  const records = await prisma[prismaModel].findMany({})
+  console.log(records)
 }
 
-const modelNames = _.keys(_.omit(models, 'DynamoDB'))
+const modelNames = ['Resource', 'ResourceRole', 'ResourceRolePhaseDependency', 'MemberProfile', 'MemberStats']
 
 if (process.argv.length === 2) {
   logger.info(`Please provide one of the following table name: [${modelNames}]`)

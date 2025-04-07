@@ -2,10 +2,9 @@
 
 ## Postman test
 - import Postman collection and environment in the docs folder to Postman
-- Refer `ReadMe.md` to start DynamoDB, create tables, start the app and mock server
-- run `npm run init-db` to clear the database before testing.
+- Refer `ReadMe.md` to start postgres, create tables, start the app and mock server
+- run `npm run init-db` to clear and setup the database before testing.
 - Just run the whole test cases under provided environment.
-- For testing the negative scenario for health check endpoint, you can modify DYNAMODB.URL under `config/default.js` into an incorrect url or terminate the local DynamoDB. Then start the app again and run the health check test again.
 - For each success POST/PUT/DELETE request, it will also send an event using bus api. You can also check the app console, it will have info log like `Publish event to Kafka topic <TOPIC_NAME>`. Go to https://lauscher.topcoder-dev.com/ view topics `challenge.action.resource.create`, `challenge.action.resource.delete`, `challenge.action.resource.role.create` and `challenge.action.resource.role.update`, to verify the Kafka message have successfully received.
 
 ## Unit test Coverage

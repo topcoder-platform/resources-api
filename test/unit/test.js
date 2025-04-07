@@ -8,8 +8,8 @@ require('../../app-bootstrap')
 
 const config = require('config')
 const logger = require('../../src/common/logger')
-const helper = require('../../src/common/helper')
 const testHelper = require('../common/testHelper')
+const prisma = require('../../src/common/prisma').getClient()
 
 const { mockChallengeApi } = require('../../mock/mock-challenge-api')
 
@@ -46,22 +46,11 @@ describe('Topcoder - Challenge Resource API Unit Test', () => {
     * Initialize database tables. All data will be cleared.
     */
   const initDB = async () => {
-    const roles = await helper.scan('ResourceRole')
-    for (const role of roles) {
-      await role.delete()
-    }
-    const resources = await helper.scan('Resource')
-    for (const resource of resources) {
-      await resource.delete()
-    }
-    const dependencies = await helper.scan('ResourceRolePhaseDependency')
-    for (const d of dependencies) {
-      await d.delete()
-    }
-    const staties = await helper.scan('MemberStats')
-    for (const s of staties) {
-      await s.delete()
-    }
+    await prisma.memberStats.deleteMany()
+    await prisma.memberProfile.deleteMany()
+    await prisma.resource.deleteMany()
+    await prisma.resourceRolePhaseDependency.deleteMany()
+    await prisma.resourceRole.deleteMany()
   }
 
   before(async () => {
@@ -85,19 +74,35 @@ describe('Topcoder - Challenge Resource API Unit Test', () => {
     testHelper.initLogs(errorLogs)
 
     await initDB()
-    await testHelper.initES()
 
-    await helper.create('MemberStats', {
-      userId: '16096823',
-      handle: 'hohosky',
-      handleLower: 'hohosky',
-      maxRating: { rating: 2000 }
+    await prisma.memberStats.createMany({
+      data: [{
+        userId: 16096823,
+        handle: 'hohosky',
+        handleLower: 'hohosky',
+        maxRating: 2000,
+        createdBy: 'testdata'
+      }, {
+        userId: 251280,
+        handle: 'denis',
+        handleLower: 'denis',
+        maxRating: 0,
+        createdBy: 'testdata'
+      }]
     })
 
-    await helper.create('MemberStats', {
-      userId: '251280',
-      handle: 'denis',
-      handleLower: 'denis'
+    await prisma.memberProfile.createMany({
+      data: [{
+        userId: 16096823,
+        handle: 'hohosky',
+        handleLower: 'hohosky',
+        createdBy: 'testdata'
+      }, {
+        userId: 251280,
+        handle: 'denis',
+        handleLower: 'denis',
+        createdBy: 'testdata'
+      }]
     })
   })
 
@@ -111,7 +116,6 @@ describe('Topcoder - Challenge Resource API Unit Test', () => {
     logger.debug = debug
 
     await initDB()
-    await testHelper.initES()
   })
 
   describe('ResourceRoleService Unit Test', () => {
@@ -129,14 +133,17 @@ describe('Topcoder - Challenge Resource API Unit Test', () => {
 
   describe('ResourceService Unit Test', () => {
     before(async () => {
-      await helper.create('ResourceRole', {
-        id: config.SUBMITTER_RESOURCE_ROLE_ID,
-        name: 'dummy_submitter',
-        fullReadAccess: false,
-        fullWriteAccess: true,
-        isActive: true,
-        selfObtainable: true,
-        nameLower: 'dummy_submitter'
+      await prisma.resourceRole.create({
+        data: {
+          id: config.SUBMITTER_RESOURCE_ROLE_ID,
+          name: 'dummy_submitter',
+          fullReadAccess: true,
+          fullWriteAccess: true,
+          isActive: true,
+          selfObtainable: true,
+          nameLower: 'dummy_submitter',
+          createdBy: 'testdata'
+        }
       })
     })
     require('./edgeCasesForResourceService.test')

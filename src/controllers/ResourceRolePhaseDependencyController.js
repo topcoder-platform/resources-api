@@ -22,7 +22,7 @@ async function getDependencies (req, res) {
  * @param {Object} res the response
  */
 async function createDependency (req, res) {
-  const result = await service.createDependency(req.body)
+  const result = await service.createDependency(req.authUser, req.body)
   res.send(result)
 }
 
@@ -32,7 +32,7 @@ async function createDependency (req, res) {
  * @param {Object} res the response
  */
 async function updateDependency (req, res) {
-  const result = await service.updateDependency(req.params.id, req.body)
+  const result = await service.updateDependency(req.authUser, req.params.id, req.body)
   res.send(result)
 }
 

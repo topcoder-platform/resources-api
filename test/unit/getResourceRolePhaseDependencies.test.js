@@ -13,13 +13,13 @@ module.exports = describe('Get resource role phase dependencies', () => {
     const ret = await getRoleIds()
     const submitterRoleId = ret.submitterRoleId
     const records = await service.getDependencies({ resourceRoleId: submitterRoleId })
-    dependency = records[0]
+    dependency = records.data[0]
   })
 
   it('get all resource role phase dependencies', async () => {
     const records = await service.getDependencies({})
-    should.equal(records.length, 2)
-    for (const record of records) {
+    should.equal(records.total, 2)
+    for (const record of records.data) {
       await assertResourceRolePhaseDependency(record.id, record)
     }
   })
@@ -30,8 +30,8 @@ module.exports = describe('Get resource role phase dependencies', () => {
       resourceRoleId: dependency.resourceRoleId,
       phaseState: dependency.phaseState
     })
-    should.equal(records.length, 1)
-    for (const record of records) {
+    should.equal(records.total, 1)
+    for (const record of records.data) {
       await assertResourceRolePhaseDependency(record.id, record)
     }
   })

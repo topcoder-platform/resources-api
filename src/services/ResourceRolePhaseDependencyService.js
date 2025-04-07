@@ -6,9 +6,13 @@ const _ = require('lodash')
 const config = require('config')
 const Joi = require('joi')
 const { v4: uuid } = require('uuid')
+const moment = require('moment')
 const helper = require('../common/helper')
 const logger = require('../common/logger')
 const errors = require('../common/errors')
+const prisma = require('../common/prisma').getClient()
+
+const auditFields = ['createdAt', 'createdBy', 'updatedAt', 'updatedBy']
 
 /**
  * Get dependencies.
@@ -16,17 +20,18 @@ const errors = require('../common/errors')
  * @returns {Array} the search result
  */
 async function getDependencies (criteria) {
-  const options = {}
+  const prismaFilter = { where: { AND: [] } }
   if (criteria.phaseId) {
-    options.phaseId = { eq: criteria.phaseId }
+    prismaFilter.where.AND.push({ phaseId: criteria.phaseId })
   }
   if (criteria.resourceRoleId) {
-    options.resourceRoleId = { eq: criteria.resourceRoleId }
+    prismaFilter.where.AND.push({ resourceRoleId: criteria.resourceRoleId })
   }
   if (!_.isNil(criteria.phaseState)) {
-    options.phaseState = { eq: criteria.phaseState === 'true' }
+    prismaFilter.where.AND.push({ phaseState: criteria.phaseState })
   }
-  const list = await helper.scanAll('ResourceRolePhaseDependency', options)
+  let list = await prisma.resourceRolePhaseDependency.findMany(prismaFilter)
+  list = _.map(list, p => _.omit(p, auditFields))
   return {
     data: list,
     total: list.length,
@@ -63,19 +68,27 @@ async function validateDependency (data) {
 
 /**
  * Create dependency.
+ * @param {Object} authUser request auth user
  * @param {Object} data the data to create dependency
  * @returns {Object} the created dependency
  */
-async function createDependency (data) {
+async function createDependency (authUser, data) {
   try {
     await validateDependency(data)
     // check duplicate
     const records = await getDependencies({ phaseId: data.phaseId, resourceRoleId: data.resourceRoleId })
-    if (records.length > 0) {
+    if (records.total > 0) {
       throw new errors.ConflictError('There is already dependency of given phaseId and resourceRoleId')
     }
     // create
-    const entity = await helper.create('ResourceRolePhaseDependency', _.assign({ id: uuid() }, data))
+    let entity = await prisma.resourceRolePhaseDependency.create({
+      data: _.assign({
+        id: uuid(),
+        createdBy: helper.getUserHandleOrSub(authUser),
+        createdAt: moment().utc().format()
+      }, data)
+    })
+    entity = _.omit(entity, auditFields)
     return entity
   } catch (err) {
     if (!helper.isCustomError(err)) {
@@ -86,6 +99,7 @@ async function createDependency (data) {
 }
 
 createDependency.schema = {
+  authUser: Joi.any(),
   data: Joi.object().keys({
     phaseId: Joi.id(),
     resourceRoleId: Joi.id(),
@@ -95,23 +109,25 @@ createDependency.schema = {
 
 /**
  * Update dependency.
+ * @param {Object} authUser request auth user
  * @param {String} id the dependency id
  * @param {Object} data the data to be update
  * @returns {Object} the updated dependency
  */
-async function updateDependency (id, data) {
+async function updateDependency (authUser, id, data) {
   try {
     await validateDependency(data)
     const dependency = await helper.getById('ResourceRolePhaseDependency', id)
     if (dependency.phaseId !== data.phaseId || dependency.resourceRoleId !== data.resourceRoleId) {
       // check duplicate
       const records = await getDependencies({ phaseId: data.phaseId, resourceRoleId: data.resourceRoleId })
-      if (records.length > 0) {
+      if (records.total > 0) {
         throw new errors.ConflictError('There is already dependency of given phaseId and resourceRoleId')
       }
     }
     // update
-    const entity = await helper.update(dependency, data)
+    let entity = await helper.update(authUser, 'ResourceRolePhaseDependency', dependency, data)
+    entity = _.omit(entity, auditFields)
     return entity
   } catch (err) {
     if (!helper.isCustomError(err)) {
@@ -122,6 +138,7 @@ async function updateDependency (id, data) {
 }
 
 updateDependency.schema = {
+  authUser: Joi.any(),
   id: Joi.id(),
   data: createDependency.schema.data
 }
@@ -133,8 +150,9 @@ updateDependency.schema = {
  */
 async function deleteDependency (id) {
   try {
-    const dependency = await helper.getById('ResourceRolePhaseDependency', id)
-    await dependency.delete()
+    let dependency = await helper.getById('ResourceRolePhaseDependency', id)
+    dependency = _.omit(dependency, auditFields)
+    await prisma.resourceRolePhaseDependency.deleteMany({ where: { id } })
     return dependency
   } catch (err) {
     if (!helper.isCustomError(err)) {

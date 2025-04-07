@@ -1,11 +1,10 @@
 /**
  * This file defines helper methods
  */
-
-const config = require('config')
 const request = require('superagent')
 const should = require('should')
 const helper = require('../../src/common/helper')
+const prisma = require('../../src/common/prisma').getClient()
 
 /**
  * Set request Headers
@@ -66,7 +65,7 @@ async function deleteRequest (url, body, token) {
  * Get resource role ids.
  */
 async function getRoleIds () {
-  const roles = await helper.scan('ResourceRole')
+  const roles = await prisma.resourceRole.findMany()
   let copilotRoleId, observerRoleId, submitterRoleId, reviewerRoleId
   for (const role of roles) {
     if (role.name.toLowerCase() === 'co-pilot') {
@@ -163,25 +162,7 @@ async function assertResourceRolePhaseDependency (id, expected) {
  * Clear all resource role phase dependencies.
  */
 async function clearDependencies () {
-  const dependencies = await helper.scan('ResourceRolePhaseDependency')
-  for (const d of dependencies) {
-    await d.delete()
-  }
-}
-
-/**
- * Clear the OS documents.
- */
-async function initES () {
-  const client = helper.getOSClient()
-  await client.deleteByQuery({
-    index: config.OS.OS_INDEX,
-    body: {
-      query: {
-        match_all: {}
-      }
-    }
-  })
+  await prisma.resourceRolePhaseDependency.deleteMany()
 }
 
 module.exports = {
@@ -196,6 +177,5 @@ module.exports = {
   assertResource,
   assertResourceRolePhaseDependency,
   initLogs,
-  clearDependencies,
-  initES
+  clearDependencies
 }

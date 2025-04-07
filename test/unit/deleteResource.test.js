@@ -31,7 +31,7 @@ module.exports = describe('Delete resource', () => {
       await service.deleteResource(user.m2m, entity)
       throw new Error('should not throw error here')
     } catch (err) {
-      should.equal(err.name, 'BadRequestError')
+      should.equal(err.name, 'NotFoundError')
       assertError(err, `User HoHosky doesn't have resource with roleId: ${observerRoleId} in challenge ${challengeId}`)
     }
   })
@@ -42,8 +42,8 @@ module.exports = describe('Delete resource', () => {
       await service.deleteResource(user.m2m, entity)
       throw new Error('should not throw error here')
     } catch (err) {
-      should.equal(err.name, 'BadRequestError')
-      assertError(err, `No resource role found with id: ${challengeId}.`)
+      should.equal(err.name, 'NotFoundError')
+      assertError(err, `User ghostar doesn't have resource with roleId: ${challengeId} in challenge ${challengeId}`)
     }
   })
 
@@ -53,8 +53,8 @@ module.exports = describe('Delete resource', () => {
       await service.deleteResource(user.m2m, entity)
       throw new Error('should not throw error here')
     } catch (err) {
-      should.equal(err.name, 'BadRequestError')
-      assertError(err, `User with handle: 123abcx doesn't exist`)
+      should.equal(err.name, 'NotFoundError')
+      assertError(err, `User 123abcx doesn't have resource with roleId: ${observerRoleId} in challenge ${challengeId}`)
     }
   })
 
@@ -98,7 +98,7 @@ module.exports = describe('Delete resource', () => {
   }
 
   it(`failure - delete resource with user without permission`, async () => {
-    const entity = resources.createBody('tonyj', submitterRoleId, challengeId)
+    const entity = resources.createBody('lars2520', submitterRoleId, challengeId)
     try {
       await service.deleteResource(user.denis, entity)
       throw new Error('should not throw error here')
@@ -163,7 +163,7 @@ module.exports = describe('Delete resource', () => {
     should.equal(ret.memberHandle.toLowerCase(), 'denis')
     should.equal(ret.roleId, submitterRoleId)
     should.exist(ret.created)
-    should.equal(ret.createdBy.toLowerCase(), 'hohosky')
+    should.equal(ret.createdBy.toLowerCase(), 'denis')
   })
 
   it('delete resource by admin', async () => {

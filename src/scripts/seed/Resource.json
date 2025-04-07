@@ -1,13 +1,534 @@
 [
   {
-    "id": "47eb65ee-1f72-45a5-9988-45a4b0e2b1cc",
-    "challengeId": "fe6d0a58-ce7d-4521-8501-b8132b1c0391",
-    "memberId": "8547899",
-    "memberHandle": "tonyj",
-    "roleId": "cfe12b3f-2a24-4639-9d8b-ec86726f76bd",
-    "created": "2018-12-21T17:42:34Z",
-    "createdBy": "tonyj",
-    "updated": "2018-12-21T17:42:34Z",
-    "updatedBy": "tonyj"
+    "id": "9beebe03-a22f-491a-86a1-1f0513be71de",
+    "challengeId": "99c2898d-f45c-466a-a054-daade31a6c0e",
+    "memberId": "305384",
+    "memberHandle": "mess",
+    "roleId": "0e9c6879-39e4-4eb6-b8df-92407890faf1",
+    "created": "2025-02-05T04:44:53.000Z",
+    "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients",
+    "rating": 1173
+  },
+  {
+      "id": "4534016c-3968-4813-8bbf-6c9d5429e133",
+      "challengeId": "99c2898d-f45c-466a-a054-daade31a6c0e",
+      "memberId": "88774760",
+      "memberHandle": "JayD",
+      "roleId": "0e9c6879-39e4-4eb6-b8df-92407890faf1",
+      "created": "2025-02-05T04:44:54.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients"
+  },
+  {
+      "id": "06be3a04-e439-4693-91dc-3c3935e2cd73",
+      "challengeId": "99c2898d-f45c-466a-a054-daade31a6c0e",
+      "memberId": "40158994",
+      "memberHandle": "TCConnCopilot",
+      "roleId": "2a4dc376-a31c-4d00-b173-13934d89e286",
+      "created": "2025-02-05T04:44:54.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients"
+  },
+  {
+      "id": "463116fc-1c5e-43ed-b1cf-993989b3a00d",
+      "challengeId": "99c2898d-f45c-466a-a054-daade31a6c0e",
+      "memberId": "88778088",
+      "memberHandle": "jgaspermobile12",
+      "roleId": "2a4dc376-a31c-4d00-b173-13934d89e286",
+      "created": "2025-02-05T04:44:55.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients"
+  },
+  {
+      "id": "9c63a077-5d3b-404e-aa75-e915f6ec200f",
+      "challengeId": "99c2898d-f45c-466a-a054-daade31a6c0e",
+      "memberId": "151743",
+      "memberHandle": "Ghostar",
+      "roleId": "2a4dc376-a31c-4d00-b173-13934d89e286",
+      "created": "2025-02-05T04:44:55.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients",
+      "rating": 1615
+  },
+  {
+      "id": "398efe8a-5249-42f4-b89a-8fd235ccc337",
+      "challengeId": "99c2898d-f45c-466a-a054-daade31a6c0e",
+      "memberId": "40029484",
+      "memberHandle": "jcori",
+      "roleId": "2a4dc376-a31c-4d00-b173-13934d89e286",
+      "created": "2025-02-05T04:44:55.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients",
+      "rating": 0
+  },
+  {
+      "id": "abf6a0cc-358d-4208-b598-87f05f2747ac",
+      "challengeId": "99c2898d-f45c-466a-a054-daade31a6c0e",
+      "memberId": "40158997",
+      "memberHandle": "TCConManager",
+      "roleId": "0e9c6879-39e4-4eb6-b8df-92407890faf1",
+      "created": "2025-02-05T04:44:55.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients"
+  },
+  {
+      "id": "dd148de1-9e33-4156-ae71-d3b5d36c0d14",
+      "challengeId": "99c2898d-f45c-466a-a054-daade31a6c0e",
+      "memberId": "40159097",
+      "memberHandle": "tester1234",
+      "roleId": "2a4dc376-a31c-4d00-b173-13934d89e286",
+      "created": "2025-02-05T04:44:56.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients"
+  },
+  {
+      "id": "d64ec2e2-0670-44e7-94cd-cb99a13a69e1",
+      "challengeId": "99c2898d-f45c-466a-a054-daade31a6c0e",
+      "memberId": "40159000",
+      "memberHandle": "TCConnectUser",
+      "roleId": "2a4dc376-a31c-4d00-b173-13934d89e286",
+      "created": "2025-02-05T04:44:56.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients"
+  },
+  {
+      "id": "b3dd63be-1a2e-4b45-be39-c98adfc5f481",
+      "challengeId": "99c2898d-f45c-466a-a054-daade31a6c0e",
+      "memberId": "88774597",
+      "memberHandle": "tester123456",
+      "roleId": "2a4dc376-a31c-4d00-b173-13934d89e286",
+      "created": "2025-02-05T04:44:56.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients"
+  },
+  {
+      "id": "7119411e-ca6e-43cf-8c72-123ea3b57278",
+      "challengeId": "99c2898d-f45c-466a-a054-daade31a6c0e",
+      "memberId": "23043934",
+      "memberHandle": "sdgun",
+      "roleId": "2a4dc376-a31c-4d00-b173-13934d89e286",
+      "created": "2025-02-05T04:44:57.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients",
+      "rating": 1384
+  },
+  {
+      "id": "067f4003-ae86-450c-ba9b-e5d7da5e8c97",
+      "challengeId": "99c2898d-f45c-466a-a054-daade31a6c0e",
+      "memberId": "88774410",
+      "memberHandle": "sdguntcqa",
+      "roleId": "2a4dc376-a31c-4d00-b173-13934d89e286",
+      "created": "2025-02-05T04:44:57.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients"
+  },
+  {
+      "id": "7e396933-1ff4-4250-bc41-9f6a9f0fb5ef",
+      "challengeId": "99c2898d-f45c-466a-a054-daade31a6c0e",
+      "memberId": "23043934",
+      "memberHandle": "sdgun",
+      "roleId": "cfe12b3f-2a24-4639-9d8b-ec86726f76bd",
+      "created": "2025-02-05T04:45:40.000Z",
+      "createdBy": "mess",
+      "rating": 1384
+  },
+  {
+      "id": "a477ce66-f4c3-4d08-877c-78655aff2637",
+      "challengeId": "99c2898d-f45c-466a-a054-daade31a6c0e",
+      "memberId": "23140112",
+      "memberHandle": "SDG aka Victor",
+      "roleId": "caf7b717-3dee-41e0-8bf8-3217cc5a878c",
+      "created": "2025-02-05T06:30:43.000Z",
+      "createdBy": "mess",
+      "rating": 0
+  },
+  {
+      "id": "e3ce9d0c-21b4-4ca0-83c3-37ff46b58f27",
+      "challengeId": "99c2898d-f45c-466a-a054-daade31a6c0e",
+      "memberId": "15205086",
+      "memberHandle": "add",
+      "roleId": "a656b87d-1027-4141-9742-a09159ccc6a3",
+      "created": "2025-02-05T07:49:05.000Z",
+      "createdBy": "mess",
+      "rating": 1914
+  },
+  {
+      "id": "0562144b-7a1a-4692-a8e4-2f668f0fb162",
+      "challengeId": "99c2898d-f45c-466a-a054-daade31a6c0e",
+      "memberId": "151743",
+      "memberHandle": "Ghostar",
+      "roleId": "732339e7-8e30-49d7-9198-cccf9451e221",
+      "created": "2025-02-06T19:35:37.000Z",
+      "createdBy": "mess",
+      "rating": 1615
+  },
+  {
+      "id": "c811a0a8-0ab7-42c4-bfc0-d45aae0350e7",
+      "challengeId": "99c2898d-f45c-466a-a054-daade31a6c0e",
+      "memberId": "8547899",
+      "memberHandle": "TonyJ",
+      "roleId": "318b9c07-079a-42d9-a81f-b96be1dc1099",
+      "created": "2025-02-06T20:58:33.000Z",
+      "createdBy": "mess",
+      "rating": 1051
+  },
+  {
+    "id": "6e4ca296-7965-4457-94e1-e6a1d1668a7f",
+    "challengeId": "11ecf5b1-856a-4233-99ac-875796c15508",
+    "memberId": "22838965",
+    "memberHandle": "tcwebservice",
+    "roleId": "9b2f1905-8128-42da-85df-ed64410f4781",
+    "created": "2024-05-08T09:03:04.000Z",
+    "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients",
+    "rating": 0
+  },
+  {
+      "id": "408b4379-721b-43ba-a1fe-79218dce2c69",
+      "challengeId": "11ecf5b1-856a-4233-99ac-875796c15508",
+      "memberId": "40158994",
+      "memberHandle": "TCConnCopilot",
+      "roleId": "732339e7-8e30-49d7-9198-cccf9451e221",
+      "created": "2024-05-08T09:05:41.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients"
+  },
+  {
+      "id": "9f4b8e16-8188-4566-92c6-0cd8ec4d194b",
+      "challengeId": "11ecf5b1-856a-4233-99ac-875796c15508",
+      "memberId": "88774587",
+      "memberHandle": "topacc_four",
+      "roleId": "732339e7-8e30-49d7-9198-cccf9451e221",
+      "created": "2024-05-08T09:08:41.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients"
+  },
+  {
+      "id": "781a58d0-de0f-4dd3-9e2e-8d0bbbe61546",
+      "challengeId": "11ecf5b1-856a-4233-99ac-875796c15508",
+      "memberId": "88779557",
+      "memberHandle": "girpowfamo",
+      "roleId": "732339e7-8e30-49d7-9198-cccf9451e221",
+      "created": "2024-05-08T09:11:40.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients"
+  },
+  {
+      "id": "d81b5d86-880c-45f3-95ba-78ab05296e9c",
+      "challengeId": "11ecf5b1-856a-4233-99ac-875796c15508",
+      "memberId": "88779570",
+      "memberHandle": "bopowfamo",
+      "roleId": "732339e7-8e30-49d7-9198-cccf9451e221",
+      "created": "2024-05-08T09:13:59.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients"
+  },
+  {
+    "id": "18dec470-a7c9-4ba4-9f05-1f7250c497d3",
+    "challengeId": "e738245d-4037-49e0-954f-646d25c27259",
+    "memberId": "305384",
+    "memberHandle": "mess",
+    "roleId": "0e9c6879-39e4-4eb6-b8df-92407890faf1",
+    "created": "2024-05-28T05:29:14.000Z",
+    "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients",
+    "rating": 1173
+  },
+  {
+      "id": "6322ae83-c35e-4de4-8b1b-e9180f092c1b",
+      "challengeId": "e738245d-4037-49e0-954f-646d25c27259",
+      "memberId": "23043934",
+      "memberHandle": "sdgun",
+      "roleId": "2a4dc376-a31c-4d00-b173-13934d89e286",
+      "created": "2024-05-28T05:29:16.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients",
+      "rating": 1384
+  },
+  {
+      "id": "cef86cb9-3986-46e4-a73a-8ba2004598d9",
+      "challengeId": "e738245d-4037-49e0-954f-646d25c27259",
+      "memberId": "40029484",
+      "memberHandle": "jcori",
+      "roleId": "cfe12b3f-2a24-4639-9d8b-ec86726f76bd",
+      "created": "2024-05-28T05:29:37.000Z",
+      "createdBy": "mess",
+      "rating": 0
+  },
+  {
+      "id": "829508fb-6496-4d70-84fb-777df88cf15a",
+      "challengeId": "e738245d-4037-49e0-954f-646d25c27259",
+      "memberId": "88781880",
+      "memberHandle": "jgasperdocusign",
+      "roleId": "732339e7-8e30-49d7-9198-cccf9451e221",
+      "created": "2024-05-28T21:51:16.000Z",
+      "createdBy": "jgasperdocusign"
+  },
+  {
+      "id": "1e1ba644-621b-414b-8242-8a0df55bc4c8",
+      "challengeId": "e738245d-4037-49e0-954f-646d25c27259",
+      "memberId": "88778088",
+      "memberHandle": "jgaspermobile12",
+      "roleId": "732339e7-8e30-49d7-9198-cccf9451e221",
+      "created": "2024-05-30T02:16:23.000Z",
+      "createdBy": "jgaspermobile12"
+  },
+  {
+      "id": "cf629583-f212-4baf-a22f-a9d1ed9e6d27",
+      "challengeId": "e738245d-4037-49e0-954f-646d25c27259",
+      "memberId": "40158994",
+      "memberHandle": "TCConnCopilot",
+      "roleId": "2a4dc376-a31c-4d00-b173-13934d89e286",
+      "created": "2024-07-29T06:12:33.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients"
+  },
+  {
+      "id": "0f6c508b-2b61-4811-a850-e28656b70841",
+      "challengeId": "e738245d-4037-49e0-954f-646d25c27259",
+      "memberId": "88782540",
+      "memberHandle": "sdgtctest",
+      "roleId": "2a4dc376-a31c-4d00-b173-13934d89e286",
+      "created": "2024-08-08T07:01:46.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients"
+  },
+  {
+      "id": "1aa19f21-aec0-456a-825b-709ef579a57b",
+      "challengeId": "e738245d-4037-49e0-954f-646d25c27259",
+      "memberId": "88778748",
+      "memberHandle": "disnadiji",
+      "roleId": "2a4dc376-a31c-4d00-b173-13934d89e286",
+      "created": "2024-08-12T02:06:49.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients"
+  },
+  {
+      "id": "8f35f500-347c-4d1a-9e29-2fb13115373f",
+      "challengeId": "e738245d-4037-49e0-954f-646d25c27259",
+      "memberId": "88776056",
+      "memberHandle": "taasintake11",
+      "roleId": "2a4dc376-a31c-4d00-b173-13934d89e286",
+      "created": "2024-08-12T02:15:50.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients"
+  },
+  {
+    "id": "33ccebbf-553e-4963-a3f1-6445a5798547",
+    "challengeId": "8c8a868a-739d-4457-acd8-f69bba67a090",
+    "memberId": "23043934",
+    "memberHandle": "sdgun",
+    "roleId": "2a4dc376-a31c-4d00-b173-13934d89e286",
+    "created": "2024-05-16T09:37:57.000Z",
+    "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients",
+    "rating": 1384
+  },
+  {
+      "id": "3eb5094e-c2f0-45a8-98e8-16d7c879dcaa",
+      "challengeId": "8c8a868a-739d-4457-acd8-f69bba67a090",
+      "memberId": "305384",
+      "memberHandle": "mess",
+      "roleId": "0e9c6879-39e4-4eb6-b8df-92407890faf1",
+      "created": "2024-05-16T09:37:57.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients",
+      "rating": 1173
+  },
+  {
+      "id": "2d0a5848-4d40-456d-a24b-19ad109ebdc4",
+      "challengeId": "8c8a868a-739d-4457-acd8-f69bba67a090",
+      "memberId": "40029484",
+      "memberHandle": "jcori",
+      "roleId": "0e9c6879-39e4-4eb6-b8df-92407890faf1",
+      "created": "2024-05-16T09:37:57.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients",
+      "rating": 0
+  },
+  {
+      "id": "2fca6d0f-dcd9-4737-8d8e-b55662b14146",
+      "challengeId": "8c8a868a-739d-4457-acd8-f69bba67a090",
+      "memberId": "40029484",
+      "memberHandle": "jcori",
+      "roleId": "cfe12b3f-2a24-4639-9d8b-ec86726f76bd",
+      "created": "2024-05-16T09:38:20.000Z",
+      "createdBy": "mess",
+      "rating": 0
+  },
+  {
+      "id": "040a2a82-4bc7-4cb2-9942-765742093a3b",
+      "challengeId": "8c8a868a-739d-4457-acd8-f69bba67a090",
+      "memberId": "88779570",
+      "memberHandle": "bopowfamo",
+      "roleId": "732339e7-8e30-49d7-9198-cccf9451e221",
+      "created": "2024-05-16T09:39:12.000Z",
+      "createdBy": "bopowfamo"
+  },
+  {
+      "id": "02b5649f-a75c-4e35-a5f5-3ef99e591895",
+      "challengeId": "8c8a868a-739d-4457-acd8-f69bba67a090",
+      "memberId": "305384",
+      "memberHandle": "mess",
+      "roleId": "318b9c07-079a-42d9-a81f-b96be1dc1099",
+      "created": "2024-05-16T09:46:53.000Z",
+      "createdBy": "g9hv5ahuIcwKKk0hPngSfmJ6Wr09kD3o@clients",
+      "rating": 1173
+  },
+  {
+    "id": "a4ddddd3-7132-4685-b362-619781006f1c",
+    "challengeId": "6620c0d0-d699-4598-aec1-f3073b5b2b93",
+    "memberId": "305384",
+    "memberHandle": "mess",
+    "roleId": "0e9c6879-39e4-4eb6-b8df-92407890faf1",
+    "created": "2024-05-17T07:39:20.000Z",
+    "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients",
+    "rating": 1173
+  },
+  {
+      "id": "01560184-1c77-422c-aa42-0075816d9f42",
+      "challengeId": "6620c0d0-d699-4598-aec1-f3073b5b2b93",
+      "memberId": "23043934",
+      "memberHandle": "sdgun",
+      "roleId": "2a4dc376-a31c-4d00-b173-13934d89e286",
+      "created": "2024-05-17T07:39:21.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients",
+      "rating": 1384
+  },
+  {
+      "id": "07b83e39-62d3-40b7-a4b7-51f40091061d",
+      "challengeId": "6620c0d0-d699-4598-aec1-f3073b5b2b93",
+      "memberId": "40029484",
+      "memberHandle": "jcori",
+      "roleId": "0e9c6879-39e4-4eb6-b8df-92407890faf1",
+      "created": "2024-05-17T07:39:21.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients",
+      "rating": 0
+  },
+  {
+      "id": "0ffa0f45-7ce6-434c-b77f-0b38d300cdf0",
+      "challengeId": "6620c0d0-d699-4598-aec1-f3073b5b2b93",
+      "memberId": "40029484",
+      "memberHandle": "jcori",
+      "roleId": "cfe12b3f-2a24-4639-9d8b-ec86726f76bd",
+      "created": "2024-05-17T07:39:58.000Z",
+      "createdBy": "mess",
+      "rating": 0
+  },
+  {
+      "id": "17578006-b29f-4380-8b14-92e7cf814bc8",
+      "challengeId": "6620c0d0-d699-4598-aec1-f3073b5b2b93",
+      "memberId": "88779570",
+      "memberHandle": "bopowfamo",
+      "roleId": "732339e7-8e30-49d7-9198-cccf9451e221",
+      "created": "2024-05-17T07:40:44.000Z",
+      "createdBy": "bopowfamo"
+  },
+  {
+      "id": "88ffb33d-90b0-4c55-96b5-e22031f1825c",
+      "challengeId": "6620c0d0-d699-4598-aec1-f3073b5b2b93",
+      "memberId": "88774588",
+      "memberHandle": "topacc_three",
+      "roleId": "732339e7-8e30-49d7-9198-cccf9451e221",
+      "created": "2024-05-17T07:40:56.000Z",
+      "createdBy": "topacc_three"
+  },
+  {
+      "id": "71cefd35-7999-4835-9462-7b7a11ebfad5",
+      "challengeId": "6620c0d0-d699-4598-aec1-f3073b5b2b93",
+      "memberId": "88779557",
+      "memberHandle": "girpowfamo",
+      "roleId": "732339e7-8e30-49d7-9198-cccf9451e221",
+      "created": "2024-05-17T07:41:15.000Z",
+      "createdBy": "girpowfamo"
+  },
+  {
+      "id": "1b6a6c75-3cbf-4068-9ca7-325bcf64b685",
+      "challengeId": "6620c0d0-d699-4598-aec1-f3073b5b2b93",
+      "memberId": "88774587",
+      "memberHandle": "topacc_four",
+      "roleId": "732339e7-8e30-49d7-9198-cccf9451e221",
+      "created": "2024-05-17T07:41:33.000Z",
+      "createdBy": "topacc_four"
+  },
+  {
+      "id": "1f8b6a9d-151a-45a5-b602-955bd1dd70ed",
+      "challengeId": "6620c0d0-d699-4598-aec1-f3073b5b2b93",
+      "memberId": "305384",
+      "memberHandle": "mess",
+      "roleId": "318b9c07-079a-42d9-a81f-b96be1dc1099",
+      "created": "2024-05-17T08:58:20.000Z",
+      "createdBy": "g9hv5ahuIcwKKk0hPngSfmJ6Wr09kD3o@clients",
+      "rating": 1173
+  },
+  {
+    "id": "83cc0130-13ea-46be-8db6-bbc2f35050f2",
+    "challengeId": "dff99767-4447-4cae-ba00-d41215198937",
+    "memberId": "40159097",
+    "memberHandle": "tester1234",
+    "roleId": "2a4dc376-a31c-4d00-b173-13934d89e286",
+    "created": "2025-01-16T07:34:39.000Z",
+    "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients"
+  },
+  {
+      "id": "5e520a0f-d568-4322-9d44-ae6555372263",
+      "challengeId": "dff99767-4447-4cae-ba00-d41215198937",
+      "memberId": "305384",
+      "memberHandle": "mess",
+      "roleId": "0e9c6879-39e4-4eb6-b8df-92407890faf1",
+      "created": "2025-01-16T07:34:39.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients",
+      "rating": 1173
+  },
+  {
+      "id": "c7c10a52-ba9e-40fe-a7a2-18903ef1e59c",
+      "challengeId": "dff99767-4447-4cae-ba00-d41215198937",
+      "memberId": "23225544",
+      "memberHandle": "lazybaer",
+      "roleId": "2a4dc376-a31c-4d00-b173-13934d89e286",
+      "created": "2025-01-16T07:34:39.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients",
+      "rating": 1716
+  },
+  {
+      "id": "afc13516-8b38-4058-9498-4b2ba862ca31",
+      "challengeId": "dff99767-4447-4cae-ba00-d41215198937",
+      "memberId": "100000027",
+      "memberHandle": "devadmin1",
+      "roleId": "0e9c6879-39e4-4eb6-b8df-92407890faf1",
+      "created": "2025-01-16T07:34:40.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients"
+  },
+  {
+      "id": "f150ddf5-6d49-4458-961b-3eb7d99821b9",
+      "challengeId": "dff99767-4447-4cae-ba00-d41215198937",
+      "memberId": "100000028",
+      "memberHandle": "devcopilot1",
+      "roleId": "2a4dc376-a31c-4d00-b173-13934d89e286",
+      "created": "2025-01-16T07:34:40.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients"
+  },
+  {
+      "id": "5a395b29-3c3e-4673-9f39-8694c37f24d7",
+      "challengeId": "dff99767-4447-4cae-ba00-d41215198937",
+      "memberId": "23043934",
+      "memberHandle": "sdgun",
+      "roleId": "2a4dc376-a31c-4d00-b173-13934d89e286",
+      "created": "2025-01-16T07:34:40.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients",
+      "rating": 1384
+  },
+  {
+      "id": "6b82f265-8280-4be9-8415-12bc0757ab0a",
+      "challengeId": "dff99767-4447-4cae-ba00-d41215198937",
+      "memberId": "40158994",
+      "memberHandle": "TCConnCopilot",
+      "roleId": "2a4dc376-a31c-4d00-b173-13934d89e286",
+      "created": "2025-01-16T07:34:40.000Z",
+      "createdBy": "jGIf2pd3f44B1jqvOai30BIKTZanYBfU@clients"
+  },
+  {
+      "id": "1ea01f99-01d1-479c-b056-821fa10bae51",
+      "challengeId": "dff99767-4447-4cae-ba00-d41215198937",
+      "memberId": "305384",
+      "memberHandle": "mess",
+      "roleId": "f6df7212-b9d6-4193-bfb1-b383586fce63",
+      "created": "2025-01-16T07:34:40.000Z",
+      "createdBy": "mess",
+      "rating": 1173
+  },
+  {
+      "id": "50b63900-ae16-4761-a428-9565975bd5d1",
+      "challengeId": "dff99767-4447-4cae-ba00-d41215198937",
+      "memberId": "100000026",
+      "memberHandle": "test1123",
+      "roleId": "732339e7-8e30-49d7-9198-cccf9451e221",
+      "created": "2025-01-16T07:35:25.000Z",
+      "createdBy": "mess"
+  },
+  {
+      "id": "09eeb8d7-0462-4b91-ace6-128f1ea80953",
+      "challengeId": "dff99767-4447-4cae-ba00-d41215198937",
+      "memberId": "305384",
+      "memberHandle": "mess",
+      "roleId": "cfe12b3f-2a24-4639-9d8b-ec86726f76bd",
+      "created": "2025-01-16T07:35:26.000Z",
+      "createdBy": "mess",
+      "rating": 1173
   }
 ]

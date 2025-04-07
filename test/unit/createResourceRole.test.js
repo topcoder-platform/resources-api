@@ -6,7 +6,7 @@ const _ = require('lodash')
 const should = require('should')
 const service = require('../../src/services/ResourceRoleService')
 const helper = require('../../src/common/helper')
-const { requestBody } = require('../common/testData')
+const { requestBody, user } = require('../common/testData')
 const { assertValidationError, assertError, assertResourceRole } = require('../common/testHelper')
 
 const resourceRoles = requestBody.resourceRoles
@@ -14,27 +14,27 @@ const resourceRoles = requestBody.resourceRoles
 module.exports = describe('Create resource role', () => {
   it('create active full-access resource role', async () => {
     const entity = resourceRoles.createBody('co-pilot', true, true, true, false)
-    const ret = await service.createResourceRole(entity)
+    const ret = await service.createResourceRole(user.admin, entity)
     await assertResourceRole(ret.id, entity)
   })
 
   it('create inactive full-access resource role', async () => {
     const entity = resourceRoles.createBody('Observer', true, false, false, false)
-    const ret = await service.createResourceRole(entity)
+    const ret = await service.createResourceRole(user.admin, entity)
     await assertResourceRole(ret.id, entity)
     const resourceRole = await helper.getById('ResourceRole', ret.id)
-    await helper.update(resourceRole, { legacyId: 1 })
+    await helper.update(user.admin, 'ResourceRole', resourceRole, { legacyId: 1 })
   })
 
   it('create active not full-access resource role', async () => {
     const entity = resourceRoles.createBody('submitter', false, true, true, true)
-    const ret = await service.createResourceRole(entity)
+    const ret = await service.createResourceRole(user.admin, entity)
     await assertResourceRole(ret.id, entity)
   })
 
   it('create reviewer resource role', async () => {
     const entity = resourceRoles.createBody('reviewer', false, true, true, false)
-    const ret = await service.createResourceRole(entity)
+    const ret = await service.createResourceRole(user.admin, entity)
     await assertResourceRole(ret.id, entity)
   })
 
@@ -45,7 +45,7 @@ module.exports = describe('Create resource role', () => {
       let entity = _.cloneDeep(testBody)
       _.set(entity, stringField, 123)
       try {
-        await service.createResourceRole(entity)
+        await service.createResourceRole(user.admin, entity)
         throw new Error('should not throw error here')
       } catch (err) {
         assertValidationError(err, `"${stringField}" must be a string`)
@@ -58,7 +58,7 @@ module.exports = describe('Create resource role', () => {
       let entity = _.cloneDeep(testBody)
       _.set(entity, booleanField, 123)
       try {
-        await service.createResourceRole(entity)
+        await service.createResourceRole(user.admin, entity)
         throw new Error('should not throw error here')
       } catch (err) {
         assertValidationError(err, `"${booleanField}" must be a boolean`)
@@ -71,7 +71,7 @@ module.exports = describe('Create resource role', () => {
       let entity = _.cloneDeep(testBody)
       entity = _.omit(entity, requiredField)
       try {
-        await service.createResourceRole(entity)
+        await service.createResourceRole(user.admin, entity)
         throw new Error('should not throw error here')
       } catch (err) {
         assertValidationError(err, `"${requiredField}" is required`)
@@ -82,7 +82,7 @@ module.exports = describe('Create resource role', () => {
   it(`failure - create duplicate resource role`, async () => {
     const entity = resourceRoles.createBody('SUBMITTER', false, true, true, true)
     try {
-      await service.createResourceRole(entity)
+      await service.createResourceRole(user.admin, entity)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.name, 'ConflictError')

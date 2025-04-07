@@ -11,16 +11,16 @@ module.exports = describe('Get resource role', () => {
 
   it('get all resource roles', async () => {
     const records = await service.getResourceRoles({})
-    should.equal(records.length, 4)
-    for (const record of records) {
+    should.equal(records.total, 4)
+    for (const record of records.data) {
       await assertResourceRole(record.id, record)
     }
   })
 
   it('get active resource roles', async () => {
     const records = await service.getResourceRoles({ isActive: true })
-    should.equal(records.length, 3)
-    for (const record of records) {
+    should.equal(records.total, 3)
+    for (const record of records.data) {
       should.equal(record.isActive, true)
       await assertResourceRole(record.id, record)
     }
@@ -28,10 +28,10 @@ module.exports = describe('Get resource role', () => {
 
   it('get inactive resource roles', async () => {
     const records = await service.getResourceRoles({ isActive: false })
-    should.equal(records.length, 1)
-    should.equal(records[0].isActive, false)
-    await assertResourceRole(records[0].id, records[0])
-    inactiveId = records[0].id
+    should.equal(records.total, 1)
+    should.equal(records.data[0].isActive, false)
+    await assertResourceRole(records.data[0].id, records.data[0])
+    inactiveId = records.data[0].id
   })
 
   it('search resource roles with filter', async () => {
@@ -43,13 +43,13 @@ module.exports = describe('Get resource role', () => {
       fullReadAccess: true,
       fullWriteAccess: false
     })
-    should.equal(records.length, 1)
-    should.equal(records[0].id, inactiveId)
-    should.equal(records[0].name, 'Observer')
-    should.equal(records[0].fullReadAccess, true)
-    should.equal(records[0].fullWriteAccess, false)
-    should.equal(records[0].selfObtainable, false)
-    should.equal(records[0].legacyId, 1)
+    should.equal(records.total, 1)
+    should.equal(records.data[0].id, inactiveId)
+    should.equal(records.data[0].name, 'Observer')
+    should.equal(records.data[0].fullReadAccess, true)
+    should.equal(records.data[0].fullWriteAccess, false)
+    should.equal(records.data[0].selfObtainable, false)
+    should.equal(records.data[0].legacyId, 1)
   })
 
   it('test invalid parameters, invalid boolean path parameter isActive ', async () => {

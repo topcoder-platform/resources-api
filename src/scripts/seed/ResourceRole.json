@@ -1,243 +1,546 @@
 [
   {
-    "fullWriteAccess": false,
-    "fullReadAccess":  true,
-    "id": "06bc4878-5187-4ae9-872c-2dce5cf88b91",
-    "isActive": true,
-    "legacyId": 1002,
-    "name": "Free Agent",
-    "nameLower": "free agent",
-    "selfObtainable": false
+      "id": "caf7b717-3dee-41e0-8bf8-3217cc5a878c",
+      "name": "Failure Reviewer",
+      "legacyId": 6,
+      "fullReadAccess": false,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
   },
   {
-    "fullWriteAccess": true,
-    "fullReadAccess":  true,
-    "id": "0e9c6879-39e4-4eb6-b8df-92407890faf1",
-    "isActive": true,
-    "legacyId": 13,
-    "name": "Manager",
-    "nameLower": "manager",
-    "selfObtainable": false
+      "id": "ee6f7d31-ef35-42a8-b671-b6488fb5affb",
+      "name": "Approver",
+      "legacyId": 10,
+      "isActive": true,
+      "selfObtainable": false
   },
   {
-    "fullWriteAccess": false,
-    "fullReadAccess":  true,
-    "id": "2a4dc376-a31c-4d00-b173-13934d89e286",
-    "isActive": true,
-    "legacyId": 12,
-    "name": "Observer",
-    "nameLower": "observer",
-    "selfObtainable": false
+      "id": "a656b87d-1027-4141-9742-a09159ccc6a3",
+      "name": "Designer",
+      "legacyId": 11,
+      "isActive": true,
+      "selfObtainable": false
   },
   {
-    "fullWriteAccess": false,
-    "fullReadAccess":  false,
-    "id": "318b9c07-079a-42d9-a81f-b96be1dc1099",
-    "isActive": true,
-    "legacyId": 4,
-    "name": "Reviewer",
-    "nameLower": "reviewer",
-    "selfObtainable": false
+      "id": "1c6c7905-5414-4e55-b2b9-8476fe8b1289",
+      "name": "JMeter Submitter (M2M | Active)",
+      "fullReadAccess": true,
+      "fullWriteAccess": true,
+      "isActive": true,
+      "selfObtainable": true
   },
   {
-    "fullWriteAccess": false,
-    "fullReadAccess":  false,
-    "id": "32a76a3a-acc9-4f12-93ea-c63eec7a3025",
-    "isActive": true,
-    "legacyId": 7,
-    "name": "Stress Reviewer",
-    "nameLower": "stress reviewer",
-    "selfObtainable": false
+      "id": "ea0d58f6-a35a-4a6a-9d2f-bf8659260021",
+      "name": "JMeter Copilot (Admin | Active) Edit",
+      "fullReadAccess": true,
+      "fullWriteAccess": true,
+      "isActive": true,
+      "selfObtainable": false
   },
   {
-    "fullWriteAccess": false,
-    "fullReadAccess":  true,
-    "id": "3970272b-85b4-48d8-8439-672b4f6031bd",
-    "isActive": true,
-    "legacyId": 20,
-    "name": "Checkpoint Reviewer",
-    "nameLower": "checkpoint reviewer",
-    "selfObtainable": false
+      "id": "39ec7766-dde0-40e9-96f0-882cba99ac75",
+      "name": "This is a Test 2",
+      "legacyId": 1234567,
+      "fullReadAccess": false,
+      "fullWriteAccess": true,
+      "isActive": true,
+      "selfObtainable": true
   },
   {
-    "fullWriteAccess": false,
-    "fullReadAccess":  false,
-    "id": "3eedd4a4-3c68-4f68-8de4-a1ca5c2055e5",
-    "isActive": true,
-    "legacyId": 2,
-    "name": "Primary Screener",
-    "nameLower": "primary screener",
-    "selfObtainable": false
+      "id": "fd3a9a06-2912-4f55-a5fb-627d2e13a718",
+      "name": "test-submitter",
+      "fullReadAccess": true,
+      "fullWriteAccess": true,
+      "isActive": true,
+      "selfObtainable": true
   },
   {
-    "fullWriteAccess": false,
-    "fullReadAccess":  false,
-    "id": "4857fd2e-d9d2-44bb-a429-f75b7c5d5feb",
-    "isActive": true,
-    "legacyId": 5,
-    "name": "Accuracy Reviewer",
-    "nameLower": "accuracy reviewer",
-    "selfObtainable": false
+      "id": "6c5aeb97-6fdf-4417-a556-8e4e05b77cc3",
+      "name": "co-",
+      "fullReadAccess": true,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
   },
   {
-    "fullWriteAccess": false,
-    "fullReadAccess":  false,
-    "id": "732339e7-8e30-49d7-9198-cccf9451e221",
-    "isActive": true,
-    "legacyId": 1,
-    "name": "Submitter",
-    "nameLower": "submitter",
-    "selfObtainable": true
+      "id": "a37cdf25-c7ff-4e55-a80f-79aed6cfccaa",
+      "name": "CO-PILOTS",
+      "fullReadAccess": true,
+      "fullWriteAccess": true,
+      "isActive": true,
+      "selfObtainable": false
   },
   {
-    "fullWriteAccess": false,
-    "fullReadAccess":  false,
-    "id": "92276e89-08cb-4071-a59b-ffc8f10b0ec4",
-    "isActive": true,
-    "legacyId": 17,
-    "name": "Specification Submitter",
-    "nameLower": "specification submitter",
-    "selfObtainable": false
+      "id": "6f7433b5-199c-48d0-b31e-b4c3377ab418",
+      "name": "JMeter Submitter (M2M | Active)1",
+      "fullReadAccess": true,
+      "fullWriteAccess": true,
+      "isActive": true,
+      "selfObtainable": true
   },
   {
-    "fullWriteAccess": false,
-    "fullReadAccess":  false,
-    "id": "9b2f1905-8128-42da-85df-ed64410f4781",
-    "isActive": true,
-    "legacyId": 15,
-    "name": "Client Manager",
-    "nameLower": "client manager",
-    "selfObtainable": false
+      "id": "4fef1778-8923-44a2-aaed-6e73dad4903f",
+      "name": "co-pilot3",
+      "fullReadAccess": true,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
   },
   {
-    "fullWriteAccess": false,
-    "fullReadAccess":  false,
-    "id": "9c952ddc-47c8-4030-8618-16b4c653fe51",
-    "isActive": true,
-    "legacyId": 1003,
-    "name": "Payment Manager",
-    "nameLower": "payment manager",
-    "selfObtainable": false
+      "id": "ae0c60b7-b2c2-4142-88a1-197ee932ef27",
+      "name": "Team Captain",
+      "legacyId": 1001,
+      "fullReadAccess": false,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
   },
   {
-    "fullWriteAccess": false,
-    "fullReadAccess":  false,
-    "id": "ac953811-8268-403a-ac06-fd88a100c9c7",
-    "isActive": true,
-    "legacyId": 3,
-    "name": "Screener",
-    "nameLower": "screener",
-    "selfObtainable": false
+      "id": "92276e89-08cb-4071-a59b-ffc8f10b0ec4",
+      "name": "Specification Submitter",
+      "legacyId": 17,
+      "fullReadAccess": false,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
   },
   {
-    "fullWriteAccess": false,
-    "fullReadAccess":  false,
-    "id": "ae0c60b7-b2c2-4142-88a1-197ee932ef27",
-    "isActive": true,
-    "legacyId": 1001,
-    "name": "Team Captain",
-    "nameLower": "team captain",
-    "selfObtainable": false
+      "id": "d47c2c85-9932-432c-9d39-d227d657fddc",
+      "name": "co-pilot2",
+      "fullReadAccess": true,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
   },
   {
-    "fullWriteAccess": false,
-    "fullReadAccess":  true,
-    "id": "af06095d-755a-48a6-b155-de99cd4ec05c",
-    "isActive": true,
-    "legacyId": 10,
-    "name": "Approver",
-    "nameLower": "approver",
-    "selfObtainable": false
+      "id": "cfe12b3f-2a24-4639-9d8b-ec86726f76bd",
+      "name": "Copilot",
+      "legacyId": 14,
+      "fullReadAccess": true,
+      "fullWriteAccess": true,
+      "isActive": true,
+      "selfObtainable": false
   },
   {
-    "fullWriteAccess": false,
-    "fullReadAccess":  false,
-    "id": "caf7b717-3dee-41e0-8bf8-3217cc5a878c",
-    "isActive": true,
-    "legacyId": 6,
-    "name": "Failure Reviewer",
-    "nameLower": "failure reviewer",
-    "selfObtainable": false
+      "id": "80f9165c-8a5c-4565-9f64-5f8257982b4e",
+      "name": "co-pilot1",
+      "fullReadAccess": true,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
   },
   {
-    "fullWriteAccess": false,
-    "fullReadAccess":  false,
-    "id": "ceb81a40-f939-492c-9f34-32edbb5ee432",
-    "isActive": true,
-    "legacyId": 16,
-    "name": "Post-Mortem Reviewer",
-    "nameLower": "post-mortem reviewer",
-    "selfObtainable": false
+      "id": "318b9c07-079a-42d9-a81f-b96be1dc1099",
+      "name": "Reviewer",
+      "legacyId": 4,
+      "fullReadAccess": false,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
   },
   {
-    "fullWriteAccess": true,
-    "fullReadAccess":  true,
-    "id": "cfe12b3f-2a24-4639-9d8b-ec86726f76bd",
-    "isActive": true,
-    "legacyId": 14,
-    "name": "Copilot",
-    "nameLower": "copilot",
-    "selfObtainable": false
+      "id": "f6df7212-b9d6-4193-bfb1-b383586fce63",
+      "name": "Iterative Reviewer",
+      "legacyId": 21,
+      "fullReadAccess": false,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
   },
   {
-    "fullWriteAccess": false,
-    "fullReadAccess":  false,
-    "id": "d663fc84-5c37-43d1-a537-793feffb7667",
-    "isActive": true,
-    "legacyId": 18,
-    "name": "Specification Reviewer",
-    "nameLower": "specification reviewer",
-    "selfObtainable": false
+      "id": "67d0bca8-9462-451b-a57d-ef9ccc58a8b3",
+      "name": "{{name}}",
+      "fullReadAccess": true,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
   },
   {
-    "fullWriteAccess": false,
-    "fullReadAccess":  false,
-    "id": "e0544b94-6420-4afc-8f63-238eddc751b9",
-    "isActive": true,
-    "legacyId": 9,
-    "name": "Final Reviewer",
-    "nameLower": "final reviewer",
-    "selfObtainable": false
+      "id": "8dd19c97-504f-450f-8917-eb5d43e063a1",
+      "name": "JMeter Reviewer",
+      "fullReadAccess": false,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
   },
   {
-    "fullWriteAccess": false,
-    "fullReadAccess":  false,
-    "id": "e7331f1a-cbe3-4640-a62c-c72466ce99cd",
-    "isActive": true,
-    "legacyId": 11,
-    "name": "Designer",
-    "nameLower": "designer",
-    "selfObtainable": false
+      "id": "7fb24fa7-cdbc-4a82-b0ea-55eb45ea483c",
+      "name": "Client Manager",
+      "legacyId": 15,
+      "isActive": true,
+      "selfObtainable": false
   },
   {
-    "fullWriteAccess": false,
-    "fullReadAccess":  false,
-    "id": "f6df7212-b9d6-4193-bfb1-b383586fce63",
-    "isActive": true,
-    "legacyId": 21,
-    "name": "Iterative Reviewer",
-    "nameLower": "iterative reviewer",
-    "selfObtainable": false
+      "id": "bac71aab-62b7-44b9-bd76-2a48afef32d1",
+      "name": "This is a Test",
+      "legacyId": 1234567,
+      "fullReadAccess": false,
+      "fullWriteAccess": true,
+      "isActive": true,
+      "selfObtainable": true
   },
   {
-    "fullWriteAccess": false,
-    "fullReadAccess":  false,
-    "id": "fd672cca-556e-4d16-b0a2-718218edd412",
-    "isActive": true,
-    "legacyId": 19,
-    "name": "Checkpoint Screener",
-    "nameLower": "checkpoint screener",
-    "selfObtainable": false
+      "id": "9c07468b-4c01-4243-b5f2-eef63935e143",
+      "name": "This is a Test",
+      "legacyId": 1234567,
+      "fullReadAccess": false,
+      "fullWriteAccess": true,
+      "isActive": true,
+      "selfObtainable": true
   },
   {
-    "fullWriteAccess": false,
-    "fullReadAccess":  false,
-    "id": "ff556573-5da6-4392-b38c-08c1d7599c4a",
-    "isActive": true,
-    "legacyId": 8,
-    "name": "Aggregator",
-    "nameLower": "aggregator",
-    "selfObtainable": false
+      "id": "e0544b94-6420-4afc-8f63-238eddc751b9",
+      "name": "Final Reviewer",
+      "legacyId": 9,
+      "fullReadAccess": false,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "732339e7-8e30-49d7-9198-cccf9451e221",
+      "name": "Submitter",
+      "legacyId": 1,
+      "fullReadAccess": false,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": true
+  },
+  {
+      "id": "ac953811-8268-403a-ac06-fd88a100c9c7",
+      "name": "Screener",
+      "legacyId": 3,
+      "fullReadAccess": false,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "04be7c16-e3f9-4c18-9014-2d00c0d4eb8e",
+      "name": "Designer",
+      "legacyId": 11,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "ceb81a40-f939-492c-9f34-32edbb5ee432",
+      "name": "Post-Mortem Reviewer",
+      "legacyId": 16,
+      "fullReadAccess": false,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "ff556573-5da6-4392-b38c-08c1d7599c4a",
+      "name": "Aggregator",
+      "legacyId": 8,
+      "fullReadAccess": false,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "6c8cc2b0-9ff5-45fb-a6a9-042beea09aed",
+      "name": "This is a Test",
+      "legacyId": 1234567,
+      "fullReadAccess": false,
+      "fullWriteAccess": true,
+      "isActive": true,
+      "selfObtainable": true
+  },
+  {
+      "id": "14ea6cfe-15f6-42d5-b7ac-adc6107a0f03",
+      "name": "JMeter Observer (Admin | Inactive)1",
+      "fullReadAccess": true,
+      "fullWriteAccess": true,
+      "isActive": false,
+      "selfObtainable": false
+  },
+  {
+      "id": "32e2cd7d-5b6b-43e5-bfeb-0987dceb714a",
+      "name": "JMeter Copilot (Admin | Active)1",
+      "fullReadAccess": true,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "0e9c6879-39e4-4eb6-b8df-92407890faf1",
+      "name": "Manager",
+      "legacyId": 13,
+      "fullReadAccess": true,
+      "fullWriteAccess": true,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "838b231b-8ab6-4e4f-96d3-f1d483e0c30e",
+      "name": "Test resource role",
+      "fullReadAccess": true,
+      "fullWriteAccess": true,
+      "isActive": true,
+      "selfObtainable": true
+  },
+  {
+      "id": "32a76a3a-acc9-4f12-93ea-c63eec7a3025",
+      "name": "Stress Reviewer",
+      "legacyId": 7,
+      "fullReadAccess": false,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "c3c16e91-cbbb-4730-9d81-d19f2af697b7",
+      "name": "Checkpoint Reviewer",
+      "legacyId": 20,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "9cf1770e-b240-4ca8-9b84-c2f947e24863",
+      "name": "JMeter Copilot (Admin | Active)",
+      "fullReadAccess": true,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "3bb62410-95d5-4c49-b025-1d822fc70256",
+      "name": "Primary Screener",
+      "legacyId": 2,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "d663fc84-5c37-43d1-a537-793feffb7667",
+      "name": "Specification Reviewer",
+      "legacyId": 18,
+      "fullReadAccess": false,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "4857fd2e-d9d2-44bb-a429-f75b7c5d5feb",
+      "name": "Accuracy Reviewer",
+      "legacyId": 5,
+      "fullReadAccess": false,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "469341ed-19b7-44a4-a8ac-c2bf74544748",
+      "name": "t",
+      "fullReadAccess": true,
+      "fullWriteAccess": true,
+      "isActive": false,
+      "selfObtainable": true
+  },
+  {
+      "id": "344bcc52-138f-4488-bd0f-0eee9a72b07d",
+      "name": "This is a Test",
+      "legacyId": 1234567,
+      "fullReadAccess": false,
+      "fullWriteAccess": true,
+      "isActive": true,
+      "selfObtainable": true
+  },
+  {
+      "id": "06bc4878-5187-4ae9-872c-2dce5cf88b91",
+      "name": "Free Agent",
+      "legacyId": 1002,
+      "fullReadAccess": true,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "3d407e55-bfb4-436a-913b-f740b0aaa28c",
+      "name": "This is a Test",
+      "legacyId": 1234567,
+      "fullReadAccess": false,
+      "fullWriteAccess": true,
+      "isActive": true,
+      "selfObtainable": true
+  },
+  {
+      "id": "3b82bde3-117a-49ab-80d7-cac4d7fa8638",
+      "name": "Checkpoint Reviewer",
+      "legacyId": 20,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "ae76ce57-e8a2-4911-9da8-d78025c8a098",
+      "name": "This is another Test",
+      "legacyId": 1234567,
+      "fullReadAccess": false,
+      "fullWriteAccess": true,
+      "isActive": true,
+      "selfObtainable": true
+  },
+  {
+      "id": "7c7809f9-8c5d-40fb-bae1-0e11e6f4c15d",
+      "name": "test",
+      "fullReadAccess": true,
+      "fullWriteAccess": false,
+      "isActive": false,
+      "selfObtainable": false
+  },
+  {
+      "id": "f1263faf-7a5d-4208-ad8e-0f8589a586a6",
+      "name": "failure",
+      "fullReadAccess": true,
+      "fullWriteAccess": true,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "e90fb3fb-4ca7-4e2e-88d9-a0a10c743b4d",
+      "name": "Checkpoint Screener",
+      "legacyId": 19,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "9c952ddc-47c8-4030-8618-16b4c653fe51",
+      "name": "Payment Manager",
+      "legacyId": 1003,
+      "fullReadAccess": false,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "2a4dc376-a31c-4d00-b173-13934d89e286",
+      "name": "Observer",
+      "legacyId": 12,
+      "fullReadAccess": true,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "485d1107-114e-41d4-b533-598441fb17ab",
+      "name": "JMeter Reviewer1",
+      "fullReadAccess": false,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "aa40cb09-8110-408f-90d5-035f1af0e231",
+      "name": "co-pilot",
+      "fullReadAccess": true,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "c268e534-03ba-4254-87c5-80c83e81c306",
+      "name": "Primary Screener",
+      "legacyId": 2,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "af06095d-755a-48a6-b155-de99cd4ec05c",
+      "name": "Approver",
+      "legacyId": 10,
+      "fullReadAccess": true,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "3eedd4a4-3c68-4f68-8de4-a1ca5c2055e5",
+      "name": "Primary Screener",
+      "legacyId": 2,
+      "fullReadAccess": false,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "9b2f1905-8128-42da-85df-ed64410f4781",
+      "name": "Client Manager",
+      "legacyId": 15,
+      "fullReadAccess": false,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "f3731efd-f36e-4933-8c3c-a1f7bfdf36ec",
+      "name": "This is a Test",
+      "legacyId": 1234567,
+      "fullReadAccess": false,
+      "fullWriteAccess": true,
+      "isActive": true,
+      "selfObtainable": true
+  },
+  {
+      "id": "dce10ac2-8f71-4933-81f9-3f94ec089dad",
+      "name": "JMeter Submitter (M2M | Active) Edit",
+      "fullReadAccess": true,
+      "fullWriteAccess": true,
+      "isActive": false,
+      "selfObtainable": false
+  },
+  {
+      "id": "e7e528d6-91d9-4f6a-b987-e8e21413f926",
+      "name": "JMeter Observer (Admin | Inactive)",
+      "fullReadAccess": true,
+      "fullWriteAccess": true,
+      "isActive": false,
+      "selfObtainable": false
+  },
+  {
+      "id": "ada2e34e-6139-4282-84ec-d50815605e5f",
+      "name": "This is a Test",
+      "legacyId": 1234567,
+      "fullReadAccess": false,
+      "fullWriteAccess": true,
+      "isActive": true,
+      "selfObtainable": true
+  },
+  {
+      "id": "3970272b-85b4-48d8-8439-672b4f6031bd",
+      "name": "Checkpoint Reviewer",
+      "legacyId": 20,
+      "fullReadAccess": true,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "fd672cca-556e-4d16-b0a2-718218edd412",
+      "name": "Checkpoint Screener",
+      "legacyId": 19,
+      "fullReadAccess": false,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "8d101db2-b1d6-4036-81cf-819a7d0f8ad8",
+      "name": "co-pilot13",
+      "fullReadAccess": true,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
+  },
+  {
+      "id": "e7331f1a-cbe3-4640-a62c-c72466ce99cd",
+      "name": "Designer",
+      "legacyId": 11,
+      "fullReadAccess": false,
+      "fullWriteAccess": false,
+      "isActive": true,
+      "selfObtainable": false
   }
 ]
-

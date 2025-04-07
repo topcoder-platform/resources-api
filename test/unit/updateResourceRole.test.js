@@ -5,7 +5,7 @@
 const _ = require('lodash')
 const should = require('should')
 const service = require('../../src/services/ResourceRoleService')
-const { requestBody } = require('../common/testData')
+const { requestBody, user } = require('../common/testData')
 const { assertValidationError, assertError, assertResourceRole, getRoleIds } = require('../common/testHelper')
 
 const resourceRoles = requestBody.resourceRoles
@@ -20,14 +20,14 @@ module.exports = describe('Update resource role', () => {
 
   it('update resource role', async () => {
     const entity = resourceRoles.createBody('co-pilot', false, false, false, true)
-    const ret = await service.updateResourceRole(copilotRoleId, entity)
+    const ret = await service.updateResourceRole(user.admin, copilotRoleId, entity)
     should.equal(copilotRoleId, ret.id)
     await assertResourceRole(ret.id, entity)
   })
 
   it('update resource role again', async () => {
     const entity = resourceRoles.createBody('CO-PILOT', true, true, true, false)
-    const ret = await service.updateResourceRole(copilotRoleId, entity)
+    const ret = await service.updateResourceRole(user.admin, copilotRoleId, entity)
     should.equal(copilotRoleId, ret.id)
     await assertResourceRole(ret.id, entity)
   })
@@ -39,7 +39,7 @@ module.exports = describe('Update resource role', () => {
       let entity = _.cloneDeep(testBody)
       _.set(entity, stringField, 123)
       try {
-        await service.updateResourceRole(copilotRoleId, entity)
+        await service.updateResourceRole(user.admin, copilotRoleId, entity)
         throw new Error('should not throw error here')
       } catch (err) {
         assertValidationError(err, `"${stringField}" must be a string`)
@@ -52,7 +52,7 @@ module.exports = describe('Update resource role', () => {
       let entity = _.cloneDeep(testBody)
       _.set(entity, booleanField, 123)
       try {
-        await service.updateResourceRole(copilotRoleId, entity)
+        await service.updateResourceRole(user.admin, copilotRoleId, entity)
         throw new Error('should not throw error here')
       } catch (err) {
         assertValidationError(err, `"${booleanField}" must be a boolean`)
@@ -65,7 +65,8 @@ module.exports = describe('Update resource role', () => {
       let entity = _.cloneDeep(testBody)
       entity = _.omit(entity, requiredField)
       try {
-        await service.updateResourceRole(copilotRoleId, entity)
+        await service.updateResourceRole(user.admin, copilotRoleId, entity)
+        throw new Error('should not throw error here')
       } catch (err) {
         assertValidationError(err, `"${requiredField}" is required`)
       }
@@ -74,7 +75,7 @@ module.exports = describe('Update resource role', () => {
 
   it(`test invalid path parameter, resourceRoleId must be UUID`, async () => {
     try {
-      await service.updateResourceRole('invalid', testBody)
+      await service.updateResourceRole(user.admin, 'invalid', testBody)
       throw new Error('should not throw error here')
     } catch (err) {
       assertValidationError(err, `"resourceRoleId" must be a valid GUID`)
@@ -84,7 +85,7 @@ module.exports = describe('Update resource role', () => {
   it(`failure - test with not founded resource role`, async () => {
     try {
       const id = 'fe6d0a58-ce7d-4521-8501-b8132b1c0391'
-      await service.updateResourceRole(id, testBody)
+      await service.updateResourceRole(user.admin, id, testBody)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.name, 'NotFoundError')
@@ -95,7 +96,7 @@ module.exports = describe('Update resource role', () => {
   it(`failure - update resource role name duplication`, async () => {
     const entity = resourceRoles.createBody('SUBMITTER', false, true, true, true)
     try {
-      await service.updateResourceRole(copilotRoleId, entity)
+      await service.updateResourceRole(user.admin, copilotRoleId, entity)
       throw new Error('should not throw error here')
     } catch (err) {
       should.equal(err.name, 'ConflictError')

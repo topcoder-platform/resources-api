@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model MemberProfile {
+  userId      Int      @id
+  handle      String?
+  handleLower String?
+  email       String?
+  createdAt   DateTime @default(now())
+  createdBy   String
+  updatedAt   DateTime? @updatedAt
+  updatedBy   String?
+
+  @@unique([handle, handleLower], map: "memberprofile-handle-handleLower-unique")
+  // Index for faster search
+  @@index([handleLower], map: "memberprofile-handleLower-index")
+}
+
+model MemberStats {
+  userId Int     @id
+  handle String?
+  handleLower String?
+
+  // (flattened from maxRating.rating)
+  maxRating Int?
+
+  createdAt DateTime @default(now())
+  createdBy String
+  updatedAt DateTime? @updatedAt
+  updatedBy String?
+
+  // handle is not indexed as search always by userId
+  @@unique([handle, handleLower], map: "memberstats-handle-handleLower-unique")
+}
+
+model ResourceRole {
+  id              String   @id @default(uuid())
+  name            String
+  nameLower       String
+  fullReadAccess  Boolean
+  fullWriteAccess Boolean
+  isActive        Boolean
+  selfObtainable  Boolean
+  legacyId        Int?
+  createdAt       DateTime @default(now())
+  createdBy       String
+  updatedAt       DateTime? @updatedAt
+  updatedBy       String?
+
+  resources                     Resource[]
+  resourceRolePhaseDependencies ResourceRolePhaseDependency[]
+
+  // Index for faster search
+  @@index([nameLower], map: "resourcerole-nameLower-index")
+}
+
+model Resource {
+  id           String   @id @default(uuid())
+  challengeId  String
+  memberId     String
+  memberHandle String
+  roleId       String
+  createdAt    DateTime @default(now())
+  createdBy    String
+  updatedAt    DateTime? @updatedAt
+  updatedBy    String?
+
+  resourceRole ResourceRole @relation(fields: [roleId], references: [id])
+
+  // Indexes for faster searches
+  @@index([challengeId, memberId], map: "resource-challengeIdMemberId-index")
+  @@index([memberId, roleId], map: "resource-memberIdRoleId-index")
+}
+
+model ResourceRolePhaseDependency {
+  id             String       @id @default(uuid())
+  phaseId        String
+  resourceRoleId String
+  phaseState     Boolean
+  createdAt      DateTime     @default(now())
+  createdBy      String
+  updatedAt      DateTime?     @updatedAt
+  updatedBy      String?
+  resourceRole   ResourceRole @relation(fields: [resourceRoleId], references: [id])
+
+  @@unique([phaseId, resourceRoleId], map: "resourcerolephase-phaseId-resourceRoleId-unique")
+}

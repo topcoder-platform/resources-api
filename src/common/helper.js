@@ -6,21 +6,17 @@ const _ = require('lodash')
 const config = require('config')
 const querystring = require('querystring')
 const request = require('superagent')
+const moment = require('moment')
 const constants = require('../../app-constants')
-const models = require('../models')
-const { MemberProfile, MemberStats } = require('../models')
 const errors = require('./errors')
 const logger = require('./logger')
 const m2mAuth = require('tc-core-library-js').auth.m2m
-const AWS = require('aws-sdk')
-const opensearch = require('@opensearch-project/opensearch')
 const m2m = m2mAuth(_.pick(config, ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME', 'AUTH0_PROXY_SERVER_URL']))
 const busApi = require('tc-bus-api-wrapper')
 const busApiClient = busApi(_.pick(config, ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME', 'AUTH0_CLIENT_ID',
   'AUTH0_CLIENT_SECRET', 'BUSAPI_URL', 'KAFKA_ERROR_TOPIC', 'AUTH0_PROXY_SERVER_URL']))
 
-// Opensearch client
-let osClient
+const prisma = require('./prisma').getClient()
 
 /**
  * Check the error is custom error.
@@ -93,6 +89,16 @@ function hasAdminRole (authUser) {
 }
 
 /**
+ * Get user handle from token
+ *
+ * @param {Object} authUser request auth user
+ * @returns user handle or sub
+ */
+function getUserHandleOrSub (authUser) {
+  return authUser.handle || authUser.sub
+}
+
+/**
  * Check if exists.
  *
  * @param {Array} source the array in which to search for the term
@@ -126,49 +132,26 @@ function checkIfExists (source, term) {
 
 /**
  * Get Data by model id
- * @param {Object} modelName The dynamoose model name
+ * @param {Object} modelName The model name
  * @param {String} id The id value
  * @returns {Promise<void>}
  */
 async function getById (modelName, id) {
-  return new Promise((resolve, reject) => {
-    models[modelName].query('id').eq(id).exec((err, result) => {
-      if (err) {
-        return reject(err)
-      }
-      if (result.length > 0) {
-        return resolve(result[0])
-      } else {
-        return reject(new errors.NotFoundError(`${modelName} with id: ${id} doesn't exist`))
-      }
-    })
-  })
-}
-
-/**
- * Get Member by memberId
- * @param {Number} id The id value
- * @returns {Promise<void>}
- */
-async function getMemberInfoById (id) {
-  // logger.warn('getMemberInfoById')
-  const memberInfo = await MemberStats.query('userId').eq(id).exec().then(r => r[0])
-  return memberInfo
-}
-
-/**
- * Get Member by memberId from the API
- * @param {String} id The user ID
- * @returns {Promise<void>}
- */
-async function getMemberById (id) {
-  try {
-    const res = await getRequest(`${config.MEMBER_API_URL}`, { userId: id })
-    return _.get(res, 'body[0]')
-  } catch (e) {
-    logger.debug(e.message)
-    logger.debug(e)
+  const prismaModel = _.camelCase(modelName)
+  const ret = await prisma[prismaModel].findUnique({ where: { id } })
+  if (!ret || _.isEmpty(_.keys(ret))) {
+    throw new errors.NotFoundError(`${modelName} with id: ${id} doesn't exist`)
   }
+  return ret
+}
+
+/**
+ * Get Member Stats by id llist
+ * @param {Array} idList The id list
+ * @returns {Promise<[]>}
+ */
+async function getMemberInfoByIdList (idList) {
+  return prisma.memberStats.findMany({ where: { userId: { in: idList } } })
 }
 
 /**
@@ -179,11 +162,24 @@ async function getMemberById (id) {
 async function getMemberDetailsByHandle (handle) {
   try {
     // logger.warn(`getMemberIdByHandle ${handle}`)
-    const profile = await MemberProfile.query('handleLower').eq(_.toLower(handle)).exec().then(r => r[0])
+    const handleLower = _.toLower(handle)
+    const profile = await prisma.memberProfile.findUnique({
+      where: {
+        handleLower,
+        handle
+      },
+      select: {
+        userId: true,
+        email: true
+      }
+    })
+    if (!profile || !profile.userId) {
+      throw new Error('Member profile not found')
+    }
     return { memberId: profile.userId, email: profile.email }
   } catch (e) {
     // fall back to v3 api...
-    logger.warn(`Get Member by Handle from Dynamo Failed, trying v3 Members API. Error: ${JSON.stringify(e)}`)
+    logger.warn(`Get Member by Handle from DB Failed, trying v3 Members API. Error: ${JSON.stringify(e)}`)
     return getMemberDetailsByHandleFromV3Members(handle)
   }
 }
@@ -217,96 +213,23 @@ async function getMemberDetailsByHandleFromV3Members (handle) {
 }
 
 /**
- * Create item in database
- * @param {Object} modelName The dynamoose model name
- * @param {Object} data The create data object
- * @returns {Promise<void>}
- */
-async function create (modelName, data) {
-  return new Promise((resolve, reject) => {
-    const dbItem = new models[modelName](data)
-    dbItem.save((err) => {
-      if (err) {
-        return reject(err)
-      }
-
-      return resolve(dbItem)
-    })
-  })
-}
-
-/**
  * Update item in database
- * @param {Object} dbItem The Dynamo database item
+ * @param {Object} dbItem The database item
  * @param {Object} data The updated data object
  * @returns {Promise<void>}
  */
-async function update (dbItem, data) {
+async function update (authUser, modelName, dbItem, data) {
   Object.keys(data).forEach((key) => {
     dbItem[key] = data[key]
   })
-  return new Promise((resolve, reject) => {
-    dbItem.save((err) => {
-      if (err) {
-        return reject(err)
-      }
-
-      return resolve(dbItem)
-    })
+  dbItem.updatedBy = getUserHandleOrSub(authUser)
+  dbItem.updatedAt = moment().utc().format()
+  const prismaModel = _.camelCase(modelName)
+  const ret = await prisma[prismaModel].update({
+    data: dbItem,
+    where: { id: dbItem.id }
   })
-}
-
-/**
- * Get data collection by scan parameters
- * @param {Object} modelName The dynamoose model name
- * @param {Object} scanParams The scan parameters object
- * @returns {Promise<void>}
- */
-async function scan (modelName, scanParams) {
-  return new Promise((resolve, reject) => {
-    models[modelName].scan(scanParams).all(0, 0).exec((err, result) => {
-      if (err) {
-        return reject(err)
-      }
-
-      return resolve(result.count === 0 ? [] : result)
-    })
-  })
-}
-
-/**
- * Get all data collection (avoid default page limit of DynamoDB) by scan parameters
- * @param {Object} modelName The dynamoose model name
- * @param {Object} scanParams The scan parameters object
- * @returns {Array}
- */
-async function scanAll (modelName, scanParams) {
-  let results = await models[modelName].scan(scanParams).exec()
-  let lastKey = results.lastKey
-  while (!_.isUndefined(results.lastKey)) {
-    const newResult = await models[modelName].scan(scanParams).startAt(lastKey).exec()
-    results = [...results, ...newResult]
-    lastKey = newResult.lastKey
-  }
-  return results
-}
-
-/**
- * Get data collection by query parameters
- * @param {Object} modelName The dynamoose model name
- * @param {Object} queryParams The query parameters object
- * @returns {Promise<void>}
- */
-async function query (modelName, queryParams) {
-  return new Promise((resolve, reject) => {
-    models[modelName].query(queryParams).all(0, 0).exec((err, result) => {
-      if (err) {
-        return reject(err)
-      }
-
-      return resolve(result.count === 0 ? [] : result)
-    })
-  })
+  return ret
 }
 
 /**
@@ -314,11 +237,12 @@ async function query (modelName, queryParams) {
  * @param {Object} modelName The dynamoose model name
  * @param {Object} queryParams The query parameters object
  * @param {String} errorMessage the error message if duplication exist.
- * @returns {Boolean} true if duplication exist, false otherwise.
+ * @returns {Boolean} true if duplication exist, throws error otherwise.
  */
 async function validateDuplicate (modelName, queryParams, errorMessage) {
-  const list = await query(modelName, queryParams)
-  if (list.length > 0) {
+  const prismaModel = _.camelCase(modelName)
+  const count = await prisma[prismaModel].count({ where: queryParams })
+  if (count > 0) {
     throw new errors.ConflictError(errorMessage)
   }
 }
@@ -436,32 +360,6 @@ async function getAllPages (url, query) {
 }
 
 /**
- * Get OS Client
- * @return {Object} Opensearch Client Instance
- */
-function getOSClient () {
-  if (osClient) {
-    return osClient
-  }
-  const osHost = config.get('OS.HOST')
-  // AWS ES configuration is different from other providers
-  if (/.*amazonaws.*/.test(osHost)) {
-    osClient = new opensearch.Client({
-      node: osHost,
-      amazonES: {
-        region: config.get('DYNAMODB.AWS_REGION'),
-        credentials: new AWS.EnvironmentCredentials('AWS')
-      }
-    })
-  } else {
-    osClient = new opensearch.Client({
-      node: osHost
-    })
-  }
-  return osClient
-}
-
-/**
  * Check if the user has agreed to all challenge terms
  * @param {Number} userId the user ID
  * @param {Array<String>} terms an array of term UUIDs to check
@@ -520,25 +418,20 @@ async function advanceChallengePhase (challengeId, phase, operation, numAttempts
 module.exports = {
   wrapExpress,
   autoWrapExpress,
-  getMemberInfoById,
+  getMemberInfoByIdList,
   getMemberDetailsByHandle,
   checkIfExists,
   hasAdminRole,
+  getUserHandleOrSub,
   getById,
-  create,
   update,
-  query,
-  scan,
-  scanAll,
   validateDuplicate,
   getRequest,
   postEvent,
   isCustomError,
   setResHeaders,
   getAllPages,
-  getOSClient,
   checkAgreedTerms,
   postRequest,
-  getMemberById,
   advanceChallengePhase
 }
