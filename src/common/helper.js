@@ -161,12 +161,12 @@ async function getMemberInfoByIdList (idList) {
  */
 async function getMemberDetailsByHandle (handle) {
   try {
-    // logger.warn(`getMemberIdByHandle ${handle}`)
-    const handleLower = _.toLower(handle)
     const profile = await prisma.memberProfile.findUnique({
       where: {
-        handleLower,
-        handle
+        handle_handleLower: {
+          handle,
+          handleLower: _.toLower(handle)
+        }
       },
       select: {
         userId: true,
