@@ -47,7 +47,6 @@ The following parameters can be set in config files or in env variables:
 - AUTH0_PROXY_SERVER_URL: Proxy Auth0 URL, used to get TC M2M token
 - TERMS_API_URL: Terms API url, default is 'https://api.topcoder-dev.com/v5/terms'
 - MEMBER_API_URL: Member api url, default is 'https://api.topcoder-dev.com/v3/members'
-- USER_API_URL: User api url, default is 'https://api.topcoder-dev.com/v3/users'
 - CHALLENGE_API_URL: Challenge api url, default is 'http://localhost:4000/v5/challenges'.
 - CHALLENGE_PHASES_API_URL: Challenge phases API URL, default is 'https://api.topcoder-dev.com/v5/challengephases'.
 - DYNAMODB.AWS_ACCESS_KEY_ID: The Amazon certificate key to use when connecting. Use local dynamodb you can set fake value
